@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "766008553053",
+    "firebase_url": "https://find-the-treasure-8d58f.firebaseio.com",
+    "project_id": "find-the-treasure-8d58f",
+    "storage_bucket": "find-the-treasure-8d58f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766008553053:android:c24474da45b1ef381527b4",
+        "android_client_info": {
+          "package_name": "com.findthetreasure.find_the_treasure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766008553053-c8lr1f7gtpv2muhkuconl2d5t8sl17p3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2aRaMmRsVEMdL7oqaxnRlY4Ba_k5rgT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766008553053-c8lr1f7gtpv2muhkuconl2d5t8sl17p3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
