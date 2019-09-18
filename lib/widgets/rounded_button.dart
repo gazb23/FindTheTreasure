@@ -10,6 +10,7 @@ class RoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       margin: EdgeInsets.only(bottom: 20.0),
           child: RaisedButton(
         color: color,

@@ -2,8 +2,8 @@ import 'package:find_the_treasure/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import '../widgets/custom_text_field.dart';
 
-class CreateAccount extends StatelessWidget {
-  static const String id = 'create_account';
+class ExistingAccount extends StatelessWidget {
+  static const String id = 'existing_account';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +19,7 @@ class CreateAccount extends StatelessWidget {
           },
         ),
         title: Text(
-          'Sign Up',
+          'Log In',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -46,29 +46,38 @@ class CreateAccount extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                     child: Column(
                       children: <Widget>[
-                        CustomTextField(
-                          labelText: 'First Name',
-                        ),
-                        CustomTextField(
-                          labelText: 'Last Name',
+                        Text('Use your email and password used in registration process',
+                        textAlign: TextAlign.center,),
+                        SizedBox(
+                          height: 10.0,
                         ),
                         CustomTextField(
                           labelText: 'Email',
-                          keyboardType: TextInputType.emailAddress, 
+                          keyboardType: TextInputType.emailAddress,
                         ),
                         CustomTextField(
                           labelText: 'Password',
                           obscureText: true,
-                                                   
                         ),
                         SizedBox(
                           height: 20.0,
                         ),
-                        RoundedButton(                          
+                        RoundedButton(
                           color: Colors.orangeAccent,
-                          title: 'Sign Up',
+                          title: 'Log In',
                           onpressed: () {},
-                        )
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        GestureDetector(
+                  onTap: () {
+                    // TODO: Add navigation to forgotten password screen.
+                  },
+                                  child: Text('Forgotten Password?',
+                  textAlign: TextAlign.center,),
+                ),
+                SizedBox(height: 20.0,)
                       ],
                     ),
                   ),
