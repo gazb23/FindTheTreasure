@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/screens/create_account.dart';
 import 'package:find_the_treasure/screens/sign_in_main.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Find The Treasure',
-        home: SignInMain()
+      theme: ThemeData(        
+        backgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          color: Colors.white
+        )
+      ),
+        initialRoute: SignInMain.id,
+        routes: {
+          // Each screen class has a static const to create that screen
+          SignInMain.id : (context) => SignInMain(),
+          CreateAccount.id : (context) => CreateAccount(),
+        },
         );
   
   }
