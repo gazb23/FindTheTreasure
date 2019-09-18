@@ -47,13 +47,13 @@ flutter:
 
   
   assets:    
-    - assets/images/
-    - assets/images/1.5x/
-    - assets/images/2.0x/
-    - assets/images/3.0x/
-    - assets/images/4.0x/
+    - images/
+    - images/1.5x/
+    - images/2.0x/
+    - images/3.0x/
+    - images/4.0x/
 
-    
+  
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

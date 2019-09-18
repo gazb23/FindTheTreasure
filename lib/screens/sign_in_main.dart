@@ -19,8 +19,8 @@ class SignInMain extends StatelessWidget {
         children: <Widget>[
           Container(
             child: Image.asset(
-              'assets/images/slide_1.png',
-              fit: BoxFit.fill,
+              'images/slide_2.png',
+              fit: BoxFit.cover,
             ),
           ),
           Container(
