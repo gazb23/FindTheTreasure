@@ -1,7 +1,8 @@
 import 'package:find_the_treasure/screens/create_account.dart';
 import 'package:find_the_treasure/screens/existing_account.dart';
+import 'package:find_the_treasure/widgets/sign_in_button.dart';
+import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
 import 'package:flutter/material.dart';
-import 'package:find_the_treasure/widgets/rounded_button.dart';
 import 'package:flutter/services.dart';
 
 class SignInMain extends StatelessWidget {
@@ -13,58 +14,90 @@ class SignInMain extends StatelessWidget {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            child: Image.asset(
-              'images/slide_1.png',
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width,
-            ),
-            //TODO: Implement a carosel slider using a dart package
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                RoundedButton(
-                  color: Colors.lightBlue,
-                  title: 'Sign Up with PooBook',
-                  onpressed: null,
-                ),
-                RoundedButton(
-                  color: Colors.redAccent,
-                  title: 'Sign Up with Google',
-                  onpressed: null,
-                ),
-                RoundedButton(
-                  color: Colors.orangeAccent,
-                  title: 'I\'m new hear!',
-                  onpressed: () {
-                    Navigator.pushNamed(context, CreateAccount.id);
-                  },
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, ExistingAccount.id);
-                  },
-                  child: Text(
-                    'Already registered? Login Here.',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                )
-              ],
-            ),
-          )
-        ],
+      appBar: AppBar(
+        title: Center(
+          child: Image.asset('images/andicon.png'),
+        ),
       ),
+      backgroundColor: Colors.white,
+      body: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Container(
+          child: Image.asset(
+            'images/slide_1.png',
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+          ),
+          //TODO: Implement a carosel slider using a dart package
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SocialSignInButton(
+                assetName: 'images/facebook-logo.png',
+                text: 'Sign in with Facebook',
+                textcolor: Colors.white,
+                color: Color(0xFF4267B2),
+                onPressed: () {},
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              SocialSignInButton(
+                assetName: 'images/google-logo.png',
+                text: 'Sign in with Google',
+                textcolor: Colors.black87,
+                color: Colors.grey[100],
+                onPressed: () {},
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Center(
+                child: Text(
+                  'OR',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              SignInButton(
+                text: 'Sign in with email',
+                textcolor: Colors.white,
+                color: Colors.orangeAccent,
+                onPressed: () {
+                  Navigator.pushNamed(context, CreateAccount.id);
+                },
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, ExistingAccount.id);
+                },
+                child: Text(
+                  'Already registered? Sign in here.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                height: 30.0,
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }

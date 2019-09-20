@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 5.0),
       child: TextField(
         cursorColor: Colors.orangeAccent,
+        
         keyboardType: keyboardType,
         obscureText: obscureText,
         textCapitalization: TextCapitalization.words,

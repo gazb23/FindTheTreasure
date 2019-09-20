@@ -1,4 +1,5 @@
 import 'package:find_the_treasure/screens/create_account.dart';
+import 'package:find_the_treasure/screens/password_reset.dart';
 import './screens/existing_account.dart';
 import 'package:find_the_treasure/screens/sign_in_main.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Find The Treasure',
       theme: ThemeData(
+        textTheme: TextTheme(
+          body1: TextStyle(
+            fontSize: 16.0,
+            color: Colors.grey
+          )
+        ),
           inputDecorationTheme: InputDecorationTheme(
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey[400])),
@@ -27,6 +34,7 @@ class MyApp extends StatelessWidget {
         SignInMain.id : (context) => SignInMain(),
         CreateAccount.id : (context) => CreateAccount(),
         ExistingAccount.id : (context) => ExistingAccount(),
+        PasswordReset.id : (context) => PasswordReset(),
       },
     );
   }
