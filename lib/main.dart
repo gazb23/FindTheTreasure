@@ -1,8 +1,10 @@
-import 'package:find_the_treasure/screens/create_account.dart';
-import 'package:find_the_treasure/screens/password_reset.dart';
-import './screens/existing_account.dart';
-import 'package:find_the_treasure/screens/sign_in_main.dart';
+
+import 'package:find_the_treasure/screens/sign%20in/landing_page.dart';
 import 'package:flutter/material.dart';
+import 'screens/sign in/create_account.dart';
+import 'screens/sign in/existing_account.dart';
+import 'screens/sign in/password_reset.dart';
+import 'screens/sign in/sign_in_main.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,13 +30,14 @@ class MyApp extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           appBarTheme: AppBarTheme(color: Colors.white)),
-      initialRoute: SignInMain.id,
+      initialRoute: LandingPage.id,
       routes: {
         // Each screen class has a static const to create that screen
         SignInMain.id : (context) => SignInMain(),
         CreateAccount.id : (context) => CreateAccount(),
         ExistingAccount.id : (context) => ExistingAccount(),
         PasswordReset.id : (context) => PasswordReset(),
+        LandingPage.id : (context) => LandingPage(),
       },
     );
   }

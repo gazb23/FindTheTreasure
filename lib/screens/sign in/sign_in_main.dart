@@ -1,12 +1,26 @@
-import 'package:find_the_treasure/screens/create_account.dart';
-import 'package:find_the_treasure/screens/existing_account.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'existing_account.dart';
 
 class SignInMain extends StatelessWidget {
   static const String id = 'sign_in_main';
+  
+  final Function(FirebaseUser) onSignIn;
+
+  SignInMain({@required this.onSignIn});
+
+  Future<void> _signInAnonymously() async {
+    try {
+      FirebaseUser user = await FirebaseAuth.instance.signInAnonymously();
+      onSignIn(user);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Lock this screen to portrait orientation
@@ -50,7 +64,7 @@ class SignInMain extends StatelessWidget {
                 onPressed: () {},
               ),
               SizedBox(
-                height: 10.0,
+                height: 20.0,
               ),
               SocialSignInButton(
                 assetName: 'images/google-logo.png',
@@ -75,9 +89,10 @@ class SignInMain extends StatelessWidget {
                 text: 'Sign in with email',
                 textcolor: Colors.white,
                 color: Colors.orangeAccent,
-                onPressed: () {
-                  Navigator.pushNamed(context, CreateAccount.id);
-                },
+                onPressed: _signInAnonymously
+                // () {
+                //   Navigator.pushNamed(context, CreateAccount.id);
+                // },
               ),
               SizedBox(
                 height: 20.0,

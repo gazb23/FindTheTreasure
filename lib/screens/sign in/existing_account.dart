@@ -1,10 +1,13 @@
+import 'package:find_the_treasure/widgets/custom_text_field.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_text_field.dart';
+import 'password_reset.dart';
 
-class PasswordReset extends StatelessWidget {
-  static const String id = 'password_reset';
+
+
+class ExistingAccount extends StatelessWidget {
+  static const String id = 'existing_account';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +23,7 @@ class PasswordReset extends StatelessWidget {
           },
         ),
         title: Text(
-          'Reset Password',
+          'Log In',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -29,8 +32,7 @@ class PasswordReset extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("images/bckgrnd_frgt.png"),
-                  fit: BoxFit.cover),
+                  image: AssetImage("images/bckgrnd.png"), fit: BoxFit.cover),
             ),
           ),
           ListView(
@@ -50,7 +52,7 @@ class PasswordReset extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Text(
-                          'Really!? Forgotten your password already? Good luck with the quests! We\'ll let you off this time, just enter your email below and we\'ll help you reset your password.',
+                          'Use your email and password used in registration process',
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(
@@ -60,20 +62,36 @@ class PasswordReset extends StatelessWidget {
                           labelText: 'Email',
                           keyboardType: TextInputType.emailAddress,
                         ),
+                        CustomTextField(
+                          labelText: 'Password',
+                          obscureText: true,
+                        ),
                         SizedBox(
                           height: 20.0,
                         ),
                         SignInButton(
-                          text: 'Reset Password',
+                          text: 'Log in',
                           textcolor: Colors.white,
                           color: Colors.orangeAccent,
                           onPressed: () {
-                            //TODO: Password reset onpressed - add fx
+                            // Log into main screen
                           },
                         ),
                         SizedBox(
                           height: 10.0,
                         ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, PasswordReset.id);
+                          },
+                          child: Text(
+                            'Forgotten Password?',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        )
                       ],
                     ),
                   ),

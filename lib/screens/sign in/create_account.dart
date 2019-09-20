@@ -1,27 +1,18 @@
-import 'package:find_the_treasure/screens/password_reset.dart';
+import 'package:find_the_treasure/widgets/custom_text_field.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_text_field.dart';
 
-class ExistingAccount extends StatelessWidget {
-  static const String id = 'existing_account';
+
+class CreateAccount extends StatelessWidget {
+  static const String id = 'create_account';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: Text(
-          'Log In',
+          'Sign Up',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -49,12 +40,11 @@ class ExistingAccount extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Text(
-                          'Use your email and password used in registration process',
-                          textAlign: TextAlign.center,
+                        CustomTextField(
+                          labelText: 'First Name',
                         ),
-                        SizedBox(
-                          height: 10.0,
+                        CustomTextField(
+                          labelText: 'Last Name',
                         ),
                         CustomTextField(
                           labelText: 'Email',
@@ -68,27 +58,12 @@ class ExistingAccount extends StatelessWidget {
                           height: 20.0,
                         ),
                         SignInButton(
-                          text: 'Log in',
+                          text: 'Sign up',
                           textcolor: Colors.white,
                           color: Colors.orangeAccent,
                           onPressed: () {
-                            // Log into main screen
+                            // Push to home screen
                           },
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, PasswordReset.id);
-                          },
-                          child: Text(
-                            'Forgotten Password?',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.0,
                         )
                       ],
                     ),

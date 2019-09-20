@@ -1,17 +1,27 @@
+import 'package:find_the_treasure/widgets/custom_text_field.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_text_field.dart';
 
-class CreateAccount extends StatelessWidget {
-  static const String id = 'create_account';
+
+class PasswordReset extends StatelessWidget {
+  static const String id = 'password_reset';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
-          'Sign Up',
+          'Reset Password',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -20,7 +30,8 @@ class CreateAccount extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("images/bckgrnd.png"), fit: BoxFit.cover),
+                  image: AssetImage("images/bckgrnd_frgt.png"),
+                  fit: BoxFit.cover),
             ),
           ),
           ListView(
@@ -39,31 +50,31 @@ class CreateAccount extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        CustomTextField(
-                          labelText: 'First Name',
+                        Text(
+                          'Really!? Forgotten your password already? Good luck with the quests! We\'ll let you off this time, just enter your email below and we\'ll help you reset your password.',
+                          textAlign: TextAlign.center,
                         ),
-                        CustomTextField(
-                          labelText: 'Last Name',
+                        SizedBox(
+                          height: 10.0,
                         ),
                         CustomTextField(
                           labelText: 'Email',
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        CustomTextField(
-                          labelText: 'Password',
-                          obscureText: true,
-                        ),
                         SizedBox(
                           height: 20.0,
                         ),
                         SignInButton(
-                          text: 'Sign up',
+                          text: 'Reset Password',
                           textcolor: Colors.white,
                           color: Colors.orangeAccent,
                           onPressed: () {
-                            // Push to home screen
+                            //TODO: Password reset onpressed - add fx
                           },
-                        )
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
                       ],
                     ),
                   ),

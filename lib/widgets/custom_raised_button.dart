@@ -9,7 +9,7 @@ class CustomRaisedButton extends StatelessWidget {
     this.child,
     this.color,
     this.onPressed,
-    this.height: 60.0,
+    this.height = 50.0,
   });
 
   @override
