@@ -51,12 +51,9 @@ class ExistingAccount extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Text(
-                          'Use your email and password used in registration process',
-                          textAlign: TextAlign.center,
-                        ),
+                        
                         SizedBox(
-                          height: 10.0,
+                          height: 5.0,
                         ),
                         CustomTextField(
                           labelText: 'Email',
@@ -70,7 +67,7 @@ class ExistingAccount extends StatelessWidget {
                           height: 20.0,
                         ),
                         SignInButton(
-                          text: 'Log in',
+                          text: 'Sign in',
                           textcolor: Colors.white,
                           color: Colors.orangeAccent,
                           onPressed: () {

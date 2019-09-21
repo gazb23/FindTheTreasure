@@ -1,5 +1,6 @@
 
 import 'package:find_the_treasure/screens/sign%20in/landing_page.dart';
+import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'screens/sign in/create_account.dart';
 import 'screens/sign in/existing_account.dart';
@@ -33,11 +34,11 @@ class MyApp extends StatelessWidget {
       initialRoute: LandingPage.id,
       routes: {
         // Each screen class has a static const to create that screen
-        SignInMain.id : (context) => SignInMain(),
+        SignInMain.id : (context) => SignInMain(auth: Auth(),),
         CreateAccount.id : (context) => CreateAccount(),
         ExistingAccount.id : (context) => ExistingAccount(),
         PasswordReset.id : (context) => PasswordReset(),
-        LandingPage.id : (context) => LandingPage(),
+        LandingPage.id : (context) => LandingPage(auth: Auth(),),
       },
     );
   }

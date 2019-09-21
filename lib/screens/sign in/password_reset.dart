@@ -50,8 +50,15 @@ class PasswordReset extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
+                        Container(
+                          child: Image.asset('images/ic_owl_wrong_dialog.png',
+                          height: 120.0,),
+                        ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
                         Text(
-                          'Really!? Forgotten your password already? Good luck with the quests! We\'ll let you off this time, just enter your email below and we\'ll help you reset your password.',
+                          'If you\'ve forgotten your password already, good luck with the quests! No sweat - just enter your email below and we\'ll reset it.',
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(

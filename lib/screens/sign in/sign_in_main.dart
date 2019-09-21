@@ -1,20 +1,20 @@
+import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'existing_account.dart';
 
 class SignInMain extends StatelessWidget {
-  static const String id = 'sign_in_main';
-  
-  final Function(FirebaseUser) onSignIn;
+  static const String id = 'sign_in_main';  
+  final Function(User) onSignIn;
+  SignInMain({@required this.auth, @required this.onSignIn});
+  final AuthBase auth;
 
-  SignInMain({@required this.onSignIn});
 
   Future<void> _signInAnonymously() async {
     try {
-      FirebaseUser user = await FirebaseAuth.instance.signInAnonymously();
+      User user = await auth.signInAnonymously();
       onSignIn(user);
     } catch (e) {
       print(e.toString());
@@ -86,7 +86,7 @@ class SignInMain extends StatelessWidget {
                 height: 10.0,
               ),
               SignInButton(
-                text: 'Sign in with email',
+                text: 'Create Account',
                 textcolor: Colors.white,
                 color: Colors.orangeAccent,
                 onPressed: _signInAnonymously
