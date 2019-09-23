@@ -7,15 +7,14 @@ import 'existing_account.dart';
 
 class SignInMain extends StatelessWidget {
   static const String id = 'sign_in_main';  
-  final Function(User) onSignIn;
-  SignInMain({@required this.auth, @required this.onSignIn});
+  
+  SignInMain({@required this.auth});
   final AuthBase auth;
 
 
   Future<void> _signInAnonymously() async {
     try {
-      User user = await auth.signInAnonymously();
-      onSignIn(user);
+      await auth.signInAnonymously();      
     } catch (e) {
       print(e.toString());
     }
