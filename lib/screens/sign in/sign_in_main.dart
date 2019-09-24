@@ -20,6 +20,22 @@ class SignInMain extends StatelessWidget {
     }
   }
 
+  Future<void> _signInWithGoogle() async {
+    try {
+      await auth.signInWithGoogle();      
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> _signInWithFacebook() async {
+    try {
+      await auth.signInWithFacebook();      
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Lock this screen to portrait orientation
@@ -60,7 +76,7 @@ class SignInMain extends StatelessWidget {
                 text: 'Sign in with Facebook',
                 textcolor: Colors.white,
                 color: Color(0xFF4267B2),
-                onPressed: () {},
+                onPressed: _signInWithFacebook,
               ),
               SizedBox(
                 height: 20.0,
@@ -70,7 +86,7 @@ class SignInMain extends StatelessWidget {
                 text: 'Sign in with Google',
                 textcolor: Colors.black87,
                 color: Colors.grey[100],
-                onPressed: () {},
+                onPressed: _signInWithGoogle,
               ),
               SizedBox(
                 height: 20.0,
