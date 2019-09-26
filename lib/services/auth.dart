@@ -61,7 +61,7 @@ class Auth implements AuthBase {
 
   Future<User> signInWithFacebook() async {
     final facebookLogin = FacebookLogin();
-    FacebookLoginResult result = await facebookLogin.logInWithReadPermissions(
+    FacebookLoginResult result = await facebookLogin.logIn(
       ['email','public_profile'],
     );
     if (result.accessToken != null) {
