@@ -54,7 +54,7 @@ class SignInMain extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    return Column(
+    return Column(      
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
@@ -65,7 +65,7 @@ class SignInMain extends StatelessWidget {
           ),
           //TODO: Implement a carosel slider using a dart package
         ),
-        Container(
+        Container(          
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
