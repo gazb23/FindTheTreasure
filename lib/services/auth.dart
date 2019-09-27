@@ -16,9 +16,13 @@ abstract class AuthBase {
 }
 
 class Auth implements AuthBase {
-  // Create an instance of the Firebase Auth Class
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  // Create an instance of each Firebase Auth Class
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FacebookLogin _facebookLogin = FacebookLogin();
+
+  
   User _userFromFirebase(FirebaseUser user) {
     if (user == null) {
       return null;
@@ -26,7 +30,7 @@ class Auth implements AuthBase {
     return User(uid: user.uid);
   }
 
-  /// onAuthStateChanged receives a [FirebaseUser] each time the user signIn or signOut. To remove dependency for the FireBase package we return a User class instead.
+  // onAuthStateChanged receives a FirebaseUser each time the user signs in or signs out. To remove dependency for the FireBase package we return a User class instead by calling the userFromFirebase method.
   Stream<User> get onAuthStateChanged {
     return _firebaseAuth.onAuthStateChanged.map(_userFromFirebase);
   }
@@ -37,8 +41,8 @@ class Auth implements AuthBase {
   }
 
   Future<User> signInWithGoogle() async {
-    final googleSignIn = GoogleSignIn();
-    final googleUser = await googleSignIn.signIn();
+    
+    final googleUser = await _googleSignIn.signIn();
 
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -60,8 +64,8 @@ class Auth implements AuthBase {
   }
 
   Future<User> signInWithFacebook() async {
-    final facebookLogin = FacebookLogin();
-    FacebookLoginResult result = await facebookLogin.logIn(
+    
+    FacebookLoginResult result = await _facebookLogin.logIn(
       ['email','public_profile'],
     );
     if (result.accessToken != null) {
@@ -77,11 +81,9 @@ class Auth implements AuthBase {
     }
   }
 
-  Future<void> signOut() async {
-    final googleSignIn = GoogleSignIn();
-    await googleSignIn.signOut();
-    final facebookLogin = FacebookLogin();
-    await facebookLogin.logOut();
+  Future<void> signOut() async {    
+    await _googleSignIn.signOut();    
+    await _facebookLogin.logOut();
     return await _firebaseAuth.signOut();
   }
 }
