@@ -8,8 +8,7 @@ class User {
 }
 
 abstract class AuthBase {
-  Stream<User> get onAuthStateChanged;
-  Future<User> signInAnonymously();
+  Stream<User> get onAuthStateChanged;  
   Future<User> signInWithGoogle();
   Future<User> signInWithFacebook();
   Future<void> signOut();
@@ -35,10 +34,6 @@ class Auth implements AuthBase {
     return _firebaseAuth.onAuthStateChanged.map(_userFromFirebase);
   }
 
-  Future<User> signInAnonymously() async {
-    final authResult = await _firebaseAuth.signInAnonymously();
-    return _userFromFirebase(authResult.user);
-  }
 
   Future<User> signInWithGoogle() async {
     

@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/screens/sign%20in/create_account.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
@@ -10,15 +11,6 @@ class SignInMain extends StatelessWidget {
   
   SignInMain({@required this.auth});
   final AuthBase auth;
-
-
-  Future<void> _signInAnonymously() async {
-    try {
-      await auth.signInAnonymously();      
-    } catch (e) {
-      print(e.toString());
-    }
-  }
 
   Future<void> _signInWithGoogle() async {
     try {
@@ -104,10 +96,10 @@ class SignInMain extends StatelessWidget {
                 text: 'Create Account',
                 textcolor: Colors.white,
                 color: Colors.orangeAccent,
-                onPressed: _signInAnonymously
-                // () {
-                //   Navigator.pushNamed(context, CreateAccount.id);
-                // },
+                onPressed:
+                () {
+                  Navigator.pushNamed(context, CreateAccount.id);
+                },
               ),
               SizedBox(
                 height: 20.0,
