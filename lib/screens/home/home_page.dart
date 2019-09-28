@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
 
-  
   final AuthBase auth;
+
   HomePage({@required this.auth});
   
   Future<void> _signOut() async {

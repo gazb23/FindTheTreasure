@@ -4,20 +4,18 @@ class CustomRaisedButton extends StatelessWidget {
   final Widget child;
   final Color color;
   final VoidCallback onPressed;
-  final double height;
+  
   CustomRaisedButton({
     this.child,
     this.color,
-    this.onPressed,
-    this.height = 50.0,
+    this.onPressed,    
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      
-      child: RaisedButton(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: RaisedButton(      
         elevation: 1.0,
         color: color,
         child: child,

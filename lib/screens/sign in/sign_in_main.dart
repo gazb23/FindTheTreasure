@@ -7,14 +7,14 @@ import 'package:flutter/services.dart';
 import 'existing_account.dart';
 
 class SignInMain extends StatelessWidget {
-  static const String id = 'sign_in_main';  
-  
+  static const String id = 'sign_in_main';
+
   SignInMain({@required this.auth});
   final AuthBase auth;
 
   Future<void> _signInWithGoogle() async {
     try {
-      await auth.signInWithGoogle();      
+      await auth.signInWithGoogle();
     } catch (e) {
       print(e.toString());
     }
@@ -22,7 +22,7 @@ class SignInMain extends StatelessWidget {
 
   Future<void> _signInWithFacebook() async {
     try {
-      await auth.signInWithFacebook();      
+      await auth.signInWithFacebook();
     } catch (e) {
       print(e.toString());
     }
@@ -35,88 +35,71 @@ class SignInMain extends StatelessWidget {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Image.asset('images/andicon.png'),
-        ),
-      ),
       backgroundColor: Colors.white,
       body: _buildContent(context),
     );
   }
 
   Widget _buildContent(BuildContext context) {
-    return Column(      
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
+      fit: StackFit.expand,
       children: <Widget>[
-        Container(
-          child: Image.asset(
-            'images/slide_1.png',
-            fit: BoxFit.cover,
-            width: MediaQuery.of(context).size.width,
-          ),
-          //TODO: Implement a carosel slider using a dart package
+        Image.asset(
+          'images/slide_1.png',
+          fit: BoxFit.fitWidth,
+          alignment: Alignment.topCenter,
         ),
-        Container(          
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              SocialSignInButton(
-                assetName: 'images/facebook-logo.png',
-                text: 'Sign in with Facebook',
-                textcolor: Colors.white,
-                color: Color(0xFF4267B2),
-                onPressed: _signInWithFacebook,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              SocialSignInButton(
-                assetName: 'images/google-logo.png',
-                text: 'Sign in with Google',
-                textcolor: Colors.black87,
-                color: Colors.grey[100],
-                onPressed: _signInWithGoogle,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Center(
-                child: Text(
-                  'OR',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+        
+        FractionallySizedBox(          
+          widthFactor: 0.9,
+          child: Container(            
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                
+                SocialSignInButton(
+                  assetName: 'images/facebook-logo.png',
+                  text: 'Sign in with Facebook',
+                  textcolor: Colors.white,
+                  color: Color(0xFF4267B2),
+                  onPressed: _signInWithFacebook,
                 ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              SignInButton(
-                text: 'Create Account',
-                textcolor: Colors.white,
-                color: Colors.orangeAccent,
-                onPressed:
-                () {
-                  Navigator.pushNamed(context, CreateAccount.id);
-                },
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, ExistingAccount.id);
-                },
-                child: Text(
-                  'Already registered? Sign in here.',
-                  textAlign: TextAlign.center,
+                SocialSignInButton(
+                  assetName: 'images/google-logo.png',
+                  text: 'Sign in with Google',
+                  textcolor: Colors.black87,
+                  color: Colors.grey[100],
+                  onPressed: _signInWithGoogle,
                 ),
-              ),
-              SizedBox(
-                height: 30.0,
-              )
-            ],
+                Center(
+                  child: Text(
+                    'OR',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SignInButton(
+                  text: 'Create Account',
+                  textcolor: Colors.white,
+                  color: Colors.orangeAccent,
+                  onPressed: () {
+                    Navigator.pushNamed(context, CreateAccount.id);
+                  },
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, ExistingAccount.id);
+                  },
+                  child: Text(
+                    'Already registered? Sign in here.',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
+                )
+              ],
+            ),
           ),
         )
       ],

@@ -15,6 +15,7 @@ class SocialSignInButton extends CustomRaisedButton {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Image.asset(assetName),
+              
               Text(
                 text,
                 style: TextStyle(
