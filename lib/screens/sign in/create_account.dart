@@ -2,8 +2,6 @@ import 'package:find_the_treasure/widgets/custom_text_field.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
 
-
-
 class CreateAccount extends StatelessWidget {
   static const String id = 'create_account';
   @override
@@ -28,7 +26,6 @@ class CreateAccount extends StatelessWidget {
       body: _buildStack(),
     );
   }
-  
 
   Widget _buildStack() {
     return Stack(
@@ -41,7 +38,7 @@ class CreateAccount extends StatelessWidget {
         ),
         ListView(
           shrinkWrap: true,
-          padding: EdgeInsets.all(25.0),
+          padding: EdgeInsets.only(top: 25.0),
           children: <Widget>[
             Center(
               child: Card(
@@ -49,38 +46,41 @@ class CreateAccount extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 elevation: 8.0,
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      CustomTextField(
-                        labelText: 'First Name',
-                      ),
-                      CustomTextField(
-                        labelText: 'Last Name',
-                      ),
-                      CustomTextField(
-                        labelText: 'Email',
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      CustomTextField(
-                        labelText: 'Password',
-                        obscureText: true,
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      SignInButton(
-                        text: 'Sign up',
-                        textcolor: Colors.white,
-                        color: Colors.orangeAccent,
-                        onPressed: () {
-                          // Push to home screen
-                        },
-                      )
-                    ],
+                child: FractionallySizedBox(
+                  widthFactor: 0.90,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        CustomTextField(
+                          labelText: 'First Name',
+                        ),
+                        CustomTextField(
+                          labelText: 'Last Name',
+                        ),
+                        CustomTextField(
+                          labelText: 'Email',
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        CustomTextField(
+                          labelText: 'Password',
+                          obscureText: true,
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        SignInButton(
+                          text: 'Sign up',
+                          textcolor: Colors.white,
+                          color: Colors.orangeAccent,
+                          onPressed: () {
+                            // Push to home screen
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
