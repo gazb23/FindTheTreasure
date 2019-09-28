@@ -14,7 +14,7 @@ class CustomRaisedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: RaisedButton(      
         elevation: 1.0,
         color: color,

@@ -72,11 +72,17 @@ class SignInMain extends StatelessWidget {
                   color: Colors.grey[100],
                   onPressed: _signInWithGoogle,
                 ),
+                SizedBox(
+                  height: 10.0,
+                ),
                 Center(
                   child: Text(
                     'OR',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
+                ),
+                SizedBox(
+                  height: 10.0,
                 ),
                 SignInButton(
                   text: 'Create Account',
