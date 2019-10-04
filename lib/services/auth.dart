@@ -12,6 +12,8 @@ abstract class AuthBase {
   Future<User> signInWithGoogle();
   Future<User> signInWithFacebook();
   Future<void> signOut();
+  Future<User> signInWithEmailAndPassword(String email, String password);
+  Future<User> createUserWithEmailAndPassword(String email, String password); 
 }
 
 class Auth implements AuthBase {
@@ -80,5 +82,21 @@ class Auth implements AuthBase {
     await _googleSignIn.signOut();    
     await _facebookLogin.logOut();
     return await _firebaseAuth.signOut();
+  }
+
+  Future<User> signInWithEmailAndPassword(String email, String password) async {
+    final authResult = await _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password
+    );
+    return _userFromFirebase(authResult.user);
+  }
+
+  Future<User> createUserWithEmailAndPassword(String email, String password) async {
+    final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password
+    );
+    return _userFromFirebase(authResult.user);
   }
 }

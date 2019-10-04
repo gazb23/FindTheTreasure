@@ -20,9 +20,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Image.asset('images/andicon.png'),
-        ),
+        title: Image.asset('images/andicon.png'),
         actions: <Widget>[
           FlatButton(
             child: Text('Sign out'),

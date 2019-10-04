@@ -1,10 +1,10 @@
-import 'package:find_the_treasure/screens/sign%20in/create_account.dart';
+import 'package:find_the_treasure/screens/sign%20in/email_create_account_page.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'existing_account.dart';
+import 'email_sign_in_page.dart';
 
 class SignInMain extends StatelessWidget {
   static const String id = 'sign_in_main';
@@ -89,21 +89,19 @@ class SignInMain extends StatelessWidget {
                   textcolor: Colors.white,
                   color: Colors.orangeAccent,
                   onPressed: () {
-                    Navigator.pushNamed(context, CreateAccount.id);
+                    Navigator.pushNamed(context, EmailCreateAccountPage.id);
                   },
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, ExistingAccount.id);
+                FlatButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, EmailSignInPage.id);
                   },
                   child: Text(
                     'Already registered? Sign in here.',
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(
-                  height: 20.0,
-                )
+                
               ],
             ),
           ),
