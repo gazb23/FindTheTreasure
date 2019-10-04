@@ -17,6 +17,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
   String get _email => _emailController.text;
   String get _password => _passwordController.text;
 
@@ -29,6 +32,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     }
   }
 
+  void _emailEditingComplete() {
+    FocusScope.of(context).requestFocus(_passwordFocusNode);
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomListView(
@@ -38,13 +45,20 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
             ),
             CustomTextField(
               controller: _emailController,
+              focusNode: _emailFocusNode,
               labelText: 'Email',
+              onEditingComplete: _emailEditingComplete,
               keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              
             ),
             CustomTextField(
               controller: _passwordController,
+              focusNode: _passwordFocusNode,
               labelText: 'Password',
+              onEditingComplete: _submit,
               obscureText: true,
+              textInputAction: TextInputAction.done,
             ),
             SizedBox(
               height: 20.0,
@@ -53,7 +67,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
               text: 'Sign in',
               textcolor: Colors.white,
               color: Colors.orangeAccent,
-              onPressed: _submit
+              onPressed: _email.isNotEmpty && _password.isNotEmpty ? _submit : null,
             ),
             
             FlatButton(
