@@ -24,8 +24,12 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
 
   String get _email => _emailController.text;
   String get _password => _passwordController.text;
+  bool _submitted = false;
   
   void _submit() async {
+    setState(() {
+     _submitted = true; 
+    });
     try {
       await widget.auth.createUserWithEmailAndPassword(_email, _password);
       Navigator.of(context).pop();
@@ -70,29 +74,37 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   }
 
   CustomTextField _buildPasswordTextField() {
+    bool showErrorText = _submitted && !widget.passwordValidator.isValid(_password);
     return CustomTextField(
       controller: _passwordController,
       focusNode: _passwordFocusNode,
       labelText: 'Password',
       onEditingComplete: _submit,
-      
+      onChanged: (password) => _callSetState(),
+      errorText: showErrorText ? widget.invalidPasswordErrorText : null,
       obscureText: true,
       textInputAction: TextInputAction.done,
     );
   }
 
+  
+
   CustomTextField _buildEmailTextField() {
+    bool showErrorText = _submitted && !widget.emailValidator.isValid(_email);
     return CustomTextField(
       controller: _emailController,
       focusNode: _emailFocusNode,
       labelText: 'Email',
+      errorText: showErrorText ? widget.invalidEmailErrorText : null,
       onEditingComplete: _emailEditingComplete,
-      
+      onChanged: (email) => _callSetState(),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
     );
   }
 
-  
+ void _callSetState() {
+    setState(() {});
+  }
   
 }

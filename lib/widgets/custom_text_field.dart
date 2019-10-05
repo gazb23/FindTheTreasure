@@ -8,8 +8,10 @@ class CustomTextField extends StatelessWidget {
   final TextInputAction textInputAction;
   final FocusNode focusNode;
   final Function onEditingComplete;
+  final Function(String) onChanged;
+  final String errorText;
   
-  CustomTextField({this.labelText, this.keyboardType, this.obscureText = false, this.controller, this.textInputAction, this.focusNode, this.onEditingComplete, });
+  CustomTextField({this.labelText, this.keyboardType, this.obscureText = false, this.controller, this.textInputAction, this.focusNode, this.onEditingComplete, this.onChanged, this.errorText, });
   @override
   Widget build(BuildContext context) {
     
@@ -22,11 +24,13 @@ class CustomTextField extends StatelessWidget {
         focusNode: focusNode,   
         keyboardType: keyboardType,
         obscureText: obscureText,
+        onChanged: onChanged,
         
         textInputAction: textInputAction,
         // textCapitalization: TextCapitalization.words,
         decoration: InputDecoration(
           labelText: labelText,
+          errorText: errorText,
         ),
       ),
     );
