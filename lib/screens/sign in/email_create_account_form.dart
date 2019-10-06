@@ -25,27 +25,50 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   String get _email => _emailController.text;
   String get _password => _passwordController.text;
   bool _submitted = false;
+  bool _isLoading = false;
   
   void _submit() async {
     setState(() {
      _submitted = true; 
+     _isLoading = true;
     });
     try {
       await widget.auth.createUserWithEmailAndPassword(_email, _password);
       Navigator.of(context).pop();
     } catch (e) {
-      print(e.toString());
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Sign in falied'),
+            content: Text(e.toString()),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('OK'),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          );
+        }
+      );
+    } finally {
+      setState(() {
+       _isLoading = false; 
+      });
     }
   }
 
   void _emailEditingComplete() {
-    FocusScope.of(context).requestFocus(_passwordFocusNode);
+    final _newFocus = widget.emailValidator.isValid(_email)
+    ? _passwordFocusNode
+    : _emailFocusNode;
+    FocusScope.of(context).requestFocus(_newFocus);
   }
 
   @override
   Widget build(BuildContext context) {
 
-    bool submitEnabled = widget.emailValidator.isValid(_email) && widget.passwordValidator.isValid(_password);
+    bool submitEnabled = widget.emailValidator.isValid(_email) && widget.passwordValidator.isValid(_password) && !_isLoading;
     
     return CustomListView(
       children: <Widget>[
@@ -79,6 +102,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       controller: _passwordController,
       focusNode: _passwordFocusNode,
       labelText: 'Password',
+      enabled: _isLoading == false,
       onEditingComplete: _submit,
       onChanged: (password) => _callSetState(),
       errorText: showErrorText ? widget.invalidPasswordErrorText : null,
@@ -95,6 +119,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       controller: _emailController,
       focusNode: _emailFocusNode,
       labelText: 'Email',
+      enabled: _isLoading == false,
       errorText: showErrorText ? widget.invalidEmailErrorText : null,
       onEditingComplete: _emailEditingComplete,
       onChanged: (email) => _callSetState(),
@@ -106,5 +131,13 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
  void _callSetState() {
     setState(() {});
   }
-  
+  @override
+  void dispose() {
+    
+    super.dispose();
+    _passwordController.dispose();
+    _emailController.dispose();
+    _passwordFocusNode.dispose();
+    _emailFocusNode.dispose();
+  }
 }

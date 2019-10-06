@@ -24,26 +24,35 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   String get _email => _emailController.text;
   String get _password => _passwordController.text;
   bool _submitted = false;
+  bool _isLoading = false;
 
   void _submit() async {
     setState(() {
      _submitted = true; 
+     _isLoading = true;
     });
     try {      
       await widget.auth.signInWithEmailAndPassword(_email, _password);
       Navigator.of(context).pop();
     } catch (e) {
       print(e.toString());
+    } finally {
+      setState(() {
+       _isLoading = false; 
+      });
     }
   }
 
   void _emailEditingComplete() {
-    FocusScope.of(context).requestFocus(_passwordFocusNode);
+    final _newFocus = widget.emailValidator.isValid(_email)
+    ? _passwordFocusNode
+    : _emailFocusNode;
+    FocusScope.of(context).requestFocus(_newFocus);
   }
 
   @override
   Widget build(BuildContext context) {
-    bool submitEnabled = widget.emailValidator.isValid(_email) && widget.passwordValidator.isValid(_password);
+    bool submitEnabled = widget.emailValidator.isValid(_email) && widget.passwordValidator.isValid(_password) && !_isLoading;
     return CustomListView(
           children: <Widget>[
             SizedBox(
@@ -83,6 +92,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
             controller: _passwordController,
             focusNode: _passwordFocusNode,
             labelText: 'Password',
+            enabled: _isLoading == false,
             onEditingComplete: _submit,
             obscureText: true,
             onChanged: (password) => _callSetState(),
@@ -97,6 +107,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
             controller: _emailController,
             focusNode: _emailFocusNode,
             labelText: 'Email',
+            enabled: _isLoading == false,
             onEditingComplete: _emailEditingComplete,
             onChanged: (email) => _callSetState(),
             errorText: showErrorText ? widget.invalidEmailErrorText : null,
@@ -107,5 +118,14 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
    void _callSetState() {
     setState(() {});
+  }
+  @override
+  void dispose() {
+    
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _passwordFocusNode.dispose();
+    _emailFocusNode.dispose();
   }
 }

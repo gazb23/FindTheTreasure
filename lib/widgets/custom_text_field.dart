@@ -10,8 +10,9 @@ class CustomTextField extends StatelessWidget {
   final Function onEditingComplete;
   final Function(String) onChanged;
   final String errorText;
+  final bool enabled;
   
-  CustomTextField({this.labelText, this.keyboardType, this.obscureText = false, this.controller, this.textInputAction, this.focusNode, this.onEditingComplete, this.onChanged, this.errorText, });
+  CustomTextField({this.labelText, this.keyboardType, this.obscureText = false, this.controller, this.textInputAction, this.focusNode, this.onEditingComplete, this.onChanged, this.errorText, this.enabled = true, });
   @override
   Widget build(BuildContext context) {
     
@@ -31,6 +32,7 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: labelText,
           errorText: errorText,
+          enabled: enabled,
         ),
       ),
     );

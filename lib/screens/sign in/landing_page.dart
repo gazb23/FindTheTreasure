@@ -28,7 +28,7 @@ class LandingPage extends StatelessWidget {
               auth: auth,
               
             );
-            // If waiting from data from Firebase return a progress indicator
+            // If waiting for data from Firebase return a progress indicator
           } else {
             return Scaffold(
               body: Center(
