@@ -1,15 +1,16 @@
 import 'package:find_the_treasure/screens/sign%20in/validators.dart';
 import 'package:find_the_treasure/services/auth.dart';
+
+import 'package:flutter/services.dart';
 import 'package:find_the_treasure/widgets/custom_list_view.dart';
 import 'package:find_the_treasure/widgets/custom_text_field.dart';
 import 'package:find_the_treasure/widgets/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class EmailCreateAccountForm extends StatefulWidget with EmailAndPasswordValidators {
-  EmailCreateAccountForm({this.auth});
-
-  final AuthBase auth;
+class EmailCreateAccountForm extends StatefulWidget
+    with EmailAndPasswordValidators {
   @override
   _EmailCreateAccountFormState createState() => _EmailCreateAccountFormState();
 }
@@ -27,41 +28,42 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   String get _password => _passwordController.text;
   bool _submitted = false;
   bool _isLoading = false;
-  
+
   void _submit() async {
     setState(() {
-     _submitted = true; 
-     _isLoading = true;
+      _submitted = true;
+      _isLoading = true;
     });
     try {
-      await widget.auth.createUserWithEmailAndPassword(_email, _password);
+      final auth = Provider.of<AuthBase>(context);
+      await auth.createUserWithEmailAndPassword(_email, _password);
       Navigator.of(context).pop();
-    } catch (e) {
+    } on PlatformException catch (e) {
       PlatformAlertDialog(
         title: 'Sign in failed',
-        content: e.toString(),
+        content: e.message,
         defaultActionText: 'OK',
       ).show(context);
-        
     } finally {
       setState(() {
-       _isLoading = false; 
+        _isLoading = false;
       });
     }
   }
 
   void _emailEditingComplete() {
     final _newFocus = widget.emailValidator.isValid(_email)
-    ? _passwordFocusNode
-    : _emailFocusNode;
+        ? _passwordFocusNode
+        : _emailFocusNode;
     FocusScope.of(context).requestFocus(_newFocus);
   }
 
   @override
   Widget build(BuildContext context) {
+    bool submitEnabled = widget.emailValidator.isValid(_email) &&
+        widget.passwordValidator.isValid(_password) &&
+        !_isLoading;
 
-    bool submitEnabled = widget.emailValidator.isValid(_email) && widget.passwordValidator.isValid(_password) && !_isLoading;
-    
     return CustomListView(
       children: <Widget>[
         //TODO: Find out how to add Firt Name and Last name to Firebase login
@@ -89,7 +91,8 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   }
 
   CustomTextField _buildPasswordTextField() {
-    bool showErrorText = _submitted && !widget.passwordValidator.isValid(_password);
+    bool showErrorText =
+        _submitted && !widget.passwordValidator.isValid(_password);
     return CustomTextField(
       controller: _passwordController,
       focusNode: _passwordFocusNode,
@@ -102,8 +105,6 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       textInputAction: TextInputAction.done,
     );
   }
-
-  
 
   CustomTextField _buildEmailTextField() {
     bool showErrorText = _submitted && !widget.emailValidator.isValid(_email);
@@ -120,12 +121,12 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
     );
   }
 
- void _callSetState() {
+  void _callSetState() {
     setState(() {});
   }
+
   @override
   void dispose() {
-    
     super.dispose();
     _passwordController.dispose();
     _emailController.dispose();

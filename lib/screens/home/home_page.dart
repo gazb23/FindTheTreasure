@@ -1,18 +1,28 @@
-import 'package:find_the_treasure/services/auth.dart';
-import 'package:flutter/material.dart';
 
+import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/widgets/platform_alert_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-
-  final AuthBase auth;
-
-  HomePage({@required this.auth});
-  
-  Future<void> _signOut() async {
+  Future<void> _signOut(BuildContext context) async {
     try {
-      await auth.signOut();      
+      final auth = Provider.of<AuthBase>(context);
+      await auth.signOut();
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  Future<void> _confirmSignOut(BuildContext context) async {
+    final didRequestSingout = await PlatformAlertDialog(
+      title: 'Logout',
+      content: 'Leaving already!? Are you sure?',
+      cancelActionText: 'Cancel',
+      defaultActionText: 'Logout',
+    ).show(context);
+    if (didRequestSingout) {
+      _signOut(context);
     }
   }
 
@@ -24,7 +34,7 @@ class HomePage extends StatelessWidget {
         actions: <Widget>[
           FlatButton(
             child: Text('Sign out'),
-            onPressed: _signOut
+            onPressed: () => _confirmSignOut(context),
           )
         ],
       ),

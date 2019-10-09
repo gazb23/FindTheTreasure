@@ -1,14 +1,18 @@
 import 'package:find_the_treasure/screens/sign%20in/password_reset.dart';
 import 'package:find_the_treasure/screens/sign%20in/validators.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
+
+import 'package:flutter/services.dart';
 import 'package:find_the_treasure/widgets/custom_list_view.dart';
 import 'package:find_the_treasure/widgets/custom_text_field.dart';
+import 'package:find_the_treasure/widgets/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidators {  
-  EmailSignInForm({this.auth});
-  final AuthBase auth;
+
   @override
   _EmailSignInFormState createState() => _EmailSignInFormState();
 }
@@ -32,10 +36,14 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
      _isLoading = true;
     });
     try {      
-      await widget.auth.signInWithEmailAndPassword(_email, _password);
+      final auth = Provider.of<AuthBase>(context);
+      await auth.signInWithEmailAndPassword(_email, _password);
       Navigator.of(context).pop();
-    } catch (e) {
-      print(e.toString());
+    } on PlatformException catch (e) {
+      PlatformExceptionAlertDialog(
+        title: 'Sign in failed',
+        exception: e,        
+      ).show(context);
     } finally {
       setState(() {
        _isLoading = false; 

@@ -5,30 +5,28 @@ import 'screens/sign in/email_sign_in_page.dart';
 import 'screens/sign in/landing_page.dart';
 import 'screens/sign in/password_reset.dart';
 import 'screens/sign in/sign_in_main.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Find The Treasure',
-      theme: _buildThemeData(),
-      initialRoute: LandingPage.id,
-      routes: {
-        // Each screen class has a static const to create that screen
-        SignInMain.id: (context) => SignInMain(
-              auth: Auth(),
-            ),
-        EmailCreateAccountPage.id: (context) => EmailCreateAccountPage(
-              auth: Auth(),
-            ),
-        EmailSignInPage.id: (context) => EmailSignInPage(auth: Auth(),),
-        PasswordReset.id: (context) => PasswordReset(),
-        LandingPage.id: (context) => LandingPage(
-              auth: Auth(),
-            ),
-      },
+    return Provider<AuthBase>(
+      builder: (context) => Auth(),
+      child: MaterialApp(
+        title: 'Find The Treasure',
+        theme: _buildThemeData(),
+        initialRoute: LandingPage.id,
+        routes: {
+          // Each screen class has a static const to create that screen
+          SignInMain.id: (context) => SignInMain(),
+          EmailCreateAccountPage.id: (context) => EmailCreateAccountPage(),
+          EmailSignInPage.id: (context) => EmailSignInPage(),
+          PasswordReset.id: (context) => PasswordReset(),
+          LandingPage.id: (context) => LandingPage(),
+        },
+      ),
     );
   }
 

@@ -1,14 +1,12 @@
 import 'package:find_the_treasure/screens/sign%20in/email_sign_in_form.dart';
-import 'package:find_the_treasure/services/auth.dart';
+
 import 'package:flutter/material.dart';
 
 
 
 class EmailSignInPage extends StatelessWidget {
   static const String id = 'email_sign_in_page';
-  final AuthBase auth;
 
-  EmailSignInPage({this.auth});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class EmailSignInPage extends StatelessWidget {
                 image: AssetImage("images/bckgrnd.png"), fit: BoxFit.cover),
           ),
         ),
-        EmailSignInForm(auth: auth,)
+        EmailSignInForm()
       ],
     );
   }

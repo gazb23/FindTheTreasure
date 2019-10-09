@@ -1,30 +1,39 @@
 import 'package:find_the_treasure/screens/sign%20in/email_create_account_page.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
+
+
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'email_sign_in_page.dart';
 
 class SignInMain extends StatelessWidget {
   static const String id = 'sign_in_main';
 
-  SignInMain({@required this.auth});
-  final AuthBase auth;
-
-  Future<void> _signInWithGoogle() async {
+  void _showSignInError(BuildContext context, PlatformException exception) {
+    PlatformExceptionAlertDialog(title: 'Sign in failed',
+    exception: exception,).show(context);
+  }
+  Future<void> _signInWithGoogle(BuildContext context) async {
     try {
+      final auth = Provider.of<AuthBase>(context);
       await auth.signInWithGoogle();
-    } catch (e) {
-      print(e.toString());
+    } on PlatformException catch (e) {
+      if (e.code != 'ERROR_ABORTED_BY_USER')
+      _showSignInError(context, e);
     }
   }
 
-  Future<void> _signInWithFacebook() async {
+  Future<void> _signInWithFacebook(BuildContext context) async {
     try {
+      final auth = Provider.of<AuthBase>(context);
       await auth.signInWithFacebook();
-    } catch (e) {
-      print(e.toString());
+    } on PlatformException catch (e) {
+       if (e.code != 'ERROR_ABORTED_BY_USER')
+      _showSignInError(context, e);
     }
   }
 
@@ -63,14 +72,14 @@ class SignInMain extends StatelessWidget {
                   text: 'Sign in with Facebook',
                   textcolor: Colors.white,
                   color: Color(0xFF4267B2),
-                  onPressed: _signInWithFacebook,
+                  onPressed: () => _signInWithFacebook(context),
                 ),
                 SocialSignInButton(
                   assetName: 'images/google-logo.png',
                   text: 'Sign in with Google',
                   textcolor: Colors.black87,
                   color: Colors.grey[100],
-                  onPressed: _signInWithGoogle,
+                  onPressed: () => _signInWithGoogle(context),
                 ),
                 SizedBox(
                   height: 10.0,

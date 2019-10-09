@@ -1,16 +1,11 @@
 import 'package:find_the_treasure/screens/sign%20in/email_create_account_form.dart';
-import 'package:find_the_treasure/services/auth.dart';
+
 
 import 'package:flutter/material.dart';
 
 class EmailCreateAccountPage extends StatelessWidget {
   static const String id = 'create_account';
-  final AuthBase auth;
-  EmailCreateAccountPage({this.auth});
-
-
-
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +38,7 @@ class EmailCreateAccountPage extends StatelessWidget {
                 image: AssetImage("images/bckgrnd.png"), fit: BoxFit.cover),
           ),
         ),
-        EmailCreateAccountForm(
-          auth: auth,
-        )
+        EmailCreateAccountForm()
       ],
     );
   }
