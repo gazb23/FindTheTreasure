@@ -7,18 +7,71 @@ class PlatformAlertDialog extends PlatformWidget {
   final String content;
   final String defaultActionText;
 
-  PlatformAlertDialog({this.title, this.content, this.defaultActionText});
+  Future<bool> show(BuildContext context) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) => this,
+    );
+  }
+
+  PlatformAlertDialog(
+      {@required this.title,
+      @required this.content,
+      @required this.defaultActionText})
+      : assert(title != null),
+        assert(content != null),
+        assert(defaultActionText != null);
 
   @override
   Widget buildCupertinoWidget(BuildContext context) {
-    // TODO: implement buildCupertinoWidget
-    return null;
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: _buildActions(context),
+    );
   }
 
   @override
   Widget buildMaterialWidget(BuildContext context) {
-    // TODO: implement buildMaterialWidget
-    return null;
+    return AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: _buildActions(context),
+    );
   }
 
+  List<Widget> _buildActions(BuildContext context) {
+    return [
+      PlatformAlertDialogAction(
+        child: Text(defaultActionText),
+        onPressed: () => Navigator.pop(context),
+      )
+    ];
+  }
+}
+
+class PlatformAlertDialogAction extends PlatformWidget {
+  final Widget child;
+  final VoidCallback onPressed;
+
+  PlatformAlertDialogAction({this.child, this.onPressed});
+
+  @override
+  Widget buildCupertinoWidget(BuildContext context) {
+    
+    return CupertinoDialogAction(
+      child: child,
+      onPressed: onPressed,
+    );
+  }
+
+  @override
+  Widget buildMaterialWidget(BuildContext context) {
+    
+    return FlatButton(
+      child: child,
+      onPressed: onPressed,
+    );
+  }
+  
 }
