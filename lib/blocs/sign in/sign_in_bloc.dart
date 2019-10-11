@@ -10,7 +10,7 @@ class SignInBloc {
     try {
       return await signInMethod();
     } catch(e) {
-      rethrow;
+      rethrow;//test
     }
   }
 
