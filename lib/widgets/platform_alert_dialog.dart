@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class PlatformAlertDialog extends PlatformWidget {
-  PlatformAlertDialog({this.cancelActionText, 
+  PlatformAlertDialog(
+      {this.cancelActionText,
       @required this.title,
       @required this.content,
       @required this.defaultActionText})
@@ -29,8 +30,6 @@ class PlatformAlertDialog extends PlatformWidget {
           );
   }
 
-  
-
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return CupertinoAlertDialog(
@@ -52,19 +51,15 @@ class PlatformAlertDialog extends PlatformWidget {
   List<Widget> _buildActions(BuildContext context) {
     final actions = <Widget>[];
     if (cancelActionText != null) {
-      actions.add(
-        PlatformAlertDialogAction(
+      actions.add(PlatformAlertDialogAction(
         child: Text(cancelActionText),
         onPressed: () => Navigator.of(context).pop(false),
-      )
-      );
+      ));
     }
-    actions.add(
-      PlatformAlertDialogAction(
-        child: Text(defaultActionText),
-        onPressed: () => Navigator.of(context).pop(true),
-      )
-    );
+    actions.add(PlatformAlertDialogAction(
+      child: Text(defaultActionText),
+      onPressed: () => Navigator.of(context).pop(true),
+    ));
     return actions;
   }
 }

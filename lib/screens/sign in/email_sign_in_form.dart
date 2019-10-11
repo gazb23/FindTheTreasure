@@ -6,7 +6,6 @@ import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:find_the_treasure/widgets/custom_list_view.dart';
 import 'package:find_the_treasure/widgets/custom_text_field.dart';
-import 'package:find_the_treasure/widgets/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

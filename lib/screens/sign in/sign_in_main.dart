@@ -1,7 +1,7 @@
+import 'package:find_the_treasure/blocs/sign%20in/sign_in_bloc.dart';
 import 'package:find_the_treasure/screens/sign%20in/email_create_account_page.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
-
 
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
@@ -12,29 +12,43 @@ import 'email_sign_in_page.dart';
 
 class SignInMain extends StatelessWidget {
   static const String id = 'sign_in_main';
+  final SignInBloc bloc;
+  const SignInMain({Key key, this.bloc}) : super(key: key);
+
+  static Widget create(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context);
+    return Provider<SignInBloc>(
+      builder: (_) => SignInBloc(auth: auth),
+      child: Consumer<SignInBloc>(
+        builder: (context, bloc, _) => SignInMain(
+          bloc: bloc,
+        ),
+      ),
+    );
+  }
 
   void _showSignInError(BuildContext context, PlatformException exception) {
-    PlatformExceptionAlertDialog(title: 'Sign in failed',
-    exception: exception,).show(context);
+    PlatformExceptionAlertDialog(
+      title: 'Sign in failed',
+      exception: exception,
+    ).show(context);
   }
+
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
-      final auth = Provider.of<AuthBase>(context);
-      await auth.signInWithGoogle();
+      await bloc.signInWithGoogle();
     } on PlatformException catch (e) {
-      if (e.code != 'ERROR_ABORTED_BY_USER')
-      _showSignInError(context, e);
-    }
+      if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
+    } 
   }
 
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
-      final auth = Provider.of<AuthBase>(context);
-      await auth.signInWithFacebook();
+      
+      await bloc.signInWithFacebook();
     } on PlatformException catch (e) {
-       if (e.code != 'ERROR_ABORTED_BY_USER')
-      _showSignInError(context, e);
-    }
+      if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
+    } 
   }
 
   @override
@@ -58,15 +72,13 @@ class SignInMain extends StatelessWidget {
           fit: BoxFit.fitWidth,
           alignment: Alignment.topCenter,
         ),
-        
-        FractionallySizedBox(          
+        FractionallySizedBox(
           widthFactor: 0.9,
-          child: Container(            
+          child: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                
                 SocialSignInButton(
                   assetName: 'images/facebook-logo.png',
                   text: 'Sign in with Facebook',
@@ -110,7 +122,6 @@ class SignInMain extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                
               ],
             ),
           ),

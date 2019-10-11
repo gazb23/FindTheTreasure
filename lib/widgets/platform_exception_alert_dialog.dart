@@ -14,17 +14,15 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
   }
 
   static Map<String, String> _errors = {
-  'ERROR_WEAK_PASSWORD' : 'If the password is not strong enough.',
-  'ERROR_USER_NOT_FOUND' : 'If there is no user corresponding to the given [email] address, or if the user has been deleted.',
-  'ERROR_INVALID_EMAIL' : 'If the email address is malformed.'
-  ///   • `ERROR_EMAIL_ALREADY_IN_USE` - If the email is already in use by a different account.
-  ///   • `ERROR_INVALID_EMAIL` - If the [email] address is malformed.
-  ///   • `ERROR_WRONG_PASSWORD` - If the [password] is wrong.
-  /// 
-  
-  ///   • `ERROR_USER_DISABLED` - If the user has been disabled (for example, in the Firebase console)
-  ///   • `ERROR_TOO_MANY_REQUESTS` - If there was too many attempts to sign in as this user.
-  ///   • `ERROR_OPERATION_NOT_ALLOWED` - Indicates that Email & Password accounts are not enabled.
+    //Custom messages on sign in and account creation
+  'ERROR_WEAK_PASSWORD' : 'We both know that password isn\'t strong enough! Passwords must be at least 6 characters.',
+  'ERROR_USER_NOT_FOUND' : 'No user under that email',
+  'ERROR_INVALID_EMAIL' : 'Please check your email, think you made a whoopsy!',
+  'ERROR_EMAIL_ALREADY_IN_USE' : 'Email is already in use by a different account.',  
+  'ERROR_WRONG_PASSWORD' : 'Wrong password ya goof!',
+  'ERROR_USER_DISABLED' : 'User has been disabled.',
+  'ERROR_TOO_MANY_REQUESTS' : 'You have been locke out! Too many attempts to sign in.',
+  'ERROR_OPERATION_NOT_ALLOWED' : 'Indicates that Email & Password accounts are not enabled.'
 };
 }
 

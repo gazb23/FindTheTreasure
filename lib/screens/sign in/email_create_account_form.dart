@@ -1,10 +1,11 @@
 import 'package:find_the_treasure/screens/sign%20in/validators.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
 
 import 'package:flutter/services.dart';
 import 'package:find_the_treasure/widgets/custom_list_view.dart';
 import 'package:find_the_treasure/widgets/custom_text_field.dart';
-import 'package:find_the_treasure/widgets/platform_alert_dialog.dart';
+
 import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,24 +30,23 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   bool _submitted = false;
   bool _isLoading = false;
 
-  void _submit() async {
+ void _submit() async {
     setState(() {
-      _submitted = true;
-      _isLoading = true;
+     _submitted = true; 
+     _isLoading = true;
     });
-    try {
+    try {      
       final auth = Provider.of<AuthBase>(context);
       await auth.createUserWithEmailAndPassword(_email, _password);
       Navigator.of(context).pop();
     } on PlatformException catch (e) {
-      PlatformAlertDialog(
+      PlatformExceptionAlertDialog(
         title: 'Sign in failed',
-        content: e.message,
-        defaultActionText: 'OK',
+        exception: e,        
       ).show(context);
     } finally {
       setState(() {
-        _isLoading = false;
+       _isLoading = false; 
       });
     }
   }
