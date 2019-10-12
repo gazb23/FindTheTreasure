@@ -40,7 +40,7 @@ class EmailSignInPage extends StatelessWidget {
                 image: AssetImage("images/bckgrnd.png"), fit: BoxFit.cover),
           ),
         ),
-        EmailSignInForm()
+        EmailSignInForm.create(context)
       ],
     );
   }

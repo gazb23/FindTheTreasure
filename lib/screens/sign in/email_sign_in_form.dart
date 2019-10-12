@@ -1,8 +1,10 @@
+
+import 'package:find_the_treasure/blocs/sign%20in/email_sign_in_bloc.dart';
+import 'package:find_the_treasure/models/email_sign_in_model.dart';
 import 'package:find_the_treasure/screens/sign%20in/password_reset.dart';
 import 'package:find_the_treasure/screens/sign%20in/validators.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
-
 import 'package:flutter/services.dart';
 import 'package:find_the_treasure/widgets/custom_list_view.dart';
 import 'package:find_the_treasure/widgets/custom_text_field.dart';
@@ -10,128 +12,132 @@ import 'package:find_the_treasure/widgets/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidators {  
+class EmailSignInForm extends StatefulWidget
+    with EmailAndPasswordValidators {
+  EmailSignInForm({this.bloc});
+  final EmailSignInBloc bloc;
+  static Widget create(BuildContext context) {
+    final AuthBase auth = Provider.of<AuthBase>(context);
+    return Provider<EmailSignInBloc>(
+      builder: (context) => EmailSignInBloc(auth: auth),
+      child: Consumer<EmailSignInBloc>(
+        builder: (context, bloc, _) => EmailSignInForm(bloc: bloc),
+      ),
+      dispose: (context, bloc) => bloc.disose(),
+    );
+  }
 
   @override
   _EmailSignInFormState createState() => _EmailSignInFormState();
 }
 
 class _EmailSignInFormState extends State<EmailSignInForm> {
-  
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
-  String get _email => _emailController.text;
-  String get _password => _passwordController.text;
-  bool _submitted = false;
-  bool _isLoading = false;
-
   void _submit() async {
-    setState(() {
-     _submitted = true; 
-     _isLoading = true;
-    });
-    try {      
-      final auth = Provider.of<AuthBase>(context);
-      await auth.signInWithEmailAndPassword(_email, _password);
+    try {
+      await widget.bloc.submit();
       Navigator.of(context).pop();
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
         title: 'Sign in failed',
-        exception: e,        
+        exception: e,
       ).show(context);
-    } finally {
-      setState(() {
-       _isLoading = false; 
-      });
     }
   }
 
-  void _emailEditingComplete() {
-    final _newFocus = widget.emailValidator.isValid(_email)
-    ? _passwordFocusNode
-    : _emailFocusNode;
+  void _emailEditingComplete(EmailSignInModel model) {
+    final _newFocus = widget.emailValidator.isValid(model.email)
+        ? _passwordFocusNode
+        : _emailFocusNode;
     FocusScope.of(context).requestFocus(_newFocus);
   }
 
   @override
   Widget build(BuildContext context) {
-    bool submitEnabled = widget.emailValidator.isValid(_email) && widget.passwordValidator.isValid(_password) && !_isLoading;
-    return CustomListView(
-          children: <Widget>[
-            SizedBox(
-              height: 5.0,
-            ),
-            _buildEmailTextField(),
-            _buildPasswordTextField(),
-            SizedBox(
-              height: 20.0,
-            ),
-            SignInButton(
-              text: 'Sign in',
-              textcolor: Colors.white,
-              color: Colors.orangeAccent,
-              onPressed: submitEnabled ? _submit : null,
-            ),
-            
-            FlatButton(
-              onPressed: () {
-                Navigator.pushNamed(context, PasswordReset.id);
-              },
-              child: Text(
-                'Forgotten Password?',
-                textAlign: TextAlign.center,
+    return StreamBuilder<EmailSignInModel>(
+        stream: widget.bloc.modelStream,
+        initialData: EmailSignInModel(),
+        builder: (context, snapshot) {
+          final EmailSignInModel model = snapshot.data;
+          return CustomListView(
+            children: <Widget>[
+              _buildEmailTextField(model),
+              _buildPasswordTextField(model),
+              SizedBox(
+                height: 20.0,
               ),
-            ),
-            SizedBox(
-              height: 20.0,
-            )
-          ],
-        );
+              _buildSignInButton(model),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, PasswordReset.id);
+                  },
+                  child: Text(
+                    'Forgotten Password?',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
+                )
+            ],
+          );
+        });
   }
 
-  CustomTextField _buildPasswordTextField() {
-    bool showErrorText = _submitted && !widget.passwordValidator.isValid(_password);
-    return CustomTextField(
-            controller: _passwordController,
-            focusNode: _passwordFocusNode,
-            labelText: 'Password',
-            enabled: _isLoading == false,
-            onEditingComplete: _submit,
-            obscureText: true,
-            onChanged: (password) => _callSetState(),
-            errorText: showErrorText ? widget.invalidPasswordErrorText : null,
-            textInputAction: TextInputAction.done,
-          );
+  SignInButton _buildSignInButton(EmailSignInModel model) {
+    bool submitEnabled = widget.emailValidator.isValid(model.email) &&
+        widget.passwordValidator.isValid(model.password) &&
+        !model.isLoading;
+    return SignInButton(
+      text: 'Sign up',
+      textcolor: Colors.white,
+      color: Colors.orangeAccent,
+      onPressed: submitEnabled ? _submit : null,
+    );
   }
 
-  CustomTextField _buildEmailTextField() {
-     bool showErrorText = _submitted && !widget.emailValidator.isValid(_email);
+  CustomTextField _buildPasswordTextField(EmailSignInModel model) {
+    bool showErrorText =
+        model.submitted && !widget.passwordValidator.isValid(model.password);
     return CustomTextField(
-            controller: _emailController,
-            focusNode: _emailFocusNode,
-            labelText: 'Email',
-            enabled: _isLoading == false,
-            onEditingComplete: _emailEditingComplete,
-            onChanged: (email) => _callSetState(),
-            errorText: showErrorText ? widget.invalidEmailErrorText : null,
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: TextInputAction.next,
-            
-          );
+      controller: _passwordController,
+      focusNode: _passwordFocusNode,
+      labelText: 'Password',
+      enabled: model.isLoading == false,
+      onEditingComplete: _submit,
+      onChanged: (password) => widget.bloc.updateWith(password: password),
+      errorText: showErrorText ? widget.invalidPasswordErrorText : null,
+      obscureText: true,
+      textInputAction: TextInputAction.done,
+    );
   }
-   void _callSetState() {
-    setState(() {});
+
+  CustomTextField _buildEmailTextField(EmailSignInModel model) {
+    bool showErrorText =
+        model.submitted && !widget.emailValidator.isValid(model.email);
+    return CustomTextField(
+      controller: _emailController,
+      focusNode: _emailFocusNode,
+      labelText: 'Email',
+      enabled: model.isLoading == false,
+      errorText: showErrorText ? widget.invalidEmailErrorText : null,
+      onEditingComplete: () => _emailEditingComplete(model),
+      onChanged: (email) => widget.bloc.updateWith(email: email),
+      keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+    );
   }
+
   @override
   void dispose() {
-    
     super.dispose();
-    _emailController.dispose();
     _passwordController.dispose();
+    _emailController.dispose();
     _passwordFocusNode.dispose();
     _emailFocusNode.dispose();
   }

@@ -2,15 +2,15 @@ import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/foundation.dart';
 
 
-class SignInBloc {
-  SignInBloc({@required this.auth});
+class SocialSignInBloc {
+  SocialSignInBloc({@required this.auth});
   final AuthBase auth;
 
   Future<User> _signIn(Future<User> Function() signInMethod) async {
     try {
       return await signInMethod();
     } catch(e) {
-      rethrow;//test
+      rethrow;
     }
   }
 

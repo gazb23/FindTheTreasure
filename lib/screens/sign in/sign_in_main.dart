@@ -12,14 +12,14 @@ import 'email_sign_in_page.dart';
 
 class SignInMain extends StatelessWidget {
   static const String id = 'sign_in_main';
-  final SignInBloc bloc;
+  final SocialSignInBloc bloc;
   const SignInMain({Key key, this.bloc}) : super(key: key);
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context);
-    return Provider<SignInBloc>(
-      builder: (_) => SignInBloc(auth: auth),
-      child: Consumer<SignInBloc>(
+    return Provider<SocialSignInBloc>(
+      builder: (_) => SocialSignInBloc(auth: auth),
+      child: Consumer<SocialSignInBloc>(
         builder: (context, bloc, _) => SignInMain(
           bloc: bloc,
         ),

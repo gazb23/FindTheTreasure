@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
+
   Future<void> _signOut(BuildContext context) async {
     try {
       final auth = Provider.of<AuthBase>(context);
@@ -15,13 +16,13 @@ class HomePage extends StatelessWidget {
   }
 
   Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSingout = await PlatformAlertDialog(
+    final didRequestSingOut = await PlatformAlertDialog(
       title: 'Logout',
-      content: 'Leaving already!? Are you sure?',
+      content: 'Are you sure?',
       cancelActionText: 'Cancel',
       defaultActionText: 'Logout',
     ).show(context);
-    if (didRequestSingout) {
+    if (didRequestSingOut) {
       _signOut(context);
     }
   }

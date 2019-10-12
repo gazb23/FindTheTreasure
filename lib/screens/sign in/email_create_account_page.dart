@@ -25,11 +25,11 @@ class EmailCreateAccountPage extends StatelessWidget {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: _buildStack(),
+      body: _buildStack(context),
     );
   }
 
-  Widget _buildStack() {
+  Widget _buildStack(BuildContext context) {
     return Stack(
       children: <Widget>[
         Container(
@@ -38,7 +38,7 @@ class EmailCreateAccountPage extends StatelessWidget {
                 image: AssetImage("images/bckgrnd.png"), fit: BoxFit.cover),
           ),
         ),
-        EmailCreateAccountForm()
+        EmailCreateAccountForm.create(context),
       ],
     );
   }
