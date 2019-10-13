@@ -2,7 +2,6 @@
 import 'package:find_the_treasure/blocs/sign%20in/email_sign_in_bloc.dart';
 import 'package:find_the_treasure/models/email_sign_in_model.dart';
 import 'package:find_the_treasure/screens/sign%20in/password_reset.dart';
-import 'package:find_the_treasure/screens/sign%20in/validators.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EmailSignInForm extends StatefulWidget
-    with EmailAndPasswordValidators {
+     {
   EmailSignInForm({this.bloc});
   final EmailSignInBloc bloc;
   static Widget create(BuildContext context) {
@@ -51,7 +50,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final _newFocus = widget.emailValidator.isValid(model.email)
+    final _newFocus = model.emailValidator.isValid(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(_newFocus);
@@ -90,20 +89,16 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   SignInButton _buildSignInButton(EmailSignInModel model) {
-    bool submitEnabled = widget.emailValidator.isValid(model.email) &&
-        widget.passwordValidator.isValid(model.password) &&
-        !model.isLoading;
+    
     return SignInButton(
       text: 'Sign up',
       textcolor: Colors.white,
       color: Colors.orangeAccent,
-      onPressed: submitEnabled ? _submit : null,
+      onPressed: model.canSubmit ? _submit : null,
     );
   }
 
-  CustomTextField _buildPasswordTextField(EmailSignInModel model) {
-    bool showErrorText =
-        model.submitted && !widget.passwordValidator.isValid(model.password);
+  CustomTextField _buildPasswordTextField(EmailSignInModel model) {    
     return CustomTextField(
       controller: _passwordController,
       focusNode: _passwordFocusNode,
@@ -111,21 +106,19 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       enabled: model.isLoading == false,
       onEditingComplete: _submit,
       onChanged: (password) => widget.bloc.updateWith(password: password),
-      errorText: showErrorText ? widget.invalidPasswordErrorText : null,
+      errorText: model.passwordErrorText,
       obscureText: true,
       textInputAction: TextInputAction.done,
     );
   }
 
-  CustomTextField _buildEmailTextField(EmailSignInModel model) {
-    bool showErrorText =
-        model.submitted && !widget.emailValidator.isValid(model.email);
+  CustomTextField _buildEmailTextField(EmailSignInModel model) {    
     return CustomTextField(
       controller: _emailController,
       focusNode: _emailFocusNode,
       labelText: 'Email',
       enabled: model.isLoading == false,
-      errorText: showErrorText ? widget.invalidEmailErrorText : null,
+      errorText: model.emailErrorText,
       onEditingComplete: () => _emailEditingComplete(model),
       onChanged: (email) => widget.bloc.updateWith(email: email),
       keyboardType: TextInputType.emailAddress,

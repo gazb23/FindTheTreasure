@@ -1,4 +1,6 @@
-class EmailSignInModel {
+import 'package:find_the_treasure/screens/sign%20in/validators.dart';
+
+class EmailSignInModel with EmailAndPasswordValidators {
   EmailSignInModel({
     this.email = '',
     this.password = '',
@@ -23,5 +25,21 @@ class EmailSignInModel {
       isLoading: isLoading ?? this.isLoading,
       submitted: submitted ?? this.submitted,
     );
+  }
+  bool get canSubmit {
+    return emailValidator.isValid(email) &&
+        passwordValidator.isValid(password) &&
+        !isLoading;
+  }
+
+  String get passwordErrorText {
+    bool showErrorText =
+        submitted && !passwordValidator.isValid(password);
+        return showErrorText ? invalidPasswordErrorText : null;
+  }
+  String get emailErrorText {
+    bool showErrorText =
+        submitted && !emailValidator.isValid(email);
+        return showErrorText ? invalidEmailErrorText : null;
   }
 }

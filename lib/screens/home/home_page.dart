@@ -1,55 +1,35 @@
-
-import 'package:find_the_treasure/services/auth.dart';
-import 'package:find_the_treasure/widgets/platform_alert_dialog.dart';
+import 'package:find_the_treasure/screens/home/CupertinoHomeScaffold.dart';
+import 'package:find_the_treasure/screens/home/home_page_scaffold.dart';
+import 'package:find_the_treasure/screens/home/tab_item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context);
-      await auth.signOut();
-    } catch (e) {
-      print(e.toString());
-    }
+class _HomePageState extends State<HomePage> {
+  TabItem _currentTab = TabItem.tours;
+
+    Map<TabItem, WidgetBuilder> get widgetBuilders {
+    return {
+      
+      TabItem.tours : (_) => HomePageScaffold(),
+      TabItem.news : (_) => Container(),
+      TabItem.profile : (_) => Container(),
+    } ;
   }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSingOut = await PlatformAlertDialog(
-      title: 'Logout',
-      content: 'Are you sure?',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Logout',
-    ).show(context);
-    if (didRequestSingOut) {
-      _signOut(context);
-    }
+   void _select(TabItem tabItem) {
+    setState(() => _currentTab = tabItem);  
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Image.asset('images/andicon.png'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Sign out'),
-            onPressed: () => _confirmSignOut(context),
-          )
-        ],
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("images/bckgrnd_frgt.png"),
-                  fit: BoxFit.cover),
-            ),
-          ),
-        ],
-      ),
+    return CupertinoHomeScaffold(
+      currentTab: _currentTab,
+      onSelectTab: _select,
+      widgetBuilders: widgetBuilders,
     );
   }
+
+ 
 }
