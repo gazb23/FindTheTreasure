@@ -45,6 +45,10 @@ class PlatformAlertDialog extends PlatformWidget {
       title: Text(title),
       content: Text(content),
       actions: _buildActions(context),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),        
+      ),
+
     );
   }
 
@@ -57,7 +61,10 @@ class PlatformAlertDialog extends PlatformWidget {
       ));
     }
     actions.add(PlatformAlertDialogAction(
-      child: Text(defaultActionText),
+      child: Text(defaultActionText,
+      style: TextStyle(
+        color: Colors.orangeAccent,
+      ),),
       onPressed: () => Navigator.of(context).pop(true),
     ));
     return actions;
@@ -83,6 +90,7 @@ class PlatformAlertDialogAction extends PlatformWidget {
     return FlatButton(
       child: child,
       onPressed: onPressed,
+
     );
   }
 }

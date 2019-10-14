@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/screens/account/account_page.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'screens/sign in/email_create_account_page.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           EmailSignInPage.id: (context) => EmailSignInPage(),
           PasswordReset.id: (context) => PasswordReset(),
           LandingPage.id: (context) => LandingPage(),
+          AccountPage.id : (context) => AccountPage(),
         },
       ),
     );
@@ -35,6 +37,20 @@ class MyApp extends StatelessWidget {
     return ThemeData(
         buttonTheme: ButtonThemeData(
           height: 45.0,
+        ),
+        dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          titleTextStyle: TextStyle(
+            color: Colors.black87,
+            fontSize: 22.0,
+            fontWeight: FontWeight.w500
+          ),
+          contentTextStyle: TextStyle(
+            color: Colors.grey[500],
+            fontSize: 18.0,
+          )
         ),
         textTheme: TextTheme(
             body1: TextStyle(fontSize: 17.0, color: Colors.grey[500])),

@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/screens/account/account_page.dart';
 import 'package:find_the_treasure/screens/home/CupertinoHomeScaffold.dart';
 import 'package:find_the_treasure/screens/home/home_page_scaffold.dart';
 import 'package:find_the_treasure/screens/home/tab_item.dart';
@@ -9,14 +10,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TabItem _currentTab = TabItem.tours;
+  TabItem _currentTab = TabItem.discover;
 
     Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
       
-      TabItem.tours : (_) => HomePageScaffold(),
+      TabItem.discover : (_) => HomePageScaffold(),
       TabItem.news : (_) => Container(),
-      TabItem.profile : (_) => Container(),
+      TabItem.profile : (_) => AccountPage(),
     } ;
   }
    void _select(TabItem tabItem) {

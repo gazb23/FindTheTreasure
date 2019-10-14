@@ -18,7 +18,7 @@ class CupertinoHomeScaffold extends StatelessWidget {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: [          
-          _buildItem(TabItem.tours),
+          _buildItem(TabItem.discover),
           _buildItem(TabItem.news),
           _buildItem(TabItem.profile),
           
