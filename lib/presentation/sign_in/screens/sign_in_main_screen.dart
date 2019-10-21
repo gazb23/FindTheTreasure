@@ -1,5 +1,5 @@
 import 'package:find_the_treasure/blocs/sign%20in/sign_in_bloc.dart';
-import 'package:find_the_treasure/screens/sign%20in/email_create_account_page.dart';
+import 'package:find_the_treasure/screens/sign%20in/email_create_account_screendart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
 
@@ -8,7 +8,7 @@ import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'email_sign_in_page.dart';
+import 'email_sign_in_screen.dart';
 
 class SignInMain extends StatelessWidget {
   static const String id = 'sign_in_main';

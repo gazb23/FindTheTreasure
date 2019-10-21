@@ -1,8 +1,8 @@
-import 'package:find_the_treasure/screens/home/home_page.dart';
+import 'package:find_the_treasure/presentation/home/widgets/home_page.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'sign_in_main.dart';
+import 'screens/sign_in_main_screen.dart';
 
 class LandingPage extends StatelessWidget {
   // id is a named route for the main()

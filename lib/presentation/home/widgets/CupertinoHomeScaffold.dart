@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/screens/home/tab_item.dart';
+import 'package:find_the_treasure/presentation/home/widgets/tab_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

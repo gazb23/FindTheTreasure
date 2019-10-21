@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/screens/sign%20in/validators.dart';
+import 'package:find_the_treasure/presentation/sign_in/validators.dart';
 
 class EmailSignInModel with EmailAndPasswordValidators {
   EmailSignInModel({

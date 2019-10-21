@@ -1,7 +1,7 @@
 
 import 'package:find_the_treasure/blocs/sign%20in/email_sign_in_bloc.dart';
 import 'package:find_the_treasure/models/email_sign_in_model.dart';
-import 'package:find_the_treasure/screens/sign%20in/password_reset.dart';
+import 'package:find_the_treasure/presentation/sign_in/screens/password_reset_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
 import 'package:flutter/services.dart';

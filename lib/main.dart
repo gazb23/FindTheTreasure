@@ -1,11 +1,11 @@
-import 'package:find_the_treasure/screens/account/account_page.dart';
+import 'package:find_the_treasure/presentation/account/screens/account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'screens/sign in/email_create_account_page.dart';
-import 'screens/sign in/email_sign_in_page.dart';
-import 'screens/sign in/landing_page.dart';
-import 'screens/sign in/password_reset.dart';
-import 'screens/sign in/sign_in_main.dart';
+import 'screens/sign in/email_create_account_screendart';
+import 'presentation/sign_in/screens/email_sign_in_screen.dart';
+import 'presentation/sign_in/landing_page.dart';
+import 'presentation/sign_in/screens/password_reset_screen.dart';
+import 'presentation/sign_in/screens/sign_in_main_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
