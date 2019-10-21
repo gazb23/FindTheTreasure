@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EmailCreateAccountForm extends StatefulWidget {
-  EmailCreateAccountForm({this.bloc});
+  EmailCreateAccountForm({@required this.bloc});
   final EmailCreateAccountBloc bloc;
+
   static Widget create(BuildContext context) {
     final AuthBase auth = Provider.of<AuthBase>(context);
     return Provider<EmailCreateAccountBloc>(
@@ -83,7 +84,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
 
   CustomTextField _buildPasswordTextField(EmailSignInModel model) {    
     return CustomTextField(
-      controller: _passwordController,
+      controller: _passwordController,      
       focusNode: _passwordFocusNode,
       labelText: 'Password',
       enabled: model.isLoading == false,
