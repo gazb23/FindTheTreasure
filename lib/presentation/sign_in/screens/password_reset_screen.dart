@@ -1,9 +1,9 @@
-import 'package:find_the_treasure/widgets/custom_list_view.dart';
-import 'package:find_the_treasure/widgets/custom_text_field.dart';
-import 'package:find_the_treasure/widgets/sign_in_button.dart';
+import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
+import 'package:find_the_treasure/widgets_common/custom_text_field.dart';
+import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 
-class PasswordReset extends StatelessWidget {
+class PasswordResetScreen extends StatelessWidget {
   static const String id = 'password_reset';
   @override
   Widget build(BuildContext context) {

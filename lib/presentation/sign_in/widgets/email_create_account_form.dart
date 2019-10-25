@@ -1,11 +1,11 @@
 import 'package:find_the_treasure/blocs/sign%20in/email_create_account_bloc.dart';
 import 'package:find_the_treasure/models/email_sign_in_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
-import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
+import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:flutter/services.dart';
-import 'package:find_the_treasure/widgets/custom_list_view.dart';
-import 'package:find_the_treasure/widgets/custom_text_field.dart';
-import 'package:find_the_treasure/widgets/sign_in_button.dart';
+import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
+import 'package:find_the_treasure/widgets_common/custom_text_field.dart';
+import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +60,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
         initialData: EmailSignInModel(),
         builder: (context, snapshot) {
           final EmailSignInModel model = snapshot.data;
-          return CustomListView(
+          return CustomListView(            
             children: <Widget>[
               _buildEmailTextField(model),
               _buildPasswordTextField(model),

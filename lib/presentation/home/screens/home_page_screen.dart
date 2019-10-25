@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class HomePageScaffold extends StatelessWidget {
+class HomePageSreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

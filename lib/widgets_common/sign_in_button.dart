@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/widgets/custom_raised_button.dart';
+import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:flutter/material.dart';
 
 class SignInButton extends CustomRaisedButton {

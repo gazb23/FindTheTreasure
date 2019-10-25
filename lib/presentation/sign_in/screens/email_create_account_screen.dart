@@ -1,7 +1,8 @@
-import 'package:find_the_treasure/screens/sign%20in/email_create_account_form.dart';
+
+import 'package:find_the_treasure/presentation/sign_in/widgets/email_create_account_form.dart';
 import 'package:flutter/material.dart';
 
-class EmailCreateAccountPage extends StatelessWidget {
+class EmailCreateAccountScreen extends StatelessWidget {
   static const String id = 'create_account';
   
   @override

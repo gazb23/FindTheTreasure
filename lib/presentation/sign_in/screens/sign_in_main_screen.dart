@@ -1,26 +1,25 @@
 import 'package:find_the_treasure/blocs/sign%20in/sign_in_bloc.dart';
-import 'package:find_the_treasure/screens/sign%20in/email_create_account_screendart';
+import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
-import 'package:find_the_treasure/widgets/platform_exception_alert_dialog.dart';
-
-import 'package:find_the_treasure/widgets/sign_in_button.dart';
-import 'package:find_the_treasure/widgets/social_sign_in_button.dart';
+import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
+import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
+import 'package:find_the_treasure/widgets_common/social_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'email_sign_in_screen.dart';
 
-class SignInMain extends StatelessWidget {
+class SignInMainScreen extends StatelessWidget {
   static const String id = 'sign_in_main';
   final SocialSignInBloc bloc;
-  const SignInMain({Key key, this.bloc}) : super(key: key);
+  const SignInMainScreen({Key key, this.bloc}) : super(key: key);
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context);
     return Provider<SocialSignInBloc>(
       builder: (_) => SocialSignInBloc(auth: auth),
       child: Consumer<SocialSignInBloc>(
-        builder: (context, bloc, _) => SignInMain(
+        builder: (context, bloc, _) => SignInMainScreen(
           bloc: bloc,
         ),
       ),
@@ -110,12 +109,12 @@ class SignInMain extends StatelessWidget {
                   textcolor: Colors.white,
                   color: Colors.orangeAccent,
                   onPressed: () {
-                    Navigator.pushNamed(context, EmailCreateAccountPage.id);
+                    Navigator.pushNamed(context, EmailCreateAccountScreen.id);
                   },
                 ),
                 FlatButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, EmailSignInPage.id);
+                    Navigator.pushNamed(context, EmailSignInScreen.id);
                   },
                   child: Text(
                     'Already registered? Sign in here.',

@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/widgets/platform_alert_dialog.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 

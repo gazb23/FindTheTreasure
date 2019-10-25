@@ -1,10 +1,10 @@
 
 import 'package:find_the_treasure/services/auth.dart';
-import 'package:find_the_treasure/widgets/platform_alert_dialog.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountScreen extends StatelessWidget {
 
   static const String id = 'account_page';
   

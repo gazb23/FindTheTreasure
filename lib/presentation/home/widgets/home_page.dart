@@ -15,9 +15,9 @@ class _HomePageState extends State<HomePage> {
     Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
       
-      TabItem.discover : (_) => HomePageScaffold(),
+      TabItem.discover : (_) => HomePageSreen(),
       TabItem.news : (_) => Container(),
-      TabItem.profile : (_) => AccountPage(),
+      TabItem.profile : (_) => AccountScreen(),
     } ;
   }
    void _select(TabItem tabItem) {

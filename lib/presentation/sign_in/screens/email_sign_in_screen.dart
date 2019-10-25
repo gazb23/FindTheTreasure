@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 
-class EmailSignInPage extends StatelessWidget {
+class EmailSignInScreen extends StatelessWidget {
   static const String id = 'email_sign_in_page';
 
 

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:find_the_treasure/widgets/platform_widget.dart';
+import 'package:find_the_treasure/widgets_common/platform_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
