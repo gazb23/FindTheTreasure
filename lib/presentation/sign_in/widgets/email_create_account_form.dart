@@ -47,7 +47,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final _newFocus = model.emailValidator.isValid(model.email)
+    final _newFocus = model.emailValidator.isNotEmpty(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(_newFocus);
@@ -73,12 +73,18 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
         });
   }
 
-  SignInButton _buildSignInButton(EmailSignInModel model) {
-    return SignInButton(
-      text: 'Sign up',
-      textcolor: Colors.white,
-      color: Colors.orangeAccent,
-      onPressed: model.canSubmit ? _submit : null,
+
+  CustomTextField _buildEmailTextField(EmailSignInModel model) {    
+    return CustomTextField(
+      controller: _emailController,
+      focusNode: _emailFocusNode,
+      labelText: 'Email',
+      enabled: model.isLoading == false,
+      errorText: model.emailErrorText,
+      onEditingComplete: () => _emailEditingComplete(model),
+      onChanged: (email) => widget.bloc.updateWith(email: email),
+      keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
     );
   }
 
@@ -95,18 +101,12 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       textInputAction: TextInputAction.done,
     );
   }
-
-  CustomTextField _buildEmailTextField(EmailSignInModel model) {    
-    return CustomTextField(
-      controller: _emailController,
-      focusNode: _emailFocusNode,
-      labelText: 'Email',
-      enabled: model.isLoading == false,
-      errorText: model.emailErrorText,
-      onEditingComplete: () => _emailEditingComplete(model),
-      onChanged: (email) => widget.bloc.updateWith(email: email),
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
+  SignInButton _buildSignInButton(EmailSignInModel model) {
+    return SignInButton(
+      text: 'Sign up',
+      textcolor: Colors.white,
+      color: Colors.orangeAccent,
+      onPressed: model.canSubmit ? _submit : null,
     );
   }
 

@@ -7,8 +7,8 @@ import 'screens/sign_in_main_screen.dart';
 class LandingPage extends StatelessWidget {
   // id is a named route for the main()
   static const String id = 'landing_page';
-  @override
   
+  @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthBase>(context);
     return StreamBuilder<User>(
@@ -16,19 +16,13 @@ class LandingPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             User user = snapshot.data;
-            if (user == null) {
-              return SignInMainScreen.create(context);
-            }
-            //If user is !null
-            return HomePage();
-            // If waiting for data from Firebase return a progress indicator
-          } else {
-            return Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return user == null ? SignInMainScreen.create(context) : HomePage();
           }
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         });
   }
 }

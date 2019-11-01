@@ -12,9 +12,9 @@ abstract class AuthBase {
   Stream<User> get onAuthStateChanged;  
   Future<User> signInWithGoogle();
   Future<User> signInWithFacebook();
-  Future<void> signOut();
   Future<User> signInWithEmailAndPassword(String email, String password);
-  Future<User> createUserWithEmailAndPassword(String email, String password); 
+  Future<User> createUserWithEmailAndPassword(String email, String password);
+  Future<void> signOut();   
 }
 
 class Auth implements AuthBase {

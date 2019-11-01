@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 
 class EmailSignInForm extends StatefulWidget
      {
+  final EmailSignInBloc bloc;     
   EmailSignInForm({this.bloc});
-  final EmailSignInBloc bloc;
+  
   static Widget create(BuildContext context) {
     final AuthBase auth = Provider.of<AuthBase>(context);
     return Provider<EmailSignInBloc>(
@@ -50,7 +51,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final _newFocus = model.emailValidator.isValid(model.email)
+    final _newFocus = model.emailValidator.isNotEmpty(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(_newFocus);

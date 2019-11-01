@@ -12,7 +12,7 @@ import 'email_sign_in_screen.dart';
 class SignInMainScreen extends StatelessWidget {
   static const String id = 'sign_in_main';
   final SocialSignInBloc bloc;
-  const SignInMainScreen({Key key, this.bloc}) : super(key: key);
+  const SignInMainScreen({Key key, @required this.bloc}) : super(key: key);
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context);
