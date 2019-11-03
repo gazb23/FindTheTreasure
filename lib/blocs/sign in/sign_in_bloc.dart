@@ -4,13 +4,17 @@ import 'package:flutter/foundation.dart';
 
 class SocialSignInBloc {
   final AuthBase auth;
-  SocialSignInBloc({@required this.auth});
-  
+  final ValueNotifier<bool> isLoading;
 
+  SocialSignInBloc({@required this.auth, @required this.isLoading});
+  
+ 
   Future<User> _signIn(Future<User> Function() signInMethod) async {
     try {
+      isLoading.value = true;      
       return await signInMethod();
     } catch(e) {
+      isLoading.value = false;
       rethrow;
     }
   }

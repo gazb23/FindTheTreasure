@@ -92,7 +92,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
     return CustomTextField(
       controller: _passwordController,      
       focusNode: _passwordFocusNode,
-      labelText: 'Password',
+      labelText: 'Password (6+ characters)',
       enabled: model.isLoading == false,
       onEditingComplete: _submit,
       onChanged: (password) => widget.bloc.updateWith(password: password),

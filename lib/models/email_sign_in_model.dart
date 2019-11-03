@@ -6,6 +6,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
   final bool isLoading;
   final bool submitted;
   
+  //default values when form is first presented
   EmailSignInModel({
     this.email = '',
     this.password = '',
@@ -21,6 +22,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
     bool isLoading,
     bool submitted
   }) {
+    
     return EmailSignInModel(
       email: email ?? this.email,
       password: password ?? this.password,
@@ -28,6 +30,9 @@ class EmailSignInModel with EmailAndPasswordValidators {
       submitted: submitted ?? this.submitted,
     );
   }
+
+  // Email and Password validators
+  
   bool get canSubmit {
     return emailValidator.isNotEmpty(email) &&
         passwordValidator.isNotEmpty(password) &&

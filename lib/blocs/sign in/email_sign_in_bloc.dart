@@ -4,27 +4,32 @@ import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/foundation.dart';
 
 class EmailSignInBloc {
-  EmailSignInBloc({@required this.auth});
+  
   final AuthBase auth;
-  final StreamController<EmailSignInModel> _modelController =
-      StreamController<EmailSignInModel>();
+  final  _modelController = StreamController<EmailSignInModel>();
+  EmailSignInBloc({@required this.auth});  
 
   Stream<EmailSignInModel> get modelStream => _modelController.stream;
   EmailSignInModel _model = EmailSignInModel();
 
-  void disose() => _modelController.close();
+  void dispose() => _modelController.close();
 
+  
   Future<void> submit() async {
     updateWith(submitted: true, isLoading: true);
     try {
       await auth.signInWithEmailAndPassword(_model.email, _model.password);
     } catch (e) {
+      updateWith(isLoading: false);
       rethrow;
-    } finally {
-      updateWith(submitted: false, isLoading: false);
-    }
+    } 
   }
 
+  void updateEmail(String email) => updateWith(email: email);
+  void updatePassword(String password) => updateWith(password: password);
+
+
+  // Update email sign in model
   void updateWith({
     String email,
     String password,

@@ -1,4 +1,3 @@
-
 import 'package:find_the_treasure/blocs/sign%20in/email_sign_in_bloc.dart';
 import 'package:find_the_treasure/models/email_sign_in_model.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/password_reset_screen.dart';
@@ -11,11 +10,10 @@ import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EmailSignInForm extends StatefulWidget
-     {
-  final EmailSignInBloc bloc;     
+class EmailSignInForm extends StatefulWidget {
+  final EmailSignInBloc bloc;
   EmailSignInForm({this.bloc});
-  
+
   static Widget create(BuildContext context) {
     final AuthBase auth = Provider.of<AuthBase>(context);
     return Provider<EmailSignInBloc>(
@@ -23,7 +21,7 @@ class EmailSignInForm extends StatefulWidget
       child: Consumer<EmailSignInBloc>(
         builder: (context, bloc, _) => EmailSignInForm(bloc: bloc),
       ),
-      dispose: (context, bloc) => bloc.disose(),
+      dispose: (context, bloc) => bloc.dispose(),
     );
   }
 
@@ -73,47 +71,23 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
               ),
               _buildSignInButton(model),
               FlatButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, PasswordResetScreen.id);
-                  },
-                  child: Text(
-                    'Forgotten Password?',
-                    textAlign: TextAlign.center,
-                  ),
+                onPressed: () {
+                  Navigator.pushNamed(context, PasswordResetScreen.id);
+                },
+                child: Text(
+                  'Forgotten Password?',
+                  textAlign: TextAlign.center,
                 ),
-                SizedBox(
-                  height: 20.0,
-                )
+              ),
+              SizedBox(
+                height: 20.0,
+              )
             ],
           );
         });
   }
 
-  SignInButton _buildSignInButton(EmailSignInModel model) {
-    
-    return SignInButton(
-      text: 'Sign up',
-      textcolor: Colors.white,
-      color: Colors.orangeAccent,
-      onPressed: model.canSubmit ? _submit : null,
-    );
-  }
-
-  CustomTextField _buildPasswordTextField(EmailSignInModel model) {    
-    return CustomTextField(
-      controller: _passwordController,
-      focusNode: _passwordFocusNode,
-      labelText: 'Password',
-      enabled: model.isLoading == false,
-      onEditingComplete: _submit,
-      onChanged: (password) => widget.bloc.updateWith(password: password),
-      errorText: model.passwordErrorText,
-      obscureText: true,
-      textInputAction: TextInputAction.done,
-    );
-  }
-
-  CustomTextField _buildEmailTextField(EmailSignInModel model) {    
+  CustomTextField _buildEmailTextField(EmailSignInModel model) {
     return CustomTextField(
       controller: _emailController,
       focusNode: _emailFocusNode,
@@ -121,9 +95,32 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       enabled: model.isLoading == false,
       errorText: model.emailErrorText,
       onEditingComplete: () => _emailEditingComplete(model),
-      onChanged: (email) => widget.bloc.updateWith(email: email),
+      onChanged: widget.bloc.updateEmail,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
+    );
+  }
+
+  CustomTextField _buildPasswordTextField(EmailSignInModel model) {
+    return CustomTextField(
+      controller: _passwordController,
+      focusNode: _passwordFocusNode,
+      labelText: 'Password (6+ characters)',
+      enabled: model.isLoading == false,
+      onEditingComplete: _submit,
+      onChanged: widget.bloc.updatePassword,
+      errorText: model.passwordErrorText,
+      obscureText: true,
+      textInputAction: TextInputAction.done,
+    );
+  }
+
+  SignInButton _buildSignInButton(EmailSignInModel model) {
+    return SignInButton(
+      text: 'Sign up',
+      textcolor: Colors.white,
+      color: Colors.orangeAccent,
+      onPressed: model.canSubmit ? _submit : null,
     );
   }
 

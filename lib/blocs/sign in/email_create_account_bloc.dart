@@ -20,10 +20,9 @@ class EmailCreateAccountBloc {
       updateWith(submitted: true, isLoading: true);
       await auth.createUserWithEmailAndPassword(_model.email, _model.password);
     } catch (e) {
+      updateWith(isLoading: false);
       rethrow;
-    } finally {
-      updateWith(submitted: false, isLoading: false);
-    }
+    } 
   }
 
   void updateWith({
