@@ -2,7 +2,7 @@ import 'package:find_the_treasure/presentation/account/screens/account_screen.da
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'presentation/sign_in/screens/email_sign_in_screen.dart';
 import 'presentation/sign_in/landing_page.dart';
 import 'presentation/sign_in/screens/password_reset_screen.dart';

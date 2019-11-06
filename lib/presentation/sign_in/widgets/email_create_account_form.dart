@@ -47,7 +47,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final _newFocus = model.emailValidator.isNotEmpty(model.email)
+    final _newFocus = model.emailIsEmptyValidator.isValid(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(_newFocus);

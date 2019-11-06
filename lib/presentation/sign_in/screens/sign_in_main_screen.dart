@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'email_sign_in_screen.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 class SignInMainScreen extends StatelessWidget {
   static const String id = 'sign_in_main';
@@ -62,7 +63,6 @@ class SignInMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -81,10 +81,26 @@ class SignInMainScreen extends StatelessWidget {
       return Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset(
-            'images/slide_1.png',
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.topCenter,
+          Carousel(
+            images: [
+              Image.asset(
+                'images/slide_1.png',
+                alignment: Alignment.topCenter,
+                fit: BoxFit.fitWidth,
+              ),
+              Image.asset(
+                'images/slide_2.png',
+                alignment: Alignment.topCenter,
+                fit: BoxFit.fitWidth,
+              ),
+              Image.asset(
+                'images/slide_3.png',
+                alignment: Alignment.topCenter,
+                fit: BoxFit.fitWidth,
+              )
+            ],
+            showIndicator: false,
+            animationCurve: Curves.easeIn,
           ),
           FractionallySizedBox(
             widthFactor: 0.9,
@@ -135,6 +151,9 @@ class SignInMainScreen extends StatelessWidget {
                       'Already registered? Sign in here.',
                       textAlign: TextAlign.center,
                     ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
                   ),
                 ],
               ),

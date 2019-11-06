@@ -34,19 +34,23 @@ class EmailSignInModel with EmailAndPasswordValidators {
   // Email and Password validators
   
   bool get canSubmit {
-    return emailValidator.isNotEmpty(email) &&
-        passwordValidator.isNotEmpty(password) &&
-        !isLoading;
+    return !emailIsEmptyValidator.isValid(email) &&
+        !passwordValidator.isValid(password) &&
+        !isLoading && emailStringValidator.isValid(email) && passwordStringValidator.isValid(password);
+  }
+
+    String get emailErrorText {
+    bool showErrorText =
+        !emailIsEmptyValidator.isValid(email) && !emailStringValidator.isValid(email);
+        return showErrorText ? invalidEmailErrorText : null;
   }
 
   String get passwordErrorText {
     bool showErrorText =
-        submitted && !passwordValidator.isNotEmpty(password);
+        !passwordValidator.isValid(password) && !passwordStringValidator.isValid(password);
         return showErrorText ? invalidPasswordErrorText : null;
   }
-  String get emailErrorText {
-    bool showErrorText =
-        submitted && !emailValidator.isNotEmpty(email);
-        return showErrorText ? invalidEmailErrorText : null;
-  }
+
+
+
 }
