@@ -3,8 +3,11 @@ import 'package:find_the_treasure/widgets_common/custom_text_field.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 
+
+
 class PasswordResetScreen extends StatelessWidget {
   static const String id = 'password_reset';
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +66,7 @@ class PasswordResetScreen extends StatelessWidget {
                 textcolor: Colors.white,
                 color: Colors.orangeAccent,
                 onPressed: () {
-                  //TODO: Password reset onpressed - add fx
+                  
                 },
               ),
               SizedBox(
