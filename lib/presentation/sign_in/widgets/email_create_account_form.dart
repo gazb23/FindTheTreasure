@@ -47,7 +47,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final _newFocus = model.emailIsEmptyValidator.isValid(model.email)
+    final _newFocus = !model.emailIsEmptyValidator.isValid(model.email) && model.emailStringValidator.isValid(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(_newFocus);
@@ -94,15 +94,17 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       focusNode: _passwordFocusNode,
       labelText: 'Password (6+ characters)',
       enabled: model.isLoading == false,
-      onEditingComplete: _submit,
+      onEditingComplete: model.canSubmit ? _submit : null,
       onChanged: (password) => widget.bloc.updateWith(password: password),
       errorText: model.passwordErrorText,
       obscureText: true,
       textInputAction: TextInputAction.done,
+      
     );
   }
   SignInButton _buildSignInButton(EmailSignInModel model) {
     return SignInButton(
+      isLoading: model.isLoading,
       text: 'Sign up',
       textcolor: Colors.white,
       color: Colors.orangeAccent,
