@@ -1,27 +1,31 @@
-import 'package:find_the_treasure/presentation/home/widgets/tab_item.dart';
+import 'package:find_the_treasure/presentation/explore/widgets/tab_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CupertinoHomeScaffold extends StatelessWidget {
-  const CupertinoHomeScaffold({Key key, @required this.currentTab, @required this.onSelectTab, this.widgetBuilders}) : super(key: key);
+  const CupertinoHomeScaffold(
+      {Key key,
+      @required this.currentTab,
+      @required this.onSelectTab,
+      this.widgetBuilders})
+      : super(key: key);
 
   final TabItem currentTab;
   final ValueChanged<TabItem> onSelectTab;
   final Map<TabItem, WidgetBuilder> widgetBuilders;
 
-
-
-  
-
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
+      
       tabBar: CupertinoTabBar(
-        items: [          
-          _buildItem(TabItem.discover),
-          _buildItem(TabItem.news),
+        backgroundColor: Colors.white,
+        items: [
           _buildItem(TabItem.profile),
-          
+          _buildItem(TabItem.myquests),
+          _buildItem(TabItem.explore),
+          _buildItem(TabItem.leaderboard),
+          _buildItem(TabItem.shop),
         ],
         onTap: (index) => onSelectTab(TabItem.values[index]),
       ),
@@ -33,13 +37,19 @@ class CupertinoHomeScaffold extends StatelessWidget {
       },
     );
   }
+
   BottomNavigationBarItem _buildItem(TabItem tabItem) {
     final itemData = TabItemData.allTabs[tabItem];
-    final color = currentTab == tabItem ? Colors.redAccent : Colors.grey;
+    final color = currentTab == tabItem ? Colors.orangeAccent : Colors.black38;
     return BottomNavigationBarItem(
-      icon: Icon(itemData.icon, color: color,),
-      title: Text(itemData.title, style: TextStyle(color: color),),
-      
+      icon: Icon(
+        itemData.icon,
+        color: color,
+      ),
+      title: Text(
+        itemData.title,
+        style: TextStyle(color: color, fontFamily: 'quicksand', fontSize: 12.0, fontWeight: FontWeight.w600),
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class HomePageSreen extends StatelessWidget {
+class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -17,6 +17,18 @@ class HomePageSreen extends StatelessWidget {
                     fit: BoxFit.cover),
               ),
             ),
+            ListView(
+
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Column(
+
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),

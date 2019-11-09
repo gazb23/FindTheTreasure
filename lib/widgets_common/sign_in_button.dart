@@ -13,7 +13,7 @@ class SignInButton extends CustomRaisedButton {
         super(
           child: !isLoading ? Text(
             text,
-            style: TextStyle(color: textcolor, fontSize: 18.0),
+            style: TextStyle(color: textcolor, fontSize: 18.0, fontWeight: FontWeight.w600),
           ) : CustomCircularProgressIndicator(),
           color: color,
           onPressed: onPressed,

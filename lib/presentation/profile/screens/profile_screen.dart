@@ -4,7 +4,7 @@ import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AccountScreen extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
 
   static const String id = 'account_page';
   

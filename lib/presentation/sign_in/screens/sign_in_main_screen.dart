@@ -144,6 +144,7 @@ class SignInMainScreen extends StatelessWidget {
                     },
                   ),
                   FlatButton(
+                    shape: StadiumBorder(),
                     onPressed: () {
                       Navigator.pushNamed(context, EmailSignInScreen.id);
                     },
@@ -153,7 +154,7 @@ class SignInMainScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 10.0,
                   ),
                 ],
               ),

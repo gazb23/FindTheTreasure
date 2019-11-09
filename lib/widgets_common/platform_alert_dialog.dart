@@ -33,8 +33,14 @@ class PlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(content),
+      title: Text(
+        title,
+        style: TextStyle(fontFamily: 'quicksand', fontWeight: FontWeight.w600,),
+      ),
+      content: Text(
+        content,
+        style: TextStyle(fontFamily: 'quicksand'),
+      ),
       actions: _buildActions(context),
     );
   }
@@ -42,13 +48,21 @@ class PlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return AlertDialog(
-      title: Text(title),
-      content: Text(content),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontFamily: 'quicksand',
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      content: Text(
+        content,
+        style: TextStyle(fontFamily: 'quicksand'),
+      ),
       actions: _buildActions(context),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),        
+        borderRadius: BorderRadius.circular(10.0),
       ),
-
     );
   }
 
@@ -56,15 +70,23 @@ class PlatformAlertDialog extends PlatformWidget {
     final actions = <Widget>[];
     if (cancelActionText != null) {
       actions.add(PlatformAlertDialogAction(
-        child: Text(cancelActionText),
+        child: Text(cancelActionText, style: TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.w700,
+          color: Colors.grey,
+        ),),
         onPressed: () => Navigator.of(context).pop(false),
       ));
     }
     actions.add(PlatformAlertDialogAction(
-      child: Text(defaultActionText,
-      style: TextStyle(
-        color: Colors.orangeAccent,
-      ),),
+      child: Text(
+        defaultActionText,
+        style: TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.w700,
+          color: Colors.orangeAccent,
+        ),
+      ),
       onPressed: () => Navigator.of(context).pop(true),
     ));
     return actions;
@@ -90,7 +112,6 @@ class PlatformAlertDialogAction extends PlatformWidget {
     return FlatButton(
       child: child,
       onPressed: onPressed,
-
     );
   }
 }

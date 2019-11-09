@@ -71,6 +71,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
               ),
               _buildSignInButton(model),
               FlatButton(
+                shape: StadiumBorder(),
                 onPressed: () {
                   Navigator.pushNamed(context, PasswordResetScreen.id);
                 },
