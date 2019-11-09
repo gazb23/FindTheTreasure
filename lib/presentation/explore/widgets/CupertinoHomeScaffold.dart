@@ -42,13 +42,14 @@ class CupertinoHomeScaffold extends StatelessWidget {
     final itemData = TabItemData.allTabs[tabItem];
     final color = currentTab == tabItem ? Colors.orangeAccent : Colors.black38;
     return BottomNavigationBarItem(
+      
       icon: Icon(
         itemData.icon,
         color: color,
       ),
       title: Text(
         itemData.title,
-        style: TextStyle(color: color, fontFamily: 'quicksand', fontSize: 12.0, fontWeight: FontWeight.w600),
+        style: TextStyle(color: color, fontFamily: 'quicksand', fontSize: 13.0, fontWeight: FontWeight.w600),
       ),
     );
   }
