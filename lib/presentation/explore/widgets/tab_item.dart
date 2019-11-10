@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 enum TabItem {profile, myquests, explore, leaderboard, shop}
 
 class TabItemData {
-  const TabItemData({@required this.title, @required this.icon});
-
   final String title;
   final IconData icon;
+
+  const TabItemData({@required this.title, @required this.icon});
 
   static const Map<TabItem, TabItemData> allTabs = {
     

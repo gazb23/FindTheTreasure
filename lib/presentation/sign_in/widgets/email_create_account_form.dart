@@ -40,7 +40,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       Navigator.of(context).pop();
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
-        title: 'Sign in failed',
+        title: 'Sign up failed',
         exception: e,
       ).show(context);
     }

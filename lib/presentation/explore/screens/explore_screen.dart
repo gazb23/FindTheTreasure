@@ -1,3 +1,5 @@
+
+import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -6,29 +8,28 @@ class ExploreScreen extends StatelessWidget {
     return SafeArea(
           child: Scaffold(
         appBar: AppBar(
-          title: Center(child: Image.asset('images/andicon.png')),
+          centerTitle: true,          
+          title: FlatButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: Colors.white,
+                content: Text('You clicked me'),
+                title: Text('TREASURE!!'),
+              )
+            ),
+            child: Image.asset('images/ic_treasure.png')),
         ),
         body: Stack(
           children: <Widget>[
             Container(            
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("images/bckgrnd_login.png"),
+                    image: AssetImage("images/bckgrnd.png"),
                     fit: BoxFit.cover),
               ),
             ),
-            ListView(
-
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Column(
-
-                  ),
-                )
-              ],
-            )
+            QuestListView(),
           ],
         ),
       ),

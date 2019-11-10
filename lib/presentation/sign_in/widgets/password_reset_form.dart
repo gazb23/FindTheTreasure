@@ -39,7 +39,7 @@ class _EmailSignInFormState extends State<PasswordResetForm> {
       Navigator.of(context).pop();
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
-        title: 'Sign in failed',
+        title: 'Reset Password Failed',
         exception: e,
       ).show(context);
     }

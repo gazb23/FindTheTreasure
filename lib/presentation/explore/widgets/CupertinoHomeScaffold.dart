@@ -3,22 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CupertinoHomeScaffold extends StatelessWidget {
+  final TabItem currentTab;
+  final ValueChanged<TabItem> onSelectTab;
+  final Map<TabItem, WidgetBuilder> widgetBuilders;
+
   const CupertinoHomeScaffold(
       {Key key,
       @required this.currentTab,
       @required this.onSelectTab,
-      this.widgetBuilders})
+      @required this.widgetBuilders})
       : super(key: key);
 
-  final TabItem currentTab;
-  final ValueChanged<TabItem> onSelectTab;
-  final Map<TabItem, WidgetBuilder> widgetBuilders;
+
 
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       
       tabBar: CupertinoTabBar(
+        currentIndex: 2,
         backgroundColor: Colors.white,
         items: [
           _buildItem(TabItem.profile),
@@ -41,8 +44,7 @@ class CupertinoHomeScaffold extends StatelessWidget {
   BottomNavigationBarItem _buildItem(TabItem tabItem) {
     final itemData = TabItemData.allTabs[tabItem];
     final color = currentTab == tabItem ? Colors.orangeAccent : Colors.black38;
-    return BottomNavigationBarItem(
-      
+    return BottomNavigationBarItem(      
       icon: Icon(
         itemData.icon,
         color: color,
