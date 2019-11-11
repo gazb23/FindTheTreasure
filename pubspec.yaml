@@ -52,6 +52,7 @@ flutter:
   
   assets:    
     - images/
+    - images/explore/
     # - images/1.5x/
     # - images/2.0x/
     # - images/3.0x/
