@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/sign_in_main_screen.dart';
@@ -16,7 +17,9 @@ class LandingPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             User user = snapshot.data;
-            return user == null ? SignInMainScreen.create(context) : HomePage();
+            return Provider<Database>(
+              builder: (_) => FireStoreDatabase(uid: user.uid),
+              child: user == null ? SignInMainScreen.create(context) : HomePage());
           }
           return Scaffold(
             body: Center(
