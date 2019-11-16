@@ -36,11 +36,12 @@ class ExploreScreen extends StatelessWidget {
         return ListItemsBuilder<QuestModel>(
           snapshot: snapshot,
           itemBuilder: (context, quest) => QuestListView(
+            difficultyColor: quest.difficultyColor,
             diamondCount: quest.diamondCount,            
             difficultyTitle: quest.difficultyTitle,
             keyCount: quest.keyCount,
             title: quest.title,
-            image: NetworkImage('https://firebasestorage.googleapis.com/v0/b/find-the-treasure-8d58f.appspot.com/o/Coolum.jpg?alt=media&token=7dca0d86-ea30-4117-b2c8-76bd1eb514c6'),
+            image: 'https://firebasestorage.googleapis.com/v0/b/find-the-treasure-8d58f.appspot.com/o/Coolum.jpg?alt=media&token=7dca0d86-ea30-4117-b2c8-76bd1eb514c6',
 
           ),
         );

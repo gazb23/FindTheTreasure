@@ -1,23 +1,26 @@
+import 'package:find_the_treasure/widgets_common/color.dart';
 import 'package:flutter/material.dart';
 
 class QuestListView extends StatelessWidget {
-  final NetworkImage image;
+  final String image;
   final String title;
-  final Color difficultyColor;
   final String difficultyTitle;
+  final String difficultyColor;
   final int diamondCount;
   final int keyCount;
 
   const QuestListView({
     Key key,
     @required this.title,
-    this.difficultyColor,
+    @required this.difficultyColor,
     @required this.difficultyTitle,
     @required this.diamondCount,
     @required this.keyCount,
     @required this.image,
   }) : super(key: key);
 
+  
+  
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -27,16 +30,17 @@ class QuestListView extends StatelessWidget {
       child: Material(
         color: Colors.black87,
         child: InkWell(
-          enableFeedback: true,          
+          enableFeedback: true,
           splashColor: Colors.orangeAccent,
           onTap: () {},
           child: Column(
             children: <Widget>[
               Container(
+                width: MediaQuery.of(context).size.width,
                 height: 200.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: image,
+                      image: NetworkImage(image),
                       fit: BoxFit.fill,
                       colorFilter: ColorFilter.mode(
                           Colors.black.withOpacity(0.85), BlendMode.dstATop),
@@ -71,7 +75,7 @@ class QuestListView extends StatelessWidget {
                           EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.orangeAccent),
+                          color: HexColor(difficultyColor)),
                       child: Text(
                         difficultyTitle,
                         style: TextStyle(color: Colors.white),
@@ -108,4 +112,5 @@ class QuestListView extends StatelessWidget {
       ),
     );
   }
+  
 }

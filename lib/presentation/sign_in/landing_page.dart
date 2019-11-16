@@ -18,7 +18,9 @@ class LandingPage extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             User user = snapshot.data;
             return Provider<Database>(
-              builder: (_) => FireStoreDatabase(uid: user.uid),
+              builder: (_) => FireStoreDatabase(
+                // uid: user.uid
+                ),
               child: user == null ? SignInMainScreen.create(context) : HomePage());
           }
           return Scaffold(

@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 
 class QuestModel {
   final String id;
-  final String title;
-  final String difficultyColor;
+  final String title;  
   final String difficultyTitle;
+  final String difficultyColor;
   final int diamondCount;
   final int keyCount;
 
@@ -19,11 +19,10 @@ class QuestModel {
 
   factory QuestModel.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
-      return null;
-    }
-    final String title = data['title'];
-    final String difficultyColor = data['difficultyColor'];
+      return null;    }
+    final String title = data['title'];    
     final String difficultyTitle = data['difficultyTitle'];
+    final String difficultyColor = data['difficultyColor'];
     final int diamondCount = data['diamondCount'];
     final int keyCount = data['keyCount'];
     return QuestModel(
