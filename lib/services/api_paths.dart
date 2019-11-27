@@ -1,5 +1,5 @@
 class APIPath {
-  static String quest(String uid, String questId) => 'users/user_123/quests/quest_123';
+  static String quest(String uid, String questId) => 'quests/';
   //Path to all the events
-  static String quests(String uid) => 'users/user_123/quests/';
+  static String quests(String uid) => 'quests/';
 }

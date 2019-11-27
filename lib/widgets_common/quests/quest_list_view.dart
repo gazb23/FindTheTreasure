@@ -1,26 +1,37 @@
-import 'package:find_the_treasure/widgets_common/color.dart';
 import 'package:flutter/material.dart';
 
 class QuestListView extends StatelessWidget {
   final String image;
   final String title;
-  final String difficultyTitle;
-  final String difficultyColor;
-  final int diamondCount;
-  final int keyCount;
+  final String difficulty;
+  final int numberOfDiamonds;
+  final int numberOfKeys;
 
   const QuestListView({
     Key key,
     @required this.title,
-    @required this.difficultyColor,
-    @required this.difficultyTitle,
-    @required this.diamondCount,
-    @required this.keyCount,
+    @required this.difficulty,
+    @required this.numberOfDiamonds,
+    @required this.numberOfKeys,
     @required this.image,
   }) : super(key: key);
 
-  
-  
+  // Function that takes the difficulty string passed in via the CMS to Firebase and return a Color corresponding to that difficulty.
+  Color _questDifficulty(String difficultyTitle) {
+    switch (difficultyTitle) {
+      case 'Easy':
+        return Colors.green;
+        break;
+      case 'Moderate':
+        return Colors.orangeAccent;
+        break;
+      case 'Hard':
+        return Colors.redAccent;
+      default:
+        return Colors.green;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -74,10 +85,11 @@ class QuestListView extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: HexColor(difficultyColor)),
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: _questDifficulty(difficulty),
+                      ),
                       child: Text(
-                        difficultyTitle,
+                        difficulty,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -89,15 +101,17 @@ class QuestListView extends StatelessWidget {
                         children: <Widget>[
                           Image.asset('images/ic_diamond.png'),
                           Text(
-                            diamondCount.toString(),
-                            style: TextStyle(color: Colors.white),
+                            numberOfDiamonds.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                           Image.asset(
                             'images/explore/key.png',
                             height: 40.0,
                           ),
                           Text(
-                            keyCount.toString(),
+                            numberOfDiamonds.toString(),
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
@@ -112,5 +126,4 @@ class QuestListView extends StatelessWidget {
       ),
     );
   }
-  
 }

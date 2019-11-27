@@ -112,4 +112,6 @@ class Auth implements AuthBase {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
     return null;
   }
+
+
 }
