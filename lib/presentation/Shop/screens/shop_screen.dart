@@ -12,10 +12,12 @@ class ShopScreen extends StatelessWidget {
         body: Stack(
           children: <Widget>[
             Container(            
+              
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("images/background_shop.png"),
                     fit: BoxFit.cover,
+                    
                     ),
               ),
             ),

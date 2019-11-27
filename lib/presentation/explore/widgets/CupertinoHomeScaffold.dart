@@ -51,7 +51,7 @@ class CupertinoHomeScaffold extends StatelessWidget {
       ),
       title: Text(
         itemData.title,
-        style: TextStyle(color: color, fontFamily: 'quicksand', fontSize: 13.0, fontWeight: FontWeight.w600),
+        style: TextStyle(color: color, fontFamily: 'quicksand', fontSize: 10.0, fontWeight: FontWeight.w600),
       ),
     );
   }
