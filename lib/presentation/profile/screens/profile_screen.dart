@@ -1,7 +1,7 @@
-import 'package:find_the_treasure/models/user_model.dart';
+
 import 'package:find_the_treasure/services/auth.dart';
-import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,11 +35,11 @@ class ProfileScreen extends StatelessWidget {
     
     
     
-    final database = Provider.of<DatabaseService>(context);
+    final user = Provider.of<FirebaseUser>(context);
     return SafeArea(
           child: Scaffold(
         appBar: AppBar(
-          title: Image.asset('images/andicon.png'),
+          title: Text('Ahoy!, ${user.displayName}', style: TextStyle(color: Colors.black87)),
           actions: <Widget>[
             FlatButton(
               child: Text('LOGOUT'),
@@ -56,24 +56,7 @@ class ProfileScreen extends StatelessWidget {
                     fit: BoxFit.cover),
               ),
             ),
-            StreamBuilder<UserData>(
-              
-              stream: database.userDataStream(database.uid),
-              builder: (context, snapshot) {
-                final user = snapshot.data;
-                
-                if (snapshot.hasData) {
-                  
-                  return Container(
-                    width: 200,
-                    height: 200,
-                    color: Colors.white,
-                    child: Text(user.email),
-                  );
-                } else
-                return CircularProgressIndicator();
-              },
-            )
+            
            
           ],
         ),

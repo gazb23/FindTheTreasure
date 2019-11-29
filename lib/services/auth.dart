@@ -46,6 +46,8 @@ class Auth implements AuthBase {
     return _firebaseAuth.onAuthStateChanged.map(_userFromFirebase);
   }
 
+  Stream<FirebaseUser> get user => _firebaseAuth.onAuthStateChanged;
+
   Future<User> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
 
@@ -117,7 +119,7 @@ class Auth implements AuthBase {
     return null;
   }
 
-  Future<void> updateUserData(FirebaseUser user) async {
+  Future<void> updateUserData(FirebaseUser user)  {
     DocumentReference documentReference =
         _firestore.collection('users').document(user.uid);
 
@@ -125,7 +127,7 @@ class Auth implements AuthBase {
       'uid': user.uid,
       'email': user.email,
       'photoURL': user.photoUrl,
-      'displayName': user.displayName ?? 'Adventure lover',
+      'displayName': user.displayName,
       'userDiamondCount': '50',
       'userKeyCount': '1',
     }, merge: true);

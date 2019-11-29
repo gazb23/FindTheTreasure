@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'presentation/sign_in/screens/email_sign_in_screen.dart';
@@ -14,9 +15,14 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<AuthBase>(
-
-      create: (context) => Auth(),
+    return MultiProvider(
+      providers: [
+        Provider<AuthBase>(
+          create: (context) => Auth(),
+        ),
+        StreamProvider<FirebaseUser>.value(value: Auth().user),
+      ],
+      
       child: MaterialApp(
         title: 'Find The Treasure',
         theme: _buildThemeData(),
