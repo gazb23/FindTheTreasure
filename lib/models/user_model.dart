@@ -1,16 +1,17 @@
-import 'package:flutter/foundation.dart';
 
-class UserModel {
+
+//Create User object based on FirebaseUser
+
+
+
+
+class User {
   final String uid;
-
-  UserModel({@required this.uid});
-
-
-
-  // Convert QuestModel into a Map for Firebase
-  Map<String, dynamic> toMap() {
-    return {
-      'uid': uid
-    };
-  }
+  final String email;
+  User({this.email, this.uid});
+  
 }
+
+
+
+

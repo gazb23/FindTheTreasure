@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,13 +15,14 @@ class ExploreScreen extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: FlatButton(
-              onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        backgroundColor: Colors.white,
-                        content: Text('You clicked me'),
-                        title: Text('TREASURE!!'),
-                      )),
+              
+              onPressed: () {
+                PlatformAlertDialog(
+                  title: 'My Treasure',
+                  defaultActionText: 'OK',
+                  content: 'fsdfsdf',
+                );
+              },
               child: Image.asset('images/ic_treasure.png')),
         ),
         body: _buildListView(context),
@@ -43,9 +45,12 @@ class ExploreScreen extends StatelessWidget {
             image: quest.image,
 
           ),
+          
         );
 
       }
     );
+    
   }
+  
 }
