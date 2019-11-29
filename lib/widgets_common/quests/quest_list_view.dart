@@ -1,4 +1,7 @@
+
+import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:flutter/material.dart';
+
 
 class QuestListView extends StatelessWidget {
   final String image;
@@ -43,7 +46,9 @@ class QuestListView extends StatelessWidget {
         child: InkWell(
           enableFeedback: true,
           splashColor: Colors.orangeAccent,
-          onTap: () {},
+          onTap: () {
+
+          },
           child: Column(
             children: <Widget>[
               Container(
@@ -68,11 +73,7 @@ class QuestListView extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontFamily: 'JosefinSans'),
                   ),
-                  trailing: Icon(
-                    Icons.favorite_border,
-                    color: Colors.white,
-                    size: 30.0,
-                  ),
+                  trailing: Heart(),
                 ),
               ),
               Padding(
@@ -126,4 +127,5 @@ class QuestListView extends StatelessWidget {
       ),
     );
   }
+
 }

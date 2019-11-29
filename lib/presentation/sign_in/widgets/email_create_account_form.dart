@@ -16,7 +16,7 @@ class EmailCreateAccountForm extends StatefulWidget {
   static Widget create(BuildContext context) {
     final AuthBase auth = Provider.of<AuthBase>(context);
     return Provider<EmailCreateAccountBloc>(
-      builder: (context) => EmailCreateAccountBloc(auth: auth),
+      create: (context) => EmailCreateAccountBloc(auth: auth),
       child: Consumer<EmailCreateAccountBloc>(
         builder: (context, bloc, _) => EmailCreateAccountForm(bloc: bloc),
       ),

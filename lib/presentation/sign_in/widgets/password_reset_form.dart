@@ -16,7 +16,7 @@ class PasswordResetForm extends StatefulWidget {
   static Widget create(BuildContext context) {
     final AuthBase auth = Provider.of<AuthBase>(context);
     return Provider<PasswordResetBloc>(
-      builder: (context) => PasswordResetBloc(auth: auth),
+      create: (context) => PasswordResetBloc(auth: auth),
       child: Consumer<PasswordResetBloc>(
         builder: (context, bloc, _) => PasswordResetForm(bloc: bloc),
       ),

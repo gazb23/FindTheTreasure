@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 
 class MyQuestsScreen extends StatelessWidget {
@@ -8,18 +10,11 @@ class MyQuestsScreen extends StatelessWidget {
         appBar: AppBar(
           title: Center(child: Image.asset('images/andicon.png')),
         ),
-        body: Stack(
-          children: <Widget>[
-            Container(            
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("images/bckgrnd_login.png"),
-                    fit: BoxFit.cover),
-              ),
-            ),
-          ],
+        body: Container()
+          
         ),
-      ),
+      
     );
   }
+
 }

@@ -1,11 +1,12 @@
-
+import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
-
+  
   static const String id = 'account_page';
   
   Future<void> _signOut(BuildContext context) async { 
@@ -31,6 +32,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    
+    
+    final database = Provider.of<DatabaseService>(context);
     return SafeArea(
           child: Scaffold(
         appBar: AppBar(
@@ -51,9 +56,29 @@ class ProfileScreen extends StatelessWidget {
                     fit: BoxFit.cover),
               ),
             ),
+            StreamBuilder<UserData>(
+              
+              stream: database.userDataStream(database.uid),
+              builder: (context, snapshot) {
+                final user = snapshot.data;
+                
+                if (snapshot.hasData) {
+                  
+                  return Container(
+                    width: 200,
+                    height: 200,
+                    color: Colors.white,
+                    child: Text(user.email),
+                  );
+                } else
+                return CircularProgressIndicator();
+              },
+            )
+           
           ],
         ),
       ),
     );
   }
+
 }

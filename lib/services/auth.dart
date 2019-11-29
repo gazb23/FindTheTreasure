@@ -1,9 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:find_the_treasure/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
+class User {
+  final String uid;
+  final String email;
+  final String displayName;
+  final String photoURL;
+  User({this.uid, this.email, this.displayName, this.photoURL});
+}
 
 abstract class AuthBase {
   Stream<User> get onAuthStateChanged;
@@ -24,7 +31,14 @@ class Auth implements AuthBase {
   final Firestore _firestore = Firestore.instance;
 
   User _userFromFirebase(FirebaseUser user) {
-    return user != null ? User(uid: user.uid, email: user.email) : null;
+    return user != null
+        ? User(
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoUrl,
+          )
+        : null;
   }
 
   // onAuthStateChanged receives a FirebaseUser each time the user signs in or signs out. To remove dependency for the FireBase package we return a User class instead by calling the userFromFirebase method.
@@ -43,12 +57,10 @@ class Auth implements AuthBase {
           GoogleAuthProvider.getCredential(
             idToken: googleAuth.idToken,
             accessToken: googleAuth.accessToken,
-
           ),
-          
         );
-        
-         await updateUserData(authResult.user);
+
+        await updateUserData(authResult.user);
         return _userFromFirebase(authResult.user);
       } else {
         throw PlatformException(
@@ -106,11 +118,12 @@ class Auth implements AuthBase {
   }
 
   Future<void> updateUserData(FirebaseUser user) async {
-    DocumentReference ref = _firestore.collection('users').document(user.uid);
+    DocumentReference documentReference =
+        _firestore.collection('users').document(user.uid);
 
-    return ref.setData({
-      'uid':user.uid,
-      'email':user.email,
+    return documentReference.setData({
+      'uid': user.uid,
+      'email': user.email,
       'photoURL': user.photoUrl,
       'displayName': user.displayName ?? 'Adventure lover',
       'userDiamondCount': '50',

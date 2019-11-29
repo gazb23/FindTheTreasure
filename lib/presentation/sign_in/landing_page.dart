@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/models/user_model.dart';
+
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -18,11 +18,16 @@ class LandingPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             User user = snapshot.data;
-            return Provider<Database>(
-              builder: (_) => FireStoreDatabase(
-                // uid: user.uid
-                ),
-              child: user == null ? SignInMainScreen.create(context) : HomePage());
+            if (user == null) {
+              
+              return SignInMainScreen.create(context);
+            }
+  
+             return Provider<DatabaseService>(
+               
+               create: (context) => DatabaseService(uid: user.uid),
+               child: HomePage());
+               
           }
           return Scaffold(
             body: Center(

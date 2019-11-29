@@ -1,5 +1,5 @@
 
-import 'package:find_the_treasure/models/user_model.dart';
+
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/foundation.dart';
 
