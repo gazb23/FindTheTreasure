@@ -12,24 +12,21 @@ class DatabaseService {
 
   final _service = FirestoreService.instance;
   final _db = Firestore.instance;
+
   //Read data from Firebase
   Stream<List<QuestModel>> questsStream() => _service.collectionStream(
       path: APIPath.quests(),
       builder: (data, documentId) => QuestModel.fromMap(data));
 
   Stream<UserData> userDataStream() {
-    return _db.collection('users').document(uid).snapshots().map(
-          (snapshot) {
-            if (snapshot.data == null)
-            return null;
-            else {
-              return UserData.fromMap(snapshot.data);
-            }
-          } 
-          
-        );
-        
-  } 
+    return _db.collection('users').document(uid).snapshots().map((snapshot) {
+      if (snapshot.data == null)
+        return null;
+      else {
+        return UserData.fromMap(snapshot.data);
+      }
+    });
+  }
 
   //Write data to firebase
   Future<void> userLikedQuest(Map<String, dynamic> userQuest) async {

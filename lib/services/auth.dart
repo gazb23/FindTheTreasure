@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
+
 class User {
   final String uid;
  
@@ -115,16 +116,15 @@ class Auth implements AuthBase {
   }
 
   Future<void> updateUserData(FirebaseUser user) {
+    
     DocumentReference documentReference =
         _firestore.collection('users').document(user.uid);
 
     return documentReference.setData({
       'uid': user.uid,
       'email': user.email,
-      'photoURL': user.photoUrl,
-      'displayName': user.displayName ?? 'Adventure Lover',
-      'userDiamondCount': 50,
-      'userKeyCount': 1,
+      'photoURL': user.photoUrl,         
+      'displayName': user.displayName,        
     }, merge: true);
   }
 }

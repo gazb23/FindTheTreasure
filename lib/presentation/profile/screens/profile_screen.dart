@@ -35,20 +35,6 @@ class ProfileScreen extends StatelessWidget {
     final user = Provider.of<UserData>(context);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Profile', style: TextStyle(color: Colors.black87)),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('LOGOUT'),
-              onPressed: () => _confirmSignOut(context),
-            ),
-          ],
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(150),
-            child: _buildUserInfo(user),
-          ),
-        ),
         body: Stack(
           children: <Widget>[
             Container(
@@ -58,30 +44,52 @@ class ProfileScreen extends StatelessWidget {
                     fit: BoxFit.cover),
               ),
             ),
-            _buildTreasure(context, user),
+            Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 20,
+                ),
+                _buildUserInfo(context, user),
+                _buildTreasure(context, user),
+              ],
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget _buildUserInfo(UserData user) {
+  Widget _buildUserInfo(BuildContext context, UserData user) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Avatar(
-          photoURL: user.photoURL,
-          radius: 50,
-        ),
-        SizedBox(
-          height: 8,
-        ),
-        if (user.displayName != null)
-          Text(
-            user.displayName,
-            style: TextStyle(color: Colors.black87),
-          ),
-        SizedBox(
-          height: 8.0,
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Avatar(
+                photoURL: user.photoURL,
+                radius: 50,
+              ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30)),
+                child: Text(
+                  user.displayName,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+FlatButton(
+              child: Text('LOGOUT'),
+              onPressed: () => _confirmSignOut(context),
+            ),
+          ],
         ),
       ],
     );
@@ -95,16 +103,20 @@ class ProfileScreen extends StatelessWidget {
           'images/ic_treasure.png',
           height: 80,
         ),
+        SizedBox(
+          height: 10,
+        ),
         Container(
-          
-          width: 50.0,
+          decoration: BoxDecoration(
+              color: Colors.black12, borderRadius: BorderRadius.circular(10)),
+          width: 10,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Image.asset(
                 'images/4.0x/ic_diamond.png',
-                height: 45,
+                height: 35,
               ),
               Text(
                 user.userDiamondCount.toString(),
@@ -115,7 +127,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               Image.asset(
                 'images/explore/key.png',
-                height: 70.0,
+                height: 60.0,
               ),
               Text(
                 user.userKeyCount.toString(),
@@ -131,3 +143,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
+// Log out functionality
+
