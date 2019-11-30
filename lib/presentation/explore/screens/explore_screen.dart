@@ -1,6 +1,8 @@
 
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
+
+import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,8 @@ class ExploreScreen extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: FlatButton(
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, ProfileScreen.id,),
+
             child: Image.asset('images/ic_treasure.png'),
           ),
         ),

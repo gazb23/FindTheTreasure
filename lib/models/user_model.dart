@@ -15,7 +15,7 @@ class UserData {
     this.photoURL,
     this.userDiamondCount,
     this.userKeyCount,
-  });
+  }): assert (UserData != null);
 
 // Use a factory in situations where you don't necessarily want to return a new instance of the class itself
   factory UserData.fromMap(Map data) {
@@ -28,7 +28,8 @@ class UserData {
         userDiamondCount: data['userDiamondCount'],
         userKeyCount: data['userKeyCount'],
 
-      ); 
-  }
+      );
+      
+  } 
       
 }

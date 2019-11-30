@@ -6,10 +6,8 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class User {
   final String uid;
-  final String email;
-  final String displayName;
-  final String photoURL;
-  User({this.uid, this.email, this.displayName, this.photoURL});
+ 
+  User({this.uid});
 }
 
 abstract class AuthBase {
@@ -34,9 +32,6 @@ class Auth implements AuthBase {
     return user != null
         ? User(
             uid: user.uid,
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoUrl,
           )
         : null;
   }
@@ -46,7 +41,7 @@ class Auth implements AuthBase {
     return _firebaseAuth.onAuthStateChanged.map(_userFromFirebase);
   }
 
-  Stream<FirebaseUser> get user => _firebaseAuth.onAuthStateChanged;
+
 
   Future<User> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
@@ -119,7 +114,7 @@ class Auth implements AuthBase {
     return null;
   }
 
-  Future<void> updateUserData(FirebaseUser user)  {
+  Future<void> updateUserData(FirebaseUser user) {
     DocumentReference documentReference =
         _firestore.collection('users').document(user.uid);
 
@@ -127,9 +122,9 @@ class Auth implements AuthBase {
       'uid': user.uid,
       'email': user.email,
       'photoURL': user.photoUrl,
-      'displayName': user.displayName,
-      'userDiamondCount': '50',
-      'userKeyCount': '1',
+      'displayName': user.displayName ?? 'Adventure Lover',
+      'userDiamondCount': 50,
+      'userKeyCount': 1,
     }, merge: true);
   }
 }
