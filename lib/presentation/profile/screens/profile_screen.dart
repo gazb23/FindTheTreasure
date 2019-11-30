@@ -76,16 +76,15 @@ class ProfileScreen extends StatelessWidget {
               height: 8,
             ),
             Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30)),
-                child: Text(
-                  user.displayName,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(30)),
+              child: Text(
+                user.displayName,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-FlatButton(
+            ),
+            FlatButton(
               child: Text('LOGOUT'),
               onPressed: () => _confirmSignOut(context),
             ),
@@ -145,4 +144,3 @@ FlatButton(
 }
 
 // Log out functionality
-

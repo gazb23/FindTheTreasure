@@ -4,7 +4,7 @@ class EmptyContent extends StatelessWidget {
   final String title;
   final String message;
 
-  const EmptyContent({Key key, this.title = 'No Quests Currentl Available', this.message = 'New Quests coming soon!'})
+  const EmptyContent({Key key, this.title = 'No Quests Currently Available', this.message = 'New Quests coming soon!'})
       : super(key: key);
 
   @override

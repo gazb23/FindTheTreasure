@@ -8,8 +8,12 @@ class ListItemsBuilder<T> extends StatelessWidget {
   final AsyncSnapshot<List<T>> snapshot;
   final ItemWidgetBuilder<T> itemBuilder;
 
-  const ListItemsBuilder({Key key, this.snapshot, this.itemBuilder})
-      : super(key: key);
+  const ListItemsBuilder({
+    Key key,
+    this.snapshot,
+    this.itemBuilder,
+  }) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     if (snapshot.hasData) {
@@ -32,7 +36,6 @@ class ListItemsBuilder<T> extends StatelessWidget {
 
   Widget _buildList(List<T> items) {
     return ListView.builder(
-      
       itemCount: items.length,
       itemBuilder: (context, index) => itemBuilder(
         context,
