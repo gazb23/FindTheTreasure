@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:flutter/material.dart';
 
+
 class QuestDetailPage extends StatefulWidget {
 
   final QuestModel questModel;
@@ -10,10 +11,11 @@ class QuestDetailPage extends StatefulWidget {
 
 
   static Future<void> show(BuildContext context, {QuestModel quest}) async {
-    await Navigator.of(context).push(
+    await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => QuestDetailPage(questModel: quest,),
         fullscreenDialog: true,
+        
       ),
     );
   }
@@ -25,13 +27,16 @@ class QuestDetailPage extends StatefulWidget {
 class _QuestDetailPageState extends State<QuestDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.questModel.difficulty),
+    
+    return SafeArea(
+          child: Scaffold(
+        
+        body: Container(
+          //TODO: Add mediaquery to all pictures
+          height: MediaQuery.of(context).size.height/2.5,
+            child: Image.network(widget.questModel.image, fit: BoxFit.cover,),
+          ),
       ),
-      body: Container(
-          child: Image.network(widget.questModel.image),
-        ),
     );
   }
 }

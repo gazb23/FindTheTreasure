@@ -5,11 +5,15 @@ import 'package:find_the_treasure/presentation/profile/screens/profile_screen.da
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Lock this screen to portrait orientation
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
