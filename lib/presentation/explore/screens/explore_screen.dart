@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
-import 'package:find_the_treasure/presentation/explore/screens/quest_detail.dart';
+import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -34,6 +35,7 @@ class ExploreScreen extends StatelessWidget {
 
   Widget _buildListView(BuildContext context) {
     final database = Provider.of<DatabaseService>(context);
+    final user = Provider.of<UserData>(context);
     return StreamBuilder<List<QuestModel>>(
         stream: database.questsStream(),
         builder: (context, snapshot) {
@@ -45,8 +47,10 @@ class ExploreScreen extends StatelessWidget {
               numberOfKeys: quest.numberOfKeys,
               title: quest.title,
               image: quest.image,
+              numberOfLocations: quest.numberOfLocations,
+              location: quest.location,
               onTap: () {
-                QuestDetailPage.show(context, quest: quest );
+                QuestDetailScreen.show(context, quest: quest, user: user );
                 
               },
             ),

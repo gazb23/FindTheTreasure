@@ -3,27 +3,29 @@ import 'package:flutter/material.dart';
 class ShopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-          child: Scaffold(
-            
+    return Scaffold(
+      
         appBar: AppBar(
-          title: Center(child: Image.asset('images/andicon.png')),
+    title: Center(child: Image.asset('images/andicon.png')),
         ),
         body: Stack(
-          children: <Widget>[
-            Container(            
+    children: <Widget>[
+      Container(            
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+
+              image: AssetImage("images/background_shop.png", 
               
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("images/background_shop.png"),
-                    fit: BoxFit.cover,
-                    
-                    ),
               ),
-            ),
-          ],
+              fit: BoxFit.fill,
+              
+              ),
         ),
       ),
-    );
+    ],
+        ),
+      );
   }
 }

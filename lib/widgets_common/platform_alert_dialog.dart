@@ -4,19 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class PlatformAlertDialog extends PlatformWidget {
-  PlatformAlertDialog(
-      {this.cancelActionText,
-      @required this.title,
-      @required this.content,
-      @required this.defaultActionText})
-      : assert(title != null),
-        assert(content != null),
-        assert(defaultActionText != null);
-
   final String title;
   final String content;
   final String cancelActionText;
   final String defaultActionText;
+  final Widget image;
+ 
+  PlatformAlertDialog({
+    this.cancelActionText,
+    @required this.title,
+    @required this.content,
+    @required this.defaultActionText,
+    this.image,
+  })  : assert(title != null),
+        assert(content != null),
+        assert(defaultActionText != null);
+
+
+  
+
 
   Future<bool> show(BuildContext context) async {
     return Platform.isIOS
@@ -33,13 +39,24 @@ class PlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return CupertinoAlertDialog(
+
       title: Text(
         title,
-        style: TextStyle(fontFamily: 'quicksand', fontWeight: FontWeight.w600,),
+        style: TextStyle(
+          fontFamily: 'quicksand',
+          fontWeight: FontWeight.w600,
+        ),
       ),
-      content: Text(
-        content,
-        style: TextStyle(fontFamily: 'quicksand'),
+      content: SingleChildScrollView(
+              child: Column(
+          children: <Widget>[
+            image ?? Container(),
+            Text(
+              content,
+              style: TextStyle(fontFamily: 'quicksand'),
+            ),
+          ],
+        ),
       ),
       actions: _buildActions(context),
     );
@@ -48,16 +65,29 @@ class PlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        title,
-        style: TextStyle(
-          fontFamily: 'quicksand',
-          fontWeight: FontWeight.w600,
+      title: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            fontFamily: 'quicksand',
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
-      content: Text(
-        content,
-        style: TextStyle(fontFamily: 'quicksand'),
+      content: SingleChildScrollView(
+              child: Column(
+                
+          children: <Widget>[
+            
+              image ?? Container(), //If no image is displayed an empty container will take it's place. 
+             
+            
+            Text(
+              content,
+              style: TextStyle(fontFamily: 'quicksand'),
+            ),
+          ],
+        ),
       ),
       actions: _buildActions(context),
       shape: RoundedRectangleBorder(
@@ -70,11 +100,14 @@ class PlatformAlertDialog extends PlatformWidget {
     final actions = <Widget>[];
     if (cancelActionText != null) {
       actions.add(PlatformAlertDialogAction(
-        child: Text(cancelActionText, style: TextStyle(
-          fontSize: 18.0,
-          fontWeight: FontWeight.w700,
-          color: Colors.grey,
-        ),),
+        child: Text(
+          cancelActionText,
+          style: TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.w700,
+            color: Colors.grey,
+          ),
+        ),
         onPressed: () => Navigator.of(context).pop(false),
       ));
     }
@@ -114,4 +147,6 @@ class PlatformAlertDialogAction extends PlatformWidget {
       onPressed: onPressed,
     );
   }
+
+
 }

@@ -3,6 +3,7 @@ import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
+import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,10 +39,12 @@ class ProfileScreen extends StatelessWidget {
         body: Stack(
           children: <Widget>[
             Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("images/background_team.png"),
-                    fit: BoxFit.cover),
+                    fit: BoxFit.fill),
               ),
             ),
             Column(
@@ -105,42 +108,19 @@ class ProfileScreen extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.black12, borderRadius: BorderRadius.circular(10)),
-          width: 10,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Image.asset(
-                'images/4.0x/ic_diamond.png',
-                height: 35,
-              ),
-              Text(
-                user.userDiamondCount.toString(),
-                style: TextStyle(
-                    color: Colors.amberAccent,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
-              ),
-              Image.asset(
-                'images/explore/key.png',
-                height: 60.0,
-              ),
-              Text(
-                user.userKeyCount.toString(),
-                style: TextStyle(
-                    color: Colors.amberAccent,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+        DiamondAndKeyContainer(
+          numberOfDiamonds: user.userDiamondCount,
+          numberOfKeys: user.userKeyCount,
+          diamondHeight: 40,
+          skullKeyHeight: 60,
+          fontSize: 20,          
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          fontWeight: FontWeight.bold,
+          
         ),
       ],
     );
   }
 }
 
-// Log out functionality
+

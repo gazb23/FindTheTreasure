@@ -20,11 +20,9 @@ class UserData {
     return UserData(
       uid: data['uid'],
       email: data['email'],
-      displayName:
-          data['displayName'] != null ? data['displayName'] : 'Adventure King',
+      displayName: data['displayName'] != null ? data['displayName'] : 'Adventure King',
       photoURL: data['photoURL'],
-      userDiamondCount:
-          data['userDiamondCount'] != null ? data['userDiamondCount'] : 50,
+      userDiamondCount: data['userDiamondCount'] != null ? data['userDiamondCount'] : 50,
       userKeyCount: data['userKeyCount'] != null ? data['userKeyCount'] : 1,
     );
   }

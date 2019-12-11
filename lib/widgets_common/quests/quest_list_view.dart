@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,9 @@ class QuestListView extends StatelessWidget {
     @required this.numberOfDiamonds,
     @required this.numberOfKeys,
     @required this.image,
-    this.onTap, this.location, this.numberOfLocations,
+    this.onTap,
+    this.location,
+    this.numberOfLocations,
   }) : super(key: key);
 
   // Function that takes the difficulty string passed in via the CMS to Firebase and return a Color corresponding to that difficulty.
@@ -44,7 +47,7 @@ class QuestListView extends StatelessWidget {
       elevation: 5.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Material(
-        color: Colors.black87,
+        color: Colors.grey.shade800,
         child: InkWell(
           enableFeedback: true,
           splashColor: Colors.orangeAccent,
@@ -64,87 +67,32 @@ class QuestListView extends StatelessWidget {
                           Colors.black.withOpacity(0.75), BlendMode.dstATop),
                       alignment: Alignment.center),
                 ),
-                child: ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                  title: Text(
-                    title,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'JosefinSans'),
-                  ),
-                  subtitle: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.room,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      Text(                        
-                        location,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'JosefinSans'),
-                      ),
-                    ],
-                  ),
-                  trailing: Heart(),
-                ),
+                child: buildQuestListTile(),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                color: Colors.grey.shade900,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: [
+                      0.5,
+                      0.8,
+                    ],
+                        colors: [
+                      Colors.grey.shade900,
+                      Colors.grey.shade800
+                    ])),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: _questDifficulty(difficulty),
-                      ),
-                      child: Text(
-                        difficulty,
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      ),
+                    buildDifficultyIndicator(),
+                    buildNumberOfLocations(),
+                    DiamondAndKeyContainer(
+                      numberOfDiamonds: numberOfDiamonds,
+                      numberOfKeys: numberOfKeys,
+                      
                     ),
-                    Container(
-                      child: Text(
-                        '$numberOfLocations Locations',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10)),
-                      width: 135.0,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Image.asset(
-                            'images/ic_diamond.png',
-                            height: 25,
-                          ),
-                          Text(
-                            numberOfDiamonds.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 13),
-                          ),
-                          Image.asset(
-                            'images/explore/skull_key.png',
-                            height: 30.0,
-                          ),
-                          Text(
-                            numberOfKeys.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 13),
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
               )
@@ -154,4 +102,61 @@ class QuestListView extends StatelessWidget {
       ),
     );
   }
+
+ Widget buildQuestListTile() {
+    return ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                title: Text(
+                  title,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'JosefinSans'),
+                ),
+                subtitle: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.room,
+                      color: Colors.amberAccent,
+                      size: 18,
+                    ),
+                    Text(
+                      location,
+                      style: TextStyle(
+                          color: Colors.grey.shade100,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'JosefinSans'),
+                    ),
+                  ],
+                ),
+                trailing: Heart(),
+              );
+  }
+
+  Widget buildNumberOfLocations() {
+    return Container(
+      child: Text(
+        '$numberOfLocations Locations',
+        style: TextStyle(color: Colors.white, fontSize: 14),
+      ),
+    );
+  }
+
+  Widget buildDifficultyIndicator() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: _questDifficulty(difficulty),
+      ),
+      child: Text(
+        difficulty,
+        style: TextStyle(color: Colors.white, fontSize: 14),
+      ),
+    );
+  }
+
+
 }

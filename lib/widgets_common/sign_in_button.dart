@@ -8,15 +8,18 @@ class SignInButton extends CustomRaisedButton {
     @required String text,    
     Color color,
     Color textcolor,
+    double padding,
     VoidCallback onPressed,
   })  : assert(text != null),
         super(
           child: !isLoading ? Text(
             text,
-            style: TextStyle(color: textcolor, fontSize: 18.0, fontWeight: FontWeight.w600),
+            style: TextStyle(color: textcolor ?? Colors.white, fontSize: 18.0, fontWeight: FontWeight.w600),
           ) : CustomCircularProgressIndicator(),
           color: color,
           onPressed: onPressed,
+          padding: padding
+
         );
 
 

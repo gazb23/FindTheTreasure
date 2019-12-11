@@ -83,6 +83,8 @@ class SignInMainScreen extends StatelessWidget {
         fit: StackFit.expand,
         children: <Widget>[
           Carousel(
+            boxFit: BoxFit.fitHeight,
+            
             images: [
               Image.asset(
                 'images/slide_1.png',
@@ -123,6 +125,7 @@ class SignInMainScreen extends StatelessWidget {
                     textcolor: Colors.black87,
                     color: Colors.grey[100],
                     onPressed: () => _signInWithGoogle(context),
+                    
                   ),
                   SizedBox(
                     height: 10.0,
