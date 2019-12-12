@@ -15,7 +15,7 @@ class EmptyContent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(title, style: TextStyle(
-              fontSize: 32,
+              fontSize: 18,
               color: Colors.black54
             ),),
             Text(message, style: TextStyle(

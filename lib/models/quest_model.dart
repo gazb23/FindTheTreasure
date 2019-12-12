@@ -8,6 +8,7 @@ class QuestModel {
   final String image;
   final int numberOfDiamonds;
   final int numberOfKeys;
+  final List tags;
 
   const QuestModel({
     this.id,
@@ -19,6 +20,7 @@ class QuestModel {
     this.difficulty,
     this.numberOfDiamonds,
     this.numberOfKeys,
+    this.tags, 
   });
 
   factory QuestModel.fromMap(Map data) {
@@ -31,6 +33,7 @@ class QuestModel {
       image: data['image'],
       numberOfDiamonds: data['numberOfDiamonds'],
       numberOfKeys: data['numberOfKeys'],
+      tags: data['tags'],
     );
   }
 }

@@ -35,6 +35,7 @@ class QuestDetailScreen extends StatefulWidget {
 class _QuestDetailScreenState extends State<QuestDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    List tags = widget.questModel.tags ?? [];
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -43,11 +44,9 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
             children: <Widget>[
               ListView(
                 children: <Widget>[
-                  
                   _buildImage(context),
                   Container(
-                    
-               width: double.infinity,
+                    width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     color: Colors.grey.shade50,
                     child: Wrap(
@@ -55,14 +54,11 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                       spacing: 5,
                       runSpacing: 5,
                       children: <Widget>[
-                        QuestTags(title: 'Kid Friendly'),
-                        QuestTags(title: 'Pets'),
-                        QuestTags(title: 'Toilets'),
-                        QuestTags(title: 'Water'),
-                        QuestTags(title: 'Moutain'),
-                        QuestTags(title: 'Waterfalls'),
-                        QuestTags(title: 'Pets'),
-                        QuestTags(title: 'Toilets'),
+                        // Iterate over the tags list stored in Firebase and return a QuestTag for each element in that list.
+                        for (String tag in tags)
+                          QuestTags(
+                            title: tag,
+                          )
                       ],
                     ),
                   ),
@@ -73,7 +69,6 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                   )
                 ],
               ),
-             
               _buildBottomBar(context),
             ],
           ),
@@ -139,10 +134,12 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
       child: Container(
         padding: EdgeInsets.all(10),
         child: ExpandablePanel(
-          header: Text('About', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+          header: Text(
+            'About',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           collapsed: Column(
             children: <Widget>[
-              
               Text(
                 widget.questModel.description,
                 softWrap: true,
@@ -153,12 +150,10 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
           ),
           expanded: Column(
             children: <Widget>[
-              
               Text(
                 widget.questModel.description,
                 style: TextStyle(height: 1.35),
               ),
-              
             ],
           ),
           tapHeaderToExpand: true,

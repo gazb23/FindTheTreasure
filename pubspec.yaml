@@ -25,8 +25,7 @@ dependencies:
   flutter_facebook_login: ^3.0.0
   provider: ^3.2.0
   carousel_pro: ^1.0.0  
-  cloud_firestore: ^0.12.10
-  
+  cloud_firestore: ^0.13.0+1
   expandable: ^3.0.1
 
 

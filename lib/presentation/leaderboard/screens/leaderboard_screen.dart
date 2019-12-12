@@ -6,7 +6,7 @@ class LeaderboardScreen extends StatelessWidget {
     return SafeArea(
           child: Scaffold(
         appBar: AppBar(
-          title: Center(child: Image.asset('images/andicon.png')),
+          title: Center(child: Image.asset('images/andicon.png', height: 50,)),
         ),
         body: Stack(
           children: <Widget>[

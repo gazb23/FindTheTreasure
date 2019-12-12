@@ -25,7 +25,9 @@ class ExploreScreen extends StatelessWidget {
               context,
               ProfileScreen.id,
             ),
-            child: Image.asset('images/ic_treasure.png'),
+            child: Image.asset('images/ic_treasure.png', 
+            height: 50,
+            ),
           ),
         ),
         body: _buildListView(context),
@@ -39,7 +41,13 @@ class ExploreScreen extends StatelessWidget {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questsStream(),
         builder: (context, snapshot) {
-          return ListItemsBuilder<QuestModel>(
+          if (snapshot.hasError)
+          return Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting: return Text('Loading...');
+              
+              
+            default:return ListItemsBuilder<QuestModel>(
             snapshot: snapshot,
             itemBuilder: (context, quest) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
@@ -55,6 +63,8 @@ class ExploreScreen extends StatelessWidget {
               },
             ),
           );
+          }
+          
         });
   }
 }
