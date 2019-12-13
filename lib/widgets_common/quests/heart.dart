@@ -1,9 +1,12 @@
+
+import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Heart extends StatefulWidget {
   final Function addQuest;
+ 
 
   Heart({Key key, this.addQuest}) : super(key: key);
 
@@ -38,20 +41,28 @@ class _HeartState extends State<Heart> {
         });
       },
     );
-  }
-
+  } 
+  
+  
+  
+  
+  
+  
+  
+  
   void _addQuestData(BuildContext context) {
     final database = Provider.of<DatabaseService>(context);
+    final quest = Provider.of<QuestModel>(context);
 
-    database.userLikedQuest({
-      'likedQuests': [{
-        'title': 'Find The Treasure',
-        'difficulty': 'Moderate',
-        'image' : 'https://firebasestorage.googleapis.com/v0/b/find-the-treasure-8d58f.appspot.com/o/Coolum.jpg?alt=media&token=7dca0d86-ea30-4117-b2c8-76bd1eb514c6',
-        'numberOfDiamonds': 12,
-        'numberOfkeys': 2
-      }]
-    });
+    database.userLikedQuest(
+      {
+        'title': quest.title,
+        'difficulty': quest.difficulty,
+        'image' : quest.image,
+        'numberOfDiamonds': quest.numberOfDiamonds,
+        'numberOfkeys': quest.numberOfKeys,
+      }
+    );
     
   }
 }

@@ -1,8 +1,11 @@
-import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
-import 'package:find_the_treasure/widgets_common/quests/heart.dart';
-import 'package:flutter/material.dart';
 
-class QuestListView extends StatelessWidget {
+import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class QuestListView extends StatefulWidget {
   final String image;
   final String title;
   final String difficulty;
@@ -24,7 +27,11 @@ class QuestListView extends StatelessWidget {
     this.numberOfLocations,
   }) : super(key: key);
 
-  // Function that takes the difficulty string passed in via the CMS to Firebase and return a Color corresponding to that difficulty.
+  @override
+  _QuestListViewState createState() => _QuestListViewState();
+}
+
+class _QuestListViewState extends State<QuestListView> {
   Color _questDifficulty(String difficultyTitle) {
     switch (difficultyTitle) {
       case 'Easy':
@@ -51,7 +58,7 @@ class QuestListView extends StatelessWidget {
         child: InkWell(
           enableFeedback: true,
           splashColor: Colors.orangeAccent,
-          onTap: onTap,
+          onTap: widget.onTap,
           child: Column(
             children: <Widget>[
               Container(
@@ -60,7 +67,7 @@ class QuestListView extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       image: NetworkImage(
-                        image,
+                        widget.image,
                       ),
                       fit: BoxFit.fill,
                       colorFilter: ColorFilter.mode(
@@ -89,8 +96,8 @@ class QuestListView extends StatelessWidget {
                     buildDifficultyIndicator(),
                     buildNumberOfLocations(),
                     DiamondAndKeyContainer(
-                      numberOfDiamonds: numberOfDiamonds,
-                      numberOfKeys: numberOfKeys,
+                      numberOfDiamonds: widget.numberOfDiamonds,
+                      numberOfKeys: widget.numberOfKeys,
                       
                     ),
                   ],
@@ -108,7 +115,7 @@ class QuestListView extends StatelessWidget {
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
                 title: Text(
-                  title,
+                  widget.title,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 30.0,
@@ -123,7 +130,7 @@ class QuestListView extends StatelessWidget {
                       size: 18,
                     ),
                     Text(
-                      location,
+                      widget.location,
                       style: TextStyle(
                           color: Colors.grey.shade100,
                           fontWeight: FontWeight.w600,
@@ -131,14 +138,14 @@ class QuestListView extends StatelessWidget {
                     ),
                   ],
                 ),
-                trailing: Heart(),
+                trailing: heart(context),
               );
   }
 
   Widget buildNumberOfLocations() {
     return Container(
       child: Text(
-        '$numberOfLocations Locations',
+        '${widget.numberOfLocations} Locations',
         style: TextStyle(color: Colors.white, fontSize: 14),
       ),
     );
@@ -149,14 +156,58 @@ class QuestListView extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        color: _questDifficulty(difficulty),
+        color: _questDifficulty(widget.difficulty),
       ),
       child: Text(
-        difficulty,
+        widget.difficulty,
         style: TextStyle(color: Colors.white, fontSize: 14),
       ),
     );
   }
 
+  Widget heart(BuildContext context) {
+  Color _iconColor = Colors.white;
+  IconData _iconType = Icons.favorite_border;
+    return IconButton(
+      icon: Icon(
+        _iconType,
+        color: _iconColor,
+        size: 35,
+      ),
+      onPressed: () {
+        setState(() {
+          if (_iconType == Icons.favorite_border &&
+              _iconColor == Colors.white) {
+            _iconType = Icons.favorite;
+            _iconColor = Colors.redAccent;
 
+            _addQuestData(context);
+          } else {
+            _iconColor = Colors.white;
+            _iconType = Icons.favorite_border;
+          }
+        });
+      },
+    );
+  } 
+
+    Future<void> _addQuestData(BuildContext context) async {
+    final database = Provider.of<DatabaseService>(context);
+   
+
+    await database.userLikedQuest(
+      {
+        'title': widget.title,
+        'difficulty': widget.difficulty,
+        'image' : widget.image,
+        'numberOfDiamonds': widget.numberOfDiamonds,
+        'numberOfkeys': widget.numberOfKeys,
+        'location': widget.location,
+        'numberOfLocations': widget.numberOfLocations
+
+
+      }
+    );
+    
+  }
 }

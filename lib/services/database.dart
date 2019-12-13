@@ -18,6 +18,10 @@ class DatabaseService {
       path: APIPath.quests(),
       builder: (data, documentId) => QuestModel.fromMap(data));
 
+  Stream<List<QuestModel>> userLikedQuestsStream() => _service.collectionStream(
+      path: APIPath.heartedQuests(uid: uid),
+      builder: (data, documentId) => QuestModel.fromMap(data));
+
   Stream<UserData> userDataStream() {
     return _db.collection('users').document(uid).snapshots().map((snapshot) {
       if (snapshot.data == null)
@@ -30,8 +34,8 @@ class DatabaseService {
 
   //Write data to firebase
   Future<void> userLikedQuest(Map<String, dynamic> userQuest) async {
-    final path = 'users/$uid/';
-    final documentReference = Firestore.instance.document(path);
-    await documentReference.setData(userQuest, merge: true);
+    final path = 'users/$uid/likedQuests';
+    final collectionReference = Firestore.instance.collection(path);
+    await collectionReference.add(userQuest);
   }
 }

@@ -14,4 +14,6 @@ class FirestoreService {
         snapshot.documents.map((snapshot) => builder(snapshot.data, snapshot.documentID)).toList());
         
   }
+
+
 }

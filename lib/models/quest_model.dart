@@ -28,11 +28,11 @@ class QuestModel {
       title: data['title'],
       difficulty: data['difficulty'],
       description: data['description'],
-      numberOfLocations: data['numberOfLocations'],
-      location: data['location'],
+      numberOfLocations: data['numberOfLocations'] != null ? data['numberOfLocations'] : '1',
+      location: data['location'] ,
       image: data['image'],
-      numberOfDiamonds: data['numberOfDiamonds'],
-      numberOfKeys: data['numberOfKeys'],
+      numberOfDiamonds: data['numberOfDiamonds'] ,
+      numberOfKeys: data['numberOfKeys'] != null ? data['numberOfKeys'] : 0,
       tags: data['tags'],
     );
   }

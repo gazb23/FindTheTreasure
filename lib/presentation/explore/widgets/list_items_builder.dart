@@ -7,11 +7,12 @@ typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 class ListItemsBuilder<T> extends StatelessWidget {
   final AsyncSnapshot<List<T>> snapshot;
   final ItemWidgetBuilder<T> itemBuilder;
+  final AsyncSnapshot<T> snapshots;
 
   const ListItemsBuilder({
     Key key,
     this.snapshot,
-    this.itemBuilder,
+    this.itemBuilder, this.snapshots,
   }) : super(key: key);
   
   @override

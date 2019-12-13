@@ -1,18 +1,21 @@
 class UserData {
   final String uid;
-  String email;
-  String displayName;
-  String photoURL;
-  int userDiamondCount;
-  int userKeyCount;
+  final String email;
+  final String displayName;
+  final String photoURL;
+  final int userDiamondCount;
+  final int userKeyCount;
+  final List<Map> likedQuests;
 
-  UserData({
+
+  UserData( {
     this.uid,
     this.email,
     this.displayName,
     this.photoURL,
     this.userDiamondCount,
     this.userKeyCount,
+    this.likedQuests,
   }) : assert(UserData != null);
 
 // Use a factory in situations where you don't necessarily want to return a new instance of the class itself
@@ -24,6 +27,7 @@ class UserData {
       photoURL: data['photoURL'],
       userDiamondCount: data['userDiamondCount'] != null ? data['userDiamondCount'] : 50,
       userKeyCount: data['userKeyCount'] != null ? data['userKeyCount'] : 1,
+      likedQuests: data['likedQuests'],
     );
   }
 }
