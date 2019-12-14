@@ -57,6 +57,7 @@ class ExploreScreen extends StatelessWidget {
               image: quest.image,
               numberOfLocations: quest.numberOfLocations,
               location: quest.location,
+              
               onTap: () {
                 QuestDetailScreen.show(context, quest: quest, user: user );
                 

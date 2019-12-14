@@ -11,6 +11,7 @@ class QuestListView extends StatefulWidget {
   final String difficulty;
   final String numberOfLocations;
   final String location;
+  
   final int numberOfDiamonds;
   final int numberOfKeys;
   final VoidCallback onTap;
