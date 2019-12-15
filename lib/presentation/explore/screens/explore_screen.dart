@@ -41,13 +41,7 @@ class ExploreScreen extends StatelessWidget {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questsStream(),
         builder: (context, snapshot) {
-          if (snapshot.hasError)
-          return Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting: return Text('Loading...');
-              
-              
-            default:return ListItemsBuilder<QuestModel>(
+          return ListItemsBuilder<QuestModel>(
             snapshot: snapshot,
             itemBuilder: (context, quest) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
@@ -66,6 +60,6 @@ class ExploreScreen extends StatelessWidget {
           );
           }
           
-        });
+        );
   }
 }

@@ -8,8 +8,7 @@ final double diamondHeight;
   final double spaceBetween;
   final double fontSize;
   final FontWeight fontWeight;
-  final int numberOfDiamonds;
-  
+  final int numberOfDiamonds;  
   final int numberOfKeys;
   final MainAxisAlignment mainAxisAlignment;
   

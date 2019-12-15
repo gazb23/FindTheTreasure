@@ -1,4 +1,4 @@
-
+import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 
@@ -9,9 +9,8 @@ class QuestListView extends StatefulWidget {
   final String image;
   final String title;
   final String difficulty;
-  final String numberOfLocations;
   final String location;
-  
+  final int numberOfLocations;
   final int numberOfDiamonds;
   final int numberOfKeys;
   final VoidCallback onTap;
@@ -33,6 +32,10 @@ class QuestListView extends StatefulWidget {
 }
 
 class _QuestListViewState extends State<QuestListView> {
+  bool heartisSelected = false;
+  Color _iconColor;
+  IconData _iconType;
+
   Color _questDifficulty(String difficultyTitle) {
     switch (difficultyTitle) {
       case 'Easy':
@@ -99,7 +102,6 @@ class _QuestListViewState extends State<QuestListView> {
                     DiamondAndKeyContainer(
                       numberOfDiamonds: widget.numberOfDiamonds,
                       numberOfKeys: widget.numberOfKeys,
-                      
                     ),
                   ],
                 ),
@@ -111,36 +113,35 @@ class _QuestListViewState extends State<QuestListView> {
     );
   }
 
- Widget buildQuestListTile() {
+  Widget buildQuestListTile() {
     return ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                title: Text(
-                  widget.title,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'JosefinSans'),
-                ),
-                subtitle: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.room,
-                      color: Colors.amberAccent,
-                      size: 18,
-                    ),
-                    Text(
-                      widget.location,
-                      style: TextStyle(
-                          color: Colors.grey.shade100,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'JosefinSans'),
-                    ),
-                  ],
-                ),
-                trailing: heart(context),
-              );
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+      title: Text(
+        widget.title,
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'JosefinSans'),
+      ),
+      subtitle: Row(
+        children: <Widget>[
+          Icon(
+            Icons.room,
+            color: Colors.amberAccent,
+            size: 18,
+          ),
+          Text(
+            widget.location,
+            style: TextStyle(
+                color: Colors.grey.shade100,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'JosefinSans'),
+          ),
+        ],
+      ),
+      trailing: heart(context),
+    );
   }
 
   Widget buildNumberOfLocations() {
@@ -167,48 +168,35 @@ class _QuestListViewState extends State<QuestListView> {
   }
 
   Widget heart(BuildContext context) {
-  Color _iconColor = Colors.white;
-  IconData _iconType = Icons.favorite_border;
     return IconButton(
-      icon: Icon(
-        _iconType,
-        color: _iconColor,
-        size: 35,
-      ),
-      onPressed: () {
-        setState(() {
-          if (_iconType == Icons.favorite_border &&
-              _iconColor == Colors.white) {
-            _iconType = Icons.favorite;
-            _iconColor = Colors.redAccent;
-
-            _addQuestData(context);
-          } else {
-            _iconColor = Colors.white;
-            _iconType = Icons.favorite_border;
-          }
+        icon: Icon(
+          heartisSelected ? _iconType = Icons.favorite : Icons.favorite_border,
+          color: heartisSelected ? _iconColor = Colors.redAccent : Colors.white,
+          size: 35,
+        ),
+        onPressed: () {
+          heartisSelected = !heartisSelected;
+          _addQuestData(context);
+          setState(() {});
         });
-      },
-    );
-  } 
+  }
 
-    Future<void> _addQuestData(BuildContext context) async {
+  Future<void> _addQuestData(BuildContext context) async {
     final database = Provider.of<DatabaseService>(context);
-   
 
-    await database.userLikedQuest(
-      {
-        'title': widget.title,
-        'difficulty': widget.difficulty,
-        'image' : widget.image,
-        'numberOfDiamonds': widget.numberOfDiamonds,
-        'numberOfkeys': widget.numberOfKeys,
-        'location': widget.location,
-        'numberOfLocations': widget.numberOfLocations
+    await database.userLikedQuest({
+      'title': widget.title,
+      'difficulty': widget.difficulty,
+      'image': widget.image,
+      'numberOfDiamonds': widget.numberOfDiamonds,
+      'numberOfkeys': widget.numberOfKeys,
+      'location': widget.location,
+      'numberOfLocations': widget.numberOfLocations
+    });
+  }
 
-
-      }
-    );
-    
+  Future<void> _removeQuestData() async {
+    final database = Provider.of<DatabaseService>(context);
+    database.deleteQuest(QuestModel());
   }
 }

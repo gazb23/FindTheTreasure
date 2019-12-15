@@ -8,10 +8,12 @@ import 'package:flutter/foundation.dart';
 
 class DatabaseService {
   final String uid;
+
   DatabaseService({@required this.uid}) : assert(uid != null);
 
   final _service = FirestoreService.instance;
   final _db = Firestore.instance;
+  String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
 
   //Read data from Firebase
   Stream<List<QuestModel>> questsStream() => _service.collectionStream(
@@ -32,10 +34,17 @@ class DatabaseService {
     });
   }
 
+
+
   //Write data to firebase
   Future<void> userLikedQuest(Map<String, dynamic> userQuest) async {
     final path = 'users/$uid/likedQuests';
     final collectionReference = Firestore.instance.collection(path);
     await collectionReference.add(userQuest);
   }
+
+  //Delete data from Firebase
+  void deleteQuest(QuestModel questModel) => _service.deleteData(
+    path: 'users/$uid/likedQuests'
+  );
 }
