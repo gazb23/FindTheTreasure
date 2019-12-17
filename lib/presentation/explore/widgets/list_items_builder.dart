@@ -21,7 +21,7 @@ class ListItemsBuilder<T> extends StatelessWidget {
       final List<T> items = snapshot.data;
       if (items.isNotEmpty) {
         return _buildList(items);
-      } else {
+      } else  {
         return EmptyContent();
       }
     } else if (snapshot.hasError) {

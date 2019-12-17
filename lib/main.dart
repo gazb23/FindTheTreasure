@@ -1,3 +1,4 @@
+
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
@@ -13,29 +14,26 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<AuthBase>(
+    return Provider<AuthBase>(
           create: (context) => Auth(),
-        ),
+          
         
-      ],
-      
-      child: MaterialApp(
-        title: 'Find The Treasure',
-        theme: _buildThemeData(),
-        initialRoute: LandingPage.id,
-        routes: {
-          // Each screen class has a static const to create that screen
-          SignInMainScreen.id: (context) => SignInMainScreen(),
-          EmailCreateAccountScreen.id: (context) => EmailCreateAccountScreen(),
-          EmailSignInScreen.id: (context) => EmailSignInScreen(),
-          PasswordResetScreen.id: (context) => PasswordResetScreen(),
-          LandingPage.id: (context) => LandingPage(),
-          ProfileScreen.id: (context) => ProfileScreen(),
-        },
-      ),
+          child: MaterialApp(
+          title: 'Find The Treasure',
+          theme: _buildThemeData(),
+          initialRoute: LandingPage.id,
+          routes: {
+            // Each screen class has a static const to create that screen
+            SignInMainScreen.id: (context) => SignInMainScreen(),
+            EmailCreateAccountScreen.id: (context) => EmailCreateAccountScreen(),
+            EmailSignInScreen.id: (context) => EmailSignInScreen(),
+            PasswordResetScreen.id: (context) => PasswordResetScreen(),
+            LandingPage.id: (context) => LandingPage(),
+            ProfileScreen.id: (context) => ProfileScreen(),
+          },
+        ),
     );
+    
   }
 
 // Theme for the app
@@ -58,14 +56,13 @@ class MyApp extends StatelessWidget {
             )),
         fontFamily: 'quicksand',
         textTheme: TextTheme(
-          body1: TextStyle(
-            fontSize: 17.0,
-            color: Colors.grey[500],
-          ),
-          button: TextStyle(
-            fontSize: 15.0,
-          )
-        ),
+            body1: TextStyle(
+              fontSize: 17.0,
+              color: Colors.grey[500],
+            ),
+            button: TextStyle(
+              fontSize: 15.0,
+            )),
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey[500])),

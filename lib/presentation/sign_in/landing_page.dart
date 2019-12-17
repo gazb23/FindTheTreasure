@@ -1,5 +1,3 @@
-
-
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/services/auth.dart';
@@ -26,24 +24,20 @@ class LandingPage extends StatelessWidget {
                   Provider<User>.value(
                     value: user,
                   ),
-                 
                   Provider<DatabaseService>(
                     create: (_) => DatabaseService(uid: user.uid),
                   ),
-                  
                 ],
                 child: Consumer<DatabaseService>(
                   builder: (_, databaseService, __) => StreamProvider<UserData>(
                     create: (_) => databaseService.userDataStream(),
                     child: HomePage(),
-                    
                   ),
                 ),
               );
-              
-            } else return SignInMainScreen.create(context);
-            
-          } 
+            } else
+              return SignInMainScreen.create(context);
+          }
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(),

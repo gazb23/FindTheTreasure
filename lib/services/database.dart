@@ -3,7 +3,6 @@ import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/firestore_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class DatabaseService {
@@ -13,17 +12,21 @@ class DatabaseService {
 
   final _service = FirestoreService.instance;
   final _db = Firestore.instance;
-  String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
 
-  //Read data from Firebase
+  //READ DATA:
+  //Receice a stream of all quests from Firebase
   Stream<List<QuestModel>> questsStream() => _service.collectionStream(
       path: APIPath.quests(),
-      builder: (data, documentId) => QuestModel.fromMap(data));
+      builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
-  Stream<List<QuestModel>> userLikedQuestsStream() => _service.collectionStream(
-      path: APIPath.heartedQuests(uid: uid),
-      builder: (data, documentId) => QuestModel.fromMap(data));
+  //Receive a filtered stream of all quests liked by current user
+  Stream<List<QuestModel>> userLikedQuestsStream() => _service.filteredArrayCollectionStream(
+      field: 'likedBy',
+      arrayContains: uid,
+      path: APIPath.quests(),
+      builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
+  // Receive a stream of the current user
   Stream<UserData> userDataStream() {
     return _db.collection('users').document(uid).snapshots().map((snapshot) {
       if (snapshot.data == null)
@@ -34,17 +37,20 @@ class DatabaseService {
     });
   }
 
+  // Receive a stream of a single quest
+  Stream<QuestModel> questStream({String documentId}) => _service.documentStream(
+      path: APIPath.quest(documentId),
+      builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
-
-  //Write data to firebase
-  Future<void> userLikedQuest(Map<String, dynamic> userQuest) async {
-    final path = 'users/$uid/likedQuests';
-    final collectionReference = Firestore.instance.collection(path);
-    await collectionReference.add(userQuest);
-  }
-
-  //Delete data from Firebase
-  void deleteQuest(QuestModel questModel) => _service.deleteData(
-    path: 'users/$uid/likedQuests'
-  );
+  //WRITE DATA:
+  //Update Firebase quest when a user likes a quest
+  Future<void> updateUserLikedQuests({@required QuestModel questModel, @required String documentId}) async =>
+      await _service.setData(
+          path: APIPath.quest(documentId),
+          data: questModel.toMap());
+  //Delte from Firebase the quest the user unliked 
+  Future<void> deleteUserLikedQuest({@required QuestModel questModel, @required String documentId}) async =>
+      await _service.deleteData(
+          path: APIPath.quest(documentId),
+      );
 }

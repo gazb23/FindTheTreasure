@@ -1,11 +1,16 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
+import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/database.dart';
+
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class QuestListView extends StatefulWidget {
+  final QuestModel questModel;
   final String image;
   final String title;
   final String difficulty;
@@ -25,6 +30,7 @@ class QuestListView extends StatefulWidget {
     this.onTap,
     this.location,
     this.numberOfLocations,
+    this.questModel,
   }) : super(key: key);
 
   @override
@@ -32,10 +38,7 @@ class QuestListView extends StatefulWidget {
 }
 
 class _QuestListViewState extends State<QuestListView> {
-  bool heartisSelected = false;
-  Color _iconColor;
-  IconData _iconType;
-
+  List users =[];
   Color _questDifficulty(String difficultyTitle) {
     switch (difficultyTitle) {
       case 'Easy':
@@ -140,7 +143,7 @@ class _QuestListViewState extends State<QuestListView> {
           ),
         ],
       ),
-      trailing: heart(context),
+      trailing: _buildHeart(context),
     );
   }
 
@@ -167,36 +170,59 @@ class _QuestListViewState extends State<QuestListView> {
     );
   }
 
-  Widget heart(BuildContext context) {
+  Widget _buildHeart(BuildContext context) {
+    final user = Provider.of<User>(context);
+    bool isLiked = widget.questModel.likedBy.contains(user.uid);
+    
+    
     return IconButton(
         icon: Icon(
-          heartisSelected ? _iconType = Icons.favorite : Icons.favorite_border,
-          color: heartisSelected ? _iconColor = Colors.redAccent : Colors.white,
+          isLiked ? Icons.favorite : Icons.favorite_border,
+          color: isLiked ? Colors.redAccent : Colors.white,
           size: 35,
         ),
-        onPressed: () {
-          heartisSelected = !heartisSelected;
-          _addQuestData(context);
-          setState(() {});
+        onPressed: ()  {
+                    
+          setState(() {
+            if (isLiked) {
+                      // updateUser = 'null';
+                      users.remove(user.uid);
+                      _addQuestData(context);
+                    } else {
+                      users.add(user.uid);
+                      // updateUser = user.uid;
+                      _addQuestData(context);
+                      
+                    }
+          });
+         
+          print(isLiked);
+          
         });
   }
 
   Future<void> _addQuestData(BuildContext context) async {
-    final database = Provider.of<DatabaseService>(context);
-
-    await database.userLikedQuest({
-      'title': widget.title,
-      'difficulty': widget.difficulty,
-      'image': widget.image,
-      'numberOfDiamonds': widget.numberOfDiamonds,
-      'numberOfkeys': widget.numberOfKeys,
-      'location': widget.location,
-      'numberOfLocations': widget.numberOfLocations
-    });
-  }
-
-  Future<void> _removeQuestData() async {
-    final database = Provider.of<DatabaseService>(context);
-    database.deleteQuest(QuestModel());
-  }
+  final database = Provider.of<DatabaseService>(context);
+  final user = Provider.of<User>(context);
+  print(user.uid);
+  await database.updateUserLikedQuests(
+    documentId: widget.questModel.id,
+    questModel: QuestModel(
+    
+    likedBy: users,
+    id: widget.questModel.id,
+    description: widget.questModel.description,
+    difficulty: widget.questModel.difficulty,
+    image: widget.questModel.image,
+    location: widget.questModel.location,
+    numberOfDiamonds: widget.questModel.numberOfDiamonds,
+    numberOfKeys: widget.questModel.numberOfKeys,
+    numberOfLocations: widget.questModel.numberOfLocations,
+    tags: widget.questModel.tags,
+    title: widget.questModel.title,
+    
+  ));
 }
+
+}
+

@@ -1,68 +1,45 @@
+// import 'package:find_the_treasure/models/quest_model.dart';
+// import 'package:find_the_treasure/services/database.dart';
 
-import 'package:find_the_treasure/models/quest_model.dart';
-import 'package:find_the_treasure/services/database.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
 
-class Heart extends StatefulWidget {
-  final Function addQuest;
- 
+// class Heart extends StatelessWidget {
+//   final QuestModel questModel;
 
-  Heart({Key key, this.addQuest}) : super(key: key);
+//  Heart({Key key, this.questModel}) : super(key: key);
 
-  @override
-  _HeartState createState() => _HeartState();
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final database = Provider.of<DatabaseService>(context);
+//     return StreamBuilder<List<QuestModel>>(
+//         stream: database.questsStream(),
+//         builder: (context, snapshot) {
+//           final questModel = snapshot.data;
+//           return IconButton(
+//               icon: Icon(
+//                 questModel.
+//                     ? Icons.favorite
+//                     : Icons.favorite_border,
+//                 color: questModel.heartIsSelected
+//                     ? Colors.redAccent
+//                     : Colors.white,
+//                 size: 35,
+//               ),
+//               onPressed: () {
+//                 questModel.heartIsSelected = !questModel.heartIsSelected;
+//                 _addQuestData(context);
+//                 print(questModel.heartIsSelected);
+//               });
+//         });
+//           }
+          
+//   }
 
-class _HeartState extends State<Heart> {
-  Color _iconColor = Colors.white;
-  IconData _iconType = Icons.favorite_border;
+//   Future<void> _addQuestData(BuildContext context) async {
+//     final database = Provider.of<DatabaseService>(context);
 
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        _iconType,
-        color: _iconColor,
-        size: 35,
-      ),
-      onPressed: () {
-        setState(() {
-          if (_iconType == Icons.favorite_border &&
-              _iconColor == Colors.white) {
-            _iconType = Icons.favorite;
-            _iconColor = Colors.redAccent;
-
-            _addQuestData(context);
-          } else {
-            _iconColor = Colors.white;
-            _iconType = Icons.favorite_border;
-          }
-        });
-      },
-    );
-  } 
-  
-  
-  
-  
-  
-  
-  
-  
-  void _addQuestData(BuildContext context) {
-    final database = Provider.of<DatabaseService>(context);
-    final quest = Provider.of<QuestModel>(context);
-
-    database.userLikedQuest(
-      {
-        'title': quest.title,
-        'difficulty': quest.difficulty,
-        'image' : quest.image,
-        'numberOfDiamonds': quest.numberOfDiamonds,
-        'numberOfkeys': quest.numberOfKeys,
-      }
-    );
-    
-  }
-}
+//     await database.updateUserQuests(
+//         QuestModel(id: questModel.id, description: questModel.description));
+//   }
+// }

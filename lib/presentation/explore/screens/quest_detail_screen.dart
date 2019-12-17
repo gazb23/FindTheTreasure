@@ -1,27 +1,30 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
-import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_tags.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 
+
 class QuestDetailScreen extends StatefulWidget {
   final QuestModel questModel;
   final UserData userData;
-
-  const QuestDetailScreen({Key key, this.questModel, this.userData})
+  final DatabaseService database;
+  const QuestDetailScreen(
+      {Key key, this.questModel, this.userData, this.database})
       : super(key: key);
 
   static Future<void> show(BuildContext context,
-      {QuestModel quest, UserData user}) async {
+      {QuestModel quest, UserData user, DatabaseService database}) async {
     await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => QuestDetailScreen(
           questModel: quest,
           userData: user,
+          database: database,
         ),
         fullscreenDialog: true,
       ),
@@ -99,34 +102,36 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
 
   Widget _buildQuestListTile(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-      title: Text(
-        widget.questModel.title,
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'JosefinSans'),
-      ),
-      subtitle: Row(
-        children: <Widget>[
-          Icon(
-            Icons.room,
-            color: Colors.amberAccent,
-            size: 18,
-          ),
-          Text(
-            widget.questModel.location,
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'JosefinSans'),
-          ),
-        ],
-      ),
-      trailing: Heart(),
-    );
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        title: Text(
+          widget.questModel.title,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'JosefinSans'),
+        ),
+        subtitle: Row(
+          children: <Widget>[
+            Icon(
+              Icons.room,
+              color: Colors.amberAccent,
+              size: 18,
+            ),
+            Text(
+              widget.questModel.location,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'JosefinSans'),
+            ),
+          ],
+        ),
+        // trailing: heart()
+        );
   }
+
+
 
   Widget _buildQuestDescription(BuildContext context) {
     return Card(

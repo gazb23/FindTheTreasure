@@ -41,6 +41,7 @@ class ExploreScreen extends StatelessWidget {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questsStream(),
         builder: (context, snapshot) {
+          
           return ListItemsBuilder<QuestModel>(
             snapshot: snapshot,
             itemBuilder: (context, quest) => QuestListView(
@@ -51,9 +52,10 @@ class ExploreScreen extends StatelessWidget {
               image: quest.image,
               numberOfLocations: quest.numberOfLocations,
               location: quest.location,
+              questModel: quest,
               
               onTap: () {
-                QuestDetailScreen.show(context, quest: quest, user: user );
+                QuestDetailScreen.show(context, quest: quest, user: user, database: database );
                 
               },
             ),

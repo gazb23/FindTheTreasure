@@ -1,9 +1,11 @@
+
+
 class QuestModel {
   final String id;
-  final bool heartIsSelected;
+  final List likedBy;
   final String title;
   final String description;
-  final String difficulty;  
+  final String difficulty;
   final String location;
   final String image;
   final int numberOfLocations;
@@ -11,8 +13,10 @@ class QuestModel {
   final int numberOfKeys;
   final List tags;
 
-  const QuestModel( {
+  QuestModel(
+    {
     this.id,
+    this.likedBy, 
     this.image,
     this.numberOfLocations,
     this.location,
@@ -21,22 +25,44 @@ class QuestModel {
     this.difficulty,
     this.numberOfDiamonds,
     this.numberOfKeys,
-    this.tags, 
-    this.heartIsSelected,
+    this.tags,
   });
 
-  factory QuestModel.fromMap(Map data) {
+  // Factory doesn't
+  factory QuestModel.fromMap(Map<String, dynamic> data, String documentId) {
+    if (data == null) {
+      return null;
+    }
     return QuestModel(
+      id: documentId,
+      likedBy: data['likedBy'],
       title: data['title'],
       difficulty: data['difficulty'],
       description: data['description'],
-      numberOfLocations: data['numberOfLocations'] != null ? data['numberOfLocations'] : 1,
-      location: data['location'] ,
+      numberOfLocations:
+          data['numberOfLocations'] != null ? data['numberOfLocations'] : 1,
+      location: data['location'],
       image: data['image'],
-      numberOfDiamonds: data['numberOfDiamonds'] ,
+      numberOfDiamonds: data['numberOfDiamonds'],
       numberOfKeys: data['numberOfKeys'] != null ? data['numberOfKeys'] : 0,
       tags: data['tags'],
-      heartIsSelected: data['heartIsSelected'] ?? false,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'likedBy' : likedBy,
+      'title': title,
+      'difficulty': difficulty,
+      'description': description,
+      'numberOfLocations': numberOfLocations,
+      'location': location,
+      'image': image,
+      'numberOfDiamonds': numberOfDiamonds,
+      'numberOfKeys': numberOfKeys,
+      'tags': tags,
+      
+    };
   }
 }
