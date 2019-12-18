@@ -8,7 +8,6 @@ import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 
-
 class QuestDetailScreen extends StatefulWidget {
   final QuestModel questModel;
   final UserData userData;
@@ -42,10 +41,14 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          color: Colors.grey.shade50,
+          width: double.infinity,
+          color: Colors.grey.
+          shade50,
           child: Stack(
+
             children: <Widget>[
               ListView(
+                
                 children: <Widget>[
                   _buildImage(context),
                   Container(
@@ -125,13 +128,13 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                   fontWeight: FontWeight.w600,
                   fontFamily: 'JosefinSans'),
             ),
+            
           ],
+          
         ),
-        // trailing: heart()
+        trailing: buildHeart(context),
         );
   }
-
-
 
   Widget _buildQuestDescription(BuildContext context) {
     return Card(
@@ -254,5 +257,61 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
         ),
       ),
     );
+  }
+
+  Widget buildHeart(BuildContext context) {
+    final user = widget.userData;
+
+    
+
+    return StreamBuilder<QuestModel>(
+        stream: widget.database.questStream(documentId: widget.questModel.id),
+        builder: (context, snapshot) {
+          final questModel = snapshot.data;
+          final likedByList = questModel.likedBy;
+          List copyLikedByList = []..addAll(likedByList);
+          bool isLiked = copyLikedByList.contains(user.uid);
+
+          return IconButton(
+              icon: Icon(
+                isLiked ? Icons.favorite : Icons.favorite_border,
+                color: isLiked ? Colors.redAccent : Colors.white,
+                size: 35,
+              ),
+              onPressed: () {
+                setState(() {
+                  if (isLiked) {
+                    copyLikedByList.remove(user.uid);
+                    addQuestData(context, copyLikedByList);
+                  } else {
+                    copyLikedByList.add(user.uid);
+                    addQuestData(context, copyLikedByList);
+                  }
+                });
+              });
+        });
+  }
+
+  Future<void> addQuestData(BuildContext context, List users) async {
+    final database = widget.database;
+    try {
+      await database.updateUserLikedQuests(
+          documentId: widget.questModel.id,
+          questModel: QuestModel(
+            likedBy: users,
+            id: widget.questModel.id,
+            description: widget.questModel.description,
+            difficulty: widget.questModel.difficulty,
+            image: widget.questModel.image,
+            location: widget.questModel.location,
+            numberOfDiamonds: widget.questModel.numberOfDiamonds,
+            numberOfKeys: widget.questModel.numberOfKeys,
+            numberOfLocations: widget.questModel.numberOfLocations,
+            tags: widget.questModel.tags,
+            title: widget.questModel.title,
+          ));
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

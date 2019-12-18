@@ -43,7 +43,7 @@ class MyQuestsScreen extends StatelessWidget {
               location: quest.location,
               questModel: quest,
               onTap: () {
-                QuestDetailScreen.show(context, quest: quest, user: user );
+                QuestDetailScreen.show(context, quest: quest, user: user, database: database );
                 
               },
             ),

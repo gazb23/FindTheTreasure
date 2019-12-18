@@ -35,7 +35,7 @@ class QuestModel {
     }
     return QuestModel(
       id: documentId,
-      likedBy: data['likedBy'],
+      likedBy: data['likedBy'] != null ? data['likedBy'] : [],
       title: data['title'],
       difficulty: data['difficulty'],
       description: data['description'],

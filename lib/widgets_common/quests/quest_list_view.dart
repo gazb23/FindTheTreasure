@@ -1,18 +1,14 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
-import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
-
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class QuestListView extends StatefulWidget {
- 
-
-  final QuestModel questModel;
+  final QuestModel questModel;  
+  
   final String image;
   final String title;
   final String difficulty;
@@ -32,7 +28,7 @@ class QuestListView extends StatefulWidget {
     this.onTap,
     this.location,
     this.numberOfLocations,
-    this.questModel,
+    this.questModel, 
   }) : super(key: key);
 
   @override
@@ -40,7 +36,6 @@ class QuestListView extends StatefulWidget {
 }
 
 class _QuestListViewState extends State<QuestListView> {
-  
   Color _questDifficulty(String difficultyTitle) {
     switch (difficultyTitle) {
       case 'Easy':
@@ -58,7 +53,6 @@ class _QuestListViewState extends State<QuestListView> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 5.0,
@@ -120,7 +114,6 @@ class _QuestListViewState extends State<QuestListView> {
   }
 
   Widget buildQuestListTile(BuildContext context) {
-    
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       title: Text(
@@ -147,7 +140,7 @@ class _QuestListViewState extends State<QuestListView> {
           ),
         ],
       ),
-      trailing: _buildHeart(context),
+      trailing: buildHeart(),
     );
   }
 
@@ -174,70 +167,66 @@ class _QuestListViewState extends State<QuestListView> {
     );
   }
 
-  Widget _buildHeart(BuildContext context) {
-    final user = Provider.of<User>(context);
-    List likedUsers = widget.questModel.likedBy;   
+
+ Widget buildHeart() {
+    final user = Provider.of<UserData>(context, listen: false);
     
+    List likedUsers = widget.questModel.likedBy;
     List users = []..addAll(likedUsers);
+    bool isLiked = users.contains(user.uid);  
+    
      
-    bool isLiked = users.contains(user.uid);
-   
     
     return IconButton(
+      
         icon: Icon(
           isLiked ? Icons.favorite : Icons.favorite_border,
           color: isLiked ? Colors.redAccent : Colors.white,
           size: 35,
         ),
-        onPressed: ()  {
-                    
+        onPressed: () {
           setState(() {
             if (isLiked) {
-                     
-                      users.remove(user.uid);
-                      
-                      _addQuestData(context, users);
-                       print('remove: $users');
-                       print(users);
+              users.remove(user.uid);
 
-                    } else {
-                      users.add(user.uid);
-                     
-                      print('add: $users');
-                      print(users);
-                      // updateUser = user.uid;
-                      _addQuestData(context, users);
-                       
-                    }
+              addQuestData(context, users);
+              print('remove: $users');
+              print(users);
+            } else {
+              users.add(user.uid);
+
+              print('add: $users');
+              print(users);
+              
+              addQuestData(context, users);
+            }
           });
+
          
-          // print(isLiked);
-          
         });
   }
 
-  Future<void> _addQuestData(BuildContext context, List users) async {
-  final database = Provider.of<DatabaseService>(context);
-  final user = Provider.of<User>(context);
-  print(user.uid);
-  await database.updateUserLikedQuests(
-    documentId: widget.questModel.id,
-    questModel: QuestModel(
+  Future<void> addQuestData(BuildContext context, List users) async {
+    final database = Provider.of<DatabaseService>(context);
+    try {
+      await database.updateUserLikedQuests(
+        documentId: widget.questModel.id,
+        questModel: QuestModel(
+          likedBy: users,
+          id: widget.questModel.id,
+          description: widget.questModel.description,
+          difficulty: widget.questModel.difficulty,
+          image: widget.questModel.image,
+          location: widget.questModel.location,
+          numberOfDiamonds: widget.questModel.numberOfDiamonds,
+          numberOfKeys: widget.questModel.numberOfKeys,
+          numberOfLocations: widget.questModel.numberOfLocations,
+          tags: widget.questModel.tags,
+          title: widget.questModel.title,
+        ));
+    }catch(e) {
+      print(e.toString());
+    }
     
-    likedBy: users,
-    id: widget.questModel.id,
-    description: widget.questModel.description,
-    difficulty: widget.questModel.difficulty,
-    image: widget.questModel.image,
-    location: widget.questModel.location,
-    numberOfDiamonds: widget.questModel.numberOfDiamonds,
-    numberOfKeys: widget.questModel.numberOfKeys,
-    numberOfLocations: widget.questModel.numberOfLocations,
-    tags: widget.questModel.tags,
-    title: widget.questModel.title,
-    
-  ));
+  }
 }
-
-}
-
