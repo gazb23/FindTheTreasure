@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class QuestListView extends StatefulWidget {
+ 
+
   final QuestModel questModel;
   final String image;
   final String title;
@@ -38,7 +40,7 @@ class QuestListView extends StatefulWidget {
 }
 
 class _QuestListViewState extends State<QuestListView> {
-  List users =[];
+  
   Color _questDifficulty(String difficultyTitle) {
     switch (difficultyTitle) {
       case 'Easy':
@@ -56,6 +58,7 @@ class _QuestListViewState extends State<QuestListView> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 5.0,
@@ -81,7 +84,7 @@ class _QuestListViewState extends State<QuestListView> {
                           Colors.black.withOpacity(0.75), BlendMode.dstATop),
                       alignment: Alignment.center),
                 ),
-                child: buildQuestListTile(),
+                child: buildQuestListTile(context),
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -116,7 +119,8 @@ class _QuestListViewState extends State<QuestListView> {
     );
   }
 
-  Widget buildQuestListTile() {
+  Widget buildQuestListTile(BuildContext context) {
+    
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       title: Text(
@@ -172,8 +176,12 @@ class _QuestListViewState extends State<QuestListView> {
 
   Widget _buildHeart(BuildContext context) {
     final user = Provider.of<User>(context);
-    bool isLiked = widget.questModel.likedBy.contains(user.uid);
+    List likedUsers = widget.questModel.likedBy;   
     
+    List users = []..addAll(likedUsers);
+     
+    bool isLiked = users.contains(user.uid);
+   
     
     return IconButton(
         icon: Icon(
@@ -185,23 +193,30 @@ class _QuestListViewState extends State<QuestListView> {
                     
           setState(() {
             if (isLiked) {
-                      // updateUser = 'null';
+                     
                       users.remove(user.uid);
-                      _addQuestData(context);
+                      
+                      _addQuestData(context, users);
+                       print('remove: $users');
+                       print(users);
+
                     } else {
                       users.add(user.uid);
+                     
+                      print('add: $users');
+                      print(users);
                       // updateUser = user.uid;
-                      _addQuestData(context);
-                      
+                      _addQuestData(context, users);
+                       
                     }
           });
          
-          print(isLiked);
+          // print(isLiked);
           
         });
   }
 
-  Future<void> _addQuestData(BuildContext context) async {
+  Future<void> _addQuestData(BuildContext context, List users) async {
   final database = Provider.of<DatabaseService>(context);
   final user = Provider.of<User>(context);
   print(user.uid);
