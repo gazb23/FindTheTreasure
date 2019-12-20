@@ -1,8 +1,8 @@
-
-
 class QuestModel {
   final String id;
-  final List likedBy;
+  final String timeDifficulty;
+  final String brainDifficulty;
+  final String hikeDifficulty;
   final String title;
   final String description;
   final String difficulty;
@@ -12,11 +12,11 @@ class QuestModel {
   final int numberOfDiamonds;
   final int numberOfKeys;
   final List tags;
+  final List likedBy;
 
-  QuestModel(
-    {
+  QuestModel({
     this.id,
-    this.likedBy, 
+    this.likedBy,
     this.image,
     this.numberOfLocations,
     this.location,
@@ -26,6 +26,9 @@ class QuestModel {
     this.numberOfDiamonds,
     this.numberOfKeys,
     this.tags,
+    this.timeDifficulty,
+    this.brainDifficulty,
+    this.hikeDifficulty,
   });
 
   // Factory doesn't
@@ -46,13 +49,16 @@ class QuestModel {
       numberOfDiamonds: data['numberOfDiamonds'],
       numberOfKeys: data['numberOfKeys'] != null ? data['numberOfKeys'] : 0,
       tags: data['tags'],
+      timeDifficulty: data['timeDifficulty'],
+      brainDifficulty: data['brainDifficulty'],
+      hikeDifficulty: data['hikeDifficulty'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'likedBy' : likedBy,
+      'likedBy': likedBy,
       'title': title,
       'difficulty': difficulty,
       'description': description,
@@ -62,7 +68,9 @@ class QuestModel {
       'numberOfDiamonds': numberOfDiamonds,
       'numberOfKeys': numberOfKeys,
       'tags': tags,
-      
+      'timeDifficulty' : timeDifficulty,
+      'brainDifficulty' : brainDifficulty,
+      'hikeDifficulty' : hikeDifficulty,
     };
   }
 }

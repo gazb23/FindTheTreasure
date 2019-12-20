@@ -5,6 +5,7 @@ class QuestDetailsListTile extends StatelessWidget {
   final String image;
   final String difficulty;
   final double imageHeight;
+  
 
   QuestDetailsListTile({
     Key key,
@@ -14,40 +15,42 @@ class QuestDetailsListTile extends StatelessWidget {
   }) : super(key: key);
 
   Widget _questDifficulty(String difficulty) {
+    double width = 200;
+    Color color = Colors.grey.shade400;    
     switch (difficulty) {
       case 'Easy':
         return LinearPercentIndicator(
-          width: double.infinity,
+          width: width,
           lineHeight: 15,
           percent: 0.33,
           progressColor: Colors.green,
-          backgroundColor: Colors.grey.shade400,
+          backgroundColor: color,
         );
         break;
       case 'Moderate':
         return LinearPercentIndicator(
-          width: double.infinity,
+          width: width,
           lineHeight: 15,
           percent: 0.66,
           progressColor: Colors.orangeAccent,
-          backgroundColor: Colors.grey.shade400,
+          backgroundColor: color,
         );
         break;
       case 'Hard':
         return LinearPercentIndicator(
-          width: double.infinity,
+          width: width,
           lineHeight: 15,
           percent: 1,
           progressColor: Colors.redAccent,
-          backgroundColor: Colors.grey.shade400,
+          backgroundColor: color,
         );
       default:
         return LinearPercentIndicator(
-          width: double.infinity,
+          width: width,
           lineHeight: 15,
           percent: 0.33,
           progressColor: Colors.green,
-          backgroundColor: Colors.grey.shade400,
+          backgroundColor: color,
         );
     }
   }

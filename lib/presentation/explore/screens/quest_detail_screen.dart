@@ -146,20 +146,20 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                 widget.database.questStream(documentId: widget.questModel.id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
-              final questModel = snapshot.data;
-              final likedByCopy = []..addAll(questModel.likedBy);
-              final isLikedByUser = likedByCopy.contains(widget.database.uid);
-              return Heart(
-                database: widget.database,
-                likedByCopy: likedByCopy,
-                isLikedByUser: isLikedByUser,
-                questModel: widget.questModel,
-              );
-              } if (snapshot.connectionState == ConnectionState.waiting) {
+                final questModel = snapshot.data;
+                final likedByCopy = []..addAll(questModel.likedBy);
+                final isLikedByUser = likedByCopy.contains(widget.database.uid);
+                return Heart(
+                  database: widget.database,
+                  likedByCopy: likedByCopy,
+                  isLikedByUser: isLikedByUser,
+                  questModel: widget.questModel,
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return Text('Waiting');
               }
               return CircularProgressIndicator();
-              
             }));
   }
 
@@ -172,20 +172,26 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
           header: Text(
             'Quest Details',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            
           ),
           collapsed: Column(
             children: <Widget>[
-              _buildQuestDetailsListTile(context),
+              _buildQuestDetailCard(context),
+              SizedBox(height: 5,),
               Text(
                 widget.questModel.description,
+                style: TextStyle(height: 1.35),
                 softWrap: true,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
+          
           expanded: Column(
             children: <Widget>[
+              _buildQuestDetailCard(context),
+              SizedBox(height: 5,),
               Text(
                 widget.questModel.description,
                 style: TextStyle(height: 1.35),
@@ -195,9 +201,34 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
           tapHeaderToExpand: true,
           tapBodyToCollapse: true,
           hasIcon: true,
+
         ),
       ),
     );
+  }
+
+  Column _buildQuestDetailCard(BuildContext context) {
+    return Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: Colors.grey.shade200),
+              child: Column(
+                children: <Widget>[
+                  _buildTimeListTile(
+                      context, widget.questModel.timeDifficulty),
+                  _buildBrainListTile(
+                      context, widget.questModel.brainDifficulty),
+                  _buildHikingListTile(
+                      context, widget.questModel.hikeDifficulty),
+                ],
+              ),
+            ),
+            
+          ],
+        );
   }
 
   Widget _buildBountyCard(BuildContext context) {
@@ -305,15 +336,37 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
     );
   }
 
-  Widget _buildQuestDetailsListTile(BuildContext context) {
+  Widget _buildTimeListTile(BuildContext context, String difficulty) {
     return Column(
       children: <Widget>[
         QuestDetailsListTile(
-          
           image: 'images/deadline.png',
           imageHeight: 40,
-          difficulty: widget.questModel.difficulty,
-                  
+          difficulty: difficulty,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBrainListTile(BuildContext context, String difficulty) {
+    return Column(
+      children: <Widget>[
+        QuestDetailsListTile(
+          image: 'images/brain.png',
+          imageHeight: 40,
+          difficulty: difficulty,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHikingListTile(BuildContext context, String difficulty) {
+    return Column(
+      children: <Widget>[
+        QuestDetailsListTile(
+          image: 'images/hiker.png',
+          imageHeight: 40,
+          difficulty: difficulty,
         ),
       ],
     );
