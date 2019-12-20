@@ -3,6 +3,7 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
+import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_tags.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
@@ -42,34 +43,17 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
       child: Scaffold(
         body: Container(
           width: double.infinity,
-          color: Colors.grey.
-          shade50,
+          color: Colors.grey.shade50,
           child: Stack(
-
-            children: <Widget>[
+            children: <Widget>[             
+              
               ListView(
-                
-                children: <Widget>[
+                children: <Widget>[                  
                   _buildImage(context),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    color: Colors.grey.shade50,
-                    child: Wrap(
-                      direction: Axis.horizontal,
-                      spacing: 5,
-                      runSpacing: 5,
-                      children: <Widget>[
-                        // Iterate over the tags list stored in Firebase and return a QuestTag for each element in that list.
-                        for (String tag in tags)
-                          QuestTags(
-                            title: tag,
-                          )
-                      ],
-                    ),
-                  ),
-                  _buildQuestDescription(context),
-                  _buildInformationCard(context),
+                  _buildQuestTags(tags),
+                  _buildQuestDescriptionCard(context),
+                  _buildBountyCard(context),
+                  _buildCargoCard(context),
                   SizedBox(
                     height: 70,
                   )
@@ -81,6 +65,26 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
         ),
       ),
     );
+  }
+
+  Container _buildQuestTags(List tags) {
+    return Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  color: Colors.grey.shade50,
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    spacing: 5,
+                    runSpacing: 5,
+                    children: <Widget>[
+                      // Iterate over the tags list stored in Firebase and return a QuestTag for each element in that list.
+                      for (String tag in tags)
+                        QuestTags(
+                          title: tag,
+                        )
+                    ],
+                  ),
+                );
   }
 
   Widget _buildImage(BuildContext context) {
@@ -97,9 +101,17 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
             colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.8), BlendMode.dstATop),
             alignment: Alignment.center),
+            
       ),
-      child: Align(
-          alignment: Alignment.bottomLeft, child: _buildQuestListTile(context)),
+      child: Stack(children:<Widget>[
+        AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: _buildQuestListTile(context))
+      ] ),
     );
   }
 
@@ -128,22 +140,32 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                   fontWeight: FontWeight.w600,
                   fontFamily: 'JosefinSans'),
             ),
-            
           ],
-          
         ),
-        trailing: buildHeart(context),
-        );
+        trailing: StreamBuilder<QuestModel>(
+            stream:
+                widget.database.questStream(documentId: widget.questModel.id),
+            builder: (context, snapshot) {
+              final questModel = snapshot.data;
+              final likedByCopy = []..addAll(questModel.likedBy);
+              final isLikedByUser = likedByCopy.contains(widget.database.uid);
+              return Heart(
+                database: widget.database,
+                likedByCopy: likedByCopy,
+                isLikedByUser: isLikedByUser,
+                questModel: widget.questModel,
+              );
+            }));
   }
 
-  Widget _buildQuestDescription(BuildContext context) {
+  Widget _buildQuestDescriptionCard(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: EdgeInsets.all(10),
         child: ExpandablePanel(
           header: Text(
-            'About',
+            'Quest Details',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           collapsed: Column(
@@ -151,7 +173,7 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
               Text(
                 widget.questModel.description,
                 softWrap: true,
-                maxLines: 2,
+                maxLines: 5,
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -167,20 +189,46 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
           tapHeaderToExpand: true,
           tapBodyToCollapse: true,
           hasIcon: true,
-          iconColor: Colors.orangeAccent,
+          
         ),
       ),
     );
   }
 
-  Widget _buildInformationCard(BuildContext context) {
+  Widget _buildBountyCard(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: ExpandablePanel(
+
+          header: Text(
+            'Bounty',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          collapsed: Container(
+            child: Text('Collapsed')
+          ),
+          expanded: _buildBounty(context), 
+          
+          tapHeaderToExpand: true,
+          tapBodyToCollapse: true,
+          hasIcon: true,
+          
+
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCargoCard(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: EdgeInsets.all(10),
         child: ExpandablePanel(
           header: Text(
-            'Quest Details',
+            'Cargo',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           collapsed: Container(
@@ -192,13 +240,14 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
             ),
           ),
           expanded: Text(
+
             widget.questModel.description,
             style: TextStyle(height: 1.35),
           ),
           tapHeaderToExpand: true,
           tapBodyToCollapse: true,
           hasIcon: true,
-          iconColor: Colors.orangeAccent,
+          
         ),
       ),
     );
@@ -258,60 +307,61 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
       ),
     );
   }
+  Widget _buildBounty(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        color: Colors.grey.shade200,
+      ),
+      height: 250,
+      width: double.infinity,
+      
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 10,),
+          ListTile(
 
-  Widget buildHeart(BuildContext context) {
-    final user = widget.userData;
+            leading: Image.asset('images/deadline.png', height: 50,),
+            title: Text('3h 45min', style: TextStyle(color: Colors.black54, fontSize: 20, fontWeight: FontWeight.bold),),
+          ),
+          SizedBox(height: 10,),
+          ListTile(
+            leading: Image.asset('images/brain.png', height: 50,),
+            title: Container(
+              width: 150,
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.redAccent,
+      ),
+      child: Text(
+        'Hard',
+        style: TextStyle(color: Colors.white, fontSize: 14),
+      ),
+    ),
 
-    
-
-    return StreamBuilder<QuestModel>(
-        stream: widget.database.questStream(documentId: widget.questModel.id),
-        builder: (context, snapshot) {
-          final questModel = snapshot.data;
-          final likedByList = questModel.likedBy;
-          List copyLikedByList = []..addAll(likedByList);
-          bool isLiked = copyLikedByList.contains(user.uid);
-
-          return IconButton(
-              icon: Icon(
-                isLiked ? Icons.favorite : Icons.favorite_border,
-                color: isLiked ? Colors.redAccent : Colors.white,
-                size: 35,
-              ),
-              onPressed: () {
-                setState(() {
-                  if (isLiked) {
-                    copyLikedByList.remove(user.uid);
-                    addQuestData(context, copyLikedByList);
-                  } else {
-                    copyLikedByList.add(user.uid);
-                    addQuestData(context, copyLikedByList);
-                  }
-                });
-              });
-        });
-  }
-
-  Future<void> addQuestData(BuildContext context, List users) async {
-    final database = widget.database;
-    try {
-      await database.updateUserLikedQuests(
-          documentId: widget.questModel.id,
-          questModel: QuestModel(
-            likedBy: users,
-            id: widget.questModel.id,
-            description: widget.questModel.description,
-            difficulty: widget.questModel.difficulty,
-            image: widget.questModel.image,
-            location: widget.questModel.location,
-            numberOfDiamonds: widget.questModel.numberOfDiamonds,
-            numberOfKeys: widget.questModel.numberOfKeys,
-            numberOfLocations: widget.questModel.numberOfLocations,
-            tags: widget.questModel.tags,
-            title: widget.questModel.title,
-          ));
-    } catch (e) {
-      print(e.toString());
-    }
+          ),
+          SizedBox(height: 10,),
+          ListTile(
+            leading: Image.asset('images/hiker.png', height: 50,),
+            title: Container(
+              width: 150,
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.orangeAccent,
+      ),
+      child: Text(
+        'Moderate',
+        style: TextStyle(color: Colors.white, fontSize: 14),
+      ),
+    )
+    ),
+    SizedBox(height: 10,),
+       
+        ],
+      ),
+    );
   }
 }
