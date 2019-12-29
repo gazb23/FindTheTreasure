@@ -9,7 +9,7 @@ class PlatformAlertDialog extends PlatformWidget {
   final String cancelActionText;
   final String defaultActionText;
   final Widget image;
- 
+
   PlatformAlertDialog({
     this.cancelActionText,
     @required this.title,
@@ -19,10 +19,6 @@ class PlatformAlertDialog extends PlatformWidget {
   })  : assert(title != null),
         assert(content != null),
         assert(defaultActionText != null);
-
-
-  
-
 
   Future<bool> show(BuildContext context) async {
     return Platform.isIOS
@@ -39,21 +35,29 @@ class PlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return CupertinoAlertDialog(
-
-      title: Text(
-        title,
-        style: TextStyle(
-          fontFamily: 'quicksand',
-          fontWeight: FontWeight.w600,
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontFamily: 'quicksand',
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
       content: SingleChildScrollView(
-              child: Column(
+        child: Column(
           children: <Widget>[
             image ?? Container(),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               content,
-              style: TextStyle(fontFamily: 'quicksand'),
+              style: TextStyle(
+                fontFamily: 'quicksand',
+                fontSize: 18,
+              ),
             ),
           ],
         ),
@@ -75,13 +79,11 @@ class PlatformAlertDialog extends PlatformWidget {
         ),
       ),
       content: SingleChildScrollView(
-              child: Column(
-                
+        child: Column(
           children: <Widget>[
-            
-              image ?? Container(), //If no image is displayed an empty container will take it's place. 
-             
-            
+            image ??
+                Container(), //If no image is displayed an empty container will take it's place.
+
             Text(
               content,
               style: TextStyle(fontFamily: 'quicksand'),
@@ -147,6 +149,4 @@ class PlatformAlertDialogAction extends PlatformWidget {
       onPressed: onPressed,
     );
   }
-
-
 }

@@ -45,19 +45,7 @@ class Heart extends StatelessWidget {
           documentId: questModel.id,
           questModel: QuestModel(
             likedBy: likedByCopy,
-            id: questModel.id,
-            description: questModel.description,
-            difficulty: questModel.difficulty,
-            image: questModel.image,
-            location: questModel.location,
-            numberOfDiamonds: questModel.numberOfDiamonds,
-            numberOfKeys: questModel.numberOfKeys,
-            numberOfLocations: questModel.numberOfLocations,
-            tags: questModel.tags,
-            title: questModel.title,
-            brainDifficulty: questModel.brainDifficulty,
-            timeDifficulty: questModel.timeDifficulty,
-            hikeDifficulty: questModel.hikeDifficulty,
+            id: questModel.id,            
           ));
     } catch (e) {
       print(e.toString());

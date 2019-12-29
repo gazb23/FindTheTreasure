@@ -43,12 +43,13 @@ class DatabaseService {
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
   //WRITE DATA:
-  //Update Firebase quest when a user likes a quest
+  //Update userLikes list on QuestModel when a user likes a quest
   Future<void> updateUserLikedQuests({@required QuestModel questModel, @required String documentId}) async =>
       await _service.setData(
           path: APIPath.quest(documentId),
-          data: questModel.toMap());
-  //Delte from Firebase the quest the user unliked 
+          data: questModel.updateHeart());
+
+  //Delete from Firebase the quest the user unliked 
   Future<void> deleteUserLikedQuest({@required QuestModel questModel, @required String documentId}) async =>
       await _service.deleteData(
           path: APIPath.quest(documentId),

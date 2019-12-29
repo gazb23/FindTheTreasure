@@ -73,4 +73,10 @@ class QuestModel {
       'hikeDifficulty' : hikeDifficulty,
     };
   }
+    Map<String, dynamic> updateHeart() {
+    return {
+      'id': id,
+      'likedBy': likedBy,
+    };
+  }
 }
