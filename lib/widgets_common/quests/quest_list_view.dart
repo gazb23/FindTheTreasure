@@ -1,4 +1,3 @@
-
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -6,10 +5,9 @@ import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class QuestListView extends StatefulWidget {
-  final QuestModel questModel;  
-  
+  final QuestModel questModel;
+
   final String image;
   final String title;
   final String difficulty;
@@ -29,7 +27,7 @@ class QuestListView extends StatefulWidget {
     this.onTap,
     this.location,
     this.numberOfLocations,
-    this.questModel, 
+    this.questModel,
   }) : super(key: key);
 
   @override
@@ -37,7 +35,6 @@ class QuestListView extends StatefulWidget {
 }
 
 class _QuestListViewState extends State<QuestListView> {
-  
   Color _questDifficulty(String difficultyTitle) {
     switch (difficultyTitle) {
       case 'Easy':
@@ -117,9 +114,8 @@ class _QuestListViewState extends State<QuestListView> {
   }
 
   Widget buildQuestListTile(BuildContext context, DatabaseService database) {
-    final questModel = widget.questModel;            
-    final likedByCopy = []..addAll(questModel.likedBy);
-    final isLikedByUser = likedByCopy.contains(database.uid);
+    final questModel = widget.questModel;
+    final isLikedByUser = questModel.likedBy.contains(database.uid);
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       title: Text(
@@ -148,7 +144,6 @@ class _QuestListViewState extends State<QuestListView> {
       ),
       trailing: Heart(
         database: database,
-        likedByCopy: []..addAll(widget.questModel.likedBy),
         isLikedByUser: isLikedByUser,
         questModel: widget.questModel,
       ),
@@ -177,7 +172,4 @@ class _QuestListViewState extends State<QuestListView> {
       ),
     );
   }
-
-
- 
 }

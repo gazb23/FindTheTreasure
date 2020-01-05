@@ -8,26 +8,34 @@ class ListItemsBuilder<T> extends StatelessWidget {
   final AsyncSnapshot<List<T>> snapshot;
   final ItemWidgetBuilder<T> itemBuilder;
   final AsyncSnapshot<T> snapshots;
+  final String title;
+  final String message;
 
   const ListItemsBuilder({
     Key key,
     this.snapshot,
-    this.itemBuilder, this.snapshots,
+    this.itemBuilder,
+    this.snapshots,
+    this.title,
+    this.message,
   }) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     if (snapshot.hasData) {
       final List<T> items = snapshot.data;
       if (items.isNotEmpty) {
         return _buildList(items);
-      } else  {
-        return EmptyContent();
+      } else {
+        return EmptyContent(
+          title: title,
+          message: message,
+        );
       }
     } else if (snapshot.hasError) {
       return EmptyContent(
         title: 'Something Went Wrong!',
-        message: 'Can\t load Quests right now',
+        message: 'Can\'t load Quests right now',
       );
     }
     return Center(

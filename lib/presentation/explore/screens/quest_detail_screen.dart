@@ -52,8 +52,8 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                   _buildImage(context),
                   _buildQuestTags(tags),
                   _buildQuestDescriptionCard(context),
-                  _buildBountyCard(context),
-                  _buildCargoCard(context),
+                  // _buildBountyCard(context),
+                  
                   SizedBox(
                     height: 70,
                   )
@@ -146,12 +146,10 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                 widget.database.questStream(documentId: widget.questModel.id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
-                final questModel = snapshot.data;
-                final likedByCopy = []..addAll(questModel.likedBy);
-                final isLikedByUser = likedByCopy.contains(widget.database.uid);
+                final questModel = snapshot.data;                
+                final isLikedByUser = questModel.likedBy.contains(widget.database.uid);
                 return Heart(
-                  database: widget.database,
-                  likedByCopy: likedByCopy,
+                  database: widget.database,                  
                   isLikedByUser: isLikedByUser,
                   questModel: widget.questModel,
                 );
@@ -231,62 +229,34 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
         );
   }
 
-  Widget _buildBountyCard(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: ExpandablePanel(
-          header: Text(
-            'Bounty',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          collapsed: Container(child: Text('Collapsed')),
-          expanded: Text('hello'),
-          tapHeaderToExpand: true,
-          tapBodyToCollapse: true,
-          hasIcon: true,
-        ),
-      ),
-    );
-  }
+  // Widget _buildBountyCard(BuildContext context) {
+  //   return Card(
+  //     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+  //     child: Container(
+  //       padding: EdgeInsets.all(10),
+  //       child: ExpandablePanel(
+  //         header: Text(
+  //           'Bounty',
+  //           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+  //         ),
+  //         collapsed: null,
+  //         expanded: Text('hello'),
+  //         tapHeaderToExpand: true,
+  //         tapBodyToCollapse: true,
+  //         hasIcon: true,
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildCargoCard(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: ExpandablePanel(
-          header: Text(
-            'Cargo',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          collapsed: Container(
-            child: Text(
-              widget.questModel.description,
-              softWrap: true,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          expanded: Text(
-            widget.questModel.description,
-            style: TextStyle(height: 1.35),
-          ),
-          tapHeaderToExpand: true,
-          tapBodyToCollapse: true,
-          hasIcon: true,
-        ),
-      ),
-    );
-  }
+  
 
   Widget _buildBottomBar(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        color: Colors.grey.shade800,
+        color: Colors.grey.shade800.withOpacity(0.8),
         width: double.infinity,
         child: Row(
           children: <Widget>[
@@ -305,7 +275,7 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
             Expanded(
               flex: 3,
               child: SignInButton(
-                text: 'Let\s Go!',
+                text: 'Let\'s Go!',
                 onPressed: () {
                   if (widget.userData.userDiamondCount >=
                       widget.questModel.numberOfDiamonds) {
@@ -314,7 +284,7 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                       content:
                           'It seems ya have enough treasure for the ${widget.questModel.title} quest. But do you have the legs!',
                       cancelActionText: 'Cancel',
-                      defaultActionText: 'Let\s Go Baby!',
+                      defaultActionText: 'Let\'s Go Baby!',
                       image: Image.asset('images/ic_excalibur_owl.png'),
                     ).show(context);
                   } else

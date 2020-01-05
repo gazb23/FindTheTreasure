@@ -60,7 +60,9 @@ class FirestoreService {
     final documentReference = Firestore.instance.document(path);
     print('$path: $data');
     await documentReference.setData(data, merge: true);
+    
   }
+
 
   Future<void> deleteData({@required String path}) async {
     final reference = Firestore.instance.document(path);

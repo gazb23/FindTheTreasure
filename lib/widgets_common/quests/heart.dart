@@ -5,17 +5,16 @@ import 'package:flutter/material.dart';
 
 class Heart extends StatelessWidget {
   final DatabaseService database;
-  final QuestModel questModel;  
-  final List likedByCopy;
+  final QuestModel questModel;
   final bool isLikedByUser;
 
   Heart({
-    
-    @required this.likedByCopy,
     @required this.isLikedByUser,
     @required this.database,
     @required this.questModel,
-  });
+  })  : assert(questModel != null),
+        assert(database != null),
+        assert(isLikedByUser != null);
 
   @override
   Widget build(BuildContext context) {
@@ -26,29 +25,11 @@ class Heart extends StatelessWidget {
           size: 35,
         ),
         onPressed: () {
-          
-            if (isLikedByUser) {
-              likedByCopy.remove(database.uid);
-
-              addQuestData(context, likedByCopy);
-            } else {
-              likedByCopy.add(database.uid);
-              addQuestData(context, likedByCopy);
-            }
-          
+          isLikedByUser
+              ? database.arrayRemove(questModel.id, database.uid)
+              : database.arrayUnion(questModel.id, database.uid);
         });
   }
 
-  Future<void> addQuestData(BuildContext context, List likedByCopy) async {
-    try {
-      await database.updateUserLikedQuests(
-          documentId: questModel.id,
-          questModel: QuestModel(
-            likedBy: likedByCopy,
-            id: questModel.id,            
-          ));
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+
 }

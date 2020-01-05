@@ -31,7 +31,7 @@ class QuestModel {
     this.hikeDifficulty,
   });
 
-  // Factory doesn't
+  
   factory QuestModel.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;

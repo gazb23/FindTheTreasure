@@ -42,16 +42,28 @@ class DatabaseService {
       path: APIPath.quest(documentId),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
-  //WRITE DATA:
-  //Update userLikes list on QuestModel when a user likes a quest
-  Future<void> updateUserLikedQuests({@required QuestModel questModel, @required String documentId}) async =>
-      await _service.setData(
-          path: APIPath.quest(documentId),
-          data: questModel.updateHeart());
 
-  //Delete from Firebase the quest the user unliked 
-  Future<void> deleteUserLikedQuest({@required QuestModel questModel, @required String documentId}) async =>
-      await _service.deleteData(
-          path: APIPath.quest(documentId),
-      );
+  //WRITE DATA:
+  // Add UID to likedBy Array on Firebase
+   Future<void> arrayUnion(String documentId, String uid) async {
+   final likedByRef = _db.collection('/quests').document(documentId);
+   print('add');
+   await likedByRef.updateData({'likedBy': FieldValue.arrayUnion([uid])});
+ }
+  // Remove UID from likedBy Array on Firebase
+  Future<void> arrayRemove(String documentId, String uid) async {
+   final likedByRef = _db.collection('/quests').document(documentId);
+   print('remove');
+   await likedByRef.updateData({'likedBy': FieldValue.arrayRemove([uid])});
+ }
+
+
+
+  //DELTE DATA:
+ 
+
+
+
+
+      
 }

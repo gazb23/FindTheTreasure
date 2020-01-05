@@ -12,10 +12,9 @@ class EmailCreateAccountBloc {
   Stream<EmailSignInModel> get modelStream => _modelController.stream;
   EmailSignInModel _model = EmailSignInModel();
 
-  void disose() => _modelController.close();
+  void dispose() => _modelController.close();
   
-  Future<void> submit() async {
-    
+  Future<void> submit() async {    
     try {
       updateWith(submitted: true, isLoading: true);
       await auth.createUserWithEmailAndPassword(_model.email, _model.password);

@@ -14,16 +14,43 @@ import 'package:provider/provider.dart';
 class MyQuestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-          child: Scaffold(
-        appBar: AppBar(
-          title: Center(child: Image.asset('images/andicon.png', height: 50,)),
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.white
+
+      ),
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            
+            bottom: TabBar(
+              indicatorColor: Colors.orangeAccent,
+              labelStyle: TextStyle(
+                fontFamily: 'quicksand',
+                fontWeight: FontWeight.bold,
+                color: Colors.black87
+              ),
+              tabs: <Widget>[
+                Tab(text: 'Current',),
+                Tab(text: 'Liked',),
+                Tab(text: 'Conquered',),
+              ],
+            ),
+            title: Text('Your Quests', style: TextStyle(fontFamily: 'JosefinSans', color: Colors.black54),),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              
+              Tab(icon: Icon(Icons.directions_transit)),
+              _buildUserQuestListView(context),
+                Tab(icon: Icon(Icons.directions_bike)),
+            ],
+          ),
         ),
-        body: _buildUserQuestListView(context)
-          
-        ),
-      
+      ),
     );
+          
   }
     Widget _buildUserQuestListView(BuildContext context) {
     final database = Provider.of<DatabaseService>(context);
@@ -32,6 +59,8 @@ class MyQuestsScreen extends StatelessWidget {
         stream: database.userLikedQuestsStream(),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
+            title: 'Time to add some favourites!',
+            message: 'Head to the explore page, and when you find a quest you like tap on the heart icon to save it',
             snapshot: snapshot,
             itemBuilder: (context, quest) => QuestListView(              
               numberOfDiamonds: quest.numberOfDiamonds,

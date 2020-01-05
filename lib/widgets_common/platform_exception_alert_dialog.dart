@@ -17,11 +17,11 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
     //Custom messages on sign in and account creation
   'ERROR_WEAK_PASSWORD' : 'We both know that password isn\'t strong enough! Passwords must be at least 6 characters.',
   'ERROR_USER_NOT_FOUND' : 'Uh Oh! There is no user under that email address.',
-  'ERROR_INVALID_EMAIL' : 'Please check your email, think you made a whoopsy!',
-  'ERROR_EMAIL_ALREADY_IN_USE' : 'Umm...That email is already in use by another account, please check your email and try again.',  
-  'ERROR_WRONG_PASSWORD' : 'Wrong password ya goof!',
+  'ERROR_INVALID_EMAIL' : 'Please check your email, you may have made a whoopsy!',
+  'ERROR_EMAIL_ALREADY_IN_USE' : 'Umm...This is awkward! That email is already in use by another account, please check your email and try again.',  
+  'ERROR_WRONG_PASSWORD' : 'Wrong password, please try again.',
   'ERROR_USER_DISABLED' : 'User has been disabled.',
-  'ERROR_TOO_MANY_REQUESTS' : 'You have been locke out! Too many attempts to sign in.',
+  'ERROR_TOO_MANY_REQUESTS' : 'You have been locked out! Too many attempts to sign in.',
   'ERROR_OPERATION_NOT_ALLOWED' : 'Indicates that Email & Password accounts are not enabled.'
 };
 }

@@ -1,6 +1,8 @@
 import 'package:find_the_treasure/blocs/sign%20in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:find_the_treasure/widgets_common/social_sign_in_button.dart';
@@ -14,6 +16,7 @@ class SignInMainScreen extends StatelessWidget {
   static const String id = 'sign_in_main';
   final SocialSignInBloc bloc;
   final bool isLoading;
+  
   const SignInMainScreen({
     Key key,
     this.bloc,
@@ -22,6 +25,7 @@ class SignInMainScreen extends StatelessWidget {
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context);
+    
     return ChangeNotifierProvider<ValueNotifier<bool>>(
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
@@ -46,9 +50,9 @@ class SignInMainScreen extends StatelessWidget {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
+    
     try {
       await bloc.signInWithGoogle();
-      
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
     }
@@ -64,6 +68,8 @@ class SignInMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -75,16 +81,21 @@ class SignInMainScreen extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    // Create a circular progress indicator if there are any network delays
+    final connectionStatus = Provider.of<ConnectivityStatus>(context);
+    bool connected = connectionStatus == ConnectivityStatus.Online;
     if (isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return Center(
+        child: Image.asset(
+          'images/compass.gif',
+          height: 200,
+        ),
+      );
     } else
       return Stack(
         fit: StackFit.expand,
         children: <Widget>[
           Carousel(
             boxFit: BoxFit.fitHeight,
-            
             images: [
               Image.asset(
                 'images/slide_1.png',
@@ -117,14 +128,16 @@ class SignInMainScreen extends StatelessWidget {
                     text: 'Sign in with Facebook',
                     textcolor: Colors.white,
                     color: Color(0xFF4267B2),
-                    onPressed: () => _signInWithFacebook(context),
+                    onPressed: () => connected ? _signInWithFacebook(context) : _showConnectionFailureDialog(context),
                   ),
                   SocialSignInButton(
                     assetName: 'images/google-logo.png',
                     text: 'Sign in with Google',
                     textcolor: Colors.black87,
                     color: Colors.grey[100],
-                    onPressed: () => _signInWithGoogle(context),
+                    onPressed: () =>
+
+                      connected ? _signInWithGoogle(context) : _showConnectionFailureDialog(context),
                     
                   ),
                   SizedBox(
@@ -167,4 +180,12 @@ class SignInMainScreen extends StatelessWidget {
         ],
       );
   }
+ Future<void> _showConnectionFailureDialog(BuildContext context) async {
+   await  PlatformAlertDialog(
+     title: 'No network connection',
+     content: 'Uh no! We can\'t seem to find an internet connection, please check your network and try again.',
+     defaultActionText: 'OK',
+   ).show(context);
+ }
+
 }

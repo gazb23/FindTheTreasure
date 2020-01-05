@@ -1,7 +1,7 @@
-
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:flutter/material.dart';
 import 'presentation/sign_in/screens/email_sign_in_screen.dart';
 import 'presentation/sign_in/landing_page.dart';
@@ -14,26 +14,31 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<AuthBase>(
+    return MultiProvider(
+      providers: [
+        Provider<AuthBase>(
           create: (context) => Auth(),
-          
-        
-          child: MaterialApp(
-          title: 'Find The Treasure',
-          theme: _buildThemeData(),
-          initialRoute: LandingPage.id,
-          routes: {
-            // Each screen class has a static const to create that screen
-            SignInMainScreen.id: (context) => SignInMainScreen(),
-            EmailCreateAccountScreen.id: (context) => EmailCreateAccountScreen(),
-            EmailSignInScreen.id: (context) => EmailSignInScreen(),
-            PasswordResetScreen.id: (context) => PasswordResetScreen(),
-            LandingPage.id: (context) => LandingPage(),
-            ProfileScreen.id: (context) => ProfileScreen(),
-          },
         ),
+        StreamProvider<ConnectivityStatus>(
+          create: (context) =>
+              ConnectivityService().connectionStatusController.stream,
+        )
+      ],
+      child: MaterialApp(
+        title: 'Find The Treasure',
+        theme: _buildThemeData(),
+        initialRoute: LandingPage.id,
+        routes: {
+          // Each screen class has a static const to create that screen
+          SignInMainScreen.id: (context) => SignInMainScreen(),
+          EmailCreateAccountScreen.id: (context) => EmailCreateAccountScreen(),
+          EmailSignInScreen.id: (context) => EmailSignInScreen(),
+          PasswordResetScreen.id: (context) => PasswordResetScreen(),
+          LandingPage.id: (context) => LandingPage(),
+          ProfileScreen.id: (context) => ProfileScreen(),
+        },
+      ),
     );
-    
   }
 
 // Theme for the app
@@ -71,6 +76,12 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.grey[500]),
         ),
         backgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(color: Colors.white));
+        appBarTheme: AppBarTheme(
+            color: Colors.white,
+            textTheme: TextTheme(title: TextStyle(fontFamily: 'quicksand'))),
+        tabBarTheme: TabBarTheme(
+            labelStyle: TextStyle(
+          fontFamily: 'quicksand',
+        )));
   }
 }

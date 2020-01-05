@@ -120,6 +120,7 @@ class PlatformAlertDialog extends PlatformWidget {
           fontSize: 18.0,
           fontWeight: FontWeight.w700,
           color: Colors.orangeAccent,
+          
         ),
       ),
       onPressed: () => Navigator.of(context).pop(true),
@@ -145,6 +146,7 @@ class PlatformAlertDialogAction extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return FlatButton(
+      
       child: child,
       onPressed: onPressed,
     );
