@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
 // Theme for the app
   ThemeData _buildThemeData() {
     return ThemeData(
+
         buttonTheme: ButtonThemeData(
           height: 45.0,
         ),
@@ -60,10 +61,17 @@ class MyApp extends StatelessWidget {
               fontSize: 18.0,
             )),
         fontFamily: 'quicksand',
+        // Define the text theme for the app
         textTheme: TextTheme(
+          title: TextStyle(
+            color: Colors.black54,
+            fontSize: 28,
+            fontWeight: FontWeight.bold
+          ),
             body1: TextStyle(
-              fontSize: 17.0,
-              color: Colors.grey[500],
+              fontSize: 18,
+              color: Colors.grey.shade500,
+              fontFamily: 'quicksand'
             ),
             button: TextStyle(
               fontSize: 15.0,
@@ -78,10 +86,8 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
             color: Colors.white,
-            textTheme: TextTheme(title: TextStyle(fontFamily: 'quicksand'))),
-        tabBarTheme: TabBarTheme(
-            labelStyle: TextStyle(
-          fontFamily: 'quicksand',
-        )));
+            textTheme: TextTheme(title: TextStyle(fontFamily: 'quicksand',fontSize: 20))),
+        
+       );
   }
 }
