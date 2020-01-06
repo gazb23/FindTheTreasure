@@ -286,6 +286,7 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
                       cancelActionText: 'Cancel',
                       defaultActionText: 'Let\'s Go Baby!',
                       image: Image.asset('images/ic_excalibur_owl.png'),
+                      
                     ).show(context);
                   } else
                     return PlatformAlertDialog(

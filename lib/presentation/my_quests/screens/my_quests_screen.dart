@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/active_quest/active_quest_start_screen.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -49,7 +50,7 @@ class MyQuestsScreen extends StatelessWidget {
             ),
             body: TabBarView(
               children: <Widget>[
-                Tab(icon: Icon(Icons.directions_transit)),
+                QuestStartScreen(),
                 _buildUserQuestListView(context),
                 Tab(icon: Icon(Icons.directions_bike)),
               ],
