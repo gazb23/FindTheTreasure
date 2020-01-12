@@ -11,6 +11,9 @@ final double diamondHeight;
   final int numberOfDiamonds;  
   final int numberOfKeys;
   final MainAxisAlignment mainAxisAlignment;
+  final Color color;
+  final bool showDiamond;
+  final bool showKey;
   
 
   DiamondAndKeyContainer(
@@ -18,7 +21,7 @@ final double diamondHeight;
     this.skullKeyHeight,
     this.spaceBetween,
     this.numberOfDiamonds,
-    this.numberOfKeys, this.mainAxisAlignment, this.fontSize, this.fontWeight, }
+    this.numberOfKeys, this.mainAxisAlignment, this.fontSize, this.fontWeight, this.color, this.showDiamond = true, this.showKey = true }
   );
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ final double diamondHeight;
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.end,
         children: <Widget>[
-          Container(
+          showDiamond ? Container(
             child: Row(
               children: <Widget>[
                 Image.asset(
@@ -40,15 +43,15 @@ final double diamondHeight;
                 ),
                 Text(
                   numberOfDiamonds.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
+                  style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
                 ),
               ],
             ),
-          ),
+          ) : Container(),
           SizedBox(
             width: spaceBetween,
           ),
-          Container(
+          showKey ? Container(
             child: Row(
               children: <Widget>[
                 Image.asset(
@@ -57,15 +60,16 @@ final double diamondHeight;
                 ),
                 Text(
                   numberOfKeys.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
+                  style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
                 ),
               ],
             ),
-          ),
+          ) : Container(),
         ],
       ),
     );
   }
+
 }
 
 

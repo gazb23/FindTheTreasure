@@ -38,7 +38,7 @@ class DatabaseService {
   }
 
   // Receive a stream of a single quest
-  Stream<QuestModel> questStream({String documentId}) => _service.documentStream(
+  Stream<QuestModel> questStream({@required String documentId}) => _service.documentStream(
       path: APIPath.quest(documentId),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 

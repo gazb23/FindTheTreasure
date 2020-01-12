@@ -56,8 +56,7 @@ class QuestModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
+    return {      
       'likedBy': likedBy,
       'title': title,
       'difficulty': difficulty,

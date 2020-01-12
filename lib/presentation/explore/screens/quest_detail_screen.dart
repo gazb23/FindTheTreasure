@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/active_quest/active_quest_start_screen.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -275,19 +276,13 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
             Expanded(
               flex: 3,
               child: SignInButton(
-                text: 'Let\'s Go!',
+                text: 'Start Quest',
                 onPressed: () {
+                  
                   if (widget.userData.userDiamondCount >=
-                      widget.questModel.numberOfDiamonds) {
-                    return PlatformAlertDialog(
-                      title: '${widget.userData.displayName}',
-                      content:
-                          'It seems ya have enough treasure for the ${widget.questModel.title} quest. But do you have the legs!',
-                      cancelActionText: 'Cancel',
-                      defaultActionText: 'Let\'s Go Baby!',
-                      image: Image.asset('images/ic_excalibur_owl.png'),
-                      
-                    ).show(context);
+                      widget.questModel.numberOfDiamonds && widget.userData.userKeyCount >= widget.questModel.numberOfKeys) {
+                        
+                    return _confirmQuest(context);
                   } else
                     return PlatformAlertDialog(
                       title: '${widget.userData.displayName}',
@@ -305,6 +300,20 @@ class _QuestDetailScreenState extends State<QuestDetailScreen> {
         ),
       ),
     );
+  }
+    Future<void> _confirmQuest(BuildContext context) async {
+    final didRequestQuest = await PlatformAlertDialog(
+                      title: '${widget.userData.displayName}',
+                      content:
+                          'It seems ya have enough treasure for the ${widget.questModel.title} quest. Do you want to begin the quest?',
+                      cancelActionText: 'Cancel',
+                      defaultActionText: 'Confirm',
+                      image: Image.asset('images/ic_excalibur_owl.png'),
+                      
+                    ).show(context);
+    if (didRequestQuest) {
+      QuestStartScreen.show(context, questModel: widget.questModel);
+    }
   }
 
   Widget _buildTimeListTile(BuildContext context, String difficulty) {

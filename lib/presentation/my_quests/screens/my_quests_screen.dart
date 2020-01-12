@@ -50,7 +50,7 @@ class MyQuestsScreen extends StatelessWidget {
             ),
             body: TabBarView(
               children: <Widget>[
-                QuestStartScreen(),
+                Tab(icon: Icon(Icons.directions_bike)),
                 _buildUserQuestListView(context),
                 Tab(icon: Icon(Icons.directions_bike)),
               ],

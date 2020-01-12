@@ -86,7 +86,8 @@ class PlatformAlertDialog extends PlatformWidget {
 
             Text(
               content,
-              style: TextStyle(fontFamily: 'quicksand'),
+              style: TextStyle(fontFamily: 'quicksand', ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

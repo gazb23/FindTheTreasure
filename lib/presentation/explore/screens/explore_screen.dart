@@ -42,23 +42,23 @@ class ExploreScreen extends StatelessWidget {
         builder: (context, snapshot) {
           
           return ListItemsBuilder<QuestModel>(
-            snapshot: snapshot,
-            itemBuilder: (context, quest) => QuestListView(
-              numberOfDiamonds: quest.numberOfDiamonds,
-              difficulty: quest.difficulty,
-              numberOfKeys: quest.numberOfKeys,
-              title: quest.title,
-              image: quest.image,
-              numberOfLocations: quest.numberOfLocations,
-              location: quest.location,
-              questModel: quest,       
-                    
-              onTap: () {
-                QuestDetailScreen.show(context, quest: quest, user: user, database: database );
-                
-              },
-            ),
-          );
+              snapshot: snapshot,
+              itemBuilder: (context, quest) => QuestListView(
+                numberOfDiamonds: quest.numberOfDiamonds,
+                difficulty: quest.difficulty,
+                numberOfKeys: quest.numberOfKeys,
+                title: quest.title,
+                image: quest.image,
+                numberOfLocations: quest.numberOfLocations,
+                location: quest.location,
+                questModel: quest,       
+          
+                onTap: () {
+                  QuestDetailScreen.show(context, quest: quest, user: user, database: database );
+                  
+                },
+              ),
+            );
           }
           
         );
