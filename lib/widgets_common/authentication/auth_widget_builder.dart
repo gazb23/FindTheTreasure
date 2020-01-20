@@ -1,4 +1,3 @@
-
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -27,6 +26,7 @@ class AuthWidgetBuilder extends StatelessWidget {
               Provider<DatabaseService>(
                 create: (_) => DatabaseService(uid: user.uid),
               ),
+             
               
             ],
             child: Consumer<DatabaseService>(

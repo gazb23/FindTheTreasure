@@ -18,7 +18,23 @@ class UserData {
     
   }) : assert(UserData != null);
 
+
+    Map<String, dynamic> toMap() {
+    return {      
+      'uid': uid,
+      'email': email,
+      'displayName': displayName,
+      'photoURL': photoURL,
+      'userDiamondCount': userDiamondCount,
+      'userKeyCount': userKeyCount,
+    
+    };
+  }
+
+
+
 // Use a factory in situations where you don't necessarily want to return a new instance of the class itself
+
   factory UserData.fromMap(Map data) {
     return UserData(
       uid: data['uid'],
@@ -30,4 +46,6 @@ class UserData {
       
     );
   }
+
+
 }

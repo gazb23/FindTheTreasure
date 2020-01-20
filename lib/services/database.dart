@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
+import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/firestore_service.dart';
@@ -42,6 +43,16 @@ class DatabaseService {
       path: APIPath.quest(documentId),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
+  //Receice a stream of all locations for a given quest from Firebase
+  Stream<List<QuestionsModel>> locationsStream({@required String documentId}) => _service.collectionStream(
+      path: APIPath.locations(documentId),
+      builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    
+
+  //Receice a stream of all Challenges for a given location from Firebase
+  Stream<List<QuestionsModel>> challengesStream({@required String questDocumentId, @required String locationDocumentId}) => _service.collectionStream(
+      path: APIPath.challenges(questDocumentId, locationDocumentId),
+      builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));      
+
 
   //WRITE DATA:
   // Add UID to likedBy Array on Firebase
@@ -57,6 +68,11 @@ class DatabaseService {
    await likedByRef.updateData({'likedBy': FieldValue.arrayRemove([uid])});
  }
 
+  // Update user diamonds and keys
+  Future<void> updateUserDiamondAndKey({UserData userData}) async => await _service.setData(
+    path: APIPath.user(uid),
+    data: userData.toMap()
+  );
 
 
   //DELTE DATA:

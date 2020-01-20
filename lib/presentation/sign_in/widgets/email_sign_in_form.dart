@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/blocs/sign%20in/email_sign_in_bloc.dart';
+import 'package:find_the_treasure/blocs/sign_in/email_sign_in_bloc.dart';
 import 'package:find_the_treasure/models/email_sign_in_model.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/password_reset_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';

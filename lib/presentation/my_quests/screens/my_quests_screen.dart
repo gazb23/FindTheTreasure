@@ -1,6 +1,5 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
-import 'package:find_the_treasure/presentation/active_quest/active_quest_start_screen.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -12,19 +11,16 @@ class MyQuestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
       theme: Theme.of(context).copyWith(
         appBarTheme: AppBarTheme(
           color: Colors.grey.shade800,
-          ),
         ),
-      
+      ),
       home: DefaultTabController(
         length: 3,
         child: SafeArea(
-                  child: Scaffold(
+          child: Scaffold(
             appBar: AppBar(
-              
               bottom: TabBar(
                 indicatorColor: Colors.orangeAccent,
                 labelColor: Colors.white,
@@ -82,8 +78,15 @@ class MyQuestsScreen extends StatelessWidget {
               location: quest.location,
               questModel: quest,
               onTap: () {
-                QuestDetailScreen.show(context,
-                    quest: quest, user: user, database: database);
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => QuestDetailScreen(
+                      database: database,
+                      userData: user,
+                      questModel: quest,
+                    ),
+                  ),
+                );
               },
             ),
           );

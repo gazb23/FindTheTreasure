@@ -25,7 +25,9 @@ class ExploreScreen extends StatelessWidget {
               context,
               ProfileScreen.id,
             ),
-            child: Image.asset('images/andicon.png', height: 50,
+            child: Image.asset(
+              'images/andicon.png',
+              height: 50,
             ),
           ),
         ),
@@ -40,27 +42,32 @@ class ExploreScreen extends StatelessWidget {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questsStream(),
         builder: (context, snapshot) {
-          
           return ListItemsBuilder<QuestModel>(
-              snapshot: snapshot,
-              itemBuilder: (context, quest) => QuestListView(
-                numberOfDiamonds: quest.numberOfDiamonds,
-                difficulty: quest.difficulty,
-                numberOfKeys: quest.numberOfKeys,
-                title: quest.title,
-                image: quest.image,
-                numberOfLocations: quest.numberOfLocations,
-                location: quest.location,
-                questModel: quest,       
-          
-                onTap: () {
-                  QuestDetailScreen.show(context, quest: quest, user: user, database: database );
-                  
-                },
-              ),
-            );
-          }
-          
-        );
+            snapshot: snapshot,
+            
+            itemBuilder: (context, quest) => QuestListView(
+              
+              numberOfDiamonds: quest.numberOfDiamonds,
+              difficulty: quest.difficulty,
+              numberOfKeys: quest.numberOfKeys,
+              title: quest.title,
+              image: quest.image,
+              numberOfLocations: quest.numberOfLocations,
+              location: quest.location,
+              questModel: quest,
+              onTap: () {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => QuestDetailScreen(
+                      database: database,
+                      userData: user,
+                      questModel: quest,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        });
   }
 }

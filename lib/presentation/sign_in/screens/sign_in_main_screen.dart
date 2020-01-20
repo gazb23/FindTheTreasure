@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/blocs/sign%20in/sign_in_bloc.dart';
+import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';

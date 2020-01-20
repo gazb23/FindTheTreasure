@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/blocs/sign%20in/password_reset_bloc.dart';
+import 'package:find_the_treasure/blocs/sign_in/password_reset_bloc.dart';
 import 'package:find_the_treasure/models/password_reset_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';

@@ -1,5 +1,5 @@
-import 'package:find_the_treasure/presentation/active_quest/active_quest_start_screen.dart';
-import 'package:find_the_treasure/presentation/active_quest/question1.dart';
+import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_scroll_single_answer.dart';
+
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
             EmailSignInScreen.id: (context) => EmailSignInScreen(),
             PasswordResetScreen.id: (context) => PasswordResetScreen(),            
             ProfileScreen.id: (context) => ProfileScreen(),
-            QuestStartScreen.id: (context) => QuestStartScreen(),
-            Question1.id : (context) => Question1(),
+            QuestionScrollSingleAnswer.id: (context) => QuestionScrollSingleAnswer(),
+            
           },
         );
       }),
