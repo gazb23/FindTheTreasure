@@ -1,5 +1,4 @@
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_scroll_single_answer.dart';
-
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';

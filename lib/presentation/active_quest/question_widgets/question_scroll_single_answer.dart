@@ -24,51 +24,61 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
     final UserData userData = Provider.of<UserData>(context);
 
     return StreamBuilder<QuestModel>(
-        stream: databaseService.questStream(documentId: questModel.id),
+        stream: databaseService.questStream(questId: questModel.id),
         builder: (context, snapshot) {
-          final _quest = snapshot.data;
-          print(_quest.title);
-          return SafeArea(
-            child: Scaffold(
-              appBar: AppBar(
-                title: Text(_quest.title),
-                iconTheme: IconThemeData(
-                  color: Colors.black87,
-                ),
-                actions: <Widget>[
-                  DiamondAndKeyContainer(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    numberOfDiamonds: userData.userDiamondCount,
-                    numberOfKeys: userData.userKeyCount,
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.active) {
+            final _questModelStream = snapshot.data;
+            return SafeArea(
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text(_questModelStream.title),
+                  iconTheme: IconThemeData(
                     color: Colors.black87,
                   ),
-                  SizedBox(
-                    width: 20,
-                  )
-                ],
-              ),
-              body: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                          'images/background_games.png',
-                        ),
-                        fit: BoxFit.fill)),
-                child: ListView(
-                  children: <Widget>[
-                    _buildPirateIntro(context, questModel, questionsModel),
-                    SizedBox(
-                      height: 20,
+                  actions: <Widget>[
+                    DiamondAndKeyContainer(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      numberOfDiamonds: userData.userDiamondCount,
+                      numberOfKeys: userData.userKeyCount,
+                      color: Colors.black87,
                     ),
-                    AnswerBox(),
                     SizedBox(
-                      height: 10,
-                    ),
+                      width: 20,
+                    )
                   ],
                 ),
+                body: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'images/background_games.png',
+                          ),
+                          fit: BoxFit.fill)),
+                  child: ListView(
+                    children: <Widget>[
+                      _buildPirateIntro(context, questModel, questionsModel),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Scroll(
+                        questionsModel: questionsModel,
+                      ),SizedBox(
+                        height: 50,
+                      ),
+                      AnswerBox(
+                      questionsModel: questionsModel,
+                      ),
+                      
+                    ],
+                  ),
+                ),
               ),
-            ),
-          );
+            );
+          } else if (snapshot.data == null) {
+            CircularProgressIndicator();
+          }
+          return Container();
         });
   }
 }
@@ -90,8 +100,11 @@ Widget _buildPirateIntro(BuildContext context, QuestModel questModel,
           ),
           child: Center(
               child: Text(
-                  questionsModel.questionIntroduction ?? questionsModel.challengeTitle,
+
+                  questionsModel.questionIntroduction ??
+                      questionsModel.challengeTitle,
                   style: TextStyle(
+                    
                       color: Colors.white, fontWeight: FontWeight.bold))),
         ),
         Align(
@@ -101,9 +114,6 @@ Widget _buildPirateIntro(BuildContext context, QuestModel questModel,
       SizedBox(
         height: 10,
       ),
-      Scroll(
-        questionsModel: questionsModel,
-      )
     ],
   );
 }

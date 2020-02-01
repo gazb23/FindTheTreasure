@@ -6,7 +6,7 @@ class QuestionsModel {
   final String challengeProgressImage;
   final String questionIntroduction;
   final String question;
-  final List<String> answers;
+  final List<dynamic> answers;
   final bool challengeCompleted;
   final bool questCompleted;
   final bool locationCompleted;

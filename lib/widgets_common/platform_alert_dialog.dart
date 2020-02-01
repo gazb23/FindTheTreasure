@@ -82,7 +82,8 @@ class PlatformAlertDialog extends PlatformWidget {
         child: Column(
           children: <Widget>[
             image ??
-                Container(), //If no image is displayed an empty container will take it's place.
+                Container(),
+                SizedBox(height: 20), //If no image is displayed an empty container will take it's place.
 
             Text(
               content,

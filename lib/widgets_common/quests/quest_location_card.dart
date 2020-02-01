@@ -5,6 +5,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_widgets/que
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class QuestLocationCard extends StatelessWidget {
   final QuestionsModel questionsModel;
@@ -24,22 +25,29 @@ class QuestLocationCard extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           child: ExpandablePanel(
-            tapHeaderToExpand: true,
+            theme: ExpandableThemeData(
+            tapBodyToExpand: true,
             tapBodyToCollapse: true,
-            hasIcon: false,
+            tapHeaderToExpand: true,
+          ) ,
             header: LocationHeader(
+              questModel: questModel,
               questionsModel: questionsModel,
+              
             ),
             expanded: ConstrainedBox(
+              
               //TODO: Fix challenge box, so container sizes to number of challenges.
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height / 3),
+                  maxHeight: MediaQuery.of(context).size.height / 2),
               child: StreamBuilder<List<QuestionsModel>>(
                 stream: databaseService.challengesStream(
-                    questDocumentId: questModel.id,
-                    locationDocumentId: questionsModel.id),
+                    questId: questModel.id,
+                    locationId: questionsModel.id),
                 builder: (context, snapshot) {                  
                   return ListItemsBuilder<QuestionsModel>(
+                    title: 'Oh no! No challenges!',
+                    message: 'Admin needs to add some!',
                     snapshot: snapshot,
                     itemBuilder: (context, questionsModel) => Challenges(
                       questionsModel: questionsModel,
@@ -67,27 +75,42 @@ class QuestLocationCard extends StatelessWidget {
 
 class LocationHeader extends StatelessWidget {
   final QuestionsModel questionsModel;
+  final QuestModel questModel;
 
-  const LocationHeader({Key key, this.questionsModel}) : super(key: key);
+  const LocationHeader({Key key, @required this.questionsModel, @required this.questModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListTile(
-        leading: Image.asset('images/pirate.png'),
-        title: Text(
-          questionsModel.locationTitle ?? 'Mystery Location 1',
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black54,
-              fontFamily: 'JosefinSans',
-              fontSize: 20),
-        ),
-        trailing: Text(
-                '${questionsModel.numberOfChallengesCompleted}/${questionsModel.numberOfChallenges}') ??
-            Text('0/12'),
+    final DatabaseService databaseService = Provider.of<DatabaseService>(context);
+    return StreamBuilder<QuestionsModel>(
+      stream: databaseService.locationStream(
+        questId: questModel.id,
+        locationId: questionsModel.id
       ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final _questionsModel = snapshot.data;
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            contentPadding: EdgeInsets.symmetric(vertical: 20,),
+            leading: Image.asset('images/pirate.png'),
+            title: Text(
+              questionsModel.locationTitle ?? 'Mystery Location 1',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                  fontFamily: 'JosefinSans',
+                  fontSize: 20),
+            ),
+            trailing: Text(
+                    '${_questionsModel.numberOfChallengesCompleted}/${_questionsModel.numberOfChallenges}') ??
+                Text('0/12'),
+          ),
+        );
+        }
+        return CircularProgressIndicator();
+      }
     );
   }
 }

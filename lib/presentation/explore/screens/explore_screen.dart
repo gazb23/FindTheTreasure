@@ -2,8 +2,8 @@ import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
-import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _userData = Provider.of<UserData>(context);
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -19,17 +20,22 @@ class ExploreScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-          centerTitle: true,
-          title: FlatButton(
-            onPressed: () => Navigator.pushNamed(
-              context,
-              ProfileScreen.id,
-            ),
-            child: Image.asset(
-              'images/andicon.png',
-              height: 50,
-            ),
+          title: Text('Find The Treasure', style: TextStyle(color: Colors.grey),),
+          iconTheme: IconThemeData(
+            color: Colors.black87,
           ),
+          actions: <Widget>[
+            DiamondAndKeyContainer(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              numberOfDiamonds: _userData.userDiamondCount,
+              numberOfKeys: _userData.userKeyCount,
+              color: Colors.black87,
+              
+            ),
+            SizedBox(
+              width: 20,
+            )
+          ],
         ),
         body: _buildListView(context),
       ),
@@ -44,9 +50,7 @@ class ExploreScreen extends StatelessWidget {
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             snapshot: snapshot,
-            
             itemBuilder: (context, quest) => QuestListView(
-              
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
               numberOfKeys: quest.numberOfKeys,
@@ -59,9 +63,9 @@ class ExploreScreen extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) => QuestDetailScreen(
-                      database: database,
                       userData: user,
                       questModel: quest,
+                      database: database,
                     ),
                   ),
                 );

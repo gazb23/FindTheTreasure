@@ -39,19 +39,29 @@ class DatabaseService {
   }
 
   // Receive a stream of a single quest
-  Stream<QuestModel> questStream({@required String documentId}) => _service.documentStream(
-      path: APIPath.quest(documentId),
+  Stream<QuestModel> questStream({@required String questId}) => _service.documentStream(
+      path: APIPath.quest(questId: questId),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
   //Receice a stream of all locations for a given quest from Firebase
-  Stream<List<QuestionsModel>> locationsStream({@required String documentId}) => _service.collectionStream(
-      path: APIPath.locations(documentId),
+  Stream<List<QuestionsModel>> locationsStream({@required String questId}) => _service.collectionStream(
+      path: APIPath.locations(questId: questId),
+      builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    
+
+    // Receive a stream of a single location
+  Stream<QuestionsModel> locationStream({@required String questId, @required String locationId}) => _service.documentStream(
+      path: APIPath.location(questId: questId, locationId: locationId),
       builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    
 
   //Receice a stream of all Challenges for a given location from Firebase
-  Stream<List<QuestionsModel>> challengesStream({@required String questDocumentId, @required String locationDocumentId}) => _service.collectionStream(
-      path: APIPath.challenges(questDocumentId, locationDocumentId),
-      builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));      
+  Stream<List<QuestionsModel>> challengesStream({@required String questId, @required String locationId}) => _service.collectionStream(
+      path: APIPath.challenges(questId: questId, locationId: locationId),
+      builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    
+
+  //Receice a stream of a single Challenges for a given location from Firebase
+  Stream<List<QuestionsModel>> challengeStream({@required String questId, @required String locationId, @required String challengeId}) => _service.collectionStream(
+      path: APIPath.challenge(questId: questId, locationId: locationId, challengeId: challengeId),
+      builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));           
 
 
   //WRITE DATA:
@@ -70,7 +80,7 @@ class DatabaseService {
 
   // Update user diamonds and keys
   Future<void> updateUserDiamondAndKey({UserData userData}) async => await _service.setData(
-    path: APIPath.user(uid),
+    path: APIPath.user(uid: uid),
     data: userData.toMap()
   );
 

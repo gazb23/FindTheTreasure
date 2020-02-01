@@ -11,6 +11,8 @@ class QuestModel {
   final int numberOfLocations;
   final int numberOfDiamonds;
   final int numberOfKeys;
+  final int bountyDiamonds;
+  final int bountyKeys;
   final List tags;
   final List likedBy;
 
@@ -29,9 +31,10 @@ class QuestModel {
     this.timeDifficulty,
     this.brainDifficulty,
     this.hikeDifficulty,
+    this.bountyDiamonds,
+    this.bountyKeys,
   });
 
-  
   factory QuestModel.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;
@@ -52,11 +55,13 @@ class QuestModel {
       timeDifficulty: data['timeDifficulty'],
       brainDifficulty: data['brainDifficulty'],
       hikeDifficulty: data['hikeDifficulty'],
+      bountyDiamonds: data['bountyDiamonds'],
+      bountyKeys: data['bountyKeys'],
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {      
+    return {
       'likedBy': likedBy,
       'title': title,
       'difficulty': difficulty,
@@ -67,12 +72,15 @@ class QuestModel {
       'numberOfDiamonds': numberOfDiamonds,
       'numberOfKeys': numberOfKeys,
       'tags': tags,
-      'timeDifficulty' : timeDifficulty,
-      'brainDifficulty' : brainDifficulty,
-      'hikeDifficulty' : hikeDifficulty,
+      'timeDifficulty': timeDifficulty,
+      'brainDifficulty': brainDifficulty,
+      'hikeDifficulty': hikeDifficulty,
+      'bountyKeys': bountyKeys,
+      'bountyDiamonds' : bountyDiamonds,
     };
   }
-    Map<String, dynamic> updateHeart() {
+
+  Map<String, dynamic> updateHeart() {
     return {
       'id': id,
       'likedBy': likedBy,
