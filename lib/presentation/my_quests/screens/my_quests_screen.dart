@@ -46,7 +46,7 @@ class MyQuestsScreen extends StatelessWidget {
             ),
             body: TabBarView(
               children: <Widget>[
-                Tab(icon: Icon(Icons.directions_bike)),
+                _buildUserQuestStartedListView(context),
                 _buildUserQuestListView(context),
                 Tab(icon: Icon(Icons.directions_bike)),
               ],
@@ -61,7 +61,43 @@ class MyQuestsScreen extends StatelessWidget {
     final database = Provider.of<DatabaseService>(context);
     final user = Provider.of<UserData>(context);
     return StreamBuilder<List<QuestModel>>(
-        stream: database.userLikedQuestsStream(),
+        stream: database.userLikedQuestsStream(field: 'likedBy'),
+        builder: (context, snapshot) {
+          return ListItemsBuilder<QuestModel>(
+            title: 'Time to add some favourites!',
+            message:
+                'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',
+            snapshot: snapshot,
+            itemBuilder: (context, quest) => QuestListView(
+              numberOfDiamonds: quest.numberOfDiamonds,
+              difficulty: quest.difficulty,
+              numberOfKeys: quest.numberOfKeys,
+              title: quest.title,
+              image: quest.image,
+              numberOfLocations: quest.numberOfLocations,
+              location: quest.location,
+              questModel: quest,
+              onTap: () {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => QuestDetailScreen(
+                      database: database,
+                      userData: user,
+                      questModel: quest,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        });
+  }
+
+  Widget _buildUserQuestStartedListView(BuildContext context) {
+    final database = Provider.of<DatabaseService>(context);
+    final user = Provider.of<UserData>(context);
+    return StreamBuilder<List<QuestModel>>(
+        stream: database.userLikedQuestsStream(field: 'questStartedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             title: 'Time to add some favourites!',

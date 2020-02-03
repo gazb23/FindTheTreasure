@@ -15,10 +15,12 @@ class QuestModel {
   final int bountyKeys;
   final List tags;
   final List likedBy;
+  final List questStartedBy;
 
   QuestModel({
     this.id,
     this.likedBy,
+    this.questStartedBy, 
     this.image,
     this.numberOfLocations,
     this.location,
@@ -42,6 +44,7 @@ class QuestModel {
     return QuestModel(
       id: documentId,
       likedBy: data['likedBy'] != null ? data['likedBy'] : [],
+      questStartedBy: data['questStartedBy'] != null ? data['questStartedBy'] : [],
       title: data['title'],
       difficulty: data['difficulty'],
       description: data['description'],
@@ -63,6 +66,7 @@ class QuestModel {
   Map<String, dynamic> toMap() {
     return {
       'likedBy': likedBy,
+      'questStartedBy': questStartedBy,
       'title': title,
       'difficulty': difficulty,
       'description': description,

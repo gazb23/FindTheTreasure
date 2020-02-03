@@ -20,9 +20,9 @@ class DatabaseService {
       path: APIPath.quests(),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
-  //Receive a filtered stream of all quests liked by current user
-  Stream<List<QuestModel>> userLikedQuestsStream() => _service.filteredArrayCollectionStream(
-      field: 'likedBy',
+  //Receive a filtered stream of all quests where the field contains the UID of the current user
+  Stream<List<QuestModel>> userLikedQuestsStream({@required String field}) => _service.filteredArrayCollectionStream(
+      field: field,
       arrayContains: uid,
       path: APIPath.quests(),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
@@ -76,6 +76,13 @@ class DatabaseService {
    final likedByRef = _db.collection('/quests').document(documentId);
    print('remove');
    await likedByRef.updateData({'likedBy': FieldValue.arrayRemove([uid])});
+ }
+
+   // Add UID to chosen field Array on Firebase
+   Future<void> arrayUnionField({@required String documentId, @required String uid, @required String field}) async {
+   final likedByRef = _db.collection('/quests').document(documentId);
+   print('add');
+   await likedByRef.updateData({field: FieldValue.arrayUnion([uid])});
  }
 
   // Update user diamonds and keys

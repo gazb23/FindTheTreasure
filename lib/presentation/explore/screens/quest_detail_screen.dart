@@ -109,48 +109,44 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildQuestListTile(
       BuildContext context, QuestModel questModelStream) {
     return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-        title: Text(
-          questModelStream.title,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'JosefinSans'),
-        ),
-        subtitle: Row(
-          children: <Widget>[
-            Icon(
-              Icons.room,
-              color: Colors.amberAccent,
-              size: 18,
-            ),
-            Text(
-              questModelStream.location,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'JosefinSans'),
-            ),
-          ],
-        ),
-        trailing: StreamBuilder<QuestModel>(
-            stream: database.questStream(questId: questModel.id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
-                final questModelStream = snapshot.data;
-                final isLikedByUser = questModel.likedBy.contains(database.uid);
-                return Heart(
-                  database: database,
-                  isLikedByUser: isLikedByUser,
-                  questModel: questModelStream,
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text('Waiting');
-              }
-              return CircularProgressIndicator();
-            }));
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+      title: Text(
+        questModelStream.title,
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'JosefinSans'),
+      ),
+      subtitle: Row(
+        children: <Widget>[
+          Icon(
+            Icons.room,
+            color: Colors.amberAccent,
+            size: 18,
+          ),
+          Text(
+            questModelStream.location,
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'JosefinSans'),
+          ),
+        ],
+      ),
+      trailing: StreamBuilder<QuestModel>(
+        stream: database.questStream(questId: questModel.id),
+        builder: (context, snapshot) {
+          final questModelStream = snapshot.data;
+          final isLikedByUser = questModelStream.likedBy.contains(database.uid);
+          return Heart(
+            database: database,
+            isLikedByUser: isLikedByUser,
+            questModel: questModelStream,
+          );
+        },
+      ),
+    );
   }
 
   Widget _buildQuestDescriptionCard(
@@ -166,13 +162,14 @@ class QuestDetailScreen extends StatelessWidget {
                 'Quest Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               _buildQuestDetailCard(context, questModelStream),
             ],
           ),
           collapsed: Column(
             children: <Widget>[
-              
               SizedBox(
                 height: 10,
               ),
@@ -187,7 +184,6 @@ class QuestDetailScreen extends StatelessWidget {
           ),
           expanded: Column(
             children: <Widget>[
-              
               SizedBox(
                 height: 10,
               ),
@@ -241,13 +237,14 @@ class QuestDetailScreen extends StatelessWidget {
                 'Bounty',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               _buildTreasure(context, questModelStream),
             ],
           ),
           collapsed: Column(
             children: <Widget>[
-              
               SizedBox(
                 height: 10,
               ),
@@ -259,7 +256,7 @@ class QuestDetailScreen extends StatelessWidget {
             ],
           ),
           expanded: Column(
-            children: <Widget>[              
+            children: <Widget>[
               SizedBox(
                 height: 10,
               ),
@@ -268,15 +265,13 @@ class QuestDetailScreen extends StatelessWidget {
             ],
           ),
           theme: ExpandableThemeData(
-              tapBodyToCollapse: true,
-              tapHeaderToExpand: true,
-              hasIcon: false,
-              
-              iconColor: Colors.orangeAccent,
-              ),
+            tapBodyToCollapse: true,
+            tapHeaderToExpand: true,
+            hasIcon: false,
+            iconColor: Colors.orangeAccent,
+          ),
         ),
-        ),
-      
+      ),
     );
   }
 
@@ -304,7 +299,6 @@ class QuestDetailScreen extends StatelessWidget {
             diamondHeight: 30,
             skullKeyHeight: 40,
             fontSize: 20,
-            
             fontWeight: FontWeight.bold,
             spaceBetween: 60,
           ),
@@ -338,17 +332,21 @@ class QuestDetailScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 3,
-              child: QuestDiamondCalulationButton(questModelStream: questModelStream, userData: userData, confirmQuest: _confirmQuest)
-            )
+                flex: 3,
+                child: QuestDiamondCalulationButton(
+                    questModelStream: questModelStream,
+                    userData: userData,
+                    databaseService: database,
+                    confirmQuest: _confirmQuest))
           ],
         ),
       ),
     );
   }
 
-  Future<void> _confirmQuest(
-      BuildContext context, QuestModel questModelStream,  UserData userData) async {
+  Future<void> _confirmQuest(BuildContext context, QuestModel questModelStream,
+  //TODO: add a try and catch block
+      UserData userData, DatabaseService database) async {
     final didRequestQuest = await PlatformAlertDialog(
       title: '${userData.displayName}',
       content:
@@ -359,16 +357,16 @@ class QuestDetailScreen extends StatelessWidget {
     ).show(context);
     if (didRequestQuest) {
       final UserData _userData = UserData(
-        userDiamondCount: userData.userDiamondCount - questModelStream.numberOfDiamonds,
+        userDiamondCount:
+            userData.userDiamondCount - questModelStream.numberOfDiamonds,
         userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
         displayName: userData.displayName,
         email: userData.email,
         photoURL: userData.photoURL,
         uid: userData.uid,
       );
-      await database.updateUserDiamondAndKey(
-        userData: _userData
-      );
+      await database.arrayUnionField(documentId: questModel.id, uid: database.uid, field: 'questStartedBy');
+      await database.updateUserDiamondAndKey(userData: _userData);
       Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute(
           builder: (context) => ActiveQuestScreen(
@@ -378,8 +376,6 @@ class QuestDetailScreen extends StatelessWidget {
       );
     }
   }
-
-
 
   Widget _buildTimeListTile(BuildContext context, String difficulty) {
     return Column(

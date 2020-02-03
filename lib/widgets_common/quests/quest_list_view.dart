@@ -3,6 +3,7 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class QuestListView extends StatefulWidget {
@@ -49,10 +50,13 @@ class _QuestListViewState extends State<QuestListView> {
         return Colors.green;
     }
   }
+// Function to output corrent location plural  
+locationPluralCount(int howMany) =>
+      Intl.plural(howMany, one: 'location', other: 'locations');
 
   @override
   Widget build(BuildContext context) {
-    final DatabaseService database = Provider.of<DatabaseService>(context);
+    final DatabaseService database = Provider.of<DatabaseService>(context);    
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 5.0,
@@ -98,7 +102,7 @@ class _QuestListViewState extends State<QuestListView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     buildDifficultyIndicator(),
-                    buildNumberOfLocations(),
+                    buildNumberOfLocations(locationPluralCount),
                     DiamondAndKeyContainer(
                       numberOfDiamonds: widget.numberOfDiamonds,
                       numberOfKeys: widget.numberOfKeys,
@@ -150,10 +154,10 @@ class _QuestListViewState extends State<QuestListView> {
     );
   }
 
-  Widget buildNumberOfLocations() {
+  Widget buildNumberOfLocations(locationPluralCount) {
     return Container(
       child: Text(
-        '${widget.numberOfLocations} Locations',
+        '${widget.numberOfLocations} ${locationPluralCount(widget.numberOfLocations)}',
         style: TextStyle(color: Colors.white, fontSize: 14),
       ),
     );

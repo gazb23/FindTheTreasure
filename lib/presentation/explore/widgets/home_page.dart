@@ -5,7 +5,10 @@ import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/CupertinoHomeScaffold.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/tab_item.dart';
+import 'package:find_the_treasure/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,6 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  
   TabItem _currentTab = TabItem.explore;
 
   final Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
@@ -38,6 +42,7 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
+   checkUID(context, _currentTab);
     return WillPopScope(
       onWillPop: () async => !await navigatorKeys[_currentTab].currentState.maybePop(),
           child: CupertinoHomeScaffold(      
@@ -49,5 +54,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
- 
+ void checkUID(BuildContext context, _currentTab) async {
+   final DatabaseService databaseService = Provider.of<DatabaseService>(context);
+   final check = await databaseService.questsStream().contains({'questStartedBy' : databaseService.uid});
+
+   if (check) {
+     _currentTab = TabItem.myquests;
+     setState(() {
+       
+     });
+   }
+
+ }
+
 }

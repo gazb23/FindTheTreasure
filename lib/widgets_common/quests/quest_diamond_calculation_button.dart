@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
+import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:intl/intl.dart';
 class QuestDiamondCalulationButton extends StatelessWidget {
   final QuestModel questModelStream;
   final UserData userData;
+  final DatabaseService databaseService;
   final Function confirmQuest;
 
   const QuestDiamondCalulationButton({
@@ -16,6 +18,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
     @required this.questModelStream,
     @required this.userData,
     @required this.confirmQuest,
+    @required this.databaseService,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -27,14 +30,19 @@ class QuestDiamondCalulationButton extends StatelessWidget {
         onPressed: () {
           if (userData.userDiamondCount >= questModelStream.numberOfDiamonds &&
               userData.userKeyCount >= questModelStream.numberOfKeys) {
-            return confirmQuest(context, questModelStream, userData, );
+            return confirmQuest(context, questModelStream, userData, databaseService);
           } else if (userData.userDiamondCount <
               questModelStream.numberOfDiamonds) {
-            _confirmStoreDiamond(context, questModelStream, _diamondCalc, );
+            _confirmStoreDiamond(
+              context,
+              questModelStream,
+              _diamondCalc,
+            );
           } else
             _confirmStoreKey(context, questModelStream, _keyCalc);
         });
   }
+
 // Show the correct PlatformAlert dialog and navigate the user to the store if requ
   Future<void> _confirmStoreKey(
       BuildContext context, QuestModel questModelStream, _keyCalc) async {
@@ -73,7 +81,6 @@ class QuestDiamondCalulationButton extends StatelessWidget {
       );
     }
   }
-
 
 // String Plurals for diamond/s and key/s
   diamondPluralCount(int howMany) =>
