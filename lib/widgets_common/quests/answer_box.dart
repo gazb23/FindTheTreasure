@@ -1,4 +1,5 @@
 import 'package:find_the_treasure/models/questions_model.dart';
+import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 
 class AnswerBox extends StatefulWidget {
@@ -25,10 +26,19 @@ class _AnswerBoxState extends State<AnswerBox> {
     return false;
   }
 
-  void _submit() {
+  void _submit() async {
     if (_validateAndSaveForm()) {
       if (widget.questionsModel.answers.contains(_answer)) {
-        print('wooo');
+        final didRequestQuest = await ChallengePlatformAlertDialog(
+          
+          
+          title: 'Congratulations!',
+          content:
+              'You\'ve completed this challenge!',
+          cancelActionText: 'Not Now',
+          defaultActionText: 'Next challenge',
+          image: Image.asset('images/ic_excalibur_owl.png'),
+        ).show(context);
         
         
       }

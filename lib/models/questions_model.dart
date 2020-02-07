@@ -1,6 +1,7 @@
 class QuestionsModel {
   final String id;
   final String locationTitle;
+  final String locationProgressIndicator;
   final String challengeTitle;  
   final String challengeProgressIndicator;
   final String challengeProgressImage;
@@ -9,12 +10,12 @@ class QuestionsModel {
   final List<dynamic> answers;
   final bool challengeCompleted;
   final bool questCompleted;
-  final bool locationCompleted;
-  final int numberOfChallenges;
+  final bool locationCompleted;  
   final int numberOfChallengesCompleted;
 
   QuestionsModel({
     this.locationTitle,
+    this.locationProgressIndicator, 
     this.challengeTitle,    
     this.challengeProgressIndicator,
     this.challengeProgressImage,
@@ -23,8 +24,7 @@ class QuestionsModel {
     this.answers,
     this.challengeCompleted,
     this.questCompleted,
-    this.locationCompleted,
-    this.numberOfChallenges,
+    this.locationCompleted,    
     this.numberOfChallengesCompleted,
     this.id,
   });
@@ -41,9 +41,9 @@ class QuestionsModel {
       challengeProgressIndicator: data['challengeProgressIndicator'],
       challengeTitle: data['challengeTitle'],
       locationCompleted: data['locationCompleted'],
+      locationProgressIndicator: data['locationProgressIndicator'],
       locationTitle: data['locationTitle'],
-      numberOfChallengesCompleted: data['numberOfChallengesCompleted'],
-      numberOfChallenges: data['numberOfChallenges'],
+      numberOfChallengesCompleted: data['numberOfChallengesCompleted'],      
       questCompleted: data['questCompleted'],
       question: data['question'],
       questionIntroduction: data['questionIntroduction'],
@@ -60,8 +60,8 @@ class QuestionsModel {
       'challengeTitle': challengeTitle,
       'locationCompleted': locationCompleted,
       'locationTitle': locationTitle,
-      'numberOfChallengedCompleted': numberOfChallengesCompleted,
-      'numberOfChallenges': numberOfChallenges,
+      'locationProgressIndicator': locationProgressIndicator,
+      'numberOfChallengedCompleted': numberOfChallengesCompleted,     
       'questCompleted': questCompleted,
       'question': question,      
       'questionIntroduction': questionIntroduction,

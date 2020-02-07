@@ -21,7 +21,7 @@ class DatabaseService {
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
   //Receive a filtered stream of all quests where the field contains the UID of the current user
-  Stream<List<QuestModel>> userLikedQuestsStream({@required String field}) => _service.filteredArrayCollectionStream(
+  Stream<List<QuestModel>> questFieldContainsUID({@required String field}) => _service.filteredArrayCollectionStream(
       field: field,
       arrayContains: uid,
       path: APIPath.quests(),

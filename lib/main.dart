@@ -1,4 +1,5 @@
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_scroll_single_answer.dart';
+import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
@@ -7,7 +8,6 @@ import 'package:find_the_treasure/widgets_common/authentication/auth_widget.dart
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget_builder.dart';
 import 'package:flutter/material.dart';
 import 'presentation/sign_in/screens/email_sign_in_screen.dart';
-
 import 'presentation/sign_in/screens/password_reset_screen.dart';
 import 'presentation/sign_in/screens/sign_in_main_screen.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             PasswordResetScreen.id: (context) => PasswordResetScreen(),            
             ProfileScreen.id: (context) => ProfileScreen(),
             QuestionScrollSingleAnswer.id: (context) => QuestionScrollSingleAnswer(),
-            
+            HomePage.id: (context) => HomePage(),
           },
         );
       }),
@@ -69,9 +69,9 @@ class MyApp extends StatelessWidget {
       fontFamily: 'quicksand',
       // Define the text theme for the app
       textTheme: TextTheme(
-          title: TextStyle(
+          headline6: TextStyle(
               color: Colors.black54, fontSize: 28, fontWeight: FontWeight.bold),
-          body1: TextStyle(
+          bodyText2: TextStyle(
               fontSize: 18,
               color: Colors.grey.shade500,
               fontFamily: 'quicksand'),
@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
       appBarTheme: AppBarTheme(
           color: Colors.white,
           textTheme: TextTheme(
-              title: TextStyle(fontFamily: 'quicksand', fontSize: 20, color: Colors.black87))),
+              headline6: TextStyle(fontFamily: 'quicksand', fontSize: 20, color: Colors.black87))),
               iconTheme: IconThemeData(
                 color: Colors.black87
 

@@ -48,7 +48,7 @@ class QuestDetailScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      _buildBottomBar(context, questModelStream),
+                      _buildBottomBar(context, questModelStream, userData),
                     ],
                   ),
                 ),
@@ -162,14 +162,11 @@ class QuestDetailScreen extends StatelessWidget {
                 'Quest Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              _buildQuestDetailCard(context, questModelStream),
             ],
           ),
           collapsed: Column(
             children: <Widget>[
+               _buildQuestDetailCard(context, questModelStream),
               SizedBox(
                 height: 10,
               ),
@@ -184,6 +181,7 @@ class QuestDetailScreen extends StatelessWidget {
           ),
           expanded: Column(
             children: <Widget>[
+               _buildQuestDetailCard(context, questModelStream),
               SizedBox(
                 height: 10,
               ),
@@ -196,9 +194,9 @@ class QuestDetailScreen extends StatelessWidget {
           theme: ExpandableThemeData(
               tapBodyToCollapse: true,
               tapHeaderToExpand: true,
-              hasIcon: false,
+              hasIcon: true,
               iconColor: Colors.orangeAccent,
-              iconSize: 40),
+              iconSize: 30),
         ),
       ),
     );
@@ -234,17 +232,14 @@ class QuestDetailScreen extends StatelessWidget {
           header: Column(
             children: <Widget>[
               Text(
-                'Bounty',
+                'Bounty Details',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              _buildTreasure(context, questModelStream),
             ],
           ),
           collapsed: Column(
             children: <Widget>[
+              _buildTreasure(context, questModelStream),
               SizedBox(
                 height: 10,
               ),
@@ -257,6 +252,7 @@ class QuestDetailScreen extends StatelessWidget {
           ),
           expanded: Column(
             children: <Widget>[
+              _buildTreasure(context, questModelStream),
               SizedBox(
                 height: 10,
               ),
@@ -267,7 +263,8 @@ class QuestDetailScreen extends StatelessWidget {
           theme: ExpandableThemeData(
             tapBodyToCollapse: true,
             tapHeaderToExpand: true,
-            hasIcon: false,
+            hasIcon: true,
+            iconSize: 30,
             iconColor: Colors.orangeAccent,
           ),
         ),
@@ -310,7 +307,8 @@ class QuestDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomBar(BuildContext context, QuestModel questModelStream) {
+  Widget _buildBottomBar(
+      BuildContext context, QuestModel questModelStream, UserData userData) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
@@ -345,35 +343,53 @@ class QuestDetailScreen extends StatelessWidget {
   }
 
   Future<void> _confirmQuest(BuildContext context, QuestModel questModelStream,
-  //TODO: add a try and catch block
       UserData userData, DatabaseService database) async {
-    final didRequestQuest = await PlatformAlertDialog(
-      title: '${userData.displayName}',
-      content:
-          'It seems ya have enough treasure for the ${questModelStream.title} quest. Do you want to begin the quest?',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Confirm',
-      image: Image.asset('images/ic_excalibur_owl.png'),
-    ).show(context);
-    if (didRequestQuest) {
-      final UserData _userData = UserData(
-        userDiamondCount:
-            userData.userDiamondCount - questModelStream.numberOfDiamonds,
-        userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
-        displayName: userData.displayName,
-        email: userData.email,
-        photoURL: userData.photoURL,
-        uid: userData.uid,
-      );
-      await database.arrayUnionField(documentId: questModel.id, uid: database.uid, field: 'questStartedBy');
-      await database.updateUserDiamondAndKey(userData: _userData);
-      Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(
-          builder: (context) => ActiveQuestScreen(
-            questModel: questModelStream,
+    final bool _isStartedBy =
+        questModelStream.questStartedBy.contains(userData.uid);
+    try {
+      if (!_isStartedBy) {
+        final didRequestQuest = await PlatformAlertDialog(
+          title: '${userData.displayName}',
+          content:
+              'It seems ya have enough treasure for the ${questModelStream.title} quest. Do you want to begin the quest?',
+          cancelActionText: 'Cancel',
+          defaultActionText: 'Confirm',
+          image: Image.asset('images/ic_excalibur_owl.png'),
+        ).show(context);
+        if (didRequestQuest) {
+          final UserData _userData = UserData(
+            userDiamondCount:
+                userData.userDiamondCount - questModelStream.numberOfDiamonds,
+            userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
+            displayName: userData.displayName,
+            email: userData.email,
+            photoURL: userData.photoURL,
+            uid: userData.uid,
+          );
+          await database.arrayUnionField(
+              documentId: questModel.id,
+              uid: database.uid,
+              field: 'questStartedBy');
+          await database.updateUserDiamondAndKey(userData: _userData);
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
+              builder: (context) => ActiveQuestScreen(
+                questModel: questModelStream,
+              ),
+            ),
+          );
+        }
+      } else {
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => ActiveQuestScreen(
+              questModel: questModelStream,
+            ),
           ),
-        ),
-      );
+        );
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 

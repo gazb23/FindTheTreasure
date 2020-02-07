@@ -10,14 +10,18 @@ class ListItemsBuilder<T> extends StatelessWidget {
   final AsyncSnapshot<T> snapshots;
   final String title;
   final String message;
-
+  final String buttonText;
+  final Image image;
+  final VoidCallback onPressed;
+  final bool buttonEnabled;
+  
   const ListItemsBuilder({
     Key key,
     this.snapshot,
     this.itemBuilder,
     this.snapshots,
     this.title,
-    this.message,
+    this.message, this.buttonText, this.image, this.onPressed, this.buttonEnabled = false,
   }) : super(key: key);
 
   @override
@@ -30,12 +34,17 @@ class ListItemsBuilder<T> extends StatelessWidget {
         return EmptyContent(
           title: title,
           message: message,
+          buttonText: buttonText,
+          image: image,
+          onPressed: onPressed,
+          buttonEnabled: buttonEnabled,
         );
       }
     } else if (snapshot.hasError) {
       return EmptyContent(
         title: 'Something Went Wrong!',
         message: 'Can\'t load Quests right now',
+        
       );
     }
     return Center(

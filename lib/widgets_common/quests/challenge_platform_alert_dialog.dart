@@ -1,27 +1,23 @@
 import 'dart:io';
 import 'package:find_the_treasure/widgets_common/platform_widget.dart';
+import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class PlatformAlertDialog extends PlatformWidget {
+class ChallengePlatformAlertDialog extends PlatformWidget {
   final String title;
   final String content;
   final String cancelActionText;
   final String defaultActionText;
   final Widget image;
-  final Color backgroundColor;
-  final Color titleTextColor;
-  final Color contentTextColor;
+ 
 
-  PlatformAlertDialog({
+  ChallengePlatformAlertDialog({
     this.cancelActionText,
     @required this.title,
     @required this.content,
     @required this.defaultActionText,
-    this.image,
-    this.backgroundColor,
-    this.titleTextColor,
-    this.contentTextColor,
+    this.image,  
   })  : assert(title != null),
         assert(content != null),
         assert(defaultActionText != null);
@@ -75,14 +71,14 @@ class PlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return AlertDialog(
-      backgroundColor: backgroundColor ?? Colors.white,
+      backgroundColor: Colors.amberAccent,
       title: Center(
         child: Text(
           title,
           style: TextStyle(
             fontFamily: 'quicksand',
             fontWeight: FontWeight.w600,
-            color: titleTextColor ?? Colors.black87
+            
           ),
         ),
       ),
@@ -98,7 +94,8 @@ class PlatformAlertDialog extends PlatformWidget {
               content,
               style: TextStyle(
                 fontFamily: 'quicksand',
-                color: contentTextColor ?? Colors.grey
+                fontWeight: FontWeight.bold,
+                color: Colors.black87
               ),
               textAlign: TextAlign.center,
             ),
@@ -116,25 +113,19 @@ class PlatformAlertDialog extends PlatformWidget {
     final actions = <Widget>[];
     if (cancelActionText != null) {
       actions.add(PlatformAlertDialogAction(
-        child: Text(
-          cancelActionText,
-          style: TextStyle(
-            fontSize: 18.0,
-            fontWeight: FontWeight.w700,
-            color: Colors.grey,
-          ),
-        ),
+        child: SignInButton(
+        text: cancelActionText,
+        color: Colors.grey,
+        
+        onPressed: () => Navigator.of(context).pop(false),
+      ),
         onPressed: () => Navigator.of(context).pop(false),
       ));
     }
     actions.add(PlatformAlertDialogAction(
-      child: Text(
-        defaultActionText,
-        style: TextStyle(
-          fontSize: 18.0,
-          fontWeight: FontWeight.w700,
-          color: Colors.orangeAccent,
-        ),
+      child: SignInButton(
+        text: defaultActionText,
+        onPressed: () => Navigator.of(context).pop(true),
       ),
       onPressed: () => Navigator.of(context).pop(true),
     ));

@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -10,6 +11,8 @@ import 'package:provider/provider.dart';
 class MyQuestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<DatabaseService>(context, listen: false);
+    final user = Provider.of<UserData>(context, listen: false);
     return MaterialApp(
       theme: Theme.of(context).copyWith(
         appBarTheme: AppBarTheme(
@@ -20,6 +23,7 @@ class MyQuestsScreen extends StatelessWidget {
         length: 3,
         child: SafeArea(
           child: Scaffold(
+            backgroundColor: Colors.grey.shade400,
             appBar: AppBar(
               bottom: TabBar(
                 indicatorColor: Colors.orangeAccent,
@@ -46,8 +50,8 @@ class MyQuestsScreen extends StatelessWidget {
             ),
             body: TabBarView(
               children: <Widget>[
-                _buildUserQuestStartedListView(context),
-                _buildUserQuestListView(context),
+                _buildCurrentQuestListView(context, database, user),
+                _buildLikedQuestListView(context, database, user),
                 Tab(icon: Icon(Icons.directions_bike)),
               ],
             ),
@@ -57,16 +61,18 @@ class MyQuestsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUserQuestListView(BuildContext context) {
-    final database = Provider.of<DatabaseService>(context);
-    final user = Provider.of<UserData>(context);
+  Widget _buildLikedQuestListView(
+      BuildContext context, DatabaseService database, UserData user) {
+    print('liked');
+
     return StreamBuilder<List<QuestModel>>(
-        stream: database.userLikedQuestsStream(field: 'likedBy'),
+        stream: database.questFieldContainsUID(field: 'likedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             title: 'Time to add some favourites!',
             message:
-                'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',
+                'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',            
+            buttonEnabled: false,
             snapshot: snapshot,
             itemBuilder: (context, quest) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
@@ -93,16 +99,17 @@ class MyQuestsScreen extends StatelessWidget {
         });
   }
 
-  Widget _buildUserQuestStartedListView(BuildContext context) {
-    final database = Provider.of<DatabaseService>(context);
-    final user = Provider.of<UserData>(context);
+  Widget _buildCurrentQuestListView(
+      BuildContext context, DatabaseService database, UserData user) {
+    print('current');
+
     return StreamBuilder<List<QuestModel>>(
-        stream: database.userLikedQuestsStream(field: 'questStartedBy'),
+        stream: database.questFieldContainsUID(field: 'questStartedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
-            title: 'Time to add some favourites!',
-            message:
-                'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',
+            title: 'Ready for Adventure?',
+            message: 'Head to the explore page, choose a quest and start your journey!',
+            buttonEnabled: false,            
             snapshot: snapshot,
             itemBuilder: (context, quest) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
@@ -114,15 +121,27 @@ class MyQuestsScreen extends StatelessWidget {
               location: quest.location,
               questModel: quest,
               onTap: () {
-                Navigator.of(context, rootNavigator: true).push(
+                final _questStartedBy = quest.questStartedBy.contains(user.uid);
+                
+                if (!_questStartedBy) {
+                    Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) => QuestDetailScreen(
-                      database: database,
                       userData: user,
+                      questModel: quest,
+                      database: database,
+                    ),
+                  ),
+                );
+                } else {
+                  Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => ActiveQuestScreen(
                       questModel: quest,
                     ),
                   ),
                 );
+                }
               },
             ),
           );

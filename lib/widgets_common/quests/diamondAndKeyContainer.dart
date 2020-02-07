@@ -42,7 +42,7 @@ final double diamondHeight;
                   width: 10,
                 ),
                 Text(
-                  numberOfDiamonds.toString(),
+                  numberOfDiamonds.toString() ?? 10,
                   style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
                 ),
               ],
@@ -59,7 +59,7 @@ final double diamondHeight;
                   height: skullKeyHeight ?? 30.0,
                 ),
                 Text(
-                  numberOfKeys.toString(),
+                  numberOfKeys.toString() ?? 10,
                   style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
                 ),
               ],

@@ -12,21 +12,24 @@ class QuestDiamondCalulationButton extends StatelessWidget {
   final UserData userData;
   final DatabaseService databaseService;
   final Function confirmQuest;
+  final bool enabled;
 
   const QuestDiamondCalulationButton({
     Key key,
     @required this.questModelStream,
     @required this.userData,
     @required this.confirmQuest,
-    @required this.databaseService,
+    @required this.databaseService, this.enabled,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final bool _isStartedBy = questModelStream.questStartedBy.contains(userData.uid);
     int _diamondCalc =
         (questModelStream.numberOfDiamonds - userData.userDiamondCount);
     int _keyCalc = (questModelStream.numberOfKeys - userData.userKeyCount);
     return SignInButton(
-        text: 'Start Quest',
+        text: _isStartedBy ? 'Continue Quest' : 'Start Quest',
+
         onPressed: () {
           if (userData.userDiamondCount >= questModelStream.numberOfDiamonds &&
               userData.userKeyCount >= questModelStream.numberOfKeys) {
