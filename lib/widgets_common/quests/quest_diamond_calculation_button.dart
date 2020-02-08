@@ -58,7 +58,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
       image: Image.asset('images/ic_owl_wrong_dialog.png'),
     ).show(context);
     if (didRequestQuest) {
-      Navigator.of(context, rootNavigator: true).push(
+      Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ShopScreen(),
         ),
@@ -77,7 +77,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
       image: Image.asset('images/ic_owl_wrong_dialog.png'),
     ).show(context);
     if (didRequestQuest) {
-      Navigator.of(context, rootNavigator: true).push(
+      Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ShopScreen(),
         ),
