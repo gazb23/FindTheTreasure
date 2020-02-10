@@ -1,12 +1,11 @@
 
-import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:flutter/material.dart';
 
 
 class Scroll extends StatelessWidget {
-  final QuestionsModel questionsModel;
+  final String question;
 
-  const Scroll({Key key, this.questionsModel}) : super(key: key);
+  const Scroll({Key key, this.question}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +24,7 @@ class Scroll extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 5),
               child: Center(
                 child: Text(
-                  questionsModel.question,
+                  question,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20, color: Colors.black87),
                 ),

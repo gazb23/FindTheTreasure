@@ -64,18 +64,24 @@ class ActiveQuestScreen extends StatelessWidget {
                             questModel: questModel,
                             databaseService: _databaseService,
                             onTap: () {
-                             
+                             // To discover the location, the user must first answer a location question
                               
                                 Navigator.of(context, rootNavigator: true).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         QuestionScrollSingleAnswer(
-                                      questionsModel: questionsModel,
-                                      questModel: questModel,
+                                     questId: questModel.id,
+                                     questTitle: questModel.title,
+                                     questionIntroduction: questionsModel.questionIntroduction,
+                                     question: questionsModel.question,
+                                     answers: questionsModel.answers,
+                                     locationQuestion: true,
                                     ),
+                                    
                                   ),
+                                 
                                 );
-                              
+                               print(questionsModel.answers);
                             },
                           ),
                         );

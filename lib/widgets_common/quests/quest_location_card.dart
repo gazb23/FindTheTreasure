@@ -24,7 +24,7 @@ class QuestLocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _locationProgress = questionsModel.locationProgressIndicator;
-    print(_locationProgress);
+    
     return InkWell(
       onTap: onTap,
           child: Card(
@@ -60,8 +60,12 @@ class QuestLocationCard extends StatelessWidget {
                       Navigator.of(context, rootNavigator: true).push(
                         MaterialPageRoute(
                           builder: (context) => QuestionScrollSingleAnswer(
-                            questionsModel: questionsModel,
-                            questModel: questModel,
+                            questId: questModel.id,
+                            questTitle: questModel.title,
+                            questionIntroduction: questionsModel.questionIntroduction,
+                            question: questionsModel.question,
+                            answers: questionsModel.answers,
+                            locationQuestion: false,
                           ),
                         ),
                       );
@@ -87,6 +91,7 @@ class LocationHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _locationProgress = questionsModel.locationProgressIndicator;
     final DatabaseService databaseService =
         Provider.of<DatabaseService>(context);
     return StreamProvider<QuestionsModel>(
@@ -101,7 +106,7 @@ class LocationHeader extends StatelessWidget {
               ),
               leading: Image.asset('images/pirate.png'),
               title: Text(
-                questionsModel.locationTitle ?? 'Mystery Location 1',
+                _locationProgress == 'notStarted' ? 'Mystery Location' : questionsModel.locationTitle ,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
@@ -112,10 +117,12 @@ class LocationHeader extends StatelessWidget {
                   stream: databaseService.challengesStream(
                       questId: questModel.id, locationId: questionsModel.id),
                   builder: (context, snapshot) {
-                    final _numberOfChallenges = snapshot.data.length;
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      final _numberOfChallenges = snapshot.data.length;
                     return Text(
-                            '${_questionsModel.numberOfChallengesCompleted}/$_numberOfChallenges') ??
-                        Text('0/12');
+                            '${_questionsModel.numberOfChallengesCompleted}/$_numberOfChallenges');
+                    } return CircularProgressIndicator();
+                    
                   }),
             ),
           ),

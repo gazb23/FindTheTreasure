@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
+
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -10,6 +11,7 @@ import 'package:find_the_treasure/widgets_common/quests/quest_diamond_calculatio
 import 'package:find_the_treasure/widgets_common/quests/quest_tags.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
+
 
 class QuestDetailScreen extends StatelessWidget {
   final QuestModel questModel;
@@ -134,17 +136,26 @@ class QuestDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      trailing: StreamBuilder<QuestModel>(
-        stream: database.questStream(questId: questModel.id),
-        builder: (context, snapshot) {
-          final questModelStream = snapshot.data;
-          final isLikedByUser = questModelStream.likedBy.contains(database.uid);
-          return Heart(
-            database: database,
-            isLikedByUser: isLikedByUser,
-            questModel: questModelStream,
-          );
-        },
+      trailing: SizedBox(
+        width: 50,
+        child: StreamBuilder<QuestModel>(
+          stream: database.questStream(questId: questModel.id),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              final questModelStream = snapshot.data;
+              final isLikedByUser =
+                  questModelStream.likedBy.contains(database.uid);
+              return Heart(
+                database: database,
+                isLikedByUser: isLikedByUser,
+                questModel: questModelStream,
+              );
+            } else if (snapshot.hasError) {
+              print(snapshot.hasError.toString());
+            }
+            return CircularProgressIndicator();
+          },
+        ),
       ),
     );
   }
@@ -166,7 +177,7 @@ class QuestDetailScreen extends StatelessWidget {
           ),
           collapsed: Column(
             children: <Widget>[
-               _buildQuestDetailCard(context, questModelStream),
+              _buildQuestDetailCard(context, questModelStream),
               SizedBox(
                 height: 10,
               ),
@@ -181,7 +192,7 @@ class QuestDetailScreen extends StatelessWidget {
           ),
           expanded: Column(
             children: <Widget>[
-               _buildQuestDetailCard(context, questModelStream),
+              _buildQuestDetailCard(context, questModelStream),
               SizedBox(
                 height: 10,
               ),
@@ -335,6 +346,7 @@ class QuestDetailScreen extends StatelessWidget {
                     questModelStream: questModelStream,
                     userData: userData,
                     databaseService: database,
+                    
                     confirmQuest: _confirmQuest))
           ],
         ),
@@ -379,7 +391,7 @@ class QuestDetailScreen extends StatelessWidget {
             ),
           );
         }
-      } else {
+      } else if (_isStartedBy){
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => ActiveQuestScreen(

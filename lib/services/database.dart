@@ -58,8 +58,8 @@ class DatabaseService {
       path: APIPath.challenges(questId: questId, locationId: locationId),
       builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    
 
-  //Receice a stream of a single Challenges for a given location from Firebase
-  Stream<List<QuestionsModel>> challengeStream({@required String questId, @required String locationId, @required String challengeId}) => _service.collectionStream(
+  //Receice a stream of a single Challenge for a given location from Firebase
+  Stream<QuestionsModel> challengeStream({@required String questId, @required String locationId, @required String challengeId}) => _service.documentStream(
       path: APIPath.challenge(questId: questId, locationId: locationId, challengeId: challengeId),
       builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));           
 

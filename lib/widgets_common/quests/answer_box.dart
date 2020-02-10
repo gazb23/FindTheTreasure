@@ -1,11 +1,15 @@
-import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 
 class AnswerBox extends StatefulWidget {
-  final QuestionsModel questionsModel;
+  final List<dynamic> answers;
+  final bool locationQuestion;
 
-  const AnswerBox({Key key, this.questionsModel}) : super(key: key);
+  const AnswerBox({
+    Key key,
+    @required this.answers,
+    @required this.locationQuestion,
+  }) : super(key: key);
   @override
   _AnswerBoxState createState() => _AnswerBoxState();
 }
@@ -26,22 +30,36 @@ class _AnswerBoxState extends State<AnswerBox> {
     return false;
   }
 
-  void _submit() async {
+  void _submitChallenge() async {
     if (_validateAndSaveForm()) {
-      if (widget.questionsModel.answers.contains(_answer)) {
-        final didRequestQuest = await ChallengePlatformAlertDialog(
-          
-          
+      if (widget.answers.contains(_answer)) {
+        print('woo');
+        final didRequestNext = await ChallengePlatformAlertDialog(
           title: 'Congratulations!',
-          content:
-              'You\'ve completed this challenge!',
+          content: 'You\'ve completed this challenge!',
           cancelActionText: 'Not Now',
           defaultActionText: 'Next challenge',
           image: Image.asset('images/ic_excalibur_owl.png'),
         ).show(context);
-        
-        
       }
+      
+    }
+  }
+
+    void _submitLocation() async {
+    if (_validateAndSaveForm()) {
+      if (widget.answers.contains(_answer)) {        
+        final didCompleteChallenge = await ChallengePlatformAlertDialog(
+          title: 'Location Unlocked!',
+          content: 'Well done, but now the adventure begins!',          
+          defaultActionText: 'Start Challenge',
+          image: Image.asset('images/ic_excalibur_owl.png'),
+        ).show(context);
+        if (didCompleteChallenge) {
+          
+      }
+      } 
+      
     }
   }
 
@@ -49,7 +67,7 @@ class _AnswerBoxState extends State<AnswerBox> {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: .9,
-          child: Card(
+      child: Card(
         margin: EdgeInsets.symmetric(
           horizontal: 10,
         ),
@@ -73,15 +91,21 @@ class _AnswerBoxState extends State<AnswerBox> {
                 onSaved: (value) => _answer = value.trimRight(),
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(5),
-                    hintText: 'Enter your answer',
-                    suffixIcon: IconButton(
-                      icon: 
-                    
-                      isCorret ? Icon(Icons.send, color: Colors.orangeAccent,) : Icon(Icons.send, color: Colors.redAccent,),
-                      onPressed: _submit,
-                    ),
-                    ),
+                  contentPadding: EdgeInsets.all(5),
+                  hintText: 'Enter your answer',
+                  suffixIcon: IconButton(
+                    icon: isCorret
+                        ? Icon(
+                            Icons.send,
+                            color: Colors.orangeAccent,
+                          )
+                        : Icon(
+                            Icons.send,
+                            color: Colors.redAccent,
+                          ),
+                    onPressed: widget.locationQuestion ? _submitLocation :  _submitChallenge,
+                  ),
+                ),
               ),
             ),
             SizedBox(

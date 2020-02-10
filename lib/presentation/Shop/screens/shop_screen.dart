@@ -6,7 +6,13 @@ class ShopScreen extends StatelessWidget {
     return Scaffold(
       
         appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.black87
+          ),
+          
+          
     title: Center(child: Image.asset('images/andicon.png', height: 50,)),
+    centerTitle: true,
         ),
         body: Stack(
     children: <Widget>[

@@ -28,6 +28,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
         (questModelStream.numberOfDiamonds - userData.userDiamondCount);
     int _keyCalc = (questModelStream.numberOfKeys - userData.userKeyCount);
     return SignInButton(
+      bottomPadding: 0,
         text: _isStartedBy ? 'Continue Quest' : 'Start Quest',
 
         onPressed: () {

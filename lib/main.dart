@@ -1,4 +1,4 @@
-import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_scroll_single_answer.dart';
+
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
@@ -39,8 +39,7 @@ class MyApp extends StatelessWidget {
                 EmailCreateAccountScreen(),
             EmailSignInScreen.id: (context) => EmailSignInScreen(),
             PasswordResetScreen.id: (context) => PasswordResetScreen(),            
-            ProfileScreen.id: (context) => ProfileScreen(),
-            QuestionScrollSingleAnswer.id: (context) => QuestionScrollSingleAnswer(),
+            ProfileScreen.id: (context) => ProfileScreen(),            
             HomePage.id: (context) => HomePage(),
           },
         );
@@ -87,6 +86,9 @@ class MyApp extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       appBarTheme: AppBarTheme(
+        actionsIconTheme: IconThemeData(
+          color: Colors.black87
+        ),
           color: Colors.white,
           textTheme: TextTheme(
               headline6: TextStyle(fontFamily: 'quicksand', fontSize: 20, color: Colors.black87))),
