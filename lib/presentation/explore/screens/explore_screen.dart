@@ -57,7 +57,7 @@ class ExploreScreen extends StatelessWidget {
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             snapshot: snapshot,
-            itemBuilder: (context, quest) => QuestListView(
+            itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
               numberOfKeys: quest.numberOfKeys,

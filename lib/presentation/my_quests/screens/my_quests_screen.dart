@@ -74,7 +74,7 @@ class MyQuestsScreen extends StatelessWidget {
                 'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',            
             buttonEnabled: false,
             snapshot: snapshot,
-            itemBuilder: (context, quest) => QuestListView(
+            itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
               numberOfKeys: quest.numberOfKeys,
@@ -111,7 +111,7 @@ class MyQuestsScreen extends StatelessWidget {
             message: 'Head to the explore page, choose a quest and start your journey!',
             buttonEnabled: false,            
             snapshot: snapshot,
-            itemBuilder: (context, quest) => QuestListView(
+            itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
               numberOfKeys: quest.numberOfKeys,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
@@ -27,6 +28,13 @@ class DatabaseService {
       path: APIPath.quests(),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
+    //Receive a filtered stream of all challenges completed by a user for a given location 
+  Stream<List<QuestModel>> locationFieldContainsUID({@required String field, @required String questId}) => _service.filteredArrayCollectionStream(
+      field: field,
+      arrayContains: uid,
+      path: APIPath.locations(questId: questId),
+      builder: (data, documentId) => QuestModel.fromMap(data, documentId));    
+
   // Receive a stream of the current user
   Stream<UserData> userDataStream() {
     return _db.collection('users').document(uid).snapshots().map((snapshot) {
@@ -44,14 +52,14 @@ class DatabaseService {
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
   //Receice a stream of all locations for a given quest from Firebase
-  Stream<List<QuestionsModel>> locationsStream({@required String questId}) => _service.collectionStream(
+  Stream<List<LocationModel>> locationsStream({@required String questId}) => _service.collectionStream(
       path: APIPath.locations(questId: questId),
-      builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    
+      builder: (data, documentId) => LocationModel.fromMap(data, documentId));    
 
     // Receive a stream of a single location
-  Stream<QuestionsModel> locationStream({@required String questId, @required String locationId}) => _service.documentStream(
+  Stream<LocationModel> locationStream({@required String questId, @required String locationId}) => _service.documentStream(
       path: APIPath.location(questId: questId, locationId: locationId),
-      builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    
+      builder: (data, documentId) => LocationModel.fromMap(data, documentId));    
 
   //Receice a stream of all Challenges for a given location from Firebase
   Stream<List<QuestionsModel>> challengesStream({@required String questId, @required String locationId}) => _service.collectionStream(
@@ -79,8 +87,8 @@ class DatabaseService {
  }
 
    // Add UID to chosen field Array on Firebase
-   Future<void> arrayUnionField({@required String documentId, @required String uid, @required String field}) async {
-   final likedByRef = _db.collection('/quests').document(documentId);
+   Future<void> arrayUnionField({@required String documentId, @required String uid, @required String field, @required String collectionRef}) async {
+   final likedByRef = _db.collection(collectionRef).document(documentId);
    print('add');
    await likedByRef.updateData({field: FieldValue.arrayUnion([uid])});
  }

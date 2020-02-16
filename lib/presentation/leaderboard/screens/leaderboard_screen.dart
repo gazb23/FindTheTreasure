@@ -1,4 +1,5 @@
 
+import 'package:find_the_treasure/services/google_maps_display.dart';
 import 'package:flutter/material.dart';
 
 class LeaderboardScreen extends StatelessWidget {
@@ -18,9 +19,11 @@ class LeaderboardScreen extends StatelessWidget {
                     fit: BoxFit.fill),
               ),
             ),
-            
+            GoogleMapsDisplay()
           ],
+          
         ),
+        
       ),
     );
   }

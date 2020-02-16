@@ -1,21 +1,24 @@
+import 'package:flutter/foundation.dart';
+
 class LocationModel {
   final String id;
-  final String locationTitle;
-  final String locationProgressIndicator; 
-  final String locationquestionIntroduction;
-  final String locationQuestion;
-  final List<dynamic> locationAnswers; 
-  final bool locationCompleted;  
-  
+  final String title;
+  final String questionIntroduction;
+  final String question;
+  final int numberOfChallengesCompleted;
+  final List<dynamic> answers;
+  final List<dynamic> locationStartedBy;
+  final List<dynamic> locationCompletedBy;
 
   LocationModel({
-    this.locationTitle,
-    this.locationProgressIndicator, 
-    this.locationquestionIntroduction,
-    this.locationQuestion,
-    this.locationAnswers,
-    this.locationCompleted,    
-    this.id,
+    @required this.id,
+    @required this.title,
+    @required this.questionIntroduction,
+    @required this.question,
+    @required this.numberOfChallengesCompleted, 
+    @required this.answers,
+    @required this.locationStartedBy,
+    @required this.locationCompletedBy,
   });
 
   factory LocationModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -24,28 +27,25 @@ class LocationModel {
     }
     return LocationModel(
       id: documentId,
-      locationAnswers: data['answers'],
-      locationCompleted: data['locationCompleted'],
-      locationProgressIndicator: data['locationProgressIndicator'],
-      locationTitle: data['locationTitle'],
-      locationQuestion: data['question'],
-      locationquestionIntroduction: data['questionIntroduction'],
-      
+      title: data['locationTitle'],
+      questionIntroduction: data['questionIntroduction'],
+      question: data['question'],
+      numberOfChallengesCompleted: data['numberOfChallengesCompleted'],
+      answers: data['answers'],
+      locationCompletedBy: data['locationCompletedBy'],
+      locationStartedBy: data['locationStartedBy'] ,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'answers': locationAnswers,
-      'locationCompleted': locationCompleted,
-      'locationTitle': locationTitle,
-      'locationProgressIndicator': locationProgressIndicator,
-      'question': locationQuestion,      
-      'questionIntroduction': locationquestionIntroduction,
-      
-      
+      'locationTitle': title,
+      'questionIntroduction': questionIntroduction,
+      'question': question,
+      'numberOfChallengesCompleted' : numberOfChallengesCompleted,
+      'answers': answers,
+      'locationCompleted': locationCompletedBy,
+      'locationProgressIndicator': locationStartedBy,
     };
   }
-
-
 }

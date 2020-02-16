@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
+import 'package:find_the_treasure/services/api_paths.dart';
 
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
@@ -379,6 +380,7 @@ class QuestDetailScreen extends StatelessWidget {
             uid: userData.uid,
           );
           await database.arrayUnionField(
+            collectionRef: APIPath.quests(),
               documentId: questModel.id,
               uid: database.uid,
               field: 'questStartedBy');

@@ -1,5 +1,8 @@
+import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
+import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/answer_box.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -9,21 +12,18 @@ import 'package:provider/provider.dart';
 
 class QuestionScrollSingleAnswer extends StatelessWidget {
   static const String id = 'quest_start_screen';
-  final String questTitle;
-  final String questId;
-  final String questionIntroduction;
-  final String question;
-  final List<dynamic> answers;
+
+  final QuestModel questModel;
+  final LocationModel locationModel;
+  final QuestionsModel questionsModel;
   final bool locationQuestion;
 
   const QuestionScrollSingleAnswer({
     Key key,
-    @required this.questTitle,
-    @required this.questId,
-    @required this.questionIntroduction,
-    @required this.question,
-    @required this.answers,
     @required this.locationQuestion,
+    this.questModel,
+    this.locationModel,
+    this.questionsModel,
   }) : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
     final UserData userData = Provider.of<UserData>(context);
 
     return StreamBuilder<QuestModel>(
-        stream: databaseService.questStream(questId: questId),
+        stream: databaseService.questStream(questId: questModel.id),
         builder: (context, snapshot) {
           if (snapshot.hasData &&
               snapshot.connectionState == ConnectionState.active) {
@@ -66,20 +66,35 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                           fit: BoxFit.fill)),
                   child: ListView(
                     children: <Widget>[
-                      _buildPirateIntro(context, questionIntroduction),
+                      _buildPirateIntro(context, locationModel, questionsModel, locationQuestion),
                       SizedBox(
                         height: 10,
                       ),
                       Scroll(
-                        question: question,
+                        question:
+                            locationQuestion ? locationModel.question : questionsModel.question,
                       ),
                       SizedBox(
                         height: 50,
                       ),
-                      AnswerBox(
-                        answers: answers,
-                        locationQuestion: locationQuestion,
-                      ),
+                      locationQuestion
+                          ? AnswerBox(
+                              answers: locationModel.answers,
+                              islocationQuestion: locationQuestion,
+                              arrayUnionCollectionRef:
+                                  APIPath.locations(questId: questModel.id),
+                              arrayUnionDocumentId: locationModel.id,
+                              locationTitle: locationModel.title,
+                            )
+                          : AnswerBox(
+                              answers: questionsModel.answers,
+                              islocationQuestion: locationQuestion,
+                              arrayUnionCollectionRef: APIPath.challenges(
+                                  questId: questModel.id,
+                                  locationId: locationModel.id),
+                              arrayUnionDocumentId: questionsModel.id,
+                              locationTitle: locationModel.title,
+                            )
                     ],
                   ),
                 ),
@@ -93,7 +108,8 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
   }
 }
 
-Widget _buildPirateIntro(BuildContext context, String questionIntroduction) {
+Widget _buildPirateIntro(BuildContext context, LocationModel locationModel,
+    QuestionsModel questionsModel, bool locationQuestion) {
   return Column(
     children: <Widget>[
       SizedBox(
@@ -108,7 +124,9 @@ Widget _buildPirateIntro(BuildContext context, String questionIntroduction) {
             color: Colors.brown,
           ),
           child: Center(
-              child: Text(questionIntroduction,
+              child: Text(
+                  locationQuestion ?  locationModel.questionIntroduction :
+                      questionsModel.questionIntroduction,
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold))),
         ),

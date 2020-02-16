@@ -10,6 +10,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   final String cancelActionText;
   final String defaultActionText;
   final Widget image;
+  final bool isLoading;
  
 
   ChallengePlatformAlertDialog({
@@ -18,6 +19,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
     @required this.content,
     @required this.defaultActionText,
     this.image,  
+    this.isLoading, 
   })  : assert(title != null),
         assert(content != null),
         assert(defaultActionText != null);
@@ -114,6 +116,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
     if (cancelActionText != null) {
       actions.add(PlatformAlertDialogAction(
         child: SignInButton(
+          isLoading: isLoading,
         text: cancelActionText,
         color: Colors.grey,
         
