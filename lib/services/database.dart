@@ -35,16 +35,11 @@ class DatabaseService {
       path: APIPath.locations(questId: questId),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));    
 
-  // Receive a stream of the current user
-  Stream<UserData> userDataStream() {
-    return _db.collection('users').document(uid).snapshots().map((snapshot) {
-      if (snapshot.data == null)
-        return null;
-      else {
-        return UserData.fromMap(snapshot.data);
-      }
-    });
-  }
+
+    // Receive a stream of current user
+  Stream<UserData> userStream() => _service.documentStream(
+      path: APIPath.user(uid: uid),
+      builder: (data, documentId) => UserData.fromMap(data));
 
   // Receive a stream of a single quest
   Stream<QuestModel> questStream({@required String questId}) => _service.documentStream(

@@ -12,23 +12,40 @@ import 'package:provider/provider.dart';
 
 class ExploreScreen extends StatelessWidget {
   static const String id = 'explore_page';
-  
+
   @override
   Widget build(BuildContext context) {
-    
-  
+    final _userData = Provider.of<UserData>(context);
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-        final _userData = Provider.of<UserData>(context);
-        
+    // Needed a null check to be able to display UserData in the AppBar    
+    int getUserDiamonds(BuildContext context) {
+      int _userDiamondCount;
+
+      if (_userData != null) {
+        _userDiamondCount = _userData.userDiamondCount;
+      }
+      return _userDiamondCount;
+    }
+
+    int getUserKeys(BuildContext context) {
+      int _userKeyCount;
+
+      if (_userData != null) {
+        _userKeyCount = _userData.userKeyCount;
+      }
+      return _userKeyCount;
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
+          backgroundColor: Colors.grey.shade800,
           title: Text(
             'Find The Treasure',
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(color: Colors.white),
           ),
           iconTheme: IconThemeData(
             color: Colors.black87,
@@ -36,9 +53,9 @@ class ExploreScreen extends StatelessWidget {
           actions: <Widget>[
             DiamondAndKeyContainer(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: 10,
-              numberOfKeys: 10,
-              color: Colors.black87,
+              numberOfDiamonds: getUserDiamonds(context),
+              numberOfKeys: getUserKeys(context),
+              color: Colors.white,
             ),
             SizedBox(
               width: 20,
@@ -58,30 +75,25 @@ class ExploreScreen extends StatelessWidget {
           return ListItemsBuilder<QuestModel>(
             snapshot: snapshot,
             itemBuilder: (context, quest, index) => QuestListView(
-              numberOfDiamonds: quest.numberOfDiamonds,
-              difficulty: quest.difficulty,
-              numberOfKeys: quest.numberOfKeys,
-              title: quest.title,
-              image: quest.image,
-              numberOfLocations: quest.numberOfLocations,
-              location: quest.location,
-              questModel: quest,
-              onTap: () {
-                
-                    Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) => QuestDetailScreen(
-                      userData: _userData,
-                      questModel: quest,
-                      database: database,
+                numberOfDiamonds: quest.numberOfDiamonds,
+                difficulty: quest.difficulty,
+                numberOfKeys: quest.numberOfKeys,
+                title: quest.title,
+                image: quest.image,
+                numberOfLocations: quest.numberOfLocations,
+                location: quest.location,
+                questModel: quest,
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (context) => QuestDetailScreen(
+                        userData: _userData,
+                        questModel: quest,
+                        database: database,
+                      ),
                     ),
-                  ),
-                );
-                } 
-                
-                
-              
-            ),
+                  );
+                }),
           );
         });
   }

@@ -6,6 +6,7 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,20 +28,22 @@ class QuestLocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserData _userData = Provider.of<UserData>(context);
-    final _locationCompletedBy =
+    final _locationStartedBy =
+        locationModel.locationStartedBy.contains(_userData.uid);
+           final _locationCompletedBy =
         locationModel.locationCompletedBy.contains(_userData.uid);
-    double _challengeLength;
+
     return InkWell(
       onTap: onTap,
       child: Card(
-        color: _locationCompletedBy ? Colors.amberAccent : Colors.white,
+        color: _locationProgressColor(locationStarted: _locationStartedBy, locationCompleted: _locationCompletedBy ),
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: ExpandablePanel(
           theme: ExpandableThemeData(
             tapBodyToExpand: true,
             tapBodyToCollapse: true,
-            tapHeaderToExpand: _locationCompletedBy ? true : false,
+            tapHeaderToExpand: _locationStartedBy ? true : false,
             hasIcon: false,
           ),
           header: LocationHeader(
@@ -50,62 +53,67 @@ class QuestLocationCard extends StatelessWidget {
           ),
           expanded:
               // Build challenges in Location Card
-              StreamProvider<List<QuestionsModel>>.value(
-            value: databaseService.challengesStream(
-                questId: questModel.id, locationId: locationModel.id),
-            child: Consumer<List<QuestionsModel>>(
-              builder: (context, questionsModel, _) => SizedBox(
-                height: questionsModel.length * 84.toDouble(),
-                child: StreamBuilder<List<QuestionsModel>>(
-                  stream: databaseService.challengesStream(
-                      questId: questModel.id, locationId: locationModel.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active) {
-                      final int _numberofChallengesCompleted = snapshot.data
-                          .where((questionsModel) => questionsModel
-                              .challengeCompletedBy
-                              .contains(databaseService.uid))
-                          .length;
+              SizedBox(
+            height: 400,
+            child: StreamBuilder<List<QuestionsModel>>(
+              stream: databaseService.challengesStream(
+                  questId: questModel.id, locationId: locationModel.id),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  // How many challenged the user has completed, this is parsed to Challenges class so it can be used to determine which challenge to activate
+                  final int _numberOfChallenges = snapshot.data.length;
+                  final int _numberofChallengesCompleted = snapshot.data
+                      .where((questionsModel) => questionsModel
+                          .challengeCompletedBy
+                          .contains(databaseService.uid))
+                      .length;
 
-                      return ListItemsBuilder<QuestionsModel>(
-                        title: 'Oh no! No challenges!',
-                        message: 'Admin needs to add some!',
-                        snapshot: snapshot,
-                        isSeperated: true,
-                        itemBuilder: (context, questionsModel, index) =>
-                            Challenges(
-                          questionsModel: questionsModel,
-                          currentIndex: index,
-                          locationModel: locationModel,
-                          numberOfChallengesCompleted:
-                              _numberofChallengesCompleted,
-                          databaseService: databaseService,
-                          onTap: () {
-                            Navigator.of(context, rootNavigator: true).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    QuestionScrollSingleAnswer(
-                                  locationQuestion: false,
-                                  questModel: questModel,
-                                  questionsModel: questionsModel,
-                                  locationModel: locationModel,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    }
-                    return Container();
-                  },
-                ),
-              ),
+                  return ListItemsBuilder<QuestionsModel>(
+                    title: 'Oh no! No challenges!',
+                    message: 'Admin needs to add some!',
+                    snapshot: snapshot,
+                    isSeperated: true,
+                    itemBuilder: (context, questionsModel, index) => Challenges(
+                      questionsModel: questionsModel,
+                      currentIndex: index,
+                      locationModel: locationModel,
+                      numberOfChallengesCompleted: _numberofChallengesCompleted,
+                      databaseService: databaseService,
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute(
+                            builder: (context) => QuestionScrollSingleAnswer(
+                              isFinalChallenge: _numberofChallengesCompleted ==
+                                  _numberOfChallenges - 1,
+                              locationQuestion: false,
+                              questModel: questModel,
+                              questionsModel: questionsModel,
+                              locationModel: locationModel,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return Container();
+              },
             ),
           ),
         ),
       ),
     );
   }
+  // Logic for Location Card Color
+Color _locationProgressColor({bool locationCompleted, bool locationStarted}) {
+  if (locationCompleted) {
+      return Colors.amberAccent;
+    }
+    if (locationStarted) {
+      return Colors.orangeAccent.shade200;
+    }
+    return Colors.white;
+}
 }
 
 class LocationHeader extends StatelessWidget {
@@ -122,55 +130,67 @@ class LocationHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserData _userData = Provider.of<UserData>(context);
-
     final _locationCompletedBy =
         locationModel.locationCompletedBy.contains(_userData.uid);
+    final _locationStartedBy =
+        locationModel.locationStartedBy.contains(_userData.uid);
     final DatabaseService databaseService =
         Provider.of<DatabaseService>(context);
-    if (isLoading) {
-      CircularProgressIndicator();
-    }
-    return StreamProvider<LocationModel>(
-        create: (context) => databaseService.locationStream(
-            questId: questModel.id, locationId: locationModel.id),
-        child: Consumer<LocationModel>(
-          builder: (context, _locationModel, _) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              enabled: isLoading,
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-              leading: _locationCompletedBy
-                  ? Image.asset('images/pirate.png')
-                  : Image.asset('images/andicon.png'),
-              title: Text(
-                _locationCompletedBy ? locationModel.title : 'Mystery Location',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: _locationCompletedBy ? Colors.white : Colors.black54,
-                    fontFamily: 'JosefinSans',
-                    fontSize: 22),
-              ),
-              trailing: StreamBuilder<List<QuestionsModel>>(
-                  stream: databaseService.challengesStream(
-                      questId: questModel.id, locationId: locationModel.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active) {
-                      final _numberOfChallenges = snapshot.data.length;
-                      final _numberofChallengesCompletedCard = snapshot.data
-                          .where((questionsModel) => questionsModel
-                              .challengeCompletedBy
-                              .contains(databaseService.uid))
-                          .length;
-                      return Text(
-                          '$_numberofChallengesCompletedCard/$_numberOfChallenges');
-                    }
-                    return CircularProgressIndicator();
-                  }),
-            ),
-          ),
-        ));
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListTile(
+        enabled: isLoading,
+        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        leading: _locationProgressImage(
+            locationCompleted: _locationCompletedBy,
+            locationStarted: _locationStartedBy),
+        title: Text(
+          _locationStartedBy ? locationModel.title : 'Mystery Location',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: _locationStartedBy ? Colors.white : Colors.black54,
+              fontFamily: 'JosefinSans',
+              fontSize: 22),
+        ),
+        subtitle: _locationCompletedBy ? Text('Conquered') : null,
+        trailing: StreamBuilder<List<QuestionsModel>>(
+            stream: databaseService.challengesStream(
+                questId: questModel.id, locationId: locationModel.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                final _numberOfChallenges = snapshot.data.length;
+                final _numberofChallengesCompletedCard = snapshot.data
+                    .where((questionsModel) => questionsModel
+                        .challengeCompletedBy
+                        .contains(databaseService.uid))
+                    .length;
+                QuestionViewModel.submitLocationConquered(context,
+                    locationModel: locationModel, questModel: questModel,
+                    lastChallengeCompleted: _numberOfChallenges == _numberofChallengesCompletedCard);
+                return Text(
+                    '$_numberofChallengesCompletedCard/$_numberOfChallenges');
+              }
+
+              return CircularProgressIndicator();
+            }),
+      ),
+    );
   }
+
+  // Decide which image to show depending on user progress through the location
+  Image _locationProgressImage({bool locationCompleted, bool locationStarted}) {
+
+    if (locationCompleted) {
+      return Image.asset('images/ic_questcompleted.png');
+    }
+    if (locationStarted) {
+      return Image.asset('images/ic_activequest.png');
+    }
+    return Image.asset('images/ic_quest_nonactive.png');
+  }
+
+
 }
 
 class Challenges extends StatelessWidget {
@@ -220,6 +240,7 @@ class Challenges extends StatelessWidget {
     );
   }
 
+// Decide which image to show depending on user progress through the challenge
   Image _challengeProgressImage(
       {bool challengeCompleted, bool isCurrentChallenge}) {
     if (isCurrentChallenge) {

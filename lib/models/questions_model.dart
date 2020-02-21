@@ -1,27 +1,18 @@
 class QuestionsModel {
   final String id;
-  final String challengeTitle;
-  final String challengeProgressIndicator;
-  final String challengeProgressImage;
+  final String challengeTitle;    
   final String questionIntroduction;
   final String question;
-  final List<dynamic> answers;
-  final List<dynamic> challengeStartedBy;
-  final List<dynamic> challengeCompletedBy;
-  final bool challengeCompleted;
-  final bool questCompleted;
+  final List<dynamic> answers;  
+  final List<dynamic> challengeCompletedBy;  
+
 
   QuestionsModel({
     this.challengeTitle,
-    this.challengeProgressIndicator,
-    this.challengeProgressImage,
     this.questionIntroduction,
     this.question,
     this.answers,
-    this.challengeCompleted,
-    this.questCompleted,
     this.id,
-    this.challengeStartedBy,
     this.challengeCompletedBy,
   });
 
@@ -32,14 +23,9 @@ class QuestionsModel {
     return QuestionsModel(
       id: documentId,
       answers: data['answers'],
-      challengeCompleted: data['challengeCompleted'],
-      challengeProgressImage: data['challengeProgressImage'],
-      challengeProgressIndicator: data['challengeProgressIndicator'],
-      challengeTitle: data['challengeTitle'],
-      questCompleted: data['questCompleted'],
+      challengeTitle: data['challengeTitle'], 
       question: data['question'],
-      questionIntroduction: data['questionIntroduction'],
-      challengeStartedBy: data['challengeStartedBy'],
+      questionIntroduction: data['questionIntroduction'],  
       challengeCompletedBy: data['challengeCompletedBy']
     );
   }
@@ -47,14 +33,9 @@ class QuestionsModel {
   Map<String, dynamic> toMap() {
     return {
       'answers': answers,
-      'challengeCompleted': challengeCompleted,
-      'challengeProgressImage': challengeProgressImage,
-      'challengeProgressIndicator': challengeProgressIndicator,
-      'challengeTitle': challengeTitle,
-      'questCompleted': questCompleted,
+      'challengeTitle': challengeTitle,   
       'question': question,
       'questionIntroduction': questionIntroduction,
-      'challengeStartedBy' : challengeStartedBy,
       'challengeCompletedBy' : challengeCompletedBy
     };
   }

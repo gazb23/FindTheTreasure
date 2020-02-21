@@ -30,8 +30,8 @@ class AuthWidgetBuilder extends StatelessWidget {
               
             ],
             child: Consumer<DatabaseService>(
-              builder: (_, databaseService, __) => StreamProvider<UserData>(
-                create: (_) => databaseService.userDataStream(),
+              builder: (_, databaseService, __) => StreamProvider<UserData>.value(
+                value: databaseService.userStream(),
                 child: builder(context, snapshot),
               ),
             ),

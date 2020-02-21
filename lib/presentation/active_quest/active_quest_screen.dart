@@ -11,9 +11,10 @@ import 'package:provider/provider.dart';
 
 
 class ActiveQuestScreen extends StatelessWidget {
+  static const String id = 'active_quest_page';
   final QuestModel questModel;
 
-  const ActiveQuestScreen({Key key, @required this.questModel})
+  const ActiveQuestScreen({Key key, this.questModel})
       : super(key: key);
 
   @override
@@ -45,7 +46,7 @@ class ActiveQuestScreen extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("images/background_games.png"),
+                    image: AssetImage("images/bckgrnd_balon.png"),
                     fit: BoxFit.fill),
               ),
             ),
@@ -79,6 +80,7 @@ class ActiveQuestScreen extends StatelessWidget {
                           Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
                               builder: (context) => QuestionScrollSingleAnswer(
+                                isFinalChallenge: true,
                                 locationQuestion: true,
                                 locationModel: locationModel,
                                 questModel: questModel,

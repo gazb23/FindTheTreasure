@@ -1,4 +1,5 @@
 
+import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
             PasswordResetScreen.id: (context) => PasswordResetScreen(),            
             ProfileScreen.id: (context) => ProfileScreen(),            
             HomePage.id: (context) => HomePage(),
+            ActiveQuestScreen.id : (context) => ActiveQuestScreen(),
           },
         );
       }),

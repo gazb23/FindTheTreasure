@@ -17,13 +17,14 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
   final LocationModel locationModel;
   final QuestionsModel questionsModel;
   final bool locationQuestion;
+  final bool isFinalChallenge;
 
   const QuestionScrollSingleAnswer({
     Key key,
     @required this.locationQuestion,
     this.questModel,
     this.locationModel,
-    this.questionsModel,
+    this.questionsModel, @required this.isFinalChallenge,
   }) : super(key: key);
 
   @override
@@ -79,6 +80,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                       ),
                       locationQuestion
                           ? AnswerBox(
+                            isFinalChallenge: isFinalChallenge,
                               answers: locationModel.answers,
                               islocationQuestion: locationQuestion,
                               arrayUnionCollectionRef:
@@ -87,6 +89,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                               locationTitle: locationModel.title,
                             )
                           : AnswerBox(
+                            isFinalChallenge: isFinalChallenge,
                               answers: questionsModel.answers,
                               islocationQuestion: locationQuestion,
                               arrayUnionCollectionRef: APIPath.challenges(
