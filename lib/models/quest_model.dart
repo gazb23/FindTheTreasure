@@ -16,11 +16,13 @@ class QuestModel {
   final List tags;
   final List likedBy;
   final List questStartedBy;
+  final List questCompletedBy;
 
   QuestModel({
     this.id,
     this.likedBy,
-    this.questStartedBy, 
+    this.questStartedBy,
+    this.questCompletedBy,
     this.image,
     this.numberOfLocations,
     this.location,
@@ -44,7 +46,10 @@ class QuestModel {
     return QuestModel(
       id: documentId,
       likedBy: data['likedBy'] != null ? data['likedBy'] : [],
-      questStartedBy: data['questStartedBy'] != null ? data['questStartedBy'] : [],
+      questStartedBy:
+          data['questStartedBy'] != null ? data['questStartedBy'] : [],
+      questCompletedBy:
+          data['questCompletedBy'] != null ? data['questCompletedBy'] : [],
       title: data['title'],
       difficulty: data['difficulty'],
       description: data['description'],
@@ -67,6 +72,7 @@ class QuestModel {
     return {
       'likedBy': likedBy,
       'questStartedBy': questStartedBy,
+      'questCompletedBy': questCompletedBy,
       'title': title,
       'difficulty': difficulty,
       'description': description,
@@ -80,7 +86,7 @@ class QuestModel {
       'brainDifficulty': brainDifficulty,
       'hikeDifficulty': hikeDifficulty,
       'bountyKeys': bountyKeys,
-      'bountyDiamonds' : bountyDiamonds,
+      'bountyDiamonds': bountyDiamonds,
     };
   }
 

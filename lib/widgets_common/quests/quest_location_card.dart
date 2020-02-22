@@ -16,6 +16,7 @@ class QuestLocationCard extends StatelessWidget {
   final DatabaseService databaseService;
   final VoidCallback onTap;
   final bool isLoading;
+  final bool lastLocationCompleted;
 
   const QuestLocationCard({
     Key key,
@@ -24,19 +25,22 @@ class QuestLocationCard extends StatelessWidget {
     @required this.databaseService,
     this.onTap,
     this.isLoading,
+    @required this.lastLocationCompleted,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final UserData _userData = Provider.of<UserData>(context);
     final _locationStartedBy =
         locationModel.locationStartedBy.contains(_userData.uid);
-           final _locationCompletedBy =
+    final _locationCompletedBy =
         locationModel.locationCompletedBy.contains(_userData.uid);
 
     return InkWell(
       onTap: onTap,
       child: Card(
-        color: _locationProgressColor(locationStarted: _locationStartedBy, locationCompleted: _locationCompletedBy ),
+        color: _locationProgressColor(
+            locationStarted: _locationStartedBy,
+            locationCompleted: _locationCompletedBy),
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: ExpandablePanel(
@@ -47,6 +51,7 @@ class QuestLocationCard extends StatelessWidget {
             hasIcon: false,
           ),
           header: LocationHeader(
+            lastLocationCompleted: lastLocationCompleted,
             questModel: questModel,
             locationModel: locationModel,
             isLoading: isLoading,
@@ -104,27 +109,29 @@ class QuestLocationCard extends StatelessWidget {
       ),
     );
   }
+
   // Logic for Location Card Color
-Color _locationProgressColor({bool locationCompleted, bool locationStarted}) {
-  if (locationCompleted) {
+  Color _locationProgressColor({bool locationCompleted, bool locationStarted}) {
+    if (locationCompleted) {
       return Colors.amberAccent;
     }
     if (locationStarted) {
-      return Colors.orangeAccent.shade200;
+      return Colors.white;
     }
     return Colors.white;
-}
+  }
 }
 
 class LocationHeader extends StatelessWidget {
   final LocationModel locationModel;
   final QuestModel questModel;
+  final bool lastLocationCompleted;
   final bool isLoading;
   const LocationHeader(
       {Key key,
       @required this.locationModel,
       @required this.questModel,
-      this.isLoading})
+      this.isLoading, @required this.lastLocationCompleted})
       : super(key: key);
 
   @override
@@ -149,7 +156,7 @@ class LocationHeader extends StatelessWidget {
           _locationStartedBy ? locationModel.title : 'Mystery Location',
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: _locationStartedBy ? Colors.white : Colors.black54,
+              color: _locationCompletedBy ? Colors.white : Colors.black54,
               fontFamily: 'JosefinSans',
               fontSize: 22),
         ),
@@ -165,9 +172,16 @@ class LocationHeader extends StatelessWidget {
                         .challengeCompletedBy
                         .contains(databaseService.uid))
                     .length;
-                QuestionViewModel.submitLocationConquered(context,
-                    locationModel: locationModel, questModel: questModel,
-                    lastChallengeCompleted: _numberOfChallenges == _numberofChallengesCompletedCard);
+
+                QuestionViewModel.submitLocationConquered(
+                  context,
+                  locationModel: locationModel,
+                  questModel: questModel,
+                  lastLocationCompleted: lastLocationCompleted,
+                  lastChallengeCompleted: (_numberOfChallenges ==
+                          _numberofChallengesCompletedCard) &&
+                      (_numberofChallengesCompletedCard > 0),
+                );
                 return Text(
                     '$_numberofChallengesCompletedCard/$_numberOfChallenges');
               }
@@ -180,7 +194,6 @@ class LocationHeader extends StatelessWidget {
 
   // Decide which image to show depending on user progress through the location
   Image _locationProgressImage({bool locationCompleted, bool locationStarted}) {
-
     if (locationCompleted) {
       return Image.asset('images/ic_questcompleted.png');
     }
@@ -189,8 +202,6 @@ class LocationHeader extends StatelessWidget {
     }
     return Image.asset('images/ic_quest_nonactive.png');
   }
-
-
 }
 
 class Challenges extends StatelessWidget {

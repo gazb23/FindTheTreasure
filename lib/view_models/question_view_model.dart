@@ -51,7 +51,7 @@ class QuestionViewModel {
             field: 'challengeCompletedBy',
             collectionRef: collectionRef,
           );
-        
+          
         }
       } catch (e) {
         print(e.toString());
@@ -60,11 +60,11 @@ class QuestionViewModel {
       // If Location Question
       try {
         await _databaseService.arrayUnionField(
-            documentId: documentId,
-            uid: _databaseService.uid,
-            field: 'locationStartedBy',
-            collectionRef: collectionRef,
-          );
+          documentId: documentId,
+          uid: _databaseService.uid,
+          field: 'locationStartedBy',
+          collectionRef: collectionRef,
+        );
         final _didCompleteChallenge = await ChallengePlatformAlertDialog(
           title: 'Location Unlocked!',
           content:
@@ -88,27 +88,35 @@ class QuestionViewModel {
   static void submitLocationConquered(
     BuildContext context, {
     @required bool lastChallengeCompleted,
+    @required bool lastLocationCompleted,
     @required LocationModel locationModel,
     @required QuestModel questModel,
   }) async {
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: true);
 
-    if (!locationModel.locationCompletedBy.contains(_databaseService.uid) && lastChallengeCompleted) {
+    if (!locationModel.locationCompletedBy.contains(_databaseService.uid) &&
+        lastChallengeCompleted) {
       try {
+        
         await _databaseService.arrayUnionField(
             documentId: locationModel.id,
             uid: _databaseService.uid,
             field: 'locationCompletedBy',
             collectionRef: APIPath.locations(questId: questModel.id));
-        final didCompleteLocation = await ChallengePlatformAlertDialog(
-          title: 'Location Conquered!',
-          content:
-              'Well done, you\'ve conquered  ${locationModel.title}. Time for your next adventure!',
-          defaultActionText: 'Next Location',
-          image: Image.asset('images/ic_excalibur_owl.png'),
-        ).show(context);
-        if (didCompleteLocation) {}
+            
+        if (lastLocationCompleted) {
+          print('WOOOO');
+        } else if (!lastLocationCompleted){
+          final didCompleteLocation = await ChallengePlatformAlertDialog(
+            title: 'Location Conquered!',
+            content:
+                'Well done, you\'ve conquered  ${locationModel.title}. Time for your next adventure!',
+            defaultActionText: 'Next Location',
+            image: Image.asset('images/ic_excalibur_owl.png'),
+          ).show(context);
+          if (didCompleteLocation) {}
+        }
       } catch (e) {
         print(e.toString());
       }

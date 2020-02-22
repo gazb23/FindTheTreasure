@@ -48,6 +48,7 @@ class DatabaseService {
 
   //Receice a stream of all locations for a given quest from Firebase
   Stream<List<LocationModel>> locationsStream({@required String questId}) => _service.collectionStream(
+    descending: false,
       path: APIPath.locations(questId: questId),
       builder: (data, documentId) => LocationModel.fromMap(data, documentId));    
 
@@ -58,6 +59,7 @@ class DatabaseService {
 
   //Receice a stream of all Challenges for a given location from Firebase
   Stream<List<QuestionsModel>> challengesStream({@required String questId, @required String locationId}) => _service.collectionStream(
+    descending: false,
       path: APIPath.challenges(questId: questId, locationId: locationId),
       builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    
 

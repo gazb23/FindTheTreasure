@@ -8,12 +8,14 @@ class FirestoreService {
   Stream<List<T>> collectionStream<T>(
       {@required
           String path,
+          String orderBy,
+          bool descending,
       @required
           T builder(
         Map<String, dynamic> data,
         String documentId,
       )}) {
-    final reference = Firestore.instance.collection(path);
+    final reference = Firestore.instance.collection(path).orderBy(orderBy ?? 'timestamp',descending: descending ?? true);
 
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.documents

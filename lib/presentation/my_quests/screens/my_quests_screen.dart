@@ -52,7 +52,7 @@ class MyQuestsScreen extends StatelessWidget {
               children: <Widget>[
                 _buildCurrentQuestListView(context, database, user),
                 _buildLikedQuestListView(context, database, user),
-                Tab(icon: Icon(Icons.directions_bike)),
+                _buildConqueredQuestListView(context, database, user),
               ],
             ),
           ),
@@ -147,4 +147,54 @@ class MyQuestsScreen extends StatelessWidget {
           );
         });
   }
+
+   Widget _buildConqueredQuestListView(
+      BuildContext context, DatabaseService database, UserData user) {
+    print('current');
+
+    return StreamBuilder<List<QuestModel>>(
+        stream: database.questFieldContainsUID(field: 'questCompletedBy'),
+        builder: (context, snapshot) {
+          return ListItemsBuilder<QuestModel>(
+            title: 'No Quests Conquered!',
+            message: 'Head to the explore page, choose a quest and start your journey!',
+            buttonEnabled: false,            
+            snapshot: snapshot,
+            itemBuilder: (context, quest, index) => QuestListView(
+              numberOfDiamonds: quest.numberOfDiamonds,
+              difficulty: quest.difficulty,
+              numberOfKeys: quest.numberOfKeys,
+              title: quest.title,
+              image: quest.image,
+              numberOfLocations: quest.numberOfLocations,
+              location: quest.location,
+              questModel: quest,
+              onTap: () {
+                final _questCompletedBy = quest.questCompletedBy.contains(user.uid);
+                
+                if (!_questCompletedBy) {
+                    Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => QuestDetailScreen(
+                      userData: user,
+                      questModel: quest,
+                      database: database,
+                    ),
+                  ),
+                );
+                } else {
+                  Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => ActiveQuestScreen(
+                      questModel: quest,
+                    ),
+                  ),
+                );
+                }
+              },
+            ),
+          );
+        });
+  }
+  
 }

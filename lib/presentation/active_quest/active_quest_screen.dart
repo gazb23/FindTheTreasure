@@ -8,17 +8,18 @@ import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.d
 import 'package:find_the_treasure/widgets_common/quests/quest_location_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:find_the_treasure/view_models/location_view_model.dart';
 
 class ActiveQuestScreen extends StatelessWidget {
   static const String id = 'active_quest_page';
   final QuestModel questModel;
 
-  const ActiveQuestScreen({Key key, this.questModel})
-      : super(key: key);
+  const ActiveQuestScreen({Key key, this.questModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final DatabaseService databaseService =
+        Provider.of<DatabaseService>(context);
     bool _isLoading = false;
     return SafeArea(
       child: Scaffold(
@@ -51,50 +52,61 @@ class ActiveQuestScreen extends StatelessWidget {
               ),
             ),
             Consumer<DatabaseService>(
-              builder: (_, _databaseService, __) => StreamBuilder<
-                      List<LocationModel>>(
-                  stream:
-                      _databaseService.locationsStream(questId: questModel.id),
-                  builder: (context, snapshot) {
-                   
-                    
-                    return ListItemsBuilder<LocationModel>(
-                      title: 'Say whhhaaat!',
-                      message:
-                          'No locations to explore! The Find The Treasure team needs to pick up their act!',
-                      snapshot: snapshot,
-                      itemBuilder: (context, locationModel, _) =>
-                          QuestLocationCard(
-                           
-                        locationModel: locationModel,
-                        questModel: questModel,
-                        databaseService: _databaseService,
-                        isLoading: _isLoading,
+              builder: (_, _databaseService, __) =>
+                  StreamBuilder<List<LocationModel>>(
+                      stream: _databaseService.locationsStream(
+                          questId: questModel.id),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.active) {
+                          final _numberOfLocations = snapshot.data.length;
+                        final _locationsCompleted = snapshot.data
+                            .where((locationModel) => locationModel
+                                .locationCompletedBy
+                                .contains(databaseService.uid))
+                            .length;
+  
+                        LocationViewModel.submitQuestConquered(context,
+                            lastLocationCompleted:
+                                _numberOfLocations == _locationsCompleted,
+                            questModel: questModel);
+                        return ListItemsBuilder<LocationModel>(
+                          title: 'Say whhhaaat!',
+                          message:
+                              'No locations to explore! The Find The Treasure team needs to pick up their act!',
+                          snapshot: snapshot,
+                          itemBuilder: (context, locationModel, _) =>
+                              QuestLocationCard(
+                            lastLocationCompleted:
+                                _numberOfLocations == _locationsCompleted + 1,
+                            locationModel: locationModel,
+                            questModel: questModel,
+                            databaseService: _databaseService,
+                            isLoading: _isLoading,
+                            onTap: () async {
+                              try {
+                                _isLoading = true;
+                                // To discover the location, the user must first answer a location question
+
+                                Navigator.of(context, rootNavigator: true).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        QuestionScrollSingleAnswer(
+                                      isFinalChallenge: true,
+                                      locationQuestion: true,
+                                      locationModel: locationModel,
+                                      questModel: questModel,
+                                    ),
+                                  ),
+                                );
+                              } catch (e) {
+                                _isLoading = false;
+                              }
+                            },
+                          ),
+                        );
+                        } return Container();
                         
-                        onTap: () async {
-                         
-                          try {
-                             _isLoading = true;
-                          // To discover the location, the user must first answer a location question
-                          
-                          Navigator.of(context, rootNavigator: true).push(
-                            MaterialPageRoute(
-                              builder: (context) => QuestionScrollSingleAnswer(
-                                isFinalChallenge: true,
-                                locationQuestion: true,
-                                locationModel: locationModel,
-                                questModel: questModel,
-                              ),
-                            ),
-                          );
-                          } catch (e) {
-                            _isLoading = false;
-                          }
-                         
-                        },
-                      ),
-                    );
-                  }),
+                      }),
             )
           ],
         ),

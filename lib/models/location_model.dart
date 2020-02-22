@@ -5,7 +5,6 @@ class LocationModel {
   final String title;
   final String questionIntroduction;
   final String question;
-  final int numberOfChallengesCompleted;
   final List<dynamic> answers;
   final List<dynamic> locationStartedBy;
   final List<dynamic> locationCompletedBy;
@@ -14,8 +13,7 @@ class LocationModel {
     @required this.id,
     @required this.title,
     @required this.questionIntroduction,
-    @required this.question,
-    @required this.numberOfChallengesCompleted, 
+    @required this.question, 
     @required this.answers,
     @required this.locationStartedBy,
     @required this.locationCompletedBy,
@@ -29,8 +27,7 @@ class LocationModel {
       id: documentId,
       title: data['locationTitle'],
       questionIntroduction: data['questionIntroduction'],
-      question: data['question'],
-      numberOfChallengesCompleted: data['numberOfChallengesCompleted'],
+      question: data['question'],    
       answers: data['answers'],
       locationCompletedBy: data['locationCompletedBy'],
       locationStartedBy: data['locationStartedBy'] ,
@@ -41,11 +38,11 @@ class LocationModel {
     return {
       'locationTitle': title,
       'questionIntroduction': questionIntroduction,
-      'question': question,
-      'numberOfChallengesCompleted' : numberOfChallengesCompleted,
+      'question': question,    
       'answers': answers,
       'locationCompleted': locationCompletedBy,
-      'locationProgressIndicator': locationStartedBy,
+       'locationStartedBy': locationStartedBy
+     
     };
   }
 }
