@@ -31,83 +31,93 @@ class PlatformAlertDialog extends PlatformWidget {
         ? await showCupertinoDialog<bool>(
             context: context,
             builder: (context) => this,
+
           )
         : await showDialog<bool>(
             context: context,
             builder: (context) => this,
+            barrierDismissible: false
           );
   }
 
   @override
   Widget buildCupertinoWidget(BuildContext context) {
-    return CupertinoAlertDialog(
-      title: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'quicksand',
-            fontWeight: FontWeight.w600,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: CupertinoAlertDialog(
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 20.0),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'quicksand',
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            image ?? Container(),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              content,
-              style: TextStyle(
-                fontFamily: 'quicksand',
-                fontSize: 18,
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              image ?? Container(),
+              SizedBox(
+                height: 20,
               ),
-            ),
-          ],
+              Text(
+                content,
+                style: TextStyle(
+                  fontFamily: 'quicksand',
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
         ),
+        actions: _buildActions(context),
       ),
-      actions: _buildActions(context),
     );
   }
 
   @override
   Widget buildMaterialWidget(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: backgroundColor ?? Colors.white,
-      title: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'quicksand',
-            fontWeight: FontWeight.w600,
-            color: titleTextColor ?? Colors.black87
+    return WillPopScope(
+      onWillPop: () async => false,
+          child: AlertDialog(
+
+        backgroundColor: backgroundColor ?? Colors.white,
+        title: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'quicksand',
+              fontWeight: FontWeight.w600,
+              color: titleTextColor ?? Colors.black87
+            ),
           ),
         ),
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            image ?? Container(),
-            SizedBox(
-                height:
-                    20), //If no image is displayed an empty container will take it's place.
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              image ?? Container(),
+              SizedBox(
+                  height:
+                      20), //If no image is displayed an empty container will take it's place.
 
-            Text(
-              content,
-              style: TextStyle(
-                fontFamily: 'quicksand',
-                color: contentTextColor ?? Colors.grey
+              Text(
+                content,
+                style: TextStyle(
+                  fontFamily: 'quicksand',
+                  color: contentTextColor ?? Colors.grey
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      actions: _buildActions(context),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        actions: _buildActions(context),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+
       ),
     );
   }
@@ -128,6 +138,7 @@ class PlatformAlertDialog extends PlatformWidget {
       ));
     }
     actions.add(PlatformAlertDialogAction(
+      
       child: Text(
         defaultActionText,
         style: TextStyle(

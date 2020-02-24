@@ -39,7 +39,9 @@ class _AnswerBoxState extends State<AnswerBox> {
 
   void _submit() async {
     if (_validateAndSaveForm()) {
+      
       if (widget.answers.contains(_answer.toUpperCase().trimRight())) {
+        _isLoading = true;
         QuestionViewModel.submit(context,
             documentId: widget.arrayUnionDocumentId,
             collectionRef: widget.arrayUnionCollectionRef,
@@ -48,6 +50,7 @@ class _AnswerBoxState extends State<AnswerBox> {
             isFinalChallenge: widget.isFinalChallenge
             );
       }
+      else _isLoading = false;
     }
   }
 
@@ -91,6 +94,7 @@ class _AnswerBoxState extends State<AnswerBox> {
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(5),
                   hintText: 'Enter your answer',
+                  enabled: !_isLoading,
                   suffixIcon: IconButton(
                     icon: _isLoading
                         ? Icon(
@@ -99,7 +103,7 @@ class _AnswerBoxState extends State<AnswerBox> {
                           )
                         : Icon(
                             Icons.send,
-                            color: Colors.redAccent,
+                            color: Colors.orangeAccent,
                           ),
                     onPressed: _submit
                   ),
