@@ -186,7 +186,9 @@ class LocationHeader extends StatelessWidget {
                     '$_numberofChallengesCompletedCard/$_numberOfChallenges');
               }
 
-              return CircularProgressIndicator();
+              return CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
+              );
             }),
       ),
     );

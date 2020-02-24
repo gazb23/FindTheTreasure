@@ -1,6 +1,8 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
+import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
+import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
@@ -11,40 +13,92 @@ class QuestDiamondCalulationButton extends StatelessWidget {
   final QuestModel questModelStream;
   final UserData userData;
   final DatabaseService databaseService;
-  final Function confirmQuest;
-  final bool enabled;
 
   const QuestDiamondCalulationButton({
     Key key,
     @required this.questModelStream,
     @required this.userData,
-    @required this.confirmQuest,
-    @required this.databaseService, this.enabled,
+    @required this.databaseService,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final bool _isStartedBy = questModelStream.questStartedBy.contains(userData.uid);
+    final bool _isStartedBy =
+        questModelStream.questStartedBy.contains(userData.uid);
     int _diamondCalc =
         (questModelStream.numberOfDiamonds - userData.userDiamondCount);
     int _keyCalc = (questModelStream.numberOfKeys - userData.userKeyCount);
+  
     return SignInButton(
-      bottomPadding: 0,
+        bottomPadding: 0,        
         text: _isStartedBy ? 'Continue Quest' : 'Start Quest',
-
         onPressed: () {
           if (userData.userDiamondCount >= questModelStream.numberOfDiamonds &&
-              userData.userKeyCount >= questModelStream.numberOfKeys) {
-            return confirmQuest(context, questModelStream, userData, databaseService);
+                  userData.userKeyCount >= questModelStream.numberOfKeys ||
+              _isStartedBy) {
+            return _confirmQuest(context, questModelStream, userData,
+                databaseService);
           } else if (userData.userDiamondCount <
               questModelStream.numberOfDiamonds) {
-            _confirmStoreDiamond(
+            return _confirmStoreDiamond(
               context,
               questModelStream,
               _diamondCalc,
             );
           } else
-            _confirmStoreKey(context, questModelStream, _keyCalc);
+            return _confirmStoreKey(context, questModelStream, _keyCalc);
         });
+  }
+
+  Future<void> _confirmQuest(BuildContext context, QuestModel questModelStream,
+      UserData userData, DatabaseService database) async {
+    final bool _isStartedBy =
+        questModelStream.questStartedBy.contains(userData.uid);
+    try {
+      if (!_isStartedBy) {
+        final didRequestQuest = await PlatformAlertDialog(
+          title: '${userData.displayName}',
+          content:
+              'It seems ya have enough treasure for the ${questModelStream.title} quest. Do you want to begin the quest?',
+          cancelActionText: 'Cancel',
+          defaultActionText: 'Confirm',
+          image: Image.asset('images/ic_excalibur_owl.png'),
+        ).show(context);
+        if (didRequestQuest) {
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
+              builder: (context) => ActiveQuestScreen(
+                questModel: questModelStream,
+              ),
+            ),
+          );
+          final UserData _userData = UserData(
+            userDiamondCount:
+                userData.userDiamondCount - questModelStream.numberOfDiamonds,
+            userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
+            displayName: userData.displayName,
+            email: userData.email,
+            photoURL: userData.photoURL,
+            uid: userData.uid,
+          );
+          await database.arrayUnionField(
+              collectionRef: APIPath.quests(),
+              documentId: questModelStream.id,
+              uid: database.uid,
+              field: 'questStartedBy');
+          await database.updateUserDiamondAndKey(userData: _userData);
+        }
+      } else if (_isStartedBy) {
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => ActiveQuestScreen(
+              questModel: questModelStream,
+            ),
+          ),
+        );
+      }
+    } catch (e) {    
+      print(e.toString());
+    }
   }
 
 // Show the correct PlatformAlert dialog and navigate the user to the store if requ

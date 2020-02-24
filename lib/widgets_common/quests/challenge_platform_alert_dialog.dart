@@ -9,12 +9,14 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   final String content;
   final String cancelActionText;
   final String defaultActionText;
+  final Color backgroundColor;
   final Widget image;
   final bool isLoading;
  
 
   ChallengePlatformAlertDialog({
     this.cancelActionText,
+    this.backgroundColor, 
     @required this.title,
     @required this.content,
     @required this.defaultActionText,
@@ -73,7 +75,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: backgroundColor ?? Colors.white,
       title: Center(
         child: Text(
           title,
@@ -115,14 +117,13 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
     final actions = <Widget>[];
     if (cancelActionText != null) {
       actions.add(PlatformAlertDialogAction(
-        child: SignInButton(
-          isLoading: isLoading,
+        child: SignInButton(          
         text: cancelActionText,
         color: Colors.grey,
         
         onPressed: () => Navigator.of(context).pop(false),
       ),
-        onPressed: () => Navigator.of(context).pop(false),
+        // onPressed: () => Navigator.of(context).pop(false),
       ));
     }
     actions.add(PlatformAlertDialogAction(
@@ -130,7 +131,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
         text: defaultActionText,
         onPressed: () => Navigator.of(context).pop(true),
       ),
-      onPressed: () => Navigator.of(context).pop(true),
+      // onPressed: () => Navigator.of(context).pop(true),
     ));
     return actions;
   }

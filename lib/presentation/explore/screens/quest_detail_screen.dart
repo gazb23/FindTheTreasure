@@ -1,10 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
-import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
-import 'package:find_the_treasure/services/api_paths.dart';
-
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_details_list_tile.dart';
@@ -27,7 +23,7 @@ class QuestDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List tags = questModel.tags ?? [];
+    List tags = questModel.tags ?? []; 
     return StreamBuilder<QuestModel>(
         stream: database.questStream(questId: questModel.id),
         builder: (context, snapshot) {
@@ -320,7 +316,8 @@ class QuestDetailScreen extends StatelessWidget {
   }
 
   Widget _buildBottomBar(
-      BuildContext context, QuestModel questModelStream, UserData userData) {
+      BuildContext context, QuestModel questModelStream, UserData userData, ) {
+        
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
@@ -346,66 +343,16 @@ class QuestDetailScreen extends StatelessWidget {
                 child: QuestDiamondCalulationButton(
                     questModelStream: questModelStream,
                     userData: userData,
-                    databaseService: database,
-                    
-                    confirmQuest: _confirmQuest))
+                    databaseService: database,                    
+                    ))
           ],
         ),
       ),
     );
+    
   }
 
-  Future<void> _confirmQuest(BuildContext context, QuestModel questModelStream,
-      UserData userData, DatabaseService database) async {
-    final bool _isStartedBy =
-        questModelStream.questStartedBy.contains(userData.uid);
-    try {
-      if (!_isStartedBy) {
-        final didRequestQuest = await PlatformAlertDialog(
-          title: '${userData.displayName}',
-          content:
-              'It seems ya have enough treasure for the ${questModelStream.title} quest. Do you want to begin the quest?',
-          cancelActionText: 'Cancel',
-          defaultActionText: 'Confirm',
-          image: Image.asset('images/ic_excalibur_owl.png'),
-        ).show(context);
-        if (didRequestQuest) {
-          final UserData _userData = UserData(
-            userDiamondCount:
-                userData.userDiamondCount - questModelStream.numberOfDiamonds,
-            userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
-            displayName: userData.displayName,
-            email: userData.email,
-            photoURL: userData.photoURL,
-            uid: userData.uid,
-          );
-          await database.arrayUnionField(
-            collectionRef: APIPath.quests(),
-              documentId: questModel.id,
-              uid: database.uid,
-              field: 'questStartedBy');
-          await database.updateUserDiamondAndKey(userData: _userData);
-          Navigator.of(context, rootNavigator: true).push(
-            MaterialPageRoute(
-              builder: (context) => ActiveQuestScreen(
-                questModel: questModelStream,
-              ),
-            ),
-          );
-        }
-      } else if (_isStartedBy){
-        Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(
-            builder: (context) => ActiveQuestScreen(
-              questModel: questModelStream,
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+
 
   Widget _buildTimeListTile(BuildContext context, String difficulty) {
     return Column(

@@ -39,7 +39,7 @@ class _AnswerBoxState extends State<AnswerBox> {
 
   void _submit() async {
     if (_validateAndSaveForm()) {
-      if (widget.answers.contains(_answer)) {
+      if (widget.answers.contains(_answer.toUpperCase().trimRight())) {
         QuestionViewModel.submit(context,
             documentId: widget.arrayUnionDocumentId,
             collectionRef: widget.arrayUnionCollectionRef,
@@ -76,18 +76,18 @@ class _AnswerBoxState extends State<AnswerBox> {
               key: _formKey,
               child: TextFormField(
                 validator: (value) {
-                  if (!widget.answers.contains(value.trimRight()) &&
+                  if (!widget.answers.contains(value.toUpperCase().trimRight()) &&
                       value.isNotEmpty) {
                     return 'Answer is incorrect, have another crack!';
                   }
-                  if (widget.answers.contains(value.trimRight()) &&
+                  if (widget.answers.contains(value.trimRight().toUpperCase()) &&
                       value.isNotEmpty) {
                     return null;
                   }
                   return value.isNotEmpty ? null : 'Please enter your answer';
                 },
-                onSaved: (value) => _answer = value.trimRight(),
-                textCapitalization: TextCapitalization.words,
+                onSaved: (value) => _answer = value.toUpperCase().trimRight(),
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(5),
                   hintText: 'Enter your answer',

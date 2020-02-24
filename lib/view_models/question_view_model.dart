@@ -29,19 +29,20 @@ class QuestionViewModel {
         );
         if (!isFinalChallenge) {
           final _didRequestNext = await ChallengePlatformAlertDialog(
+            
             title: 'Congratulations!',
-            content: 'You\'ve completed this challenge!',
+            content: 'You\'ve completed the challenge!',
             cancelActionText: 'Not Now',
             defaultActionText: 'Next challenge',
             image: Image.asset(
-              'images/ic_excalibur_owl.png',
+              'images/owl_thumbs.png',
             ),
             isLoading: false,
           ).show(context);
           if (_didRequestNext) {
             Navigator.pop(context);
           } else {
-            Navigator.pop(context);
+            Navigator.of(context).popUntil((route) => route.isFirst);
           }
         } else {
           Navigator.pop(context);
@@ -66,9 +67,11 @@ class QuestionViewModel {
           collectionRef: collectionRef,
         );
         final _didCompleteChallenge = await ChallengePlatformAlertDialog(
+
           title: 'Location Unlocked!',
           content:
-              'Well done, you\'ve discovered  $locationTitle. Time for your next adventure!',
+              'Well done, you\'ve discovered  $locationTitle. It\'s adventure time!',
+          cancelActionText: 'Not Now',
           defaultActionText: 'Start Challenge',
           image: Image.asset('images/ic_excalibur_owl.png'),
           isLoading: false,
@@ -76,7 +79,7 @@ class QuestionViewModel {
         if (_didCompleteChallenge) {
           Navigator.pop(context);
         } else {
-          Navigator.pop(context);
+          Navigator.of(context).popUntil((route) => route.isFirst);
         }
       } catch (e) {
         print(e.toString());
@@ -109,13 +112,19 @@ class QuestionViewModel {
           print('WOOOO');
         } else if (!lastLocationCompleted){
           final didCompleteLocation = await ChallengePlatformAlertDialog(
+            backgroundColor: Colors.amberAccent,
             title: 'Location Conquered!',
             content:
                 'Well done, you\'ve conquered  ${locationModel.title}. Time for your next adventure!',
             defaultActionText: 'Next Location',
+            cancelActionText: 'Not Now',
             image: Image.asset('images/ic_excalibur_owl.png'),
           ).show(context);
-          if (didCompleteLocation) {}
+          if (didCompleteLocation) {
+            
+          } else {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          }
         }
       } catch (e) {
         print(e.toString());
