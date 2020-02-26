@@ -17,7 +17,7 @@ class Scroll extends StatelessWidget {
           color: Colors.brown.shade50,
           width: MediaQuery.of(context).size.width,
           constraints: BoxConstraints(
-            minHeight: 250,
+            minHeight: 300,
               maxHeight: MediaQuery.of(context).size.height / 2.5),
           child: SingleChildScrollView(
             child: Container(

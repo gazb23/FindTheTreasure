@@ -1,11 +1,15 @@
 class QuestionsModel {
   final String id;
-  final String challengeTitle;    
+  final String challengeTitle;
   final String questionIntroduction;
   final String question;
-  final List<dynamic> answers;  
-  final List<dynamic> challengeCompletedBy;  
-
+  final String questionType;
+  final Map answerA;
+  final Map answerB;
+  final Map answerC;
+  final Map answerD;
+  final List<dynamic> answers;
+  final List<dynamic> challengeCompletedBy;
 
   QuestionsModel({
     this.challengeTitle,
@@ -14,6 +18,11 @@ class QuestionsModel {
     this.answers,
     this.id,
     this.challengeCompletedBy,
+    this.questionType,
+    this.answerA,
+    this.answerB,
+    this.answerC,
+    this.answerD,
   });
 
   factory QuestionsModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -23,20 +32,25 @@ class QuestionsModel {
     return QuestionsModel(
       id: documentId,
       answers: data['answers'],
-      challengeTitle: data['challengeTitle'], 
+      challengeTitle: data['challengeTitle'],
       question: data['question'],
-      questionIntroduction: data['questionIntroduction'],  
-      challengeCompletedBy: data['challengeCompletedBy']
+      questionIntroduction: data['questionIntroduction'],
+      challengeCompletedBy: data['challengeCompletedBy'],
+      questionType: data['questionType'],
+      answerA: data['answerA'],
+      answerB: data['answerB'],
+      answerC: data['answerC'],
+      answerD: data['answerD']
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'answers': answers,
-      'challengeTitle': challengeTitle,   
+      'challengeTitle': challengeTitle,
       'question': question,
       'questionIntroduction': questionIntroduction,
-      'challengeCompletedBy' : challengeCompletedBy
+      'challengeCompletedBy': challengeCompletedBy
     };
   }
 }

@@ -2,33 +2,28 @@ import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/active_quest/question_widgets/multiple_choice.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_introduction.dart';
-import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/widgets_common/quests/answer_box.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
-import 'package:find_the_treasure/widgets_common/quests/scroll.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class QuestionScrollSingleAnswer extends StatelessWidget {
-  static const String id = 'quest_start_screen';
-
+class QuestionMultipleChoice extends StatelessWidget {
   final QuestModel questModel;
   final LocationModel locationModel;
   final QuestionsModel questionsModel;
   final bool locationQuestion;
   final bool isFinalChallenge;
 
-  const QuestionScrollSingleAnswer({
+  const QuestionMultipleChoice({
     Key key,
-    @required this.locationQuestion,
     this.questModel,
     this.locationModel,
     this.questionsModel,
-    @required this.isFinalChallenge,
+    this.locationQuestion,
+    this.isFinalChallenge,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final DatabaseService databaseService =
@@ -61,7 +56,6 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                   ],
                 ),
                 body: Container(
-                  height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(
@@ -69,7 +63,6 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                           ),
                           fit: BoxFit.fill)),
                   child: ListView(
-
                     children: <Widget>[
                       QuestionIntroduction(
                         context: context,
@@ -78,35 +71,15 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                         locationQuestion: locationQuestion,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
-                      Scroll(
-                        question: locationQuestion
-                        ? locationModel.question
-                        : questionsModel.question,
+                      MultipleChoice(
+                        questionsModel: questionsModel,
+                        locationModel: locationModel,
+                        isFinalChallenge: isFinalChallenge,
+                        questModel: questModel,
                       ),
-                      
-                           SizedBox(height: 20,),
-                      locationQuestion
-                          ? AnswerBox(
-                              isFinalChallenge: isFinalChallenge,
-                              answers: locationModel.answers,
-                              islocationQuestion: locationQuestion,
-                              arrayUnionCollectionRef: APIPath.locations(
-                                  questId: questModel.id),
-                              arrayUnionDocumentId: locationModel.id,
-                              locationTitle: locationModel.title,
-                            )
-                          : AnswerBox(
-                              isFinalChallenge: isFinalChallenge,
-                              answers: questionsModel.answers,
-                              islocationQuestion: locationQuestion,
-                              arrayUnionCollectionRef: APIPath.challenges(
-                                  questId: questModel.id,
-                                  locationId: locationModel.id),
-                              arrayUnionDocumentId: questionsModel.id,
-                              locationTitle: locationModel.title,
-                            ),
+                      Container(child: Image.asset('images/ic_owl_neutral.png', height: 200,))
                     ],
                   ),
                 ),

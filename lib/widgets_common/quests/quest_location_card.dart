@@ -3,6 +3,7 @@ import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_multiple_choice.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -72,7 +73,8 @@ class QuestLocationCard extends StatelessWidget {
                           .challengeCompletedBy
                           .contains(databaseService.uid))
                       .length;
-
+                  final bool _isFinalChallenge =
+                      _numberofChallengesCompleted == _numberOfChallenges - 1;
                   return ListItemsBuilder<QuestionsModel>(
                     title: 'Oh no! No challenges!',
                     message: 'Admin needs to add some!',
@@ -85,18 +87,10 @@ class QuestLocationCard extends StatelessWidget {
                       numberOfChallengesCompleted: _numberofChallengesCompleted,
                       databaseService: databaseService,
                       onTap: () {
-                        Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
-                            builder: (context) => QuestionScrollSingleAnswer(
-                              isFinalChallenge: _numberofChallengesCompleted ==
-                                  _numberOfChallenges - 1,
-                              locationQuestion: false,
-                              questModel: questModel,
-                              questionsModel: questionsModel,
-                              locationModel: locationModel,
-                            ),
-                          ),
-                        );
+                        _loadQuestion(
+                            context: context,
+                            questionsModel: questionsModel,
+                            isFinalChallenge: _isFinalChallenge);
                       },
                     ),
                   );
@@ -108,6 +102,41 @@ class QuestLocationCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _loadQuestion(
+      {BuildContext context,
+      QuestionsModel questionsModel,
+      bool isFinalChallenge}) {
+    switch (questionsModel.questionType) {
+      case 'questionSingleAnswer':
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => QuestionScrollSingleAnswer(
+              isFinalChallenge: isFinalChallenge,
+              locationQuestion: false,
+              questModel: questModel,
+              questionsModel: questionsModel,
+              locationModel: locationModel,
+            ),
+          ),
+        );
+        break;
+      case 'questionMultipleChoice':
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => QuestionMultipleChoice(
+              isFinalChallenge: isFinalChallenge,
+              locationQuestion: false,
+              questModel: questModel,
+              questionsModel: questionsModel,
+              locationModel: locationModel,
+            ),
+          ),
+        );
+        break;
+      
+    }
   }
 
   // Logic for Location Card Color
@@ -131,7 +160,8 @@ class LocationHeader extends StatelessWidget {
       {Key key,
       @required this.locationModel,
       @required this.questModel,
-      this.isLoading, @required this.lastLocationCompleted})
+      this.isLoading,
+      @required this.lastLocationCompleted})
       : super(key: key);
 
   @override
@@ -187,7 +217,8 @@ class LocationHeader extends StatelessWidget {
               }
 
               return CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
+                valueColor:
+                    new AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
               );
             }),
       ),

@@ -150,7 +150,7 @@ class QuestDetailScreen extends StatelessWidget {
             } else if (snapshot.hasError) {
               print(snapshot.hasError.toString());
             }
-            return CircularProgressIndicator();
+            return Container();
           },
         ),
       ),

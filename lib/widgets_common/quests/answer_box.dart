@@ -65,11 +65,11 @@ class _AnswerBoxState extends State<AnswerBox> {
         ),
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 1.0,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             SizedBox(
@@ -97,10 +97,7 @@ class _AnswerBoxState extends State<AnswerBox> {
                   enabled: !_isLoading,
                   suffixIcon: IconButton(
                     icon: _isLoading
-                        ? Icon(
-                            Icons.send,
-                            color: Colors.greenAccent,
-                          )
+                        ? Image.asset('images/tick_small.png')
                         : Icon(
                             Icons.send,
                             color: Colors.orangeAccent,
