@@ -4,6 +4,7 @@ class QuestionsModel {
   final String questionIntroduction;
   final String question;
   final String questionType;
+  final String image;
   final Map answerA;
   final Map answerB;
   final Map answerC;
@@ -23,6 +24,7 @@ class QuestionsModel {
     this.answerB,
     this.answerC,
     this.answerD,
+    this.image, 
   });
 
   factory QuestionsModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -40,7 +42,8 @@ class QuestionsModel {
       answerA: data['answerA'],
       answerB: data['answerB'],
       answerC: data['answerC'],
-      answerD: data['answerD']
+      answerD: data['answerD'],
+      image: data['image'],
     );
   }
 

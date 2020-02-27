@@ -11,13 +11,14 @@ class MultipleChoice extends StatefulWidget {
   final LocationModel locationModel;
   final QuestionsModel questionsModel;
   final bool isFinalChallenge;
-
+  final bool showOwl;
+  
   const MultipleChoice({
     Key key,
     @required this.questionsModel,
     @required this.isFinalChallenge,
     @required this.questModel,
-    @required this.locationModel,
+    @required this.locationModel, this.showOwl = false,
   }) : super(key: key);
 
   @override
@@ -29,12 +30,18 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   String _imageB = 'images/4.0x/ic_b_neutral.png';
   String _imageC = 'images/4.0x/ic_c_neutral.png';
   String _imageD = 'images/4.0x/ic_d_neutral.png';
+  String _neutralOwl = 'images/ic_owl_neutral.png';
+  String _correctOwl = 'images/ic_owl_correct.png';
+  String _wrongOwl = 'images/ic_owl_wrong.png';
   bool _submitted = false;
+  
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         _buildMultiChoiceTiles(),
+        SizedBox(height: 10),
+        widget.showOwl ? Container(child: Image.asset(_neutralOwl)) : Container()
       ],
     );
   }
@@ -52,10 +59,11 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
               leading: Image.asset(_imageA),
               title: Text(
                 widget.questionsModel.answerA.values.first,
+                maxLines: 2,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -76,10 +84,11 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
               leading: Image.asset(_imageB),
               title: Text(
                 widget.questionsModel.answerB.values.first,
+                maxLines: 2,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -100,10 +109,11 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
               leading: Image.asset(_imageC),
               title: Text(
                 widget.questionsModel.answerC.values.first,
+                maxLines: 2,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -124,10 +134,11 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
               leading: Image.asset(_imageD),
               title: Text(
                 widget.questionsModel.answerD.values.first,
+                maxLines: 2,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -142,10 +153,11 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitA() async {
-    
-      if (widget.questionsModel.answerA.containsValue(true)) {
+      bool _isCorrect = widget.questionsModel.answerA.containsValue(true);
+      if (_isCorrect) {
         setState(() {
           _imageA = 'images/4.0x/ic_a_correct.png';
+          _neutralOwl = _correctOwl;
         _submitted = true;
         });
         
@@ -162,19 +174,22 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       } else {
         setState(() {
           _imageA = 'images/4.0x/ic_a_wrong.png';
+          _neutralOwl = _wrongOwl;
           _submitted = true;
         });
          final snackBar = SnackBar(
           content: Text(
             'Oh no, wrong answer!',
             style: TextStyle(fontSize: 18,),
+            
           ),
-          
+          duration: Duration(milliseconds: 1800),
         );
         Scaffold.of(context).showSnackBar(snackBar);
-        await Future.delayed(Duration(milliseconds: 4300));
+        await Future.delayed(Duration(milliseconds: 2000));
         setState(() {
           _imageA = 'images/4.0x/ic_a_neutral.png';
+          _neutralOwl = 'images/ic_owl_neutral.png';
           _submitted = false;
         });
          
@@ -187,6 +202,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       if (widget.questionsModel.answerB.containsValue(true)) {
         setState(() {
           _imageB = 'images/4.0x/ic_b_correct.png';
+          _neutralOwl = _correctOwl;
         _submitted = true;
         });
         
@@ -203,6 +219,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       } else {
         setState(() {
           _imageB = 'images/4.0x/ic_b_wrong.png';
+          _neutralOwl = _wrongOwl;
           _submitted = true;
         });
          final snackBar = SnackBar(
@@ -210,12 +227,13 @@ class _MultipleChoiceState extends State<MultipleChoice> {
             'Oh no, wrong answer!',
             style: TextStyle(fontSize: 18,),
           ),
-          
+          duration: Duration(milliseconds: 1800),
         );
         Scaffold.of(context).showSnackBar(snackBar);
-        await Future.delayed(Duration(milliseconds: 4300));
+        await Future.delayed(Duration(milliseconds: 2000));
         setState(() {
           _imageB = 'images/4.0x/ic_b_neutral.png';
+          _neutralOwl = 'images/ic_owl_neutral.png';
           _submitted = false;
         });
          
@@ -228,6 +246,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       if (widget.questionsModel.answerC.containsValue(true)) {
         setState(() {
           _imageC = 'images/4.0x/ic_c_correct.png';
+          _neutralOwl = _correctOwl;
         _submitted = true;
         });
         
@@ -244,6 +263,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       } else {
         setState(() {
           _imageC = 'images/4.0x/ic_c_wrong.png';
+          _neutralOwl = _wrongOwl;
           _submitted = true;
         });
          final snackBar = SnackBar(
@@ -251,12 +271,13 @@ class _MultipleChoiceState extends State<MultipleChoice> {
             'Oh no, wrong answer!',
             style: TextStyle(fontSize: 18,),
           ),
-          
+          duration: Duration(milliseconds: 1800),
         );
         Scaffold.of(context).showSnackBar(snackBar);
-        await Future.delayed(Duration(milliseconds: 4300));
+        await Future.delayed(Duration(milliseconds: 2000));
         setState(() {
           _imageC = 'images/4.0x/ic_c_neutral.png';
+          _neutralOwl = 'images/ic_owl_neutral.png';
           _submitted = false;
         });
          
@@ -269,6 +290,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       if (widget.questionsModel.answerD.containsValue(true)) {
         setState(() {
           _imageD = 'images/4.0x/ic_d_correct.png';
+          _neutralOwl = _correctOwl;
         _submitted = true;
         });
         
@@ -285,19 +307,22 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       } else {
         setState(() {
           _imageD = 'images/4.0x/ic_d_wrong.png';
+          _neutralOwl = _wrongOwl;
           _submitted = true;
         });
          final snackBar = SnackBar(
+
           content: Text(
             'Oh no, wrong answer!',
             style: TextStyle(fontSize: 18,),
           ),
-          
+          duration: Duration(milliseconds: 1800),
         );
         Scaffold.of(context).showSnackBar(snackBar);
-        await Future.delayed(Duration(milliseconds: 4300));
+        await Future.delayed(Duration(milliseconds: 2000));
         setState(() {
           _imageD = 'images/4.0x/ic_d_neutral.png';
+          _neutralOwl = 'images/ic_owl_neutral.png';
           _submitted = false;
         });
          
