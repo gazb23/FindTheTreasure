@@ -137,7 +137,9 @@ class SignInMainScreen extends StatelessWidget {
                     color: Colors.grey[100],
                     onPressed: () =>
 
-                      connected ? _signInWithGoogle(context) : _showConnectionFailureDialog(context),
+                      // connected ? 
+                      _signInWithGoogle(context) 
+                      // : _showConnectionFailureDialog(context),
                     
                   ),
                   SizedBox(

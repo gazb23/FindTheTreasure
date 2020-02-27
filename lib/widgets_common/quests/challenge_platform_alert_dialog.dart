@@ -125,7 +125,9 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
     final actions = <Widget>[];
     if (cancelActionText != null) {
       actions.add(PlatformAlertDialogAction(
-        child: SignInButton(          
+        child: 
+        Platform.isIOS ? Text(cancelActionText,) :
+        SignInButton(          
         text: cancelActionText,
         color: Colors.grey,
         
@@ -135,7 +137,9 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
       ));
     }
     actions.add(PlatformAlertDialogAction(
-      child: SignInButton(
+      child: 
+      Platform.isIOS ? Text(defaultActionText) :
+      SignInButton(
         text: defaultActionText,
         onPressed: () => Navigator.of(context).pop(true),
       ),
