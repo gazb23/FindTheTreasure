@@ -5,10 +5,10 @@ class QuestionsModel {
   final String question;
   final String questionType;
   final String image;
-  final Map answerA;
-  final Map answerB;
-  final Map answerC;
-  final Map answerD;
+  final Map<String, dynamic> answerA;
+  final Map<String, dynamic> answerB;
+  final Map<String, dynamic> answerC;
+  final Map<String, dynamic> answerD;
   final List<dynamic> answers;
   final List<dynamic> challengeCompletedBy;
 

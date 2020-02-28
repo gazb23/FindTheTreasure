@@ -41,7 +41,9 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       children: <Widget>[
         _buildMultiChoiceTiles(),
         SizedBox(height: 10),
-        widget.showOwl ? Container(child: Image.asset(_neutralOwl)) : Container()
+        widget.showOwl ? Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(child: Image.asset(_neutralOwl))) : Container()
       ],
     );
   }
