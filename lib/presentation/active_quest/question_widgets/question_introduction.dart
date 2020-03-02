@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
+import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:flutter/material.dart';
 
 class QuestionIntroduction extends StatelessWidget {
@@ -24,7 +26,8 @@ class QuestionIntroduction extends StatelessWidget {
       children: <Widget>[
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: showImage ? MediaQuery.of(context).size.height / 2.5 : MediaQuery.of(context).size.height / 3,
+            minHeight: 150,
+            maxHeight: showImage ? MediaQuery.of(context).size.height / 2.5 : MediaQuery.of(context).size.height / 4,
           ),
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -58,23 +61,25 @@ class QuestionIntroduction extends StatelessWidget {
                   ),
                   SizedBox(height: 10,),
                   showImage
-                      ? ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height / 4,
-                          ),
-                          child: Container(
-                              decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(40)),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                  questionsModel.image,
-                                ),
-                                fit: BoxFit.fill,
-                                alignment: Alignment.center),
-                          )),
-                        )
+                      ? CachedNetworkImage(
+                        imageUrl: questionsModel.image,
+                          fadeInDuration: Duration(milliseconds: 800),
+                        placeholder: (context, url) => CustomCircularProgressIndicator(),
+                        imageBuilder: (context, image) =>
+                                                  Container(
+                                                   height: MediaQuery.of(context).size.width/2,
+                                                   
+                            decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(40)),
+                          image: DecorationImage(
+                            
+                              image: image,
+                              fit: BoxFit.fill,
+                              alignment: Alignment.center),
+                        )),
+                      )
                       : Container()
                 ],
               ),

@@ -47,6 +47,8 @@ class QuestLocationCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: ExpandablePanel(
           theme: ExpandableThemeData(
+            sizeCurve: Curves.bounceOut,
+            animationDuration: Duration(milliseconds: 800),
             tapBodyToExpand: true,
             tapBodyToCollapse: true,
             tapHeaderToExpand: _locationStartedBy ? true : false,
@@ -69,6 +71,7 @@ class QuestLocationCard extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.active) {
                   // How many challenged the user has completed, this is parsed to Challenges class so it can be used to determine which challenge to activate
                   final int _numberOfChallenges = snapshot.data.length;
+                  
                   final int _numberofChallengesCompleted = snapshot.data
                       .where((questionsModel) => questionsModel
                           .challengeCompletedBy
@@ -96,6 +99,7 @@ class QuestLocationCard extends StatelessWidget {
                     ),
                   );
                 }
+                
                 return Container();
               },
             ),

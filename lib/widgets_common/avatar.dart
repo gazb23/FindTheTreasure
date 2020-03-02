@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'custom_circular_progress_indicator_button.dart';
 
 class Avatar extends StatelessWidget {
   final String photoURL;
@@ -15,11 +18,16 @@ class Avatar extends StatelessWidget {
           width: 8.0
         )
       ),
-      child: CircleAvatar(
-        radius: radius,
-        backgroundColor: Colors.black12,
-        backgroundImage: photoURL != null ? NetworkImage(photoURL) : null,
-        child: photoURL == null ? Icon(Icons.camera_alt, size: radius) : null,
+      child: CachedNetworkImage(
+        imageUrl: photoURL,
+        placeholder: (context, url) => CustomCircularProgressIndicator(),
+        imageBuilder: (context, image) =>
+              CircleAvatar(
+          radius: radius,
+          backgroundColor: Colors.black12,
+          backgroundImage: photoURL != null ? image : null,
+          child: photoURL == null ? Icon(Icons.camera_alt, size: radius) : null,
+        ),
       ),
     );
   }

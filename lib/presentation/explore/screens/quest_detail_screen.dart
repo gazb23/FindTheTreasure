@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -8,7 +9,6 @@ import 'package:find_the_treasure/widgets_common/quests/quest_diamond_calculatio
 import 'package:find_the_treasure/widgets_common/quests/quest_tags.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
-
 
 class QuestDetailScreen extends StatelessWidget {
   final QuestModel questModel;
@@ -23,7 +23,7 @@ class QuestDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List tags = questModel.tags ?? []; 
+    List tags = questModel.tags ?? [];
     return StreamBuilder<QuestModel>(
         stream: database.questStream(questId: questModel.id),
         builder: (context, snapshot) {
@@ -31,9 +31,9 @@ class QuestDetailScreen extends StatelessWidget {
             final QuestModel questModelStream = snapshot.data;
             return SafeArea(
               child: Scaffold(
+                backgroundColor: Colors.grey.shade50,
                 body: Container(
                   width: double.infinity,
-                  color: Colors.grey.shade50,
                   child: Stack(
                     children: <Widget>[
                       ListView(
@@ -59,29 +59,34 @@ class QuestDetailScreen extends StatelessWidget {
   }
 
   Widget _buildImage(BuildContext context, QuestModel questModelStream) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 3,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        image: DecorationImage(
-            image: NetworkImage(
-              questModelStream.image,
-            ),
-            fit: BoxFit.fill,
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.8), BlendMode.dstATop),
-            alignment: Alignment.center),
-      ),
-      child: Stack(children: <Widget>[
-        AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+    return CachedNetworkImage(
+      imageUrl: questModelStream.image,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+      fadeInDuration: Duration(milliseconds: 1000),
+      fadeOutDuration: Duration(milliseconds: 400),
+      imageBuilder: (context, image) => Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 3,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+              image: image,
+              fit: BoxFit.fill,
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.8), BlendMode.dstATop),
+              alignment: Alignment.center),
         ),
-        Align(
-            alignment: Alignment.bottomCenter,
-            child: _buildQuestListTile(context, questModelStream))
-      ]),
+        child: Stack(children: <Widget>[
+          AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: _buildQuestListTile(context, questModelStream))
+        ]),
+      ),
     );
   }
 
@@ -89,7 +94,6 @@ class QuestDetailScreen extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      color: Colors.grey.shade50,
       child: Wrap(
         direction: Axis.horizontal,
         spacing: 5,
@@ -160,6 +164,7 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildQuestDescriptionCard(
       BuildContext context, QuestModel questModelStream) {
     return Card(
+      elevation: 2,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: EdgeInsets.all(10),
@@ -168,7 +173,8 @@ class QuestDetailScreen extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Quest Details',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                
               ),
             ],
           ),
@@ -176,14 +182,17 @@ class QuestDetailScreen extends StatelessWidget {
             children: <Widget>[
               _buildQuestDetailCard(context, questModelStream),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
-              Text(
-                questModelStream.description,
-                style: TextStyle(height: 1.35),
-                softWrap: true,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Text(
+                  questModelStream.description,
+                  style: TextStyle(height: 1.35),
+                  softWrap: true,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -191,20 +200,26 @@ class QuestDetailScreen extends StatelessWidget {
             children: <Widget>[
               _buildQuestDetailCard(context, questModelStream),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
-              Text(
-                questModelStream.description,
-                style: TextStyle(height: 1.35),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Text(
+                  questModelStream.description,
+                  style: TextStyle(height: 1.35),
+                ),
               ),
             ],
           ),
           theme: ExpandableThemeData(
+              sizeCurve: Curves.bounceOut,
+              animationDuration: Duration(seconds: 1),
               tapBodyToCollapse: true,
               tapHeaderToExpand: true,
               hasIcon: true,
               iconColor: Colors.orangeAccent,
-              iconSize: 30),
+              headerAlignment: ExpandablePanelHeaderAlignment.center,
+              iconSize: 40),
         ),
       ),
     );
@@ -233,6 +248,7 @@ class QuestDetailScreen extends StatelessWidget {
 
   Widget _buildBountyCard(BuildContext context, QuestModel questModelStream) {
     return Card(
+      elevation: 2,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: EdgeInsets.all(10),
@@ -241,7 +257,7 @@ class QuestDetailScreen extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Bounty Details',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
               ),
             ],
           ),
@@ -249,12 +265,15 @@ class QuestDetailScreen extends StatelessWidget {
             children: <Widget>[
               _buildTreasure(context, questModelStream),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
-              Text(
-                'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Text(
+                  'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound',
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -262,18 +281,24 @@ class QuestDetailScreen extends StatelessWidget {
             children: <Widget>[
               _buildTreasure(context, questModelStream),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
-              Text(
-                  'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Text(
+                    'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound'),
+              ),
             ],
           ),
           theme: ExpandableThemeData(
+            sizeCurve: Curves.bounceOut,
+            animationDuration: Duration(seconds: 1),
             tapBodyToCollapse: true,
             tapHeaderToExpand: true,
             hasIcon: true,
-            iconSize: 30,
+            iconSize: 40,
             iconColor: Colors.orangeAccent,
+            headerAlignment: ExpandablePanelHeaderAlignment.center,
           ),
         ),
       ),
@@ -316,13 +341,15 @@ class QuestDetailScreen extends StatelessWidget {
   }
 
   Widget _buildBottomBar(
-      BuildContext context, QuestModel questModelStream, UserData userData, ) {
-        
+    BuildContext context,
+    QuestModel questModelStream,
+    UserData userData,
+  ) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        color: Colors.grey.shade800.withOpacity(0.8),
+        color: Colors.grey.shade800.withOpacity(0.9),
         width: double.infinity,
         child: Row(
           children: <Widget>[
@@ -341,18 +368,15 @@ class QuestDetailScreen extends StatelessWidget {
             Expanded(
                 flex: 3,
                 child: QuestDiamondCalulationButton(
-                    questModelStream: questModelStream,
-                    userData: userData,
-                    databaseService: database,                    
-                    ))
+                  questModelStream: questModelStream,
+                  userData: userData,
+                  databaseService: database,
+                ))
           ],
         ),
       ),
     );
-    
   }
-
-
 
   Widget _buildTimeListTile(BuildContext context, String difficulty) {
     return Column(

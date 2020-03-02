@@ -19,7 +19,7 @@ final double diamondHeight;
   DiamondAndKeyContainer(
     {this.diamondHeight,
     this.skullKeyHeight,
-    this.spaceBetween,
+    this.spaceBetween = 5,
     this.numberOfDiamonds,
     this.numberOfKeys, this.mainAxisAlignment, this.fontSize, this.fontWeight, this.color, this.showDiamond = true, this.showKey = true }
   );
@@ -32,7 +32,9 @@ final double diamondHeight;
         mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.end,
         children: <Widget>[
           showDiamond ? Container(
+            
             child: Row(
+              
               children: <Widget>[
                 Image.asset(
                   'images/3.0x/ic_diamond.png',
@@ -41,8 +43,9 @@ final double diamondHeight;
                 SizedBox(
                   width: 10,
                 ),
+                
                 Text(
-                  numberOfDiamonds.toString() ?? 10,
+                  numberOfDiamonds.toString(),
                   style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
                 ),
               ],
@@ -59,7 +62,7 @@ final double diamondHeight;
                   height: skullKeyHeight ?? 30.0,
                 ),
                 Text(
-                  numberOfKeys.toString() ?? 10,
+                  numberOfKeys.toString(),
                   style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
                 ),
               ],

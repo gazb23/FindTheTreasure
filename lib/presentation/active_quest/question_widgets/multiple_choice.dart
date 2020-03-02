@@ -12,13 +12,12 @@ class MultipleChoice extends StatefulWidget {
   final QuestionsModel questionsModel;
   final bool isFinalChallenge;
   final bool showOwl;
-  
   const MultipleChoice({
     Key key,
     @required this.questionsModel,
     @required this.isFinalChallenge,
     @required this.questModel,
-    @required this.locationModel, this.showOwl = false,
+    @required this.locationModel, this.showOwl = false, 
   }) : super(key: key);
 
   @override
@@ -35,122 +34,128 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   String _wrongOwl = 'images/ic_owl_wrong.png';
   bool _submitted = false;
   
+  
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Container(
+      height: MediaQuery.of(context).size.height- MediaQuery.of(context).size.height / 3 - 56,
+      child: Column(    
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  
       children: <Widget>[
         _buildMultiChoiceTiles(),
         SizedBox(height: 10),
-        widget.showOwl ? Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(child: Image.asset(_neutralOwl))) : Container()
+        widget.showOwl ? Image.asset(_neutralOwl) : Container()
       ],
+      ),
     );
   }
 
   Widget _buildMultiChoiceTiles() {
-    return Column(
-      children: <Widget>[
-        // Answer 1
-        Container(
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
-          child: Center(
-            child: ListTile(
-              enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              leading: Image.asset(_imageA),
-              title: Text(
-                widget.questionsModel.answerA.values.first,
-                maxLines: 2,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black54),
+    return Container(
+      child: Column(
+        children: <Widget>[
+          // Answer 1
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
+            child: Center(
+              child: ListTile(
+                enabled: !_submitted,
+                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                leading: Image.asset(_imageA),
+                title: Text(
+                  widget.questionsModel.answerA.values.first,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black54),
+                ),
+                onTap: _submitA,
               ),
-              onTap: _submitA,
             ),
           ),
-        ),
-        SizedBox(height: 10),
-        // Answer 2
-        Container(
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
-          child: Center(
-            child: ListTile(
-              enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              leading: Image.asset(_imageB),
-              title: Text(
-                widget.questionsModel.answerB.values.first,
-                maxLines: 2,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black54),
+          SizedBox(height: 10),
+          // Answer 2
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
+            child: Center(
+              child: ListTile(
+                enabled: !_submitted,
+                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                leading: Image.asset(_imageB),
+                title: Text(
+                  widget.questionsModel.answerB.values.first,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black54),
+                ),
+                onTap: _submitB,
               ),
-              onTap: _submitB,
             ),
           ),
-        ),
-        SizedBox(height: 10),
-        // Answer 3
-        Container(
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
-          child: Center(
-            child: ListTile(
-              enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              leading: Image.asset(_imageC),
-              title: Text(
-                widget.questionsModel.answerC.values.first,
-                maxLines: 2,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black54),
+          SizedBox(height: 10),
+          // Answer 3
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
+            child: Center(
+              child: ListTile(
+                enabled: !_submitted,
+                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                leading: Image.asset(_imageC),
+                title: Text(
+                  widget.questionsModel.answerC.values.first,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black54),
+                ),
+                onTap: _submitC,
               ),
-              onTap: _submitC,
             ),
           ),
-        ),
-        SizedBox(height: 10),
-        // Answer 4
-        Container(
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
-          child: Center(
-            child: ListTile(
-              enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              leading: Image.asset(_imageD),
-              title: Text(
-                widget.questionsModel.answerD.values.first,
-                maxLines: 2,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black54),
+          SizedBox(height: 10),
+          // Answer 4
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
+            child: Center(
+              child: ListTile(
+                enabled: !_submitted,
+                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                leading: Image.asset(_imageD),
+                title: Text(
+                  widget.questionsModel.answerD.values.first,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black54),
+                ),
+                onTap: _submitD,
               ),
-              onTap: _submitD,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

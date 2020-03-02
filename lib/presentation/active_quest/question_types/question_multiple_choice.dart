@@ -48,6 +48,7 @@ class QuestionMultipleChoice extends StatelessWidget {
           ],
         ),
         body: Container(
+          height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
@@ -55,6 +56,7 @@ class QuestionMultipleChoice extends StatelessWidget {
                   ),
                   fit: BoxFit.fill)),
           child: ListView(
+            
             children: <Widget>[
               QuestionIntroduction(
                 context: context,
@@ -66,6 +68,7 @@ class QuestionMultipleChoice extends StatelessWidget {
                 height: 10,
               ),
               MultipleChoice(
+                
                 questionsModel: questionsModel,
                 locationModel: locationModel,
                 isFinalChallenge: isFinalChallenge,

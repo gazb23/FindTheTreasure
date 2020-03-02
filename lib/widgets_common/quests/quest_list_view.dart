@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -50,16 +51,17 @@ class _QuestListViewState extends State<QuestListView> {
         return Colors.green;
     }
   }
-// Function to output corrent location plural  
-locationPluralCount(int howMany) =>
+
+// Function to output corrent location plural
+  locationPluralCount(int howMany) =>
       Intl.plural(howMany, one: 'location', other: 'locations');
 
   @override
   Widget build(BuildContext context) {
-    final DatabaseService database = Provider.of<DatabaseService>(context);    
+    final DatabaseService database = Provider.of<DatabaseService>(context);
     return Card(
       clipBehavior: Clip.antiAlias,
-      elevation: 5.0,
+      elevation: 15.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Material(
         color: Colors.grey.shade800,
@@ -69,20 +71,27 @@ locationPluralCount(int howMany) =>
           onTap: widget.onTap,
           child: Column(
             children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 200.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(
-                        widget.image,
-                      ),
-                      fit: BoxFit.fill,
-                      colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.75), BlendMode.dstATop),
-                      alignment: Alignment.center),
+              CachedNetworkImage(
+                imageUrl: widget.image,
+                placeholder: (context, url) => Container(
+                  height: 200,
                 ),
-                child: buildQuestListTile(context, database),
+                fadeInDuration: Duration(milliseconds: 800),
+                fadeOutDuration: Duration(milliseconds: 1500),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                imageBuilder: (context, image) => Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200.0,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: image,
+                          fit: BoxFit.fill,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                          alignment: Alignment.center),
+                    ),
+                    child: buildQuestListTile(context, database),
+                  ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),

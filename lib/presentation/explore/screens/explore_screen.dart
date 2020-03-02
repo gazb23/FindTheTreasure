@@ -19,7 +19,7 @@ class ExploreScreen extends StatelessWidget {
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    // Needed a null check to be able to display UserData in the AppBar    
+    // Needed a null check to be able to display UserData in the AppBar
     int getUserDiamonds(BuildContext context) {
       int _userDiamondCount;
 

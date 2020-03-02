@@ -62,6 +62,7 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
                 questionsModel: questionsModel,
                 locationQuestion: locationQuestion,
                 showImage: true,
+
               ),
               SizedBox(
                 height: 10,
