@@ -100,15 +100,14 @@ class MyQuestsScreen extends StatelessWidget {
   }
 
   Widget _buildCurrentQuestListView(
-      BuildContext context, DatabaseService database, UserData user) {
-    print('current');
+      BuildContext context, DatabaseService database, UserData user) {  
 
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldContainsUID(field: 'questStartedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             title: 'Ready for Adventure?',
-            message: 'Head to the explore page, choose a quest and start your journey!',
+            message: 'Head to the explore page, choose a quest to start your journey!',
             buttonEnabled: false,            
             snapshot: snapshot,
             itemBuilder: (context, quest, index) => QuestListView(

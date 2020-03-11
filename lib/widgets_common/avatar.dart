@@ -19,13 +19,13 @@ class Avatar extends StatelessWidget {
         )
       ),
       child: CachedNetworkImage(
-        imageUrl: photoURL,
+        imageUrl: photoURL ?? 'https://firebasestorage.googleapis.com/v0/b/find-the-treasure-8d58f.appspot.com/o/ic_thnx.png?alt=media&token=b9d8b1f1-d36e-4013-ade6-d870eb6f7efa',
         placeholder: (context, url) => CustomCircularProgressIndicator(),
-        imageBuilder: (context, image) =>
+        imageBuilder: (context, photoURL) =>
               CircleAvatar(
           radius: radius,
           backgroundColor: Colors.black12,
-          backgroundImage: photoURL != null ? image : null,
+          backgroundImage: photoURL != null ? photoURL : null,
           child: photoURL == null ? Icon(Icons.camera_alt, size: radius) : null,
         ),
       ),

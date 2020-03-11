@@ -1,5 +1,9 @@
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
+import 'package:find_the_treasure/models/questions_model.dart';
+import 'package:find_the_treasure/presentation/active_quest/question_types/question_multiple_choice.dart';
+import 'package:find_the_treasure/presentation/active_quest/question_types/question_multiple_choice_picture.dart';
+import 'package:find_the_treasure/presentation/active_quest/question_types/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
@@ -29,7 +33,6 @@ class QuestionViewModel {
         );
         if (!isFinalChallenge) {
           final _didRequestNext = await ChallengePlatformAlertDialog(
-            
             title: 'Congratulations!',
             content: 'You\'ve completed the challenge!',
             cancelActionText: 'Not Now',
@@ -52,7 +55,6 @@ class QuestionViewModel {
             field: 'challengeCompletedBy',
             collectionRef: collectionRef,
           );
-          
         }
       } catch (e) {
         print(e.toString());
@@ -67,7 +69,6 @@ class QuestionViewModel {
           collectionRef: collectionRef,
         );
         final _didCompleteChallenge = await ChallengePlatformAlertDialog(
-
           title: 'Location Unlocked!',
           content:
               'Well done, you\'ve discovered  $locationTitle. It\'s adventure time!',
@@ -101,16 +102,15 @@ class QuestionViewModel {
     if (!locationModel.locationCompletedBy.contains(_databaseService.uid) &&
         lastChallengeCompleted) {
       try {
-        
         await _databaseService.arrayUnionField(
             documentId: locationModel.id,
             uid: _databaseService.uid,
             field: 'locationCompletedBy',
             collectionRef: APIPath.locations(questId: questModel.id));
-            
+
         if (lastLocationCompleted) {
           print('WOOOO');
-        } else if (!lastLocationCompleted){
+        } else if (!lastLocationCompleted) {
           final didCompleteLocation = await ChallengePlatformAlertDialog(
             backgroundColor: Colors.amberAccent,
             title: 'Location Conquered!',
@@ -121,9 +121,8 @@ class QuestionViewModel {
             image: Image.asset('images/ic_excalibur_owl.png'),
           ).show(context);
           if (didCompleteLocation) {
-            
           } else {
-          Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.of(context).popUntil((route) => route.isFirst);
           }
         }
       } catch (e) {
@@ -131,5 +130,56 @@ class QuestionViewModel {
       }
     } else
       return null;
+  }
+
+// Logic to push the create challenge type for the QuestLocationCard
+  static void loadQuestion({
+    @required BuildContext context,
+    @required QuestionsModel questionsModel,
+    @required QuestModel questModel,
+    @required LocationModel locationModel,
+    @required bool isFinalChallenge,
+  }) {
+    switch (questionsModel.questionType) {
+      case 'questionSingleAnswer':
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => QuestionScrollSingleAnswer(
+              isFinalChallenge: isFinalChallenge,
+              locationQuestion: false,
+              questModel: questModel,
+              questionsModel: questionsModel,
+              locationModel: locationModel,
+            ),
+          ),
+        );
+        break;
+      case 'questionMultipleChoice':
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => QuestionMultipleChoice(
+              isFinalChallenge: isFinalChallenge,
+              locationQuestion: false,
+              questModel: questModel,
+              questionsModel: questionsModel,
+              locationModel: locationModel,
+            ),
+          ),
+        );
+        break;
+      case 'questionMultipleChoicePicture':
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => QuestionMultipleChoiceWithPicture(
+              isFinalChallenge: isFinalChallenge,
+              locationQuestion: false,
+              questModel: questModel,
+              questionsModel: questionsModel,
+              locationModel: locationModel,
+            ),
+          ),
+        );
+        break;
+    }
   }
 }

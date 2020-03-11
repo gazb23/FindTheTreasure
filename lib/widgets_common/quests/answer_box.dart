@@ -31,17 +31,27 @@ class _AnswerBoxState extends State<AnswerBox> {
   bool _validateAndSaveForm() {
     final form = _formKey.currentState;
     if (form.validate()) {
+      
       form.save();
+      
       return true;
     }
     return false;
   }
 
   void _submit() async {
+   
     if (_validateAndSaveForm()) {
       
+     try{
+       
+           
       if (widget.answers.contains(_answer.toUpperCase().trimRight())) {
         _isLoading = true;
+        setState(() {
+          
+        });
+        
         QuestionViewModel.submit(context,
             documentId: widget.arrayUnionDocumentId,
             collectionRef: widget.arrayUnionCollectionRef,
@@ -50,7 +60,13 @@ class _AnswerBoxState extends State<AnswerBox> {
             isFinalChallenge: widget.isFinalChallenge
             );
       }
-      else _isLoading = false;
+     }
+     catch(e){
+       print(e.toString());
+       _isLoading = false;
+     } 
+ 
+      
     }
   }
 
@@ -85,6 +101,7 @@ class _AnswerBoxState extends State<AnswerBox> {
                   }
                   if (widget.answers.contains(value.trimRight().toUpperCase()) &&
                       value.isNotEmpty) {
+                       
                     return null;
                   }
                   return value.isNotEmpty ? null : 'Please enter your answer';
@@ -92,17 +109,20 @@ class _AnswerBoxState extends State<AnswerBox> {
                 onSaved: (value) => _answer = value.toUpperCase().trimRight(),
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
+                  
                   contentPadding: EdgeInsets.all(5),
                   hintText: 'Enter your answer',
-                  enabled: !_isLoading,
+                 enabled: !_isLoading,
                   suffixIcon: IconButton(
+                    enableFeedback: true,
+
                     icon: _isLoading
-                        ? Image.asset('images/tick_small.png')
+                        ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.orangeAccent),)
                         : Icon(
                             Icons.send,
                             color: Colors.orangeAccent,
                           ),
-                    onPressed: _submit
+                    onPressed: !_isLoading ? _submit : null
                   ),
                 ),
               ),

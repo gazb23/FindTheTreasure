@@ -1,6 +1,8 @@
+import 'package:find_the_treasure/models/user_location.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/services/location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +28,9 @@ class AuthWidgetBuilder extends StatelessWidget {
               Provider<DatabaseService>(
                 create: (_) => DatabaseService(uid: user.uid),
               ),
-             
+             StreamProvider<UserLocation>(
+               create: (context) => LocationService().locationStream,
+             )
               
             ],
             child: Consumer<DatabaseService>(

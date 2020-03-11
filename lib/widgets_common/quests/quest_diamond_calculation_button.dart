@@ -24,19 +24,21 @@ class QuestDiamondCalulationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool _isStartedBy =
         questModelStream.questStartedBy.contains(userData.uid);
+    final bool _isCompletedBy =
+        questModelStream.questCompletedBy.contains(userData.uid);
     int _diamondCalc =
         (questModelStream.numberOfDiamonds - userData.userDiamondCount);
     int _keyCalc = (questModelStream.numberOfKeys - userData.userKeyCount);
-  
+
     return SignInButton(
-        bottomPadding: 0,        
-        text: _isStartedBy ? 'Continue Quest' : 'Start Quest',
+        bottomPadding: 0,
+        text: _isStartedBy || _isCompletedBy ? 'Continue Quest' : 'Start Quest',
         onPressed: () {
           if (userData.userDiamondCount >= questModelStream.numberOfDiamonds &&
                   userData.userKeyCount >= questModelStream.numberOfKeys ||
-              _isStartedBy) {
-            return _confirmQuest(context, questModelStream, userData,
-                databaseService);
+              _isStartedBy || _isCompletedBy) {
+            return _confirmQuest(
+                context, questModelStream, userData, databaseService);
           } else if (userData.userDiamondCount <
               questModelStream.numberOfDiamonds) {
             return _confirmStoreDiamond(
@@ -53,8 +55,10 @@ class QuestDiamondCalulationButton extends StatelessWidget {
       UserData userData, DatabaseService database) async {
     final bool _isStartedBy =
         questModelStream.questStartedBy.contains(userData.uid);
+         final bool _isCompletedBy =
+        questModelStream.questCompletedBy.contains(userData.uid);
     try {
-      if (!_isStartedBy) {
+      if (!_isStartedBy && !_isCompletedBy) {
         final didRequestQuest = await PlatformAlertDialog(
           title: '${userData.displayName}',
           content:
@@ -87,7 +91,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
               field: 'questStartedBy');
           await database.updateUserDiamondAndKey(userData: _userData);
         }
-      } else if (_isStartedBy) {
+      } else if (_isStartedBy || _isCompletedBy) {
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => ActiveQuestScreen(
@@ -96,7 +100,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
           ),
         );
       }
-    } catch (e) {    
+    } catch (e) {
       print(e.toString());
     }
   }

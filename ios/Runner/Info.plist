@@ -65,5 +65,9 @@
       <string>fbauth2</string>
       <string>fbshareextension</string>
     </array>
+		<key>NSLocationWhenInUseUsagedescription</key>
+		<string>Find The Treasure requires access to your location</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Find The Treasure requires access to your location</string>
 </dict>
 </plist>

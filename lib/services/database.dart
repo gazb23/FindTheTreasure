@@ -90,6 +90,13 @@ class DatabaseService {
    await likedByRef.updateData({field: FieldValue.arrayUnion([uid])});
  }
 
+    // Remove UID from chosen field Array on Firebase
+   Future<void> arrayRemoveField({@required String documentId, @required String uid, @required String field, @required String collectionRef}) async {
+   final likedByRef = _db.collection(collectionRef).document(documentId);
+   print('add');
+   await likedByRef.updateData({field: FieldValue.arrayRemove([uid])});
+ }
+
   // Update user diamonds and keys
   Future<void> updateUserDiamondAndKey({UserData userData}) async => await _service.setData(
     path: APIPath.user(uid: uid),

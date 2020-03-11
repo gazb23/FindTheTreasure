@@ -86,7 +86,9 @@ class ActiveQuestScreen extends StatelessWidget {
                               try {
                                 _isLoading = true;
                                 // To discover the location, the user must first answer a location question
-
+                                if (locationModel.locationStartedBy.contains(_databaseService.uid)) {
+                                  return null;
+                                } else
                                 Navigator.of(context, rootNavigator: true).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
