@@ -1,47 +1,41 @@
-import 'dart:async';
+import 'package:find_the_treasure/models/location_model.dart';
+import 'package:find_the_treasure/models/quest_model.dart';
+import 'package:flutter/foundation.dart';
+import 'package:geolocator/geolocator.dart';
 
-import 'package:find_the_treasure/models/user_location.dart';
-import 'package:location/location.dart';
+class LocationService extends ChangeNotifier {
+  
+  final QuestModel questModel;
+  final LocationModel locationModel;
+  Position currentPosition;
+  LocationService({
+    @required this.questModel,
+    @required this.locationModel,
+  })  : assert(questModel != null),
+        assert(locationModel != null);
 
-class LocationService {
-  UserLocation _currentLocation;
+  
 
-  Location location = Location();
-  StreamController<UserLocation> _locationController =
-      StreamController<UserLocation>.broadcast();
+  getCurrentLocation() {
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  double lat = locationModel.location['latitude'];
+  double long = locationModel.location['longitude'];
 
-  LocationService() {
-    location.requestPermission().then(
-      (granted) {
-        if (granted != null) {
-          location.onLocationChanged().listen(
-            (locationData) {
-              if (locationData != null) {
-                _locationController.add(
-                  UserLocation(
-
-                    latitude: locationData.latitude,
-                    longitude: locationData.longitude,
-                  ),
-                );
-              }
-            },
-          );
+    geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+    .then((Position position) {
+      
+        currentPosition = position;
+        if (lat.toStringAsFixed(3) == currentPosition.latitude.toStringAsFixed(3) && long.toStringAsFixed(3) == currentPosition.longitude.toStringAsFixed(3)) {
+          print('success');
+        } else {
+          print('fail');
         }
-      },
-    );
-  }
+        notifyListeners();
+      
+     
 
-  Stream<UserLocation> get locationStream => _locationController.stream;
-
-  Future<UserLocation> getLocation() async {
-    try {
-      var userLocation = await location.getLocation();
-      _currentLocation = UserLocation(
-          latitude: userLocation.latitude, longitude: userLocation.longitude);
-    } catch (e) {
-      print('Could not get the location $e');
-    }
-    return _currentLocation;
-  }
+    }).catchError((e) {
+      print(e.toString());
+    });
+}
 }

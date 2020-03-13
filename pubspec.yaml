@@ -32,7 +32,7 @@ dependencies:
   connectivity: ^0.4.6+1
   google_maps_flutter: ^0.5.22+3
   intl: ^0.16.1
-  location: ^2.5.3
+  geolocator: ^5.3.0
 
 
 

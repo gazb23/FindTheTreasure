@@ -58,7 +58,7 @@ class ActiveQuestScreen extends StatelessWidget {
                           questId: questModel.id),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.active) {
-                          final _numberOfLocations = snapshot.data.length;
+                        final _numberOfLocations = snapshot.data.length;
                         final _locationsCompleted = snapshot.data
                             .where((locationModel) => locationModel
                                 .locationCompletedBy

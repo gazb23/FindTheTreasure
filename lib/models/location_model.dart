@@ -8,6 +8,8 @@ class LocationModel {
   final List<dynamic> answers;
   final List<dynamic> locationStartedBy;
   final List<dynamic> locationCompletedBy;
+  final List<dynamic> locationDiscoveredBy;
+  final Map<String, dynamic> location;
 
   LocationModel({
     @required this.id,
@@ -17,6 +19,8 @@ class LocationModel {
     @required this.answers,
     @required this.locationStartedBy,
     @required this.locationCompletedBy,
+    @required this.location, 
+    @required this.locationDiscoveredBy
   });
 
   factory LocationModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -31,6 +35,9 @@ class LocationModel {
       answers: data['answers'],
       locationCompletedBy: data['locationCompletedBy'],
       locationStartedBy: data['locationStartedBy'] ,
+      locationDiscoveredBy: data['locationDiscoveredBy'],
+      location: data['location'],
+
     );
   }
 
@@ -41,7 +48,8 @@ class LocationModel {
       'question': question,    
       'answers': answers,
       'locationCompleted': locationCompletedBy,
-       'locationStartedBy': locationStartedBy
+       'locationStartedBy': locationStartedBy,
+       'locationDiscoveredBy' : locationDiscoveredBy
      
     };
   }

@@ -1,13 +1,22 @@
-import 'package:find_the_treasure/models/user_location.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class LeaderboardScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
+
+class LeaderboardScreen extends StatefulWidget {
   
   @override
+  _LeaderboardScreenState createState() => _LeaderboardScreenState();
+}
+
+class _LeaderboardScreenState extends State<LeaderboardScreen> {
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  Position _currentPosition;
+
+  @override
   Widget build(BuildContext context) {
-    final userLocation = Provider.of<UserLocation>(context);
-    final double locationLatitude = -26.6779; 
+    
+   
     return SafeArea(
           child: Scaffold(
         appBar: AppBar(
@@ -15,7 +24,8 @@ class LeaderboardScreen extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(onPressed: 
         () {
-
+          _getCurrentLocation();
+    
         },
         child: Icon(Icons.location_searching),
         backgroundColor: Colors.orangeAccent,),
@@ -28,7 +38,8 @@ class LeaderboardScreen extends StatelessWidget {
                     fit: BoxFit.fill),
               ),
             ),
-            Center(child: Text('latitude: ${userLocation.latitude}, longitude: ${userLocation.longitude}')),
+           if (_currentPosition != null)
+            Center(child: Text(_currentPosition.latitude.toStringAsFixed(2))),
             
           ],
           
@@ -38,4 +49,22 @@ class LeaderboardScreen extends StatelessWidget {
     );
     
   }
+  _getCurrentLocation() {
+    
+
+    geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+    .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+        
+      });
+     
+
+    }).catchError((e) {
+      print(e.toString());
+    });
 }
+ 
+  
+}
+

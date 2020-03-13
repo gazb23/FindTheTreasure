@@ -5,6 +5,7 @@ import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/services/location_service.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,73 +35,79 @@ class QuestLocationCard extends StatelessWidget {
     final _locationCompletedBy =
         locationModel.locationCompletedBy.contains(_userData.uid);
 
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        color: _locationProgressColor(
-            locationStarted: _locationStartedBy,
-            locationCompleted: _locationCompletedBy),
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        child: ExpandablePanel(
-          theme: ExpandableThemeData(
-            sizeCurve: Curves.bounceOut,
-            animationDuration: Duration(milliseconds: 800),
-            tapBodyToExpand: true,
-            tapBodyToCollapse: true,
-            tapHeaderToExpand: _locationStartedBy ? true : false,
-            hasIcon: false,
-          ),
-          header: LocationHeader(
-            lastLocationCompleted: lastLocationCompleted,
-            questModel: questModel,
-            locationModel: locationModel,
-            isLoading: isLoading,
-          ),
-          expanded:
-              // Build challenges in Location Card
-              SizedBox(
-            height: 400,
-            child: StreamBuilder<List<QuestionsModel>>(
-              stream: databaseService.challengesStream(
-                  questId: questModel.id, locationId: locationModel.id),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.active) {
-                  // How many challenged the user has completed, this is parsed to Challenges class so it can be used to determine which challenge to activate
-                  final int _numberOfChallenges = snapshot.data.length;
+    return ChangeNotifierProvider<LocationService>(
+      create: (context) => LocationService(
+        questModel: questModel,
+        locationModel: locationModel
+      ) ,
+          child: InkWell(
+        onTap: onTap,
+        child: Card(
+          color: _locationProgressColor(
+              locationStarted: _locationStartedBy,
+              locationCompleted: _locationCompletedBy),
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          child: ExpandablePanel(
+            theme: ExpandableThemeData(
+              sizeCurve: Curves.bounceOut,
+              animationDuration: Duration(milliseconds: 800),
+              tapBodyToExpand: true,
+              tapBodyToCollapse: true,
+              tapHeaderToExpand: _locationStartedBy ? true : false,
+              hasIcon: false,
+            ),
+            header: LocationHeader(
+              lastLocationCompleted: lastLocationCompleted,
+              questModel: questModel,
+              locationModel: locationModel,
+              isLoading: isLoading,
+            ),
+            expanded:
+                // Build challenges in Location Card
+                SizedBox(
+              height: 400,
+              child: StreamBuilder<List<QuestionsModel>>(
+                stream: databaseService.challengesStream(
+                    questId: questModel.id, locationId: locationModel.id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    // How many challenged the user has completed, this is parsed to Challenges class so it can be used to determine which challenge to activate
+                    final int _numberOfChallenges = snapshot.data.length;
+                    
+                    final int _numberofChallengesCompleted = snapshot.data
+                        .where((questionsModel) => questionsModel
+                            .challengeCompletedBy
+                            .contains(databaseService.uid))
+                        .length;
+                    final bool _isFinalChallenge =
+                        _numberofChallengesCompleted == _numberOfChallenges - 1;
+                    return ListItemsBuilder<QuestionsModel>(
+                      title: 'Oh no! No challenges!',
+                      message: 'Admin needs to add some!',
+                      snapshot: snapshot,
+                      isSeperated: true,
+                      itemBuilder: (context, questionsModel, index) => Challenges(
+                        questionsModel: questionsModel,
+                        currentIndex: index,
+                        locationModel: locationModel,
+                        numberOfChallengesCompleted: _numberofChallengesCompleted,
+                        databaseService: databaseService,
+                        onTap: () {
+                          QuestionViewModel.loadQuestion(
+                              context: context,
+                              questModel: questModel,
+                              locationModel: locationModel,
+                              questionsModel: questionsModel,
+                              isFinalChallenge: _isFinalChallenge);
+                        },
+                      ),
+                    );
+                  }
                   
-                  final int _numberofChallengesCompleted = snapshot.data
-                      .where((questionsModel) => questionsModel
-                          .challengeCompletedBy
-                          .contains(databaseService.uid))
-                      .length;
-                  final bool _isFinalChallenge =
-                      _numberofChallengesCompleted == _numberOfChallenges - 1;
-                  return ListItemsBuilder<QuestionsModel>(
-                    title: 'Oh no! No challenges!',
-                    message: 'Admin needs to add some!',
-                    snapshot: snapshot,
-                    isSeperated: true,
-                    itemBuilder: (context, questionsModel, index) => Challenges(
-                      questionsModel: questionsModel,
-                      currentIndex: index,
-                      locationModel: locationModel,
-                      numberOfChallengesCompleted: _numberofChallengesCompleted,
-                      databaseService: databaseService,
-                      onTap: () {
-                        QuestionViewModel.loadQuestion(
-                            context: context,
-                            questModel: questModel,
-                            locationModel: locationModel,
-                            questionsModel: questionsModel,
-                            isFinalChallenge: _isFinalChallenge);
-                      },
-                    ),
-                  );
-                }
-                
-                return Container();
-              },
+                  return Container();
+                },
+              ),
             ),
           ),
         ),
@@ -147,51 +154,89 @@ class LocationHeader extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: ListTile(
-        enabled: isLoading,
-        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-        leading: _locationProgressImage(
-            locationCompleted: _locationCompletedBy,
-            locationStarted: _locationStartedBy),
-        title: Text(
-          _locationStartedBy ? locationModel.title : 'Mystery Location',
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: _locationCompletedBy ? Colors.white : Colors.black54,
-              fontFamily: 'JosefinSans',
-              fontSize: 22),
-        ),
-        subtitle: _locationCompletedBy ? Text('Conquered') : null,
-        trailing: StreamBuilder<List<QuestionsModel>>(
-            stream: databaseService.challengesStream(
-                questId: questModel.id, locationId: locationModel.id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
-                final _numberOfChallenges = snapshot.data.length;
-                final _numberofChallengesCompletedCard = snapshot.data
-                    .where((questionsModel) => questionsModel
-                        .challengeCompletedBy
-                        .contains(databaseService.uid))
-                    .length;
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            enabled: isLoading,
+            contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            leading: _locationProgressImage(
+                locationCompleted: _locationCompletedBy,
+                locationStarted: _locationStartedBy),
+            title: Text(
+              _locationStartedBy ? locationModel.title : 'Mystery Location',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: _locationCompletedBy ? Colors.white : Colors.black54,
+                  fontFamily: 'JosefinSans',
+                  fontSize: 22),
+            ),
+            subtitle: _locationCompletedBy ? Text('Conquered') : null,
+            trailing: StreamBuilder<List<QuestionsModel>>(
+                stream: databaseService.challengesStream(
+                    questId: questModel.id, locationId: locationModel.id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    final _numberOfChallenges = snapshot.data.length;
+                    final _numberofChallengesCompletedCard = snapshot.data
+                        .where((questionsModel) => questionsModel
+                            .challengeCompletedBy
+                            .contains(databaseService.uid))
+                        .length;
 
-                QuestionViewModel.submitLocationConquered(
-                  context,
-                  locationModel: locationModel,
-                  questModel: questModel,
-                  lastLocationCompleted: lastLocationCompleted,
-                  lastChallengeCompleted: (_numberOfChallenges ==
-                          _numberofChallengesCompletedCard) &&
-                      (_numberofChallengesCompletedCard > 0),
-                );
-                return Text(
-                    '$_numberofChallengesCompletedCard/$_numberOfChallenges');
-              }
+                    QuestionViewModel.submitLocationConquered(
+                      context,
+                      locationModel: locationModel,
+                      questModel: questModel,
+                      lastLocationCompleted: lastLocationCompleted,
+                      lastChallengeCompleted: (_numberOfChallenges ==
+                              _numberofChallengesCompletedCard) &&
+                          (_numberofChallengesCompletedCard > 0),
+                    );
+                    return Text(
+                        '$_numberofChallengesCompletedCard/$_numberOfChallenges');
+                  }
 
-              return CircularProgressIndicator(
-                valueColor:
-                    new AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
-              );
-            }),
+                  return CircularProgressIndicator(
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
+                  );
+                }),
+          ),
+          locationModel.locationStartedBy.contains(databaseService.uid) && locationModel.locationDiscoveredBy.contains(databaseService.uid) ?
+          null : 
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(10)
+            ),
+            
+            child: Column(
+            children: <Widget>[
+              Image.asset('images/pirate.png'),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text('Ahoy! Once you\'re at ${locationModel.title}tap the button below to unlock the challenges and continue your quest.',textAlign: TextAlign.center,),
+              ),
+              SizedBox(height: 10,),
+          Container(
+            width: MediaQuery.of(context).size.width/2,
+            child: RaisedButton(
+              
+              shape: StadiumBorder(),
+              color: Colors.orangeAccent,
+              child: Icon(Icons.vpn_lock, color: Colors.white, size: 30,),
+              onPressed: () => LocationService(
+              questModel: questModel,
+              locationModel: locationModel
+            ).getCurrentLocation()),
+          )
+            ],
+            ),
+          ),
+          
+         
+        ],
       ),
     );
   }
