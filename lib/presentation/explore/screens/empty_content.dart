@@ -25,7 +25,7 @@ class EmptyContent extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headline,
               textAlign: TextAlign.center,
             ),
             SizedBox(
@@ -37,7 +37,7 @@ class EmptyContent extends StatelessWidget {
             ),
             Text(
               message,
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
+              style: Theme.of(context).textTheme.body1.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),

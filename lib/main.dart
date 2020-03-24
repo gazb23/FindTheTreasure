@@ -70,9 +70,9 @@ class MyApp extends StatelessWidget {
       fontFamily: 'quicksand',
       // Define the text theme for the app
       textTheme: TextTheme(
-          headline6: TextStyle(
+          headline: TextStyle(
               color: Colors.black54, fontSize: 28, fontWeight: FontWeight.bold),
-          bodyText2: TextStyle(
+          body1: TextStyle(
               fontSize: 18,
               color: Colors.grey.shade500,
               fontFamily: 'quicksand'),
@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
         ),
           color: Colors.white,
           textTheme: TextTheme(
-              headline6: TextStyle(fontFamily: 'quicksand', fontSize: 20, color: Colors.black87))),
+              headline: TextStyle(fontFamily: 'quicksand', fontSize: 20, color: Colors.black87))),
               iconTheme: IconThemeData(
                 color: Colors.black87
 

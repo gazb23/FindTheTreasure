@@ -61,12 +61,12 @@ class _QuestListViewState extends State<QuestListView> {
     final DatabaseService database = Provider.of<DatabaseService>(context);
     return Card(
       clipBehavior: Clip.antiAlias,
-      elevation: 15.0,
+      elevation: 4.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Material(
         color: Colors.grey.shade800,
         child: InkWell(
-          enableFeedback: true,
+          enableFeedback: true,          
           splashColor: Colors.orangeAccent,
           onTap: widget.onTap,
           child: Column(

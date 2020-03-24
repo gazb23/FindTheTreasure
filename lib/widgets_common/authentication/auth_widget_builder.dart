@@ -26,12 +26,21 @@ class AuthWidgetBuilder extends StatelessWidget {
               Provider<DatabaseService>(
                 create: (_) => DatabaseService(uid: user.uid),
               ),
-             
+            
               
             ],
             child: Consumer<DatabaseService>(
               builder: (_, databaseService, __) => StreamProvider<UserData>.value(
                 value: databaseService.userStream(),
+                initialData: UserData(
+                  displayName: '',
+                  email: '',
+                  photoURL: '',
+                  uid: '',
+                  userDiamondCount: 0,
+                  userKeyCount: 0
+
+                ),
                 child: builder(context, snapshot),
               ),
             ),

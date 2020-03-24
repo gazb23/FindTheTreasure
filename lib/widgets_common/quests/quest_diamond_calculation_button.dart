@@ -89,7 +89,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
               documentId: questModelStream.id,
               uid: database.uid,
               field: 'questStartedBy');
-          await database.updateUserDiamondAndKey(userData: _userData);
+          database.updateUserDiamondAndKey(userData: _userData);
         }
       } else if (_isStartedBy || _isCompletedBy) {
         Navigator.of(context, rootNavigator: true).push(

@@ -25,7 +25,7 @@ class QuestionViewModel {
     // If Challenge Question
     if (!isLocation) {
       try {
-        await _databaseService.arrayUnionField(
+        _databaseService.arrayUnionField(
           documentId: documentId,
           uid: _databaseService.uid,
           field: 'challengeCompletedBy',
@@ -48,13 +48,14 @@ class QuestionViewModel {
             Navigator.of(context).popUntil((route) => route.isFirst);
           }
         } else {
-          Navigator.pop(context);
-          await _databaseService.arrayUnionField(
+                _databaseService.arrayUnionField(
             documentId: documentId,
             uid: _databaseService.uid,
             field: 'challengeCompletedBy',
             collectionRef: collectionRef,
           );
+          Navigator.pop(context);
+    
         }
       } catch (e) {
         print(e.toString());
@@ -62,7 +63,7 @@ class QuestionViewModel {
     } else
       // If Location Question
       try {
-        await _databaseService.arrayUnionField(
+       _databaseService.arrayUnionField(
           documentId: documentId,
           uid: _databaseService.uid,
           field: 'locationStartedBy',
@@ -102,7 +103,7 @@ class QuestionViewModel {
     if (!locationModel.locationCompletedBy.contains(_databaseService.uid) &&
         lastChallengeCompleted) {
       try {
-        await _databaseService.arrayUnionField(
+       _databaseService.arrayUnionField(
             documentId: locationModel.id,
             uid: _databaseService.uid,
             field: 'locationCompletedBy',

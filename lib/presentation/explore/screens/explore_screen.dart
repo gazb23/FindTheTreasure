@@ -10,51 +10,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class ExploreScreen extends StatelessWidget {
+class ExploreScreen extends StatefulWidget {
   static const String id = 'explore_page';
 
   @override
+  _ExploreScreenState createState() => _ExploreScreenState();
+}
+
+class _ExploreScreenState extends State<ExploreScreen> {
+  @override
   Widget build(BuildContext context) {
-    final _userData = Provider.of<UserData>(context);
+    final _userDiamondCount = Provider.of<UserData>(context).userDiamondCount;
+    final _userKeyCount = Provider.of<UserData>(context).userKeyCount;
+    
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    // Needed a null check to be able to display UserData in the AppBar
-    int getUserDiamonds(BuildContext context) {
-      int _userDiamondCount;
-
-      if (_userData != null) {
-        _userDiamondCount = _userData.userDiamondCount;
-      }
-      return _userDiamondCount;
-    }
-
-    int getUserKeys(BuildContext context) {
-      int _userKeyCount;
-
-      if (_userData != null) {
-        _userKeyCount = _userData.userKeyCount;
-      }
-      return _userKeyCount;
-    }
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-          backgroundColor: Colors.grey.shade800,
-          title: Text(
-            'Find The Treasure',
-            style: TextStyle(color: Colors.white),
-          ),
+          backgroundColor: Colors.black87,
+          leading: Icon(Icons.search, color: Colors.white,),
           iconTheme: IconThemeData(
             color: Colors.black87,
           ),
           actions: <Widget>[
             DiamondAndKeyContainer(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: getUserDiamonds(context),
-              numberOfKeys: getUserKeys(context),
+              numberOfDiamonds: _userDiamondCount,
+              numberOfKeys: _userKeyCount,
               color: Colors.white,
             ),
             SizedBox(
@@ -62,12 +48,13 @@ class ExploreScreen extends StatelessWidget {
             )
           ],
         ),
-        body: _buildListView(context, _userData),
+        body: _buildListView(context),
       ),
     );
   }
 
-  Widget _buildListView(BuildContext context, UserData _userData) {
+  Widget _buildListView(BuildContext context) {
+    final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
     return StreamBuilder<List<QuestModel>>(
         stream: database.questsStream(),
