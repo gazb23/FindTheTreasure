@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
@@ -22,20 +24,18 @@ class LocationViewModel {
     if (!questModel.questCompletedBy.contains(_databaseService.uid) &&
         lastLocationCompleted) {
       try {
-      
         // Add UID to quest completed by
         _databaseService.arrayUnionField(
             documentId: questModel.id,
             uid: _databaseService.uid,
             field: 'questCompletedBy',
             collectionRef: APIPath.quests());
-       // Remove UID from questStartedBy
-         await _databaseService.arrayRemoveField(
+        // Remove UID from questStartedBy
+        await _databaseService.arrayRemoveField(
             documentId: questModel.id,
             uid: _databaseService.uid,
             field: 'questStartedBy',
             collectionRef: APIPath.quests());
-
 
         final didCompleteLocation = await ChallengePlatformAlertDialog(
           backgroundColor: Colors.amberAccent,
@@ -87,7 +87,8 @@ class LocationViewModel {
               'Well done, you\'ve found ${locationModel.title}and unlocked the challenges! ',
           defaultActionText: 'Continue',
           image: Image.asset(
-            'images/2.0x/ic_avatar_pirate.png', height: 60,
+            'images/2.0x/ic_avatar_pirate.png',
+            height: 60,
           ),
         ).show(context);
 
@@ -97,27 +98,27 @@ class LocationViewModel {
   }
 
   // Logic for when a location is not discovered
-  static void submitLocationNotDiscovered({
+  static Future<void> submitLocationNotDiscovered({
     @required BuildContext context,
     @required LocationModel locationModel,
     @required DatabaseService databaseService,
     @required QuestModel questModel,
   }) async {
     if (!locationModel.locationDiscoveredBy.contains(databaseService.uid)) {
-      try {
-        final didDiscoverLocation = await ChallengePlatformAlertDialog(
+      
+        final didNotDiscoverLocation = await ChallengePlatformAlertDialog(
           backgroundColor: Colors.white,
           title: 'Close, but no cigar!',
           content: 'Head to ${locationModel.title}to unlock the challenges! ',
-          defaultActionText: 'OK',
+          defaultActionText: 'OK',        
           image: Image.asset('images/ic_owl_wrong_dialog.png'),
         ).show(context);
 
-        if (didDiscoverLocation) {}
-      } catch (e) {}
-    }
-  }
-}
+        if (didNotDiscoverLocation) {}
+      } 
+    } 
+  } 
+
 
 // String Plurals for diamond/s and key/s
 diamondPluralCount(int howMany) =>

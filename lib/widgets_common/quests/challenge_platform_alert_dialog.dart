@@ -143,7 +143,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
         text: defaultActionText,
         onPressed: () => Navigator.of(context).pop(true),
       ),
-      // onPressed: () => Navigator.of(context).pop(true),
+      onPressed: () => Navigator.of(context).pop(true),
     ));
     return actions;
   }

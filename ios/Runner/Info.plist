@@ -47,27 +47,26 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.766008553053-cd8d0pgp8u5ul8sh6qnfsd6nmd2e52cq</string>
-                    <string>fb754437811652592</string>
+				<string>fb754437811652592</string>
 			</array>
 		</dict>
 	</array>
-
-    
-    <key>FacebookAppID</key>
-    <string>754437811652592</string>
-    <key>FacebookDisplayName</key>
-    <string>Find The Treasure</string>
-
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>fbapi</string>
-      <string>fb-messenger-share-api</string>
-      <string>fbauth2</string>
-      <string>fbshareextension</string>
-    </array>
-		<key>NSLocationWhenInUseUsagedescription</key>
-		<string>Find The Treasure requires access to your location</string>
-		<key>NSLocationAlwaysUsageDescription</key>
-		<string>Find The Treasure requires access to your location</string>
+	<key>FacebookAppID</key>
+	<string>754437811652592</string>
+	<key>FacebookDisplayName</key>
+	<string>Find The Treasure</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Find The Treasure requires access to your location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open and in the background</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Find The Treasure requires access to your location</string>
 </dict>
 </plist>

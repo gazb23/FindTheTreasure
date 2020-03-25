@@ -20,12 +20,20 @@ class LocationService {
         assert(databaseService != null),
         assert(locationModel != null);
 
-  getCurrentLocation(BuildContext context) {
+  getCurrentLocation(BuildContext context) async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+    
     double lat = locationModel.location['latitude'];
     double long = locationModel.location['longitude'];
-
-    geolocator
+    
+     GeolocationStatus locationStatus = await Geolocator().checkGeolocationPermissionStatus();
+     if (locationStatus == GeolocationStatus.disabled || locationStatus == GeolocationStatus.denied) {
+       
+       return GeolocationPermission.location;
+     }
+     bool isLocationEnabled = await Geolocator().isLocationServiceEnabled();
+     if (isLocationEnabled) {
+       geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
       currentPosition = position;
@@ -49,5 +57,7 @@ class LocationService {
     }).catchError((e) {
       print(e.toString());
     });
+     } 
+    
   }
 }
