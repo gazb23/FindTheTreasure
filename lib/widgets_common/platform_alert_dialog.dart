@@ -85,12 +85,17 @@ class PlatformAlertDialog extends PlatformWidget {
 
         backgroundColor: backgroundColor ?? Colors.white,
         title: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'quicksand',
-              fontWeight: FontWeight.w600,
-              color: titleTextColor ?? Colors.black87
+          child: Center(
+            child: Text(
+              
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+
+                fontFamily: 'quicksand',
+                fontWeight: FontWeight.w600,
+                color: titleTextColor ?? Colors.black87
+              ),
             ),
           ),
         ),

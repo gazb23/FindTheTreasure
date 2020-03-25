@@ -10,6 +10,7 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/location_service.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
 class QuestLocationCard extends StatelessWidget {
@@ -147,8 +148,6 @@ class _LocationHeaderState extends State<LocationHeader> {
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
-    
-
     final UserData _userData = Provider.of<UserData>(context);
     final _locationCompletedBy =
         widget.locationModel.locationCompletedBy.contains(_userData.uid);
@@ -156,25 +155,24 @@ class _LocationHeaderState extends State<LocationHeader> {
         widget.locationModel.locationStartedBy.contains(_userData.uid);
     final DatabaseService databaseService =
         Provider.of<DatabaseService>(context);
+
     void _submit() async {
       try {
-        _isLoading = true;
+        _isLoading = true;     
+        
         setState(() {});
         LocationService(
                 databaseService: databaseService,
                 questModel: widget.questModel,
                 locationModel: widget.locationModel)
             .getCurrentLocation(context);
-             await Future.delayed(Duration(milliseconds: 2000));
-                setState(() {
+        await Future.delayed(Duration(milliseconds: 2000));
+        setState(() {
           _isLoading = false;
         });
-    
       } catch (e) {
-        
-     
         print(e.toString());
-      } 
+      }
     }
 
     return Padding(
