@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionService {
@@ -26,7 +27,7 @@ class PermissionService {
       return null;
     } else {
       var granted = await _requestPermission(PermissionGroup.locationWhenInUse);
-      if (!granted) {
+      if (!granted && (await Geolocator().isLocationServiceEnabled())) {
         permissionDenied(context);
       }
 

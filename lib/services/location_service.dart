@@ -1,4 +1,5 @@
-import 'package:android_intent/android_intent.dart';
+
+import 'package:app_settings/app_settings.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -59,7 +60,7 @@ class LocationService {
 
   Future _checkGps(BuildContext context) async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
-      if (Theme.of(context).platform == TargetPlatform.android) {
+      
         final didRequest = await PlatformAlertDialog(
           title: 'Location Disabled',
           content: 'To continue your adventure please enable your location service.',
@@ -67,10 +68,7 @@ class LocationService {
           defaultActionText: 'ENABLE',
         ).show(context);
         if (didRequest) {
-           final AndroidIntent intent = AndroidIntent(
-                        action: 'android.settings.LOCATION_SOURCE_SETTINGS');
-
-                    intent.launch();
+           AppSettings.openLocationSettings();
                     
         } else {
           return null;
@@ -78,4 +76,4 @@ class LocationService {
       }
     }
   }
-}
+
