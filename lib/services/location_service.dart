@@ -24,14 +24,15 @@ class LocationService {
 
   getCurrentLocation(BuildContext context) async {
    
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;   
-  
+    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;     
     double lat = locationModel.location['latitude'];
     double long = locationModel.location['longitude'];
     
   
-
+      
       PermissionService(context: context).requestLocationPermission();
+      
+  
        geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
