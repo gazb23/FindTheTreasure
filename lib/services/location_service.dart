@@ -71,7 +71,7 @@ class LocationService {
                         action: 'android.settings.LOCATION_SOURCE_SETTINGS');
 
                     intent.launch();
-                    Navigator.of(context, rootNavigator: true).pop();
+                    
         } else {
           return null;
         }

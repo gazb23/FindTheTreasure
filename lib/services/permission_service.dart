@@ -18,6 +18,7 @@ class PermissionService {
 
   /// Requests the users permission to read their location when the app is in use
   Future<bool> requestLocationPermission() async {
+    
     var permissionStatus = await _permessionHandler
         .checkPermissionStatus(PermissionGroup.location);
         print(permissionStatus);
