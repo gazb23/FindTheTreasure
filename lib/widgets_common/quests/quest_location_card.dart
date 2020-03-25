@@ -1,5 +1,3 @@
-
-
 import 'package:expandable/expandable.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
@@ -158,7 +156,7 @@ class _LocationHeaderState extends State<LocationHeader> {
 
     void _submit() async {
       try {
-        _isLoading = true;     
+            _isLoading = true; 
         
         setState(() {});
         LocationService(
@@ -166,13 +164,15 @@ class _LocationHeaderState extends State<LocationHeader> {
                 questModel: widget.questModel,
                 locationModel: widget.locationModel)
             .getCurrentLocation(context);
-        await Future.delayed(Duration(milliseconds: 2000));
-        setState(() {
+        await Future.delayed(Duration(seconds: 3));
           _isLoading = false;
-        });
+      setState(() {
+        
+      });
       } catch (e) {
-        print(e.toString());
-      }
+     
+     
+      } 
     }
 
     return Padding(
