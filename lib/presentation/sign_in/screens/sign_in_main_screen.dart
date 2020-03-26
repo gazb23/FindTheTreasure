@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'email_sign_in_screen.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+// import 'package:carousel_pro/carousel_pro.dart';
 
 class SignInMainScreen extends StatelessWidget {
   static const String id = 'sign_in_main';
@@ -94,28 +94,28 @@ class SignInMainScreen extends StatelessWidget {
       return Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Carousel(
-            boxFit: BoxFit.fitHeight,
-            images: [
-              Image.asset(
-                'images/slide_1.png',
-                alignment: Alignment.topCenter,
-                fit: BoxFit.fitWidth,
-              ),
-              Image.asset(
-                'images/slide_2.png',
-                alignment: Alignment.topCenter,
-                fit: BoxFit.fitWidth,
-              ),
-              Image.asset(
-                'images/slide_3.png',
-                alignment: Alignment.topCenter,
-                fit: BoxFit.fitWidth,
-              )
-            ],
-            showIndicator: false,
-            animationCurve: Curves.easeIn,
-          ),
+          // Carousel(
+          //   boxFit: BoxFit.fitHeight,
+          //   images: [
+          //     Image.asset(
+          //       'images/slide_1.png',
+          //       alignment: Alignment.topCenter,
+          //       fit: BoxFit.fitWidth,
+          //     ),
+          //     Image.asset(
+          //       'images/slide_2.png',
+          //       alignment: Alignment.topCenter,
+          //       fit: BoxFit.fitWidth,
+          //     ),
+          //     Image.asset(
+          //       'images/slide_3.png',
+          //       alignment: Alignment.topCenter,
+          //       fit: BoxFit.fitWidth,
+          //     )
+          //   ],
+          //   showIndicator: false,
+          //   animationCurve: Curves.easeIn,
+          // ),
           FractionallySizedBox(
             widthFactor: 0.9,
             child: Container(
