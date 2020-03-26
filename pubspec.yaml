@@ -34,6 +34,7 @@ dependencies:
   geolocator: ^5.3.0
   permission_handler: ^4.4.0+hotfix.2
   app_settings: ^3.0.1
+  
 
 
 
@@ -42,8 +43,15 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  flutter_launcher_icons:
+
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+    image_path: 'images/4.0x/andicon.png'
+    android: true
+    ios: true    
 
 
 # For information on the generic Dart part of this file, see the
