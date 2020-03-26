@@ -5,12 +5,14 @@ class QuestionsModel {
   final String question;
   final String questionType;
   final String image;
+  final String hint;
   final Map<String, dynamic> answerA;
   final Map<String, dynamic> answerB;
   final Map<String, dynamic> answerC;
   final Map<String, dynamic> answerD;
   final List<dynamic> answers;
   final List<dynamic> challengeCompletedBy;
+  final List<dynamic> hintPurchasedBy;
 
   QuestionsModel({
     this.challengeTitle,
@@ -18,7 +20,9 @@ class QuestionsModel {
     this.question,
     this.answers,
     this.id,
+    this.hint, 
     this.challengeCompletedBy,
+    this.hintPurchasedBy, 
     this.questionType,
     this.answerA,
     this.answerB,
@@ -36,8 +40,10 @@ class QuestionsModel {
       answers: data['answers'],
       challengeTitle: data['challengeTitle'],
       question: data['question'],
+      hint: data['hint'],
       questionIntroduction: data['questionIntroduction'],
       challengeCompletedBy: data['challengeCompletedBy'],
+      hintPurchasedBy: data['hintPurchasedBy'],
       questionType: data['questionType'],
       answerA: data['answerA'],
       answerB: data['answerB'],

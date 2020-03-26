@@ -74,11 +74,11 @@ class LocationViewModel {
   }) async {
     if (!locationModel.locationDiscoveredBy.contains(databaseService.uid)) {
       try {
-        // databaseService.arrayUnionField(
-        //     documentId: locationModel.id,
-        //     uid: databaseService.uid,
-        //     field: 'locationDiscoveredBy',
-        //     collectionRef: APIPath.locations(questId: questModel.id));
+        databaseService.arrayUnionField(
+            documentId: locationModel.id,
+            uid: databaseService.uid,
+            field: 'locationDiscoveredBy',
+            collectionRef: APIPath.locations(questId: questModel.id));
 
         final didDiscoverLocation = await ChallengePlatformAlertDialog(
           backgroundColor: Colors.amberAccent,
@@ -88,7 +88,7 @@ class LocationViewModel {
           defaultActionText: 'Continue',
           image: Image.asset(
             'images/2.0x/ic_avatar_pirate.png',
-            height: 60,
+            height: 100,
           ),
         ).show(context);
 

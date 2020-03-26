@@ -31,7 +31,21 @@ class _ExploreScreenState extends State<ExploreScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-          backgroundColor: Colors.orangeAccent.shade700,
+        flexibleSpace: Container(
+          decoration:
+          BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: [
+                      0.1,
+                      10
+                    ],
+                        colors: [
+                      Colors.amberAccent,
+                      Colors.orangeAccent
+                    ])),
+        ),
           leading: Icon(Icons.search, color: Colors.white,),
           iconTheme: IconThemeData(
             color: Colors.black87,

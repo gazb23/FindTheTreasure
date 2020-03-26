@@ -4,6 +4,8 @@ import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/multiple_choice.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_introduction.dart';
+import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +29,42 @@ class QuestionMultipleChoice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserData userData = Provider.of<UserData>(context);
-
+    final DatabaseService databaseService = Provider.of<DatabaseService>(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(questModel.title),
+          title: Builder(
+            builder: (context) => StreamBuilder<QuestionsModel>(
+                stream: databaseService.challengeStream(
+                    questId: questModel.id,
+                    locationId: locationModel.id,
+                    challengeId: questionsModel.id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active)  {
+                    final questionsModelStream = snapshot.data;
+                    return InkWell(
+                      onTap: () {
+                        ChallengeViewModel.showHint(
+                            context: context,
+                            questionsModel: questionsModelStream,
+                            locationModel: locationModel,
+                            questModel: questModel,
+                            );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        child: 
+                        
+                        Text(
+                          !questionsModelStream.hintPurchasedBy.contains(databaseService.uid) ?
+                          'HINT?' : 'SHOW HINT',
+                          style: TextStyle(color: Colors.orangeAccent),
+                        ),
+                      ),
+                    );
+                  } return Container();
+                }),
+          ),
           iconTheme: IconThemeData(
             color: Colors.black87,
           ),

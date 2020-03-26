@@ -9,6 +9,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   final String content;
   final String cancelActionText;
   final String defaultActionText;
+  final Color textColor;
   final Color backgroundColor;
   final Widget image;
   final bool isLoading;
@@ -17,6 +18,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   ChallengePlatformAlertDialog({
     this.cancelActionText,
     this.backgroundColor, 
+    this.textColor, 
     @required this.title,
     @required this.content,
     @required this.defaultActionText,
@@ -51,6 +53,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
             style: TextStyle(
               fontFamily: 'quicksand',
               fontWeight: FontWeight.w600,
+              color: textColor ?? Colors.black87
             ),
           ),
         ),
@@ -66,6 +69,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
                 style: TextStyle(
                   fontFamily: 'quicksand',
                   fontSize: 18,
+                  color: textColor ?? Colors.black87
                 ),
               ),
             ],
@@ -89,7 +93,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
             style: TextStyle(
               fontFamily: 'quicksand',
               fontWeight: FontWeight.w600,
-              
+              color: textColor ?? Colors.black87
             ),
           ),
         ),
@@ -106,7 +110,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
                 style: TextStyle(
                   fontFamily: 'quicksand',
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87
+                  color: textColor ?? Colors.black87
                 ),
                 textAlign: TextAlign.center,
               ),

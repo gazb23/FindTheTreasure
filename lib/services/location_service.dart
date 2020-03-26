@@ -25,7 +25,7 @@ class LocationService {
         assert(databaseService != null),
         assert(locationModel != null);
 
-  getCurrentLocation(BuildContext context) async {
+ void getCurrentLocation(BuildContext context) async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
     double lat = locationModel.location['latitude'];
@@ -47,6 +47,8 @@ class LocationService {
             locationModel: locationModel,
             questModel: questModel);
       } else {
+        print(currentPosition.latitude.toStringAsFixed(2));
+        print(currentPosition.longitude);
         LocationViewModel.submitLocationNotDiscovered(
             context: context,
             locationModel: locationModel,

@@ -1,6 +1,7 @@
+
+import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
-
 
 class AnswerBox extends StatefulWidget {
   final List<dynamic> answers;
@@ -16,7 +17,7 @@ class AnswerBox extends StatefulWidget {
     @required this.islocationQuestion,
     @required this.arrayUnionCollectionRef,
     @required this.arrayUnionDocumentId,
-    @required this.locationTitle, 
+    @required this.locationTitle,
     @required this.isFinalChallenge,
   }) : super(key: key);
   @override
@@ -31,45 +32,33 @@ class _AnswerBoxState extends State<AnswerBox> {
   bool _validateAndSaveForm() {
     final form = _formKey.currentState;
     if (form.validate()) {
-      
       form.save();
-      
+
       return true;
     }
     return false;
   }
 
   void _submit() async {
-   
     if (_validateAndSaveForm()) {
-      
-     try{
-       
-           
-      if (widget.answers.contains(_answer.toUpperCase().trimRight())) {
-        _isLoading = true;
-        setState(() {
-          
-        });
-        
-        QuestionViewModel.submit(context,
-            documentId: widget.arrayUnionDocumentId,
-            collectionRef: widget.arrayUnionCollectionRef,
-            isLocation: widget.islocationQuestion,
-            locationTitle: widget.locationTitle,
-            isFinalChallenge: widget.isFinalChallenge
-            );
+      try {
+        if (widget.answers.contains(_answer.toUpperCase().trimRight())) {
+          _isLoading = true;
+          setState(() {});
+
+          QuestionViewModel.submit(context,
+              documentId: widget.arrayUnionDocumentId,
+              collectionRef: widget.arrayUnionCollectionRef,
+              isLocation: widget.islocationQuestion,
+              locationTitle: widget.locationTitle,
+              isFinalChallenge: widget.isFinalChallenge);
+        }
+      } catch (e) {
+        print(e.toString());
+        _isLoading = false;
       }
-     }
-     catch(e){
-       print(e.toString());
-       _isLoading = false;
-     } 
- 
-      
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,35 +84,40 @@ class _AnswerBoxState extends State<AnswerBox> {
               key: _formKey,
               child: TextFormField(
                 validator: (value) {
-                  if (!widget.answers.contains(value.toUpperCase().trimRight()) &&
+                  if (!widget.answers
+                          .contains(value.toUpperCase().trimRight()) &&
                       value.isNotEmpty) {
-                    return 'Answer is incorrect, have another crack!';
+                    ChallengeViewModel().answerIncorrect(context: context);
+
+                    return 'Incorrect, I\'m taking 1 diamond for your troubles!';
                   }
-                  if (widget.answers.contains(value.trimRight().toUpperCase()) &&
+                  if (widget.answers
+                          .contains(value.trimRight().toUpperCase()) &&
                       value.isNotEmpty) {
-                       
                     return null;
                   }
+               
                   return value.isNotEmpty ? null : 'Please enter your answer';
+                  
                 },
                 onSaved: (value) => _answer = value.toUpperCase().trimRight(),
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  
                   contentPadding: EdgeInsets.all(5),
                   hintText: 'Enter your answer',
-                 enabled: !_isLoading,
+                  enabled: !_isLoading,
                   suffixIcon: IconButton(
-                    enableFeedback: true,
-
-                    icon: _isLoading
-                        ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.orangeAccent),)
-                        : Icon(
-                            Icons.send,
-                            color: Colors.orangeAccent,
-                          ),
-                    onPressed: !_isLoading ? _submit : null
-                  ),
+                      enableFeedback: true,
+                      icon: _isLoading
+                          ? CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.orangeAccent),
+                            )
+                          : Icon(
+                              Icons.send,
+                              color: Colors.orangeAccent,
+                            ),
+                      onPressed: !_isLoading ? _submit : null),
                 ),
               ),
             ),
