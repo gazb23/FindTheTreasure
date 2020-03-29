@@ -1,3 +1,4 @@
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
@@ -94,28 +95,28 @@ class SignInMainScreen extends StatelessWidget {
       return Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          // Carousel(
-          //   boxFit: BoxFit.fitHeight,
-          //   images: [
-          //     Image.asset(
-          //       'images/slide_1.png',
-          //       alignment: Alignment.topCenter,
-          //       fit: BoxFit.fitWidth,
-          //     ),
-          //     Image.asset(
-          //       'images/slide_2.png',
-          //       alignment: Alignment.topCenter,
-          //       fit: BoxFit.fitWidth,
-          //     ),
-          //     Image.asset(
-          //       'images/slide_3.png',
-          //       alignment: Alignment.topCenter,
-          //       fit: BoxFit.fitWidth,
-          //     )
-          //   ],
-          //   showIndicator: false,
-          //   animationCurve: Curves.easeIn,
-          // ),
+          Carousel(
+            boxFit: BoxFit.fitHeight,
+            images: [
+              Image.asset(
+                'images/slide_1.png',
+                alignment: Alignment.topCenter,
+                fit: BoxFit.fitWidth,
+              ),
+              Image.asset(
+                'images/slide_2.png',
+                alignment: Alignment.topCenter,
+                fit: BoxFit.fitWidth,
+              ),
+              Image.asset(
+                'images/slide_3.png',
+                alignment: Alignment.topCenter,
+                fit: BoxFit.fitWidth,
+              )
+            ],
+            showIndicator: false,
+            animationCurve: Curves.easeIn,
+          ),
           FractionallySizedBox(
             widthFactor: 0.9,
             child: Container(

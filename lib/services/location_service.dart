@@ -34,21 +34,22 @@ class LocationService {
     _checkGps(context);
     PermissionService(context: context).requestLocationPermission();
     geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.medium)
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       currentPosition = position;
-      if (lat.toStringAsFixed(2) ==
-              currentPosition.latitude.toStringAsFixed(2) &&
-          long.toStringAsFixed(2) ==
-              currentPosition.longitude.toStringAsFixed(2)) {
+      
+
+      if ((lat * 100).truncateToDouble() / 100 ==
+            (currentPosition.latitude * 100).truncateToDouble() / 100  &&
+         (long * 100).truncateToDouble() / 100 ==
+            (currentPosition.longitude * 100).truncateToDouble() / 100)  {
         LocationViewModel.submitLocationDiscovered(
             context: context,
             databaseService: databaseService,
             locationModel: locationModel,
             questModel: questModel);
       } else {
-        print(currentPosition.latitude.toStringAsFixed(2));
-        print(currentPosition.longitude);
+        
         LocationViewModel.submitLocationNotDiscovered(
             context: context,
             locationModel: locationModel,

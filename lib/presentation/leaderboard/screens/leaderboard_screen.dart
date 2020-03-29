@@ -12,7 +12,7 @@ class LeaderboardScreen extends StatefulWidget {
 class _LeaderboardScreenState extends State<LeaderboardScreen> {
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
-
+ 
   @override
   Widget build(BuildContext context) {
     
@@ -38,8 +38,18 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     fit: BoxFit.fill),
               ),
             ),
-           if (_currentPosition != null)
-            Center(child: Text(_currentPosition.latitude.toStringAsFixed(2))),
+           if (_currentPosition != null) 
+           
+            Center(child: Column(children: [
+                Text(_currentPosition.latitude.toString()),
+              Text(_currentPosition.longitude.toString()),
+              Text('${(_currentPosition.latitude * 100).truncateToDouble() / 100}'),
+              Text('${(_currentPosition.longitude * 100).truncateToDouble() / 100}'),
+            
+          
+            ],),),
+           
+           
             
           ],
           
@@ -56,7 +66,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
     .then((Position position) {
       setState(() {
         _currentPosition = position;
-        
+      
       });
      
 
@@ -64,7 +74,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       print(e.toString());
     });
 }
- 
+
   
 }
 

@@ -38,12 +38,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         stops: [
-                      0.1,
-                      10
+                      0.01,
+                      0.5
                     ],
                         colors: [
-                      Colors.amberAccent,
-                      Colors.orangeAccent
+                      Colors.orangeAccent,
+                      Colors.grey.shade600
                     ])),
         ),
           leading: Icon(Icons.search, color: Colors.white,),
