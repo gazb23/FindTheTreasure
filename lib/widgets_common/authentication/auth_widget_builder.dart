@@ -2,6 +2,7 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
 /// Used to create user-dependent objects that need to be accessible by all widgets.
@@ -20,27 +21,26 @@ class AuthWidgetBuilder extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         final User user = snapshot.data;
         if (user != null) {
+          //  This method is required to be called when initialize the application. It is to acknowledge your application has been updated to support pending purchases.
+          InAppPurchaseConnection.enablePendingPurchases();
           return MultiProvider(
             providers: [
               Provider<User>.value(value: user),
               Provider<DatabaseService>(
                 create: (_) => DatabaseService(uid: user.uid),
               ),
-            
-              
             ],
             child: Consumer<DatabaseService>(
-              builder: (_, databaseService, __) => StreamProvider<UserData>.value(
+              builder: (_, databaseService, __) =>
+                  StreamProvider<UserData>.value(
                 value: databaseService.userStream(),
                 initialData: UserData(
-                  displayName: '',
-                  email: '',
-                  photoURL: '',
-                  uid: '',
-                  userDiamondCount: 0,
-                  userKeyCount: 0
-
-                ),
+                    displayName: '',
+                    email: '',
+                    photoURL: '',
+                    uid: '',
+                    userDiamondCount: 0,
+                    userKeyCount: 0),
                 child: builder(context, snapshot),
               ),
             ),

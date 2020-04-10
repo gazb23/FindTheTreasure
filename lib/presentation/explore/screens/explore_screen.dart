@@ -31,21 +31,22 @@ class _ExploreScreenState extends State<ExploreScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-        flexibleSpace: Container(
-          decoration:
-          BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [
-                      0.01,
-                      0.5
-                    ],
-                        colors: [
-                      Colors.orangeAccent,
-                      Colors.grey.shade600
-                    ])),
-        ),
+     backgroundColor: Colors.orangeAccent,
+        // flexibleSpace: Container(
+        //   decoration:
+        //   BoxDecoration(
+        //             gradient: LinearGradient(
+        //                 begin: Alignment.topLeft,
+        //                 end: Alignment.bottomRight,
+        //                 stops: [
+        //               0.01,
+        //               0.5
+        //             ],
+        //                 colors: [
+        //               Colors.orangeAccent,
+        //               Colors.brown.shade600
+        //             ])),
+        // ),
           leading: Icon(Icons.search, color: Colors.white,),
           iconTheme: IconThemeData(
             color: Colors.black87,

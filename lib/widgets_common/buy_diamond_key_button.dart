@@ -4,54 +4,100 @@ import 'package:flutter/material.dart';
 class BuyDiamondOrKeyButton extends StatelessWidget {
   final String numberOfDiamonds;
   final String diamondCost;
+  final String bonusKey;
   final Color textColor;
-  final double textSize;
+  final double diamondTextSize;
+  final double costTextSize;
+  final VoidCallback onPressed;
+  final bool isPending;
 
   const BuyDiamondOrKeyButton({
     Key key,
-    this.numberOfDiamonds,
-    this.diamondCost, this.textColor, this.textSize,
+    @required this.numberOfDiamonds,
+    @required this.diamondCost,
+    @required this.onPressed,
+    this.textColor,
+    this.bonusKey,
+    this.diamondTextSize = 30,
+    this.costTextSize = 15, this.isPending,
+    
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: MediaQuery.of(context).size.width * 0.9,
       child: CustomRaisedButton(
-        padding: 15,
-        onPressed: () {},
+        color: Colors.orangeAccent,
+        padding: 10,
+        onPressed: isPending ? null : onPressed,
         child: FractionallySizedBox(
-          widthFactor: .9,
+          widthFactor: 0.9,
           child: Row(
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(numberOfDiamonds, style: TextStyle(
-                    color: textColor ?? Colors.white,
-                    fontSize: textSize
-                  ),),
-                  SizedBox(width: 15),
-                  Image.asset('images/2.0x/ic_diamond.png', height: 25,),
-                ],
+              Expanded(
+                flex: 4,
+                child: Row(
+                  children: <Widget>[
+                    Image.asset(
+                      'images/2.0x/ic_diamond.png',
+                      height: 30,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      numberOfDiamonds,
+                      style: TextStyle(
+                          color: textColor ?? Colors.white,
+                          fontSize: diamondTextSize,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(width: 20),
-              Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Buy For',style: TextStyle(
-                    color: textColor ?? Colors.white,
-                    fontSize: textSize
-                  ),),
-                  SizedBox(width: 8),
-                  Text('\$' + diamondCost, style: TextStyle(
-                    color: textColor ?? Colors.white,
-                    fontSize: textSize,
-                  ),),
-                ],
-              )
+              Expanded(
+                flex: 3,
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      '+$bonusKey',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Image.asset(
+                      'images/skull_key_outline.png',
+                      height: 30,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 30,
+              ),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey.shade700),
+                  child: Text(
+                    diamondCost,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: textColor ?? Colors.white,
+                      fontSize: costTextSize,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

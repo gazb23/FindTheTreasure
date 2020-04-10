@@ -16,8 +16,11 @@ import 'package:provider/provider.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  
+
   @override
   Widget build(BuildContext context) {
+  
     return MultiProvider(
       providers: [
         Provider<AuthBase>(
@@ -75,6 +78,10 @@ class MyApp extends StatelessWidget {
           body1: TextStyle(
               fontSize: 18,
               color: Colors.grey.shade500,
+              fontFamily: 'quicksand'),
+              body2: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
               fontFamily: 'quicksand'),
           button: TextStyle(
             fontSize: 15.0,
