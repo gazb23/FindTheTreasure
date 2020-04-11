@@ -1,18 +1,19 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
-
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
+// App Store and Google Play consumable IDS
 const String _diamond50 = 'diamond_50';
 const String _diamond150 = 'diamond_150';
 const String _diamond300 = 'diamond_300';
+const String _diamond500 = 'diamond_500';
 
 class ShopScreen extends StatefulWidget {
   @override
@@ -55,7 +56,7 @@ class _ShopScreenState extends State<ShopScreen> {
     _isAvailable = await _iap.isAvailable();
 
     if (_isAvailable) {
-      List<Future> futures = [_getProducts()];
+      List<Future> futures = [_getProducts(), _getPastPurchases()];
       await Future.wait(futures);
       _verifyPurchase();
 
@@ -70,29 +71,44 @@ class _ShopScreenState extends State<ShopScreen> {
 
   // Get all products available for sale
   Future<void> _getProducts() async {
-    Set<String> ids = Set.from([_diamond50, _diamond150, _diamond300]);
+    Set<String> ids =
+        Set.from([_diamond50, _diamond150, _diamond300, _diamond500]);
     ProductDetailsResponse response = await _iap.queryProductDetails(ids);
     setState(() {
       _products = response.productDetails;
+      _products.sort((a, b) => a.title.length.compareTo(b.title.length));
+    });
+  }
+
+  /// Gets past purchases
+  Future<void> _getPastPurchases() async {
+    QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
+
+    for (PurchaseDetails purchase in response.pastPurchases) {
+      if (Platform.isIOS) {
+        InAppPurchaseConnection.instance.completePurchase(purchase);
+      }
+    }
+
+    setState(() {
+      _purchases = response.pastPurchases;
     });
   }
 
   // Returns purchase of specific product ID
   PurchaseDetails _hasPurchased(List<String> productID) {
-    return _purchases.firstWhere(
+    return _purchases.lastWhere(
         (purchase) => productID.any((prod) => prod == purchase.productID),
         orElse: () => null);
-
   }
 
   void _verifyPurchase() async {
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
-    // Logic for 50 diamonds
 
     PurchaseDetails purchase =
-        _hasPurchased([_diamond50, _diamond150, _diamond300]);
+        _hasPurchased([_diamond50, _diamond150, _diamond300, _diamond500]);
     if (purchase != null && purchase.status == PurchaseStatus.purchased) {
       _isPurchasePending = true;
       _getCorrect(purchase);
@@ -114,39 +130,49 @@ class _ShopScreenState extends State<ShopScreen> {
       if (_didSelectOK) {
         _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
         _isPurchasePending = false;
-      } else {
-        if (purchase != null && purchase.status == PurchaseStatus.pending) {
-          _isPurchasePending = true;
-          PlatformAlertDialog(
-                  title: 'Pending',
-                  content: 'Your order is pending',
-                  image: Image.asset('images/ic_thnx.png'),
-                  defaultActionText: 'OK')
-              .show(context);
-        }
       }
+    } else if (purchase != null && purchase.status == PurchaseStatus.pending) {
+      _isPurchasePending = true;
+      PlatformAlertDialog(
+              title: 'Purchase Pending',
+              content:
+                  'Your order is being processed, you\'ll recieve an order update very soon.',
+              image: Image.asset('images/ic_credit_card.png'),
+              defaultActionText: 'OK')
+          .show(context);
+    } else if (purchase != null && purchase.status == PurchaseStatus.error) {
+      _isPurchasePending = true;
+      PlatformAlertDialog(
+              title: 'Purchase Error',
+              content:
+                  'Uh Oh Spaghettios! Looks like there has been an error when processing your payment. Please try again.',
+              image: Image.asset('images/ic_owl_wrong.png'),
+              defaultActionText: 'OK')
+          .show(context);
     }
   }
+
   void _getCorrect(PurchaseDetails purchase) {
     switch (purchase.productID) {
-        case _diamond50:
-          _diamonds = 50;
-          _keys = 1;
-          break;
-          case _diamond150:
-          _diamonds = 150;
-          _keys = 2;
-          break;
-          case _diamond300:
-          _diamonds = 300;
-          _keys = 3;
-          break;
-       
-      }
-     setState(() {
-       
-     });
+      case _diamond50:
+        _diamonds = 50;
+        _keys = 1;
+        break;
+      case _diamond150:
+        _diamonds = 150;
+        _keys = 2;
+        break;
+      case _diamond300:
+        _diamonds = 300;
+        _keys = 3;
+        break;
+      case _diamond500:
+        _diamonds = 500;
+        _keys = 5;
+        break;
+    }
   }
+
   void _buyProduct(ProductDetails productDetails) {
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: productDetails);
@@ -187,23 +213,61 @@ class _ShopScreenState extends State<ShopScreen> {
                 fit: BoxFit.fill,
               ),
             ),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              //  Image.asset(),
-              SizedBox(
-                height: 20,
-              ),
-              for (var prod in _products)
-                BuyDiamondOrKeyButton(
-                  numberOfDiamonds: numberOfDiamonds(prod.price),
-                  diamondCost: prod.price,
-                  bonusKey: numberOfKeys(prod.price),
-                  onPressed: () => _buyProduct(prod),
-                  isPending: _isPurchasePending,
-                ),
+            child: _isAvailable
+                ? Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    //  Image.asset(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.help_outline,
+                        color: Colors.brown.shade300,
+                        size: 40,
+                      ),
+                      tooltip: 'Store questions',
+                      onPressed: () async {
+                        final _didSelectOK = await PlatformAlertDialog(
+                                title: 'Diamonds & Keys',
+                                content:
+                                    'Diamonds and keys can be used to purchase quests.',
+                                image: Image.asset('images/ic_thnx.png'),
+                                defaultActionText: 'OK')
+                            .show(context);
+                        if (_didSelectOK) {}
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    for (var prod in _products)
+                      BuyDiamondOrKeyButton(
+                        numberOfDiamonds: numberOfDiamonds(prod.price),
+                        diamondCost: prod.price,
+                        bonusKey: numberOfKeys(prod.price),
+                        onPressed: () => _buyProduct(prod),
+                        isPending: _isPurchasePending,
+                      ),
 
-              // BuyTreasureChest()
-            ])),
+                    // BuyTreasureChest()
+                  ])
+                : Center(
+                    child: Container(
+                      color: Colors.white.withOpacity(0.5),
+                    height: MediaQuery.of(context).size.height / 3,
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('Loading Store...'),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Image.asset('images/compass.gif')
+                      ],
+                    ),
+                  ))),
       ),
     );
   }
@@ -220,6 +284,11 @@ class _ShopScreenState extends State<ShopScreen> {
       case '\$19.99':
         _numberOfDiamonds = '300';
         break;
+      case '\$39.99':
+        _numberOfDiamonds = '500';
+        break;
+      default:
+        _numberOfDiamonds = '50';
     }
     return _numberOfDiamonds;
   }
@@ -236,6 +305,11 @@ class _ShopScreenState extends State<ShopScreen> {
       case '\$19.99':
         _numberOfKeys = '3';
         break;
+      case '\$39.99':
+        _numberOfKeys = '5';
+        break;
+      default:
+        _numberOfKeys = 'err';
     }
     return _numberOfKeys;
   }

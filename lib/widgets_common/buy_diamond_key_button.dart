@@ -30,6 +30,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
       child: CustomRaisedButton(
         color: Colors.orangeAccent,
         padding: 10,
+        bottomPadding: 15,
         onPressed: isPending ? null : onPressed,
         child: FractionallySizedBox(
           widthFactor: 0.9,
