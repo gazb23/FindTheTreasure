@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 class FirestoreService {
   FirestoreService._();
   static final instance = FirestoreService._();
-
+// IMPORTANT IF DOCUMENT DOESN"T HAVE TIMESTAMP AS A FIELD WILL HAVE TO INCLUDE ORDERBUY
   Stream<List<T>> collectionStream<T>(
       {@required
           String path,

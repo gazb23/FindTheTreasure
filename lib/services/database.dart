@@ -21,6 +21,8 @@ class DatabaseService {
       path: APIPath.quests(),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
+  
+
   //Receive a filtered stream of all quests where the field contains the UID of the current user
   Stream<List<QuestModel>> questFieldContainsUID({@required String field}) => _service.filteredArrayCollectionStream(
       field: field,
@@ -39,7 +41,14 @@ class DatabaseService {
     // Receive a stream of current user
   Stream<UserData> userStream() => _service.documentStream(
       path: APIPath.user(uid: uid),
-      builder: (data, documentId) => UserData.fromMap(data));
+      builder: (data, documentId) => UserData.fromMap(data, documentId));
+
+  //Receice a stream of all USERS from Firebase
+  Stream<List<UserData>> usersStream() => _service.collectionStream(
+    orderBy: 'points',
+    descending: true,
+      path: APIPath.users(),
+      builder: (data, documentId) => UserData.fromMap(data, documentId));    
 
   // Receive a stream of a single quest
   Stream<QuestModel> questStream({@required String questId}) => _service.documentStream(

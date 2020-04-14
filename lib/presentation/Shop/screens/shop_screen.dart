@@ -14,7 +14,7 @@ const String _diamond50 = 'diamond_50';
 const String _diamond150 = 'diamond_150';
 const String _diamond300 = 'diamond_300';
 const String _diamond500 = 'diamond_500';
-
+String _currentPurchase;
 class ShopScreen extends StatefulWidget {
   @override
   _ShopScreenState createState() => _ShopScreenState();
@@ -38,7 +38,7 @@ class _ShopScreenState extends State<ShopScreen> {
   // Consumable credits the user can buy
   int _diamonds = 0;
   int _keys = 0;
-
+  
   @override
   void initState() {
     _initialise();
@@ -80,7 +80,7 @@ class _ShopScreenState extends State<ShopScreen> {
     });
   }
 
-  /// Gets past purchases
+  // Gets past purchases (May not need)
   Future<void> _getPastPurchases() async {
     QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
 
@@ -88,6 +88,7 @@ class _ShopScreenState extends State<ShopScreen> {
       if (Platform.isIOS) {
         InAppPurchaseConnection.instance.completePurchase(purchase);
       }
+      else InAppPurchaseConnection.instance.consumePurchase(purchase);
     }
 
     setState(() {
@@ -96,22 +97,31 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   // Returns purchase of specific product ID
-  PurchaseDetails _hasPurchased(List<String> productID) {
-    return _purchases.lastWhere(
-        (purchase) => productID.any((prod) => prod == purchase.productID),
-        orElse: () => null);
+  PurchaseDetails _hasPurchased(String productID) {
+        
+       return _purchases.firstWhere(
+        (purchase) => purchase.productID == productID,
+        orElse: () => null,);
+    
   }
+ 
+  
+   
+   
+      
+      
+  
 
   void _verifyPurchase() async {
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
 
-    PurchaseDetails purchase =
-        _hasPurchased([_diamond50, _diamond150, _diamond300, _diamond500]);
-    if (purchase != null && purchase.status == PurchaseStatus.purchased) {
+  PurchaseDetails _purchase = _hasPurchased(_currentPurchase); 
+    if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
+  
       _isPurchasePending = true;
-      _getCorrect(purchase);
+      _getCorrect(_purchase);
 
       final _updateUserData = UserData(
           displayName: _userData.displayName,
@@ -122,16 +132,17 @@ class _ShopScreenState extends State<ShopScreen> {
           userKeyCount: _userData.userKeyCount + _keys);
 
       final _didSelectOK = await PlatformAlertDialog(
-              title: 'Purchase Successful',
-              content: 'Your purchase has been added to your treasure chest.',
+              title: 'Jackpot!',
+              content:
+                  'I\'ll add the loot to ye treasure chest. Happy adventures.',
               image: Image.asset('images/ic_thnx.png'),
-              defaultActionText: 'OK')
+              defaultActionText: 'Add Loot')
           .show(context);
       if (_didSelectOK) {
         _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
         _isPurchasePending = false;
       }
-    } else if (purchase != null && purchase.status == PurchaseStatus.pending) {
+    } else if (_purchase != null && _purchase.status == PurchaseStatus.pending) {
       _isPurchasePending = true;
       PlatformAlertDialog(
               title: 'Purchase Pending',
@@ -140,16 +151,17 @@ class _ShopScreenState extends State<ShopScreen> {
               image: Image.asset('images/ic_credit_card.png'),
               defaultActionText: 'OK')
           .show(context);
-    } else if (purchase != null && purchase.status == PurchaseStatus.error) {
+    } else if (_purchase != null && _purchase.status == PurchaseStatus.error) {
       _isPurchasePending = true;
       PlatformAlertDialog(
-              title: 'Purchase Error',
+              title: 'Shiver Me Timbers!',
               content:
-                  'Uh Oh Spaghettios! Looks like there has been an error when processing your payment. Please try again.',
+                  'There has been an error whilst processing your payment. Please try again.',
               image: Image.asset('images/ic_owl_wrong.png'),
               defaultActionText: 'OK')
           .show(context);
     }
+    
   }
 
   void _getCorrect(PurchaseDetails purchase) {
@@ -210,7 +222,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 image: AssetImage(
                   "images/background_shop.png",
                 ),
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               ),
             ),
             child: _isAvailable
@@ -228,9 +240,9 @@ class _ShopScreenState extends State<ShopScreen> {
                       tooltip: 'Store questions',
                       onPressed: () async {
                         final _didSelectOK = await PlatformAlertDialog(
-                                title: 'Diamonds & Keys',
+                                title: 'Welcome to The Shop',
                                 content:
-                                    'Diamonds and keys can be used to purchase quests.',
+                                    'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints!',
                                 image: Image.asset('images/ic_thnx.png'),
                                 defaultActionText: 'OK')
                             .show(context);
@@ -245,7 +257,12 @@ class _ShopScreenState extends State<ShopScreen> {
                         numberOfDiamonds: numberOfDiamonds(prod.price),
                         diamondCost: prod.price,
                         bonusKey: numberOfKeys(prod.price),
-                        onPressed: () => _buyProduct(prod),
+                        onPressed: () {
+                          _buyProduct(prod);
+                          _currentPurchase = prod.id;
+                         
+                        
+                        } ,
                         isPending: _isPurchasePending,
                       ),
 
@@ -253,7 +270,7 @@ class _ShopScreenState extends State<ShopScreen> {
                   ])
                 : Center(
                     child: Container(
-                      color: Colors.white.withOpacity(0.5),
+                    color: Colors.white.withOpacity(0.5),
                     height: MediaQuery.of(context).size.height / 3,
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(horizontal: 15),
@@ -264,7 +281,10 @@ class _ShopScreenState extends State<ShopScreen> {
                         SizedBox(
                           height: 20,
                         ),
-                        Image.asset('images/compass.gif')
+                        Image.asset(
+                          'images/compass.gif',
+                          height: 200,
+                        )
                       ],
                     ),
                   ))),

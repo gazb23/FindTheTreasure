@@ -108,7 +108,7 @@ class Auth implements AuthBase {
       String email, String password) async {
     final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    await updateUserData(authResult.user);
+    await _newUserData(authResult.user);
     return _userFromFirebase(authResult.user);
   }
 
@@ -126,7 +126,23 @@ class Auth implements AuthBase {
       'uid': user.uid,
       'email': user.email,
       'photoURL': user.photoUrl,         
-      'displayName': user.displayName,        
+      'displayName': user.displayName,    
+        
+    }, merge: true);
+  }
+  Future<void> _newUserData(FirebaseUser user) {
+    
+    DocumentReference documentReference =
+        _firestore.collection('users').document(user.uid);
+
+    return documentReference.setData({
+      'uid': user.uid,
+      'email': user.email,
+      'photoURL': user.photoUrl ?? '',         
+      'displayName': user.displayName ?? 'Adventure King',    
+      'userDiamondCount': 50,
+      'userKeyCount': 1,
+      'points': 50  
     }, merge: true);
   }
 }

@@ -24,7 +24,7 @@ class CustomRaisedButton extends StatelessWidget {
         color: color ?? Colors.orangeAccent,
         child: child,
         onPressed: onPressed,
-        padding: EdgeInsets.all(padding ?? 0),
+        padding: EdgeInsets.all(padding ?? 10),
         shape: StadiumBorder(),
       ),
     );

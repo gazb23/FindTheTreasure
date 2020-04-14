@@ -1,80 +1,97 @@
-
+import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
+import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/quests/leaderboard.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
+import 'package:provider/provider.dart';
 
 class LeaderboardScreen extends StatefulWidget {
-  
   @override
   _LeaderboardScreenState createState() => _LeaderboardScreenState();
 }
 
 class _LeaderboardScreenState extends State<LeaderboardScreen> {
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  Position _currentPosition;
- 
   @override
   Widget build(BuildContext context) {
-    
-   
+ 
+    final _database = Provider.of<DatabaseService>(context);
     return SafeArea(
-          child: Scaffold(
-        appBar: AppBar(
-          title: Center(child: Image.asset('images/andicon.png', height: 50,)),
-        ),
-        floatingActionButton: FloatingActionButton(onPressed: 
-        () {
-          _getCurrentLocation();
-    
-        },
-        child: Icon(Icons.location_searching),
-        backgroundColor: Colors.orangeAccent,),
+      child: Scaffold(
+        
         body: Stack(
           children: <Widget>[
-            Container(            
+            Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("images/background_games.png"),
                     fit: BoxFit.fill),
               ),
             ),
-           if (_currentPosition != null) 
-           
-            Center(child: Column(children: [
-                Text(_currentPosition.latitude.toString()),
-              Text(_currentPosition.longitude.toString()),
-              Text('${(_currentPosition.latitude * 100).truncateToDouble() / 100}'),
-              Text('${(_currentPosition.longitude * 100).truncateToDouble() / 100}'),
-            
-          
-            ],),),
-           
-           
-            
+            Padding(
+              padding: const EdgeInsets.only(top: 155.0),
+              child: _buildListTile(_database),
+            ),
+            _buildLeaderBoardTitle(),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Image.asset('images/2.0x/ic_trophy.png', height: 90,),
+              )),
+              
           ],
-          
         ),
-        
       ),
     );
-    
   }
-  _getCurrentLocation() {
-    
 
-    geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-    .then((Position position) {
-      setState(() {
-        _currentPosition = position;
-      
-      });
-     
+  Container _buildLeaderBoardTitle() {
+    return Container(
+            margin: EdgeInsets.only(left: 10, right: 10, top: 55),
+            height: 100,            
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+               Divider(
+                height: 5,
+               ),
+             Padding(
+               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+               child: Row(
 
-    }).catchError((e) {
-      print(e.toString());
-    });
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: <Widget>[
+                   Text('No.', style: TextStyle(),),
+                   Expanded(child: Text('Player name', textAlign: TextAlign.center,)),
+                   Text('Points')
+                 ],
+               ),
+             )
+              ],
+            ),
+          );
+  }
+
+  Widget _buildListTile(DatabaseService _database) {
+    return StreamBuilder<List<UserData>>(
+        stream: _database.usersStream(),
+        builder: (context, snapshot) {
+          return ListItemsBuilder<UserData>(
+              title: 'No leaderboard',
+              message: 'Oh no!',
+              snapshot: snapshot,
+              itemBuilder: (context, user, index) => LeaderBoardTile(
+                    place: index + 1,
+                    photoURL: user.photoURL,
+                    displayName: user.displayName,
+                    points: user.points,
+                    onTap: () {},
+                  ));
+        });
+  }
 }
-
-  
-}
-

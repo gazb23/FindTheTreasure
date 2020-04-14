@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 class APIPath {  
   static String user({String uid}) => 'users/$uid';
+  static String users() => 'users';
   static String quests() => 'quests';
   static String quest({@required String questId}) => 'quests/$questId';
   static String locations({@required String questId}) => 'quests/$questId/locations';

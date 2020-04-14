@@ -131,7 +131,8 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
       actions.add(PlatformAlertDialogAction(
         child: 
         Platform.isIOS ? Text(cancelActionText,) :
-        SignInButton(          
+        SignInButton(   
+             
         text: cancelActionText,
         color: Colors.grey,
         
