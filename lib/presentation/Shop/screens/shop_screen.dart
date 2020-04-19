@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
+
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ const String _diamond150 = 'diamond_150';
 const String _diamond300 = 'diamond_300';
 const String _diamond500 = 'diamond_500';
 String _currentPurchase;
+
 class ShopScreen extends StatefulWidget {
   @override
   _ShopScreenState createState() => _ShopScreenState();
@@ -38,7 +41,7 @@ class _ShopScreenState extends State<ShopScreen> {
   // Consumable credits the user can buy
   int _diamonds = 0;
   int _keys = 0;
-  
+
   @override
   void initState() {
     _initialise();
@@ -53,6 +56,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
+
     _isAvailable = await _iap.isAvailable();
 
     if (_isAvailable) {
@@ -73,11 +77,18 @@ class _ShopScreenState extends State<ShopScreen> {
   Future<void> _getProducts() async {
     Set<String> ids =
         Set.from([_diamond50, _diamond150, _diamond300, _diamond500]);
-    ProductDetailsResponse response = await _iap.queryProductDetails(ids);
-    setState(() {
-      _products = response.productDetails;
-      _products.sort((a, b) => a.title.length.compareTo(b.title.length));
-    });
+    try {
+      ProductDetailsResponse response = await _iap.queryProductDetails(ids);
+      if (response.notFoundIDs.isEmpty)
+        setState(() {
+          _products = response.productDetails;
+          _products.sort((a, b) => a.title.length.compareTo(b.title.length));
+        });
+    } catch (e) {
+      PlatformAlertDialog(
+              title: 'Error', content: e.toString(), defaultActionText: 'OK')
+          .show(context);
+    }
   }
 
   // Gets past purchases (May not need)
@@ -87,8 +98,8 @@ class _ShopScreenState extends State<ShopScreen> {
     for (PurchaseDetails purchase in response.pastPurchases) {
       if (Platform.isIOS) {
         InAppPurchaseConnection.instance.completePurchase(purchase);
-      }
-      else InAppPurchaseConnection.instance.consumePurchase(purchase);
+      } else
+        InAppPurchaseConnection.instance.consumePurchase(purchase);
     }
 
     setState(() {
@@ -98,28 +109,19 @@ class _ShopScreenState extends State<ShopScreen> {
 
   // Returns purchase of specific product ID
   PurchaseDetails _hasPurchased(String productID) {
-        
-       return _purchases.firstWhere(
-        (purchase) => purchase.productID == productID,
-        orElse: () => null,);
-    
+    return _purchases.firstWhere(
+      (purchase) => purchase.productID == productID,
+      orElse: () => null,
+    );
   }
- 
-  
-   
-   
-      
-      
-  
 
   void _verifyPurchase() async {
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
 
-  PurchaseDetails _purchase = _hasPurchased(_currentPurchase); 
+    PurchaseDetails _purchase = _hasPurchased(_currentPurchase);
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
-  
       _isPurchasePending = true;
       _getCorrect(_purchase);
 
@@ -128,6 +130,7 @@ class _ShopScreenState extends State<ShopScreen> {
           email: _userData.email,
           photoURL: _userData.photoURL,
           uid: _userData.uid,
+          points: LeaderboardViewModel.calculatePoints(userData: _userData, context: context),          
           userDiamondCount: _userData.userDiamondCount + _diamonds,
           userKeyCount: _userData.userKeyCount + _keys);
 
@@ -142,7 +145,8 @@ class _ShopScreenState extends State<ShopScreen> {
         _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
         _isPurchasePending = false;
       }
-    } else if (_purchase != null && _purchase.status == PurchaseStatus.pending) {
+    } else if (_purchase != null &&
+        _purchase.status == PurchaseStatus.pending) {
       _isPurchasePending = true;
       PlatformAlertDialog(
               title: 'Purchase Pending',
@@ -161,7 +165,6 @@ class _ShopScreenState extends State<ShopScreen> {
               defaultActionText: 'OK')
           .show(context);
     }
-    
   }
 
   void _getCorrect(PurchaseDetails purchase) {
@@ -215,79 +218,58 @@ class _ShopScreenState extends State<ShopScreen> {
           ],
         ),
         body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  "images/background_shop.png",
-                ),
-                fit: BoxFit.cover,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                "images/background_shop.png",
               ),
+              fit: BoxFit.cover,
             ),
-            child: _isAvailable
-                ? Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    //  Image.asset(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.help_outline,
-                        color: Colors.brown.shade300,
-                        size: 40,
-                      ),
-                      tooltip: 'Store questions',
-                      onPressed: () async {
-                        final _didSelectOK = await PlatformAlertDialog(
-                                title: 'Welcome to The Shop',
-                                content:
-                                    'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints!',
-                                image: Image.asset('images/ic_thnx.png'),
-                                defaultActionText: 'OK')
-                            .show(context);
-                        if (_didSelectOK) {}
-                      },
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    for (var prod in _products)
-                      BuyDiamondOrKeyButton(
-                        numberOfDiamonds: numberOfDiamonds(prod.price),
-                        diamondCost: prod.price,
-                        bonusKey: numberOfKeys(prod.price),
-                        onPressed: () {
-                          _buyProduct(prod);
-                          _currentPurchase = prod.id;
-                         
-                        
-                        } ,
-                        isPending: _isPurchasePending,
-                      ),
+          ),
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            //  Image.asset(),
+            SizedBox(
+              height: 10,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.help_outline,
+                color: Colors.brown.shade300,
+                size: 40,
+              ),
+              tooltip: 'Store questions',
+              onPressed: () async {
+                final _didSelectOK = await PlatformAlertDialog(
+                        title: 'Welcome to The Shop',
+                        content:
+                            'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints!',
+                        image: Image.asset('images/ic_thnx.png'),
+                        defaultActionText: 'OK')
+                    .show(context);
+                if (_didSelectOK) {}
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
 
-                    // BuyTreasureChest()
-                  ])
-                : Center(
-                    child: Container(
-                    color: Colors.white.withOpacity(0.5),
-                    height: MediaQuery.of(context).size.height / 3,
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('Loading Store...'),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Image.asset(
-                          'images/compass.gif',
-                          height: 200,
-                        )
-                      ],
-                    ),
-                  ))),
+            for (var prod in _products)
+              BuyDiamondOrKeyButton(
+                numberOfDiamonds: numberOfDiamonds(prod.price),
+                diamondCost: prod.price,
+                bonusKey: numberOfKeys(prod.price),
+                onPressed: () {
+                  _buyProduct(prod);
+                  _currentPurchase = prod.id;
+                },
+                isPending: _isPurchasePending,
+              )
+
+           
+          ]),
+        ),
       ),
     );
   }

@@ -64,5 +64,11 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Find The Treasure requires access to your location</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Find The Treasure requires access to your photo gallery to display your avatar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Find The Treasure requires access to your camera to display your avatar</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Find The Treasure requires access to your microphone to display your avatar</string>
 </dict>
 </plist>

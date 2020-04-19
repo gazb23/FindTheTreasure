@@ -1,6 +1,8 @@
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/services/firebase_storage_service.dart';
+import 'package:find_the_treasure/services/image_picker_service.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +31,13 @@ class AuthWidgetBuilder extends StatelessWidget {
               Provider<DatabaseService>(
                 create: (_) => DatabaseService(uid: user.uid),
               ),
+              Provider<ImagePickerService>(
+                create: (_) => ImagePickerService(),
+              ),
+               Provider<FirebaseStorageService>(
+                create: (_) => FirebaseStorageService(uid: user.uid),
+              ),
+             
             ],
             child: Consumer<DatabaseService>(
               builder: (_, databaseService, __) =>

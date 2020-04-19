@@ -11,7 +11,7 @@ class APIPath {
   static String location({@required String questId, @required String locationId}) => 'quests/$questId/locations/$locationId';
   static String challenges({@required String questId, @required String locationId}) => 'quests/$questId/locations/$locationId/challenges';
   static String challenge({@required String questId, @required String locationId, @required String challengeId}) => 'quests/$questId/locations/$locationId/challenges/$challengeId';
-  
+  static String avatar(String uid) => 'users/$uid';
 
   
 

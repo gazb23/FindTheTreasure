@@ -4,6 +4,7 @@ import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
             userDiamondCount:
                 userData.userDiamondCount - questModelStream.numberOfDiamonds,
             userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
+            points: LeaderboardViewModel.calculatePoints(userData: userData, context: context),
             displayName: userData.displayName,
             email: userData.email,
             photoURL: userData.photoURL,

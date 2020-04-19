@@ -5,6 +5,7 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -25,6 +26,7 @@ class ChallengeViewModel {
     final UserData _updateUserData = UserData(
       userDiamondCount: _userData.userDiamondCount - _diamonds,
       userKeyCount: _userData.userKeyCount,
+      points: LeaderboardViewModel.calculatePoints(userData: _userData, context: context),
       displayName: _userData.displayName,
       email: _userData.email,
       photoURL: _userData.photoURL,
@@ -71,6 +73,7 @@ class ChallengeViewModel {
           final UserData _updateUserData = UserData(
             userDiamondCount: _userData.userDiamondCount - _hintCost,
             userKeyCount: _userData.userKeyCount,
+            points: LeaderboardViewModel.calculatePoints(userData: _userData, context: context),
             displayName: _userData.displayName,
             email: _userData.email,
             photoURL: _userData.photoURL,

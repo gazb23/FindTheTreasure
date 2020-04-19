@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_the_treasure/models/avatar_model.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
@@ -113,10 +114,23 @@ class DatabaseService {
   );
 
 
-  //DELTE DATA:
+ 
  
 
+    // Sets the avatar download url
+  Future<void> setAvatarReference(AvatarReference avatarReference) async {
+    final path = APIPath.avatar(uid);
+    final reference = Firestore.instance.document(path);
+    await reference.setData(avatarReference.toMap(), merge: true);
+  }
 
+  // Reads the current avatar download url
+  Stream<AvatarReference> avatarReferenceStream() {
+    final path = APIPath.avatar(uid);
+    final reference = Firestore.instance.document(path);
+    final snapshots = reference.snapshots();
+    return snapshots.map((snapshot) => AvatarReference.fromMap(snapshot.data));
+  }
 
 
       

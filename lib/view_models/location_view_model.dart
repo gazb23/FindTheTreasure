@@ -5,6 +5,7 @@ import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -51,6 +52,7 @@ class LocationViewModel {
             userDiamondCount:
                 userData.userDiamondCount + questModel.bountyDiamonds,
             userKeyCount: userData.userKeyCount + questModel.bountyKeys,
+            points: LeaderboardViewModel.calculatePoints(userData: userData, context: context),
             displayName: userData.displayName,
             email: userData.email,
             photoURL: userData.photoURL,
