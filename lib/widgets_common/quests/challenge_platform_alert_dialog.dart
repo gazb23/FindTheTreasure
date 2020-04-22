@@ -13,17 +13,16 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   final Color backgroundColor;
   final Widget image;
   final bool isLoading;
- 
 
   ChallengePlatformAlertDialog({
     this.cancelActionText,
-    this.backgroundColor, 
-    this.textColor, 
+    this.backgroundColor,
+    this.textColor,
     @required this.title,
     @required this.content,
     @required this.defaultActionText,
-    this.image,  
-    this.isLoading, 
+    this.image,
+    this.isLoading,
   })  : assert(title != null),
         assert(content != null),
         assert(defaultActionText != null);
@@ -37,24 +36,22 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
         : await showDialog<bool>(
             context: context,
             builder: (context) => this,
-            barrierDismissible: false
-          );
+            barrierDismissible: false);
   }
 
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-          child: CupertinoAlertDialog(
+      child: CupertinoAlertDialog(
         title: Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: Text(
             title,
             style: TextStyle(
-              fontFamily: 'quicksand',
-              fontWeight: FontWeight.w600,
-              color: textColor ?? Colors.black87
-            ),
+                fontFamily: 'quicksand',
+                fontWeight: FontWeight.w600,
+                color: textColor ?? Colors.black87),
           ),
         ),
         content: SingleChildScrollView(
@@ -67,10 +64,9 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
               Text(
                 content,
                 style: TextStyle(
-                  fontFamily: 'quicksand',
-                  fontSize: 18,
-                  color: textColor ?? Colors.black87
-                ),
+                    fontFamily: 'quicksand',
+                    fontSize: 18,
+                    color: textColor ?? Colors.black87),
               ),
             ],
           ),
@@ -84,17 +80,15 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   Widget buildMaterialWidget(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-          child: AlertDialog(
-        
+      child: AlertDialog(
         backgroundColor: backgroundColor ?? Colors.white,
         title: Center(
           child: Text(
             title,
             style: TextStyle(
-              fontFamily: 'quicksand',
-              fontWeight: FontWeight.w600,
-              color: textColor ?? Colors.black87
-            ),
+                fontFamily: 'quicksand',
+                fontWeight: FontWeight.w600,
+                color: textColor ?? Colors.black87),
           ),
         ),
         content: SingleChildScrollView(
@@ -108,10 +102,9 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
               Text(
                 content,
                 style: TextStyle(
-                  fontFamily: 'quicksand',
-                  fontWeight: FontWeight.bold,
-                  color: textColor ?? Colors.black87
-                ),
+                    fontFamily: 'quicksand',
+                    fontWeight: FontWeight.bold,
+                    color: textColor ?? Colors.black87),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -129,25 +122,25 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
     final actions = <Widget>[];
     if (cancelActionText != null) {
       actions.add(PlatformAlertDialogAction(
-        child: 
-        Platform.isIOS ? Text(cancelActionText,) :
-        SignInButton(   
-             
-        text: cancelActionText,
-        color: Colors.grey,
-        
-        onPressed: () => Navigator.of(context).pop(false),
-      ),
+        child: Platform.isIOS
+            ? Text(
+                cancelActionText,
+              )
+            : SignInButton(
+                text: cancelActionText,
+                color: Colors.grey,
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
         // onPressed: () => Navigator.of(context).pop(false),
       ));
     }
     actions.add(PlatformAlertDialogAction(
-      child: 
-      Platform.isIOS ? Text(defaultActionText) :
-      SignInButton(
-        text: defaultActionText,
-        onPressed: () => Navigator.of(context).pop(true),
-      ),
+      child: Platform.isIOS
+          ? Text(defaultActionText)
+          : SignInButton(
+              text: defaultActionText,
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
       onPressed: () => Navigator.of(context).pop(true),
     ));
     return actions;

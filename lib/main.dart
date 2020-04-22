@@ -1,4 +1,7 @@
 
+
+
+import 'package:device_preview/device_preview.dart';
 import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
@@ -13,7 +16,13 @@ import 'presentation/sign_in/screens/password_reset_screen.dart';
 import 'presentation/sign_in/screens/sign_in_main_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+  DevicePreview(
+    builder: (context) => MyApp(),
+    enabled: false,
+  ),
+);
+
 
 class MyApp extends StatelessWidget {
   
@@ -33,6 +42,8 @@ class MyApp extends StatelessWidget {
       ],
       child: AuthWidgetBuilder(builder: (context, userSnapshot) {
         return MaterialApp(
+          locale: DevicePreview.of(context).locale, // <--- Add the locale
+      builder: DevicePreview.appBuilder, // <--- Add the builder
           title: 'Find The Treasure',
           theme: _buildThemeData(),
           home: AuthWidget(userSnapshot: userSnapshot),

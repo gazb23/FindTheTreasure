@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
@@ -39,6 +40,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          
           title: Builder(
             builder: (context) => StreamBuilder<QuestionsModel>(
                 stream: databaseService.challengeStream(
@@ -58,10 +60,10 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                             );
                       },
                       child: Container(
-                        padding: EdgeInsets.all(15),
+                        padding: EdgeInsets.only(right: 15),
                         child: 
                         
-                        Text(
+                       AutoSizeText(
                           !questionsModelStream.hintPurchasedBy.contains(databaseService.uid) ?
                           'HINT?' : 'SHOW HINT',
                           style: TextStyle(color: Colors.orangeAccent),

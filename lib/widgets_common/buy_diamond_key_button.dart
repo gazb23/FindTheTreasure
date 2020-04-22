@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:flutter/material.dart';
 
@@ -54,12 +55,17 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
                 SizedBox(
                   width: 5,
                 ),
-                Text(
-                  numberOfDiamonds,
-                  style: TextStyle(
-                      color: textColor ?? Colors.white,
-                      fontSize: diamondTextSize,
-                      fontWeight: FontWeight.bold),
+                
+                Expanded(
+                                  child: AutoSizeText(
+                                    
+                    numberOfDiamonds,
+                    maxLines: 1,
+                    style: TextStyle(
+                        color: textColor ?? Colors.white,
+                        fontSize: diamondTextSize,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),

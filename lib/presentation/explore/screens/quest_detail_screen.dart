@@ -213,10 +213,11 @@ class QuestDetailScreen extends StatelessWidget {
           ),
           theme: ExpandableThemeData(
               sizeCurve: Curves.bounceOut,
-              animationDuration: Duration(seconds: 1),
+              animationDuration: Duration(milliseconds: 1000),
               tapBodyToCollapse: true,
               tapHeaderToExpand: true,
               hasIcon: true,
+              
               iconColor: Colors.orangeAccent,
               headerAlignment: ExpandablePanelHeaderAlignment.center,
               iconSize: 40),
@@ -382,6 +383,7 @@ class QuestDetailScreen extends StatelessWidget {
     return Column(
       children: <Widget>[
         QuestDetailsListTile(
+          context: context,
           image: 'images/deadline.png',
           imageHeight: 40,
           difficulty: difficulty,
@@ -394,6 +396,7 @@ class QuestDetailScreen extends StatelessWidget {
     return Column(
       children: <Widget>[
         QuestDetailsListTile(
+          context: context,
           image: 'images/brain.png',
           imageHeight: 40,
           difficulty: difficulty,
@@ -406,6 +409,7 @@ class QuestDetailScreen extends StatelessWidget {
     return Column(
       children: <Widget>[
         QuestDetailsListTile(
+          context: context,
           image: 'images/hiker.png',
           imageHeight: 40,
           difficulty: difficulty,

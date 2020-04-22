@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -48,8 +49,11 @@ class LeaderBoardTile extends StatelessWidget {
             ],
           ),
         ),
-        title: Text(
+        title: AutoSizeText(
           displayName,
+          
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
           
           style: TextStyle(
             fontWeight: FontWeight.bold,

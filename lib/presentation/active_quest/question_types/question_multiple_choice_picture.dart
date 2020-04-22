@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
@@ -54,13 +55,15 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
                             );
                       },
                       child: Container(
-                        padding: EdgeInsets.all(15),
+                        width: 150,
+                        padding: EdgeInsets.only(right: 10),
                         child: 
                         
-                        Text(
+                        AutoSizeText(
                           !questionsModelStream.hintPurchasedBy.contains(databaseService.uid) ?
                           'HINT?' : 'SHOW HINT',
-                          style: TextStyle(color: Colors.orangeAccent),
+                          maxLines: 1,
+                          style: TextStyle(color: Colors.orangeAccent,),
                         ),
                       ),
                     
@@ -86,6 +89,7 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
           ],
         ),
         body: Container(
+          height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(

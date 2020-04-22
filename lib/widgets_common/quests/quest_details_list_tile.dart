@@ -5,18 +5,19 @@ class QuestDetailsListTile extends StatelessWidget {
   final String image;
   final String difficulty;
   final double imageHeight;
-  
+  final BuildContext context;
 
   QuestDetailsListTile({
     Key key,
-    this.image,
-    this.imageHeight,
-    this.difficulty,
+    @required this.image,
+    @required this.imageHeight,
+    @required this.difficulty,
+    @required this.context,
   }) : super(key: key);
 
   Widget _questDifficulty(String difficulty) {
-    double width = 200;
-    Color color = Colors.grey.shade400;    
+    double width = MediaQuery.of(context).size.width / 2;
+    Color color = Colors.grey.shade400;
     switch (difficulty) {
       case 'Easy':
         return LinearPercentIndicator(

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 
 import 'package:find_the_treasure/widgets_common/avatar.dart';
@@ -65,11 +66,17 @@ class LeaderboardProfileScreen extends StatelessWidget {
               height: 8,
             ),
             Container(
+               constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width/1.5
+              ),
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(30)),
-              child: Text(
+              child: AutoSizeText(
                 user.displayName,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

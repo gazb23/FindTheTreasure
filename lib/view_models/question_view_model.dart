@@ -6,6 +6,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_types/quest
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class QuestionViewModel {
           collectionRef: collectionRef,
         );
         if (!isFinalChallenge) {
-          final _didRequestNext = await ChallengePlatformAlertDialog(
+          final _didRequestNext = await PlatformAlertDialog(
             title: 'Congratulations!',
             content: 'You\'ve completed the challenge!',
             cancelActionText: 'Not Now',
@@ -40,7 +41,7 @@ class QuestionViewModel {
             image: Image.asset(
               'images/owl_thumbs.png',
             ),
-            isLoading: false,
+            // isLoading: false,
           ).show(context);
           if (_didRequestNext) {
             Navigator.pop(context);

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 
@@ -35,8 +36,9 @@ class EmptyContent extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            Text(
+            AutoSizeText(
               message,
+              maxLines: 3,
               style: Theme.of(context).textTheme.body1.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
