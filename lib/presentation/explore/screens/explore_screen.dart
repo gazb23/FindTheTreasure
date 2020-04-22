@@ -20,8 +20,8 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
-    final _userDiamondCount = Provider.of<UserData>(context).userDiamondCount;
-    final _userKeyCount = Provider.of<UserData>(context).userKeyCount;
+    final _userData = Provider.of<UserData>(context);
+    // final _userKeyCount = Provider.of<UserData>(context).userKeyCount;
     
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
@@ -40,8 +40,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
           actions: <Widget>[
             DiamondAndKeyContainer(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: _userDiamondCount,
-              numberOfKeys: _userKeyCount,
+              numberOfDiamonds: _userData?.userDiamondCount,
+              numberOfKeys: _userData?.userKeyCount,
               color: Colors.white,
             ),
             SizedBox(

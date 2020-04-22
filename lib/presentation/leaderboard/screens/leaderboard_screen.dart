@@ -99,9 +99,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               snapshot: snapshot,
               itemBuilder: (context, user, index) => LeaderBoardTile(
                     place: index + 1,
-                    photoURL: user.photoURL,
+                    photoURL: user.photoURL ?? null,
                     displayName: user.displayName,
-                    points: LeaderboardViewModel.calculatePoints(userData: user, context: context),
+                    points: LeaderboardViewModel.calculatePoints(updatedKeys: user.userKeyCount, updatedDiamonds: user.userDiamondCount),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

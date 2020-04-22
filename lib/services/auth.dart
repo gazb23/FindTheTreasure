@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class User {
   final String uid;
- 
+
   User({this.uid});
 }
 
@@ -19,7 +20,7 @@ abstract class AuthBase {
   Future<User> createUserWithEmailAndPassword(String email, String password);
   Future<void> signOut();
   Future<void> resetPassword(String email);
-  void updateUserData(FirebaseUser user);
+  // Future<void> updateUserData(FirebaseUser user);
 }
 
 class Auth implements AuthBase {
@@ -27,7 +28,8 @@ class Auth implements AuthBase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookLogin _facebookLogin = FacebookLogin();
-  final Firestore _firestore = Firestore.instance;
+  // final Firestore _firestore = Firestore.instance;
+
 
   User _userFromFirebase(FirebaseUser user) {
     return user != null
@@ -42,13 +44,13 @@ class Auth implements AuthBase {
     return _firebaseAuth.onAuthStateChanged.map(_userFromFirebase);
   }
 
-
-
   Future<User> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
+    
 
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      
 
       if (googleAuth.idToken != null && googleAuth.accessToken != null) {
         final authResult = await _firebaseAuth.signInWithCredential(
@@ -57,8 +59,11 @@ class Auth implements AuthBase {
             accessToken: googleAuth.accessToken,
           ),
         );
-
-        await updateUserData(authResult.user);
+       if (authResult.additionalUserInfo.isNewUser) {
+         print('newUser');
+         await _createUserData(authResult.user);
+       } 
+       
         return _userFromFirebase(authResult.user);
       } else {
         throw PlatformException(
@@ -81,7 +86,10 @@ class Auth implements AuthBase {
           accessToken: result.accessToken.token,
         ),
       );
-      await updateUserData(authResult.user);
+      if (authResult.additionalUserInfo.isNewUser) {
+         print('newUser');
+         await _createUserData(authResult.user);
+       } 
       return _userFromFirebase(authResult.user);
     } else {
       throw PlatformException(
@@ -90,7 +98,6 @@ class Auth implements AuthBase {
   }
 
   Future<void> signOut() async {
-    
     await _googleSignIn.signOut();
 
     await _facebookLogin.logOut();
@@ -100,7 +107,7 @@ class Auth implements AuthBase {
   Future<User> signInWithEmailAndPassword(String email, String password) async {
     final authResult = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    await updateUserData(authResult.user);
+    // await updateUserData(authResult.user);
     return _userFromFirebase(authResult.user);
   }
 
@@ -108,7 +115,8 @@ class Auth implements AuthBase {
       String email, String password) async {
     final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    await _newUserData(authResult.user);
+    await _createUserData(authResult.user);
+
     return _userFromFirebase(authResult.user);
   }
 
@@ -117,32 +125,24 @@ class Auth implements AuthBase {
     return null;
   }
 
-  Future<void> updateUserData(FirebaseUser user) {
-    
-    DocumentReference documentReference =
-        _firestore.collection('users').document(user.uid);
+  Future<void> _createUserData(FirebaseUser user)  {
+      final UserData updateUserData = UserData(
+      displayName: user.displayName ?? 'Adventurer',
+      email: user.email,
+      photoURL: user.photoUrl,
+      uid: user.uid,
+      points: 50,
+      userDiamondCount: 50,
+      userKeyCount: 1
 
-    return documentReference.setData({
-      'uid': user.uid,
-      'email': user.email,
-      'photoURL': user.photoUrl,         
-      'displayName': user.displayName,    
-        
-    }, merge: true);
-  }
-  Future<void> _newUserData(FirebaseUser user) {
-    
-    DocumentReference documentReference =
-        _firestore.collection('users').document(user.uid);
+    );
+    return DatabaseService(uid: user.uid).updateUserData(
+      userData: updateUserData
+    );
+ 
 
-    return documentReference.setData({
-      'uid': user.uid,
-      'email': user.email,
-      'photoURL': user.photoUrl ?? '',         
-      'displayName': user.displayName ?? 'Adventure King',    
-      'userDiamondCount': 50,
-      'userKeyCount': 1,
-      'points': 50  
-    }, merge: true);
+
   }
+
+
 }

@@ -38,6 +38,7 @@ dependencies:
   in_app_purchase: ^0.3.2+1
   image_picker: ^0.6.5  
   image_cropper: ^1.2.1
+  device_preview: ^0.4.4
   
 
 

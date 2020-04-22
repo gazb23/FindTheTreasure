@@ -13,8 +13,7 @@ class LeaderBoardTile extends StatelessWidget {
     @required this.displayName,
     @required this.points,
     this.onTap,
-  })  : assert(place != null),
-        assert(photoURL != null),
+  })  : assert(place != null),      
         assert(displayName != null),
         assert(points != null),
         assert(onTap != null);

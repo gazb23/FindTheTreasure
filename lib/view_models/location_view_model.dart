@@ -47,12 +47,14 @@ class LocationViewModel {
           image: Image.asset('images/ic_treasure.png'),
         ).show(context);
         if (didCompleteLocation) {
+          final int updatedDiamondCount = userData.userDiamondCount + questModel.bountyDiamonds;
+          final int updatedKeyCount = userData.userKeyCount + questModel.bountyKeys;
           Navigator.of(context).popUntil((route) => route.isFirst);
           final UserData _userData = UserData(
-            userDiamondCount:
-                userData.userDiamondCount + questModel.bountyDiamonds,
-            userKeyCount: userData.userKeyCount + questModel.bountyKeys,
-            points: LeaderboardViewModel.calculatePoints(userData: userData, context: context),
+            userDiamondCount: updatedDiamondCount,
+                
+            userKeyCount: updatedKeyCount,
+            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamondCount, updatedKeys: updatedKeyCount),
             displayName: userData.displayName,
             email: userData.email,
             photoURL: userData.photoURL,

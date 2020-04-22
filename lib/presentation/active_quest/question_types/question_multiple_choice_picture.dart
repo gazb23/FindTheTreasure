@@ -33,7 +33,9 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Builder(
+            
             builder: (context) => StreamBuilder<QuestionsModel>(
                 stream: databaseService.challengeStream(
                     questId: questModel.id,
@@ -61,9 +63,12 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
                           style: TextStyle(color: Colors.orangeAccent),
                         ),
                       ),
+                    
                     );
+                    
                   } return Container();
                 }),
+
           ),
           iconTheme: IconThemeData(
             color: Colors.black87,

@@ -27,12 +27,14 @@ class QuestionIntroduction extends StatelessWidget {
         ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: 150,
-            maxHeight: showImage ? MediaQuery.of(context).size.height / 2.5 : MediaQuery.of(context).size.height / 4,
+            maxHeight: showImage
+                ? MediaQuery.of(context).size.height / 2
+                : MediaQuery.of(context).size.height / 4,
           ),
           child: Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
-            margin: EdgeInsets.only(right: 10),
+            padding: EdgeInsets.only(top: 10, left: 5, right: 10, bottom: 10),
+            // margin: EdgeInsets.only(right: 0),
             decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -48,38 +50,37 @@ class QuestionIntroduction extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-
                     locationQuestion
                         ? locationModel.questionIntroduction
                         : questionsModel.questionIntroduction,
                     style: TextStyle(
-                      
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
-                    maxLines: showImage ? 3 : null,
+                    maxLines: showImage ? 4 : null,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   showImage
                       ? CachedNetworkImage(
-                        imageUrl: questionsModel.image,
-                          fadeInDuration: Duration(milliseconds: 800),
-                        placeholder: (context, url) => CustomCircularProgressIndicator(),
-                        imageBuilder: (context, image) =>
-                                                  Container(
-                                                   height: MediaQuery.of(context).size.width/2,
-                                                   
-                            decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(40)),
-                          image: DecorationImage(
-                            
-                              image: image,
-                              fit: BoxFit.fill,
-                              alignment: Alignment.center),
-                        )),
-                      )
+                          imageUrl: questionsModel.image,
+                          fadeInDuration: Duration(milliseconds: 300),
+                          placeholder: (context, url) =>
+                              CustomCircularProgressIndicator(),
+                          imageBuilder: (context, image) => Container(
+                              height: MediaQuery.of(context).size.width / 2,
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(40)),
+                                image: DecorationImage(
+                                    image: image,
+                                    fit: BoxFit.fill,
+                                    alignment: Alignment.center),
+                              )),
+                        )
                       : Container()
                 ],
               ),

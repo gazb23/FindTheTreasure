@@ -6,6 +6,7 @@ import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -23,10 +24,12 @@ class ChallengeViewModel {
         Provider.of<DatabaseService>(context, listen: false);
     // How many diamonds to subtract for an incorrect answer
     const int _diamonds = 1;
+    final int updatedDiamonds = _userData.userDiamondCount - _diamonds;
+    
     final UserData _updateUserData = UserData(
       userDiamondCount: _userData.userDiamondCount - _diamonds,
       userKeyCount: _userData.userKeyCount,
-      points: LeaderboardViewModel.calculatePoints(userData: _userData, context: context),
+      points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamonds, updatedKeys: _userData.userKeyCount),
       displayName: _userData.displayName,
       email: _userData.email,
       photoURL: _userData.photoURL,
@@ -60,7 +63,7 @@ class ChallengeViewModel {
       );
       Scaffold.of(context).showSnackBar(snackBar);
     } else if (!questionsModel.hintPurchasedBy.contains(_databaseService.uid) && _userData.userDiamondCount >= _hintCost) {
-      final didRequestHint = await ChallengePlatformAlertDialog(
+      final didRequestHint = await PlatformAlertDialog(
         title: 'Purchase Hint',
         content:
             'Having trouble with the challenge? I can give ya a hint but it\'ll cost ya $_hintCost diamonds from your treasure bounty!',
@@ -73,7 +76,7 @@ class ChallengeViewModel {
           final UserData _updateUserData = UserData(
             userDiamondCount: _userData.userDiamondCount - _hintCost,
             userKeyCount: _userData.userKeyCount,
-            points: LeaderboardViewModel.calculatePoints(userData: _userData, context: context),
+            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: _userData.userDiamondCount, updatedKeys: _userData.userKeyCount),
             displayName: _userData.displayName,
             email: _userData.email,
             photoURL: _userData.photoURL,

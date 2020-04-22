@@ -113,6 +113,11 @@ class DatabaseService {
     data: userData.toMap()
   );
 
+    // Create user data on sign in
+  Future<void> updateUserData({UserData userData}) async => await _service.setData(
+    path: APIPath.user(uid: uid),
+    data: userData.toMap()
+  );
 
  
  

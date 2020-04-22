@@ -50,12 +50,20 @@ class SignInMainScreen extends StatelessWidget {
     ).show(context);
   }
 
+    void _showDuplicateAccountSignInError(BuildContext context, PlatformException exception) {
+    PlatformExceptionAlertDialog(
+      title: 'Sign in failed',
+      exception: exception,
+    ).show(context);
+  }
+
   Future<void> _signInWithGoogle(BuildContext context) async {
     
     try {
       await bloc.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
+      if (e.code != 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') _showDuplicateAccountSignInError(context, e);
     }
   }
 

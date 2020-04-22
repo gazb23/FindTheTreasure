@@ -76,11 +76,13 @@ class QuestDiamondCalulationButton extends StatelessWidget {
               ),
             ),
           );
+          final int updatedDiamondCount =   userData.userDiamondCount - questModelStream.numberOfDiamonds;
+          final int updatedKeyCount = userData.userKeyCount - questModelStream.numberOfKeys;
           final UserData _userData = UserData(
             userDiamondCount:
-                userData.userDiamondCount - questModelStream.numberOfDiamonds,
-            userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
-            points: LeaderboardViewModel.calculatePoints(userData: userData, context: context),
+              updatedDiamondCount,
+            userKeyCount: updatedKeyCount,
+            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamondCount, updatedKeys: updatedKeyCount),
             displayName: userData.displayName,
             email: userData.email,
             photoURL: userData.photoURL,

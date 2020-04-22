@@ -13,7 +13,9 @@ class PlatformAlertDialog extends PlatformWidget {
   final Color titleTextColor;
   final Color contentTextColor;
 
+
   PlatformAlertDialog({
+   
     this.cancelActionText,
     @required this.title,
     @required this.content,

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
@@ -130,7 +129,7 @@ class _ShopScreenState extends State<ShopScreen> {
           email: _userData.email,
           photoURL: _userData.photoURL,
           uid: _userData.uid,
-          points: LeaderboardViewModel.calculatePoints(userData: _userData, context: context),          
+          points: (_userData.userDiamondCount + _diamonds) * (_userData.userKeyCount + _keys),
           userDiamondCount: _userData.userDiamondCount + _diamonds,
           userKeyCount: _userData.userKeyCount + _keys);
 

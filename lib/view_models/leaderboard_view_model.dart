@@ -1,14 +1,13 @@
-import 'package:find_the_treasure/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LeaderboardViewModel {
 
-    static int calculatePoints({@required UserData userData,  @required BuildContext context,}) {
+    static int calculatePoints({@required int updatedDiamonds, @required int updatedKeys }) {
 
     int _userPointsCalc;
-    if (userData.userDiamondCount > 0 && userData.userKeyCount > 0) {
-      _userPointsCalc = userData.userDiamondCount * userData.userKeyCount;
+    if (updatedDiamonds > 0 && updatedKeys > 0) {
+      _userPointsCalc = updatedKeys * updatedDiamonds;
     } else _userPointsCalc = 0;
     return _userPointsCalc;
   }
