@@ -1,5 +1,5 @@
 name: find_the_treasure
-description: A new Flutter project.
+description: Adventure in the palm of your hands!
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+5
+version: 1.0.0+6
 
 environment:
   sdk: ">=2.5.0 <3.0.0"
@@ -40,7 +40,7 @@ dependencies:
   image_cropper: ^1.2.1
   device_preview: ^0.4.4
   auto_size_text: ^2.1.0
-  
+  shimmer: ^1.1.1
 
 
 
@@ -75,6 +75,7 @@ flutter:
   assets:    
     - images/
     - images/2.0x/
+    
     - images/3.0x/
     - images/4.0x/
     - images/explore/

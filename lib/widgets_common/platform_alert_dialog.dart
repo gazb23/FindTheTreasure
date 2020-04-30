@@ -13,9 +13,7 @@ class PlatformAlertDialog extends PlatformWidget {
   final Color titleTextColor;
   final Color contentTextColor;
 
-
   PlatformAlertDialog({
-   
     this.cancelActionText,
     @required this.title,
     @required this.content,
@@ -33,13 +31,11 @@ class PlatformAlertDialog extends PlatformWidget {
         ? await showCupertinoDialog<bool>(
             context: context,
             builder: (context) => this,
-
           )
         : await showDialog<bool>(
             context: context,
             builder: (context) => this,
-            barrierDismissible: false
-          );
+            barrierDismissible: false);
   }
 
   @override
@@ -83,21 +79,17 @@ class PlatformAlertDialog extends PlatformWidget {
   Widget buildMaterialWidget(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-          child: AlertDialog(
-
+      child: AlertDialog(
         backgroundColor: backgroundColor ?? Colors.white,
         title: Center(
           child: Center(
             child: Text(
-              
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
-
-                fontFamily: 'quicksand',
-                fontWeight: FontWeight.w600,
-                color: titleTextColor ?? Colors.black87
-              ),
+                  fontFamily: 'quicksand',
+                  fontWeight: FontWeight.w600,
+                  color: titleTextColor ?? Colors.black87),
             ),
           ),
         ),
@@ -112,9 +104,8 @@ class PlatformAlertDialog extends PlatformWidget {
               Text(
                 content,
                 style: TextStyle(
-                  fontFamily: 'quicksand',
-                  color: contentTextColor ?? Colors.grey
-                ),
+                    fontFamily: 'quicksand',
+                    color: contentTextColor ?? Colors.grey),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -124,7 +115,6 @@ class PlatformAlertDialog extends PlatformWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-
       ),
     );
   }
@@ -145,7 +135,6 @@ class PlatformAlertDialog extends PlatformWidget {
       ));
     }
     actions.add(PlatformAlertDialogAction(
-      
       child: Text(
         defaultActionText,
         style: TextStyle(

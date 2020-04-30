@@ -32,11 +32,12 @@ class DatabaseService {
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
     //Receive a filtered stream of all challenges completed by a user for a given location 
-  Stream<List<QuestModel>> locationFieldContainsUID({@required String field, @required String questId}) => _service.filteredArrayCollectionStream(
+    
+  Stream<List<LocationModel>> locationFieldContainsUID({@required String field}) => _service.filteredArrayCollectionStream(
       field: field,
       arrayContains: uid,
-      path: APIPath.locations(questId: questId),
-      builder: (data, documentId) => QuestModel.fromMap(data, documentId));    
+      path: APIPath.quests(),
+      builder: (data, documentId) => LocationModel.fromMap(data, documentId));    
 
 
     // Receive a stream of current user
@@ -80,28 +81,36 @@ class DatabaseService {
 
 
   //WRITE DATA:
+  
+
   // Add UID to likedBy Array on Firebase
-   Future<void> arrayUnion(String documentId, String uid) async {
+   Future<void> arrayUnion(String documentId) async {
    final likedByRef = _db.collection('/quests').document(documentId);
    print('add');
    await likedByRef.updateData({'likedBy': FieldValue.arrayUnion([uid])});
  }
   // Remove UID from likedBy Array on Firebase
-  Future<void> arrayRemove(String documentId, String uid) async {
+  Future<void> arrayRemove(String documentId) async {
    final likedByRef = _db.collection('/quests').document(documentId);
    print('remove');
    await likedByRef.updateData({'likedBy': FieldValue.arrayRemove([uid])});
  }
 
    // Add UID to chosen field Array on Firebase
-   Future<void> arrayUnionField({@required String documentId, @required String uid, @required String field, @required String collectionRef}) async {
+   Future<void> arrayUnionField({@required String documentId, @required String field, @required String collectionRef}) async {
    final likedByRef = _db.collection(collectionRef).document(documentId);
    print('add');
    await likedByRef.updateData({field: FieldValue.arrayUnion([uid])});
  }
+    // Add chosen data to chosen field Array on Firebase
+   Future<void> arrayUnionFieldData({@required String documentId, @required String field, @required String collectionRef, @required String location}) async {
+   final likedByRef = _db.collection(collectionRef).document(documentId);
+   print('add');
+   await likedByRef.setData({field: FieldValue.arrayUnion([location]) }, merge: true);
+ }
 
     // Remove UID from chosen field Array on Firebase
-   Future<void> arrayRemoveField({@required String documentId, @required String uid, @required String field, @required String collectionRef}) async {
+   Future<void> arrayRemoveField({@required String documentId,  @required String field, @required String collectionRef}) async {
    final likedByRef = _db.collection(collectionRef).document(documentId);
    print('add');
    await likedByRef.updateData({field: FieldValue.arrayRemove([uid])});

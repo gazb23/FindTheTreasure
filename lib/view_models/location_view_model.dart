@@ -6,7 +6,9 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -27,18 +29,16 @@ class LocationViewModel {
       try {
         // Add UID to quest completed by
         _databaseService.arrayUnionField(
-            documentId: questModel.id,
-            uid: _databaseService.uid,
+            documentId: questModel.id,            
             field: 'questCompletedBy',
             collectionRef: APIPath.quests());
         // Remove UID from questStartedBy
         await _databaseService.arrayRemoveField(
-            documentId: questModel.id,
-            uid: _databaseService.uid,
+            documentId: questModel.id,            
             field: 'questStartedBy',
             collectionRef: APIPath.quests());
 
-        final didCompleteLocation = await ChallengePlatformAlertDialog(
+        final didCompleteLocation = await PlatformAlertDialog(
           backgroundColor: Colors.amberAccent,
           title: 'Quest Conquered!',
           content:
@@ -79,12 +79,11 @@ class LocationViewModel {
     if (!locationModel.locationDiscoveredBy.contains(databaseService.uid)) {
       try {
         databaseService.arrayUnionField(
-            documentId: locationModel.id,
-            uid: databaseService.uid,
+            documentId: locationModel.id,            
             field: 'locationDiscoveredBy',
             collectionRef: APIPath.locations(questId: questModel.id));
 
-        final didDiscoverLocation = await ChallengePlatformAlertDialog(
+        final didDiscoverLocation = await PlatformAlertDialog(
           backgroundColor: Colors.amberAccent,
           title: 'Location Discovered!',
           content:
@@ -111,11 +110,12 @@ class LocationViewModel {
     if (!locationModel.locationDiscoveredBy.contains(databaseService.uid)) {
       
         final didNotDiscoverLocation = await ChallengePlatformAlertDialog(
-          backgroundColor: Colors.white,
+
+          backgroundColor: Colors.white,          
           title: 'Close, but no cigar!',
           content: 'Head to ${locationModel.title}to unlock the challenges! ',
           defaultActionText: 'OK',        
-          image: Image.asset('images/ic_owl_wrong_dialog.png'),
+          image: Image.asset('images/ic_owl_wrong_dialog.png',),
         ).show(context);
 
         if (didNotDiscoverLocation) {}

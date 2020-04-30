@@ -90,8 +90,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
           );
           await database.arrayUnionField(
               collectionRef: APIPath.quests(),
-              documentId: questModelStream.id,
-              uid: database.uid,
+              documentId: questModelStream.id,             
               field: 'questStartedBy');
           database.updateUserDiamondAndKey(userData: _userData);
         }

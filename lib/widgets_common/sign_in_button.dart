@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ class SignInButton extends CustomRaisedButton {
     VoidCallback onPressed,
   })  : assert(text != null),
         super(
-          child: !isLoading ? AutoSizeText(
+          child: !isLoading ? Text(
             
             text,
             maxLines: 1,

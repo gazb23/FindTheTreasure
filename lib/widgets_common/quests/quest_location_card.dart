@@ -245,7 +245,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          'Ahoy ${_userData.displayName}! Tap the button below to unlock the challenges once you\'re at ${widget.locationModel.title}.',
+                          'Tap the button below to unlock the challenges once you\'re at ${widget.locationModel.title}.',
                           textAlign: TextAlign.center,
                         ),
                       ),

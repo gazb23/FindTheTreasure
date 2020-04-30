@@ -33,7 +33,8 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
             context: context,
             builder: (context) => this,
           )
-        : await showDialog<bool>(
+        : await showDialog<bool>(    
+                
             context: context,
             builder: (context) => this,
             barrierDismissible: false);
@@ -42,6 +43,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return WillPopScope(
+
       onWillPop: () async => false,
       child: CupertinoAlertDialog(
         title: Padding(
@@ -79,10 +81,14 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return WillPopScope(
+      
       onWillPop: () async => false,
+
       child: AlertDialog(
+
         backgroundColor: backgroundColor ?? Colors.white,
         title: Center(
+
           child: Text(
             title,
             style: TextStyle(
@@ -93,6 +99,7 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
         ),
         content: SingleChildScrollView(
           child: Column(
+            
             children: <Widget>[
               image ?? Container(),
               SizedBox(
@@ -138,10 +145,11 @@ class ChallengePlatformAlertDialog extends PlatformWidget {
       child: Platform.isIOS
           ? Text(defaultActionText)
           : SignInButton(
+            
               text: defaultActionText,
               onPressed: () => Navigator.of(context).pop(true),
             ),
-      onPressed: () => Navigator.of(context).pop(true),
+      // onPressed: () => Navigator.of(context).pop(true),
     ));
     return actions;
   }

@@ -26,8 +26,8 @@ class Heart extends StatelessWidget {
         ),
         onPressed: () {
           isLikedByUser
-              ? database.arrayRemove(questModel.id, database.uid)
-              : database.arrayUnion(questModel.id, database.uid);
+              ? database.arrayRemove(questModel.id)
+              : database.arrayUnion(questModel.id);
         });
   }
 

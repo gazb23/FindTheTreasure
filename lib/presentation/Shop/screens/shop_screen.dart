@@ -4,11 +4,14 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 
+import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
+
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 // App Store and Google Play consumable IDS
 const String _diamond50 = 'diamond_50';
@@ -55,7 +58,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-
+  
     _isAvailable = await _iap.isAvailable();
 
     if (_isAvailable) {
@@ -64,6 +67,7 @@ class _ShopScreenState extends State<ShopScreen> {
       _verifyPurchase();
 
       // Listen to new purchases
+
       _subscription = _iap.purchaseUpdatedStream.listen((data) => setState(() {
             _purchases.addAll(data);
 
@@ -90,15 +94,19 @@ class _ShopScreenState extends State<ShopScreen> {
     }
   }
 
-  // Gets past purchases (May not need)
+  // Gets past purchases and consume/complete purchase
   Future<void> _getPastPurchases() async {
     QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
 
     for (PurchaseDetails purchase in response.pastPurchases) {
       if (Platform.isIOS) {
-        InAppPurchaseConnection.instance.completePurchase(purchase);
+        InAppPurchaseConnection.instance.completePurchase(
+          purchase,
+        );
       } else
-        InAppPurchaseConnection.instance.consumePurchase(purchase);
+        InAppPurchaseConnection.instance.consumePurchase(
+          purchase,
+        );
     }
 
     setState(() {
@@ -120,7 +128,10 @@ class _ShopScreenState extends State<ShopScreen> {
     UserData _userData = Provider.of<UserData>(context, listen: false);
 
     PurchaseDetails _purchase = _hasPurchased(_currentPurchase);
+    print('productID: ${_purchase?.productID}');
+
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
+      print(_purchase.status);
       _isPurchasePending = true;
       _getCorrect(_purchase);
 
@@ -129,7 +140,8 @@ class _ShopScreenState extends State<ShopScreen> {
           email: _userData.email,
           photoURL: _userData.photoURL,
           uid: _userData.uid,
-          points: (_userData.userDiamondCount + _diamonds) * (_userData.userKeyCount + _keys),
+          points: (_userData.userDiamondCount + _diamonds) *
+              (_userData.userKeyCount + _keys),
           userDiamondCount: _userData.userDiamondCount + _diamonds,
           userKeyCount: _userData.userKeyCount + _keys);
 
@@ -142,6 +154,7 @@ class _ShopScreenState extends State<ShopScreen> {
           .show(context);
       if (_didSelectOK) {
         _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
+
         _isPurchasePending = false;
       }
     } else if (_purchase != null &&
@@ -163,7 +176,8 @@ class _ShopScreenState extends State<ShopScreen> {
               image: Image.asset('images/ic_owl_wrong.png'),
               defaultActionText: 'OK')
           .show(context);
-    }
+    } else
+      _isPurchasePending = false;
   }
 
   void _getCorrect(PurchaseDetails purchase) {
@@ -188,47 +202,53 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _buyProduct(ProductDetails productDetails) {
+    _isPurchasePending = true;
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: productDetails);
     _iap.buyConsumable(
       purchaseParam: purchaseParam,
     );
+    _getPastPurchases();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    final UserData _userData = Provider.of<UserData>(context);
+    return SafeArea(      
+      child: Scaffold(        
+        backgroundColor: Colors.brown,
         appBar: AppBar(
           backgroundColor: Colors.brown,
           iconTheme: IconThemeData(color: Colors.black87),
           actions: <Widget>[
-            Consumer<UserData>(
-              builder: (_, _userData, __) => DiamondAndKeyContainer(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                numberOfDiamonds: _userData.userDiamondCount,
-                numberOfKeys: _userData.userKeyCount,
-                color: Colors.white,
-              ),
+            DiamondAndKeyContainer(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              numberOfDiamonds: _userData.userDiamondCount,
+              numberOfKeys: _userData.userKeyCount,
+              color: Colors.white,
             ),
             SizedBox(
               width: 20,
             )
           ],
         ),
+
         body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+          width: double.infinity,
+          // height: MediaQuery.of(context).size.height,
+          // width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
+
             image: DecorationImage(
+
               image: AssetImage(
                 "images/background_shop.png",
+
               ),
               fit: BoxFit.cover,
             ),
           ),
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            //  Image.asset(),
             SizedBox(
               height: 10,
             ),
@@ -253,20 +273,31 @@ class _ShopScreenState extends State<ShopScreen> {
             SizedBox(
               height: 10,
             ),
-
-            for (var prod in _products)
-              BuyDiamondOrKeyButton(
-                numberOfDiamonds: numberOfDiamonds(prod.price),
-                diamondCost: prod.price,
-                bonusKey: numberOfKeys(prod.price),
-                onPressed: () {
-                  _buyProduct(prod);
-                  _currentPurchase = prod.id;
-                },
-                isPending: _isPurchasePending,
+            if (_isAvailable)
+              // Display products from store
+              for (var prod in _products)
+                BuyDiamondOrKeyButton(
+                  numberOfDiamonds: numberOfDiamonds(prod.price),
+                  diamondCost: prod.price,
+                  bonusKey: numberOfKeys(prod.price),
+                  onPressed: () {
+                    _buyProduct(prod);
+                    _currentPurchase = prod.id;
+                  },
+                )
+            else
+              Column(
+                children: <Widget>[
+                  storeLoading(),
+                  storeLoading(),
+                  storeLoading(),
+                  storeLoading(),
+                  
+               
+        
+   
+                ],
               )
-
-           
           ]),
         ),
       ),
@@ -314,6 +345,22 @@ class _ShopScreenState extends State<ShopScreen> {
     }
     return _numberOfKeys;
   }
+
+Widget storeLoading() {
+  return    FractionallySizedBox(
+                widthFactor: 0.9,
+                child: Shimmer.fromColors(
+
+                  baseColor: Colors.grey.shade300.withOpacity(0.5),
+                  highlightColor: Colors.white.withOpacity(0.5),
+                  child: CustomRaisedButton(
+                    color:  Colors.white,
+                    onPressed: () {},
+                    padding: 30,
+                  ),
+                ),
+              );
+}
 }
 
 class BuyTreasureChest extends StatelessWidget {

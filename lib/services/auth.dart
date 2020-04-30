@@ -128,6 +128,7 @@ class Auth implements AuthBase {
   Future<void> _createUserData(FirebaseUser user)  {
       final UserData updateUserData = UserData(
       displayName: user.displayName ?? 'Adventurer',
+      locationsExplored: [],
       email: user.email,
       photoURL: user.photoUrl,
       uid: user.uid,

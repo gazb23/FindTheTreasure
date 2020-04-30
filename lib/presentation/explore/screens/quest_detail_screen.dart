@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_details_list_tile.dart';
@@ -54,7 +55,14 @@ class QuestDetailScreen extends StatelessWidget {
               ),
             );
           }
-          return CircularProgressIndicator();
+          return 
+          Container(
+            width: 50,
+            height: 50,
+            color: Colors.black.withOpacity(0.2),
+            child:Center(child: CustomCircularProgressIndicator())
+          );
+          
         });
   }
 
@@ -192,6 +200,7 @@ class QuestDetailScreen extends StatelessWidget {
                   softWrap: true,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.justify,
                 ),
               ),
             ],
@@ -207,6 +216,7 @@ class QuestDetailScreen extends StatelessWidget {
                 child: Text(
                   questModelStream.description,
                   style: TextStyle(height: 1.35),
+                  textAlign: TextAlign.justify,
                 ),
               ),
             ],
@@ -274,6 +284,7 @@ class QuestDetailScreen extends StatelessWidget {
                   'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.justify,
                 ),
               ),
             ],
@@ -287,8 +298,10 @@ class QuestDetailScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 child: Text(
-                    'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound'),
+                    'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound',
+                    textAlign: TextAlign.justify,),
               ),
+              
             ],
           ),
           theme: ExpandableThemeData(

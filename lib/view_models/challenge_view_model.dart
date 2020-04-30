@@ -7,7 +7,7 @@ import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
-import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,8 +85,7 @@ class ChallengeViewModel {
 
           _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
           _databaseService.arrayUnionField(
-            documentId: questionsModel.id,
-            uid: _databaseService.uid,
+            documentId: questionsModel.id,            
             field: 'hintPurchasedBy',
             collectionRef: APIPath.challenges(questId: questModel.id, locationId: locationModel.id),
           );
@@ -100,10 +99,11 @@ class ChallengeViewModel {
         }
       }
     } else if (!questionsModel.hintPurchasedBy.contains(_databaseService.uid) && _userData.userDiamondCount < _hintCost) {
-      final didRequestHint = await ChallengePlatformAlertDialog(
+      final didRequestHint = await PlatformAlertDialog(
         title: 'Hint Purchase',
         backgroundColor: Colors.brown,
-        textColor: Colors.white,
+        contentTextColor: Colors.white,
+        titleTextColor: Colors.white,
         content:
             'Having trouble with the challenge? I can give ya a hint but it\'ll cost ya $_hintCost diamonds. Head to the store to purchase more.',
         defaultActionText: 'Store',

@@ -1,17 +1,18 @@
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:expandable/expandable.dart';
 import 'package:find_the_treasure/models/avatar_model.dart';
+
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/firebase_storage_service.dart';
-
 import 'package:find_the_treasure/services/image_picker_service.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
+
 import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
-
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -123,6 +124,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserData>(context, listen: false);
+
+    
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -136,15 +139,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fit: BoxFit.fill),
               ),
             ),
-            Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 20,
-                ),
-                _buildUserInfo(context, user),
-                _buildTreasure(context, user),
-              ],
-            )
+            ListView(
+                          
+                children: <Widget>[
+                  SizedBox(
+                    height: 20,
+                  ),
+                  _buildUserInfo(context, user),
+                  _buildTreasure(context, user),
+                 _buildLocationsExploredTile(context, user)
+        
+                  
+                ],
+              ),
+            
           ],
         ),
       ),
@@ -224,7 +232,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           fontWeight: FontWeight.bold,
         ),
+        
       ],
     );
   }
+
+  Widget _buildLocationsExploredTile(BuildContext context, UserData userData) {
+   
+    return FractionallySizedBox(
+      widthFactor: 0.95,
+          child: Card(
+            color: Colors.grey.shade800,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15)
+            ),
+        child:
+        
+        ExpandablePanel(
+                  header: ListTile(
+            
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            leading: Image.asset('images/hiker.png'),
+            title: Text('Locations Explored', style: TextStyle(
+              fontSize: 20,
+              color: Colors.white
+            ),),
+            trailing: Text(userData.locationsExplored.length.toString(), style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+              fontWeight: FontWeight.bold
+            ),),
+          ),
+        
+        )
+      ),
+    );
+  }
+
 }

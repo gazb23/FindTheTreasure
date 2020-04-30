@@ -37,7 +37,7 @@ final double diamondHeight;
               
               children: <Widget>[
                 Image.asset(
-                  'images/3.0x/ic_diamond.png',
+                  'images/2.0x/ic_diamond.png',
                   height: diamondHeight ?? 20,
                 ),
                 SizedBox(

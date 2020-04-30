@@ -1,13 +1,14 @@
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
+import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_multiple_choice.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_multiple_choice_picture.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
-import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,6 @@ class QuestionViewModel {
       try {
         _databaseService.arrayUnionField(
           documentId: documentId,
-          uid: _databaseService.uid,
           field: 'challengeCompletedBy',
           collectionRef: collectionRef,
         );
@@ -49,14 +49,12 @@ class QuestionViewModel {
             Navigator.of(context).popUntil((route) => route.isFirst);
           }
         } else {
-                _databaseService.arrayUnionField(
+          _databaseService.arrayUnionField(
             documentId: documentId,
-            uid: _databaseService.uid,
             field: 'challengeCompletedBy',
             collectionRef: collectionRef,
           );
           Navigator.pop(context);
-    
         }
       } catch (e) {
         print(e.toString());
@@ -64,20 +62,18 @@ class QuestionViewModel {
     } else
       // If Location Question
       try {
-       _databaseService.arrayUnionField(
+        _databaseService.arrayUnionField(
           documentId: documentId,
-          uid: _databaseService.uid,
           field: 'locationStartedBy',
           collectionRef: collectionRef,
         );
-        final _didCompleteChallenge = await ChallengePlatformAlertDialog(
+        final _didCompleteChallenge = await PlatformAlertDialog(
           title: 'Location Unlocked!',
           content:
               'Well done, you\'ve discovered  $locationTitle. It\'s adventure time!',
           cancelActionText: 'Not Now',
           defaultActionText: 'Start Challenge',
           image: Image.asset('images/ic_excalibur_owl.png'),
-          isLoading: false,
         ).show(context);
         if (_didCompleteChallenge) {
           Navigator.pop(context);
@@ -103,17 +99,24 @@ class QuestionViewModel {
 
     if (!locationModel.locationCompletedBy.contains(_databaseService.uid) &&
         lastChallengeCompleted) {
+      final UserData _userData = Provider.of<UserData>(context);
       try {
-       _databaseService.arrayUnionField(
+        _databaseService.arrayUnionField(
             documentId: locationModel.id,
-            uid: _databaseService.uid,
             field: 'locationCompletedBy',
             collectionRef: APIPath.locations(questId: questModel.id));
+
+        _databaseService.arrayUnionFieldData(
+
+            documentId: _userData.uid,
+            location: locationModel.title,
+            field: 'locationsExplored',
+            collectionRef: APIPath.users());
 
         if (lastLocationCompleted) {
           print('WOOOO');
         } else if (!lastLocationCompleted) {
-          final didCompleteLocation = await ChallengePlatformAlertDialog(
+          final didCompleteLocation = await PlatformAlertDialog(
             backgroundColor: Colors.amberAccent,
             title: 'Location Conquered!',
             content:
