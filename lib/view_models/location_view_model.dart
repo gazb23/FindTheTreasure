@@ -52,7 +52,7 @@ class LocationViewModel {
           Navigator.of(context).popUntil((route) => route.isFirst);
           final UserData _userData = UserData(
             userDiamondCount: updatedDiamondCount,
-                
+               locationsExplored: userData.locationsExplored, 
             userKeyCount: updatedKeyCount,
             points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamondCount, updatedKeys: updatedKeyCount),
             displayName: userData.displayName,

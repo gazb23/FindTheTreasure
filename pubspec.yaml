@@ -41,7 +41,9 @@ dependencies:
   device_preview: ^0.4.4
   auto_size_text: ^2.1.0
   shimmer: ^1.1.1
-
+  package_info: ^0.4.0+17
+  webview_flutter: ^0.3.21
+  share: ^0.6.4
 
 
   # The following adds the Cupertino Icons font to your application.

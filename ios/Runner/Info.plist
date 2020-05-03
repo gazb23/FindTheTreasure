@@ -70,5 +70,7 @@
 	<string>Find The Treasure requires access to your camera to display your avatar</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Find The Treasure requires access to your microphone to display your avatar</string>
+	<key>io.flutter.embedded_views_preview</key>
+  <string>YES</string>
 </dict>
 </plist>

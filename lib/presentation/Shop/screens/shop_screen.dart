@@ -38,7 +38,7 @@ class _ShopScreenState extends State<ShopScreen> {
   // Is the API available on the device
   bool _isAvailable = false;
   // Diasble button if purchase pending
-  bool _isPurchasePending = false;
+  bool _isPurchasePending = true;
 
   // Consumable credits the user can buy
   int _diamonds = 0;
@@ -58,7 +58,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-  
+
     _isAvailable = await _iap.isAvailable();
 
     if (_isAvailable) {
@@ -131,13 +131,12 @@ class _ShopScreenState extends State<ShopScreen> {
     print('productID: ${_purchase?.productID}');
 
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
-      print(_purchase.status);
-      _isPurchasePending = true;
       _getCorrect(_purchase);
-
+      _isPurchasePending = true;
       final _updateUserData = UserData(
           displayName: _userData.displayName,
           email: _userData.email,
+          locationsExplored: _userData.locationsExplored,
           photoURL: _userData.photoURL,
           uid: _userData.uid,
           points: (_userData.userDiamondCount + _diamonds) *
@@ -214,8 +213,8 @@ class _ShopScreenState extends State<ShopScreen> {
   @override
   Widget build(BuildContext context) {
     final UserData _userData = Provider.of<UserData>(context);
-    return SafeArea(      
-      child: Scaffold(        
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: Colors.brown,
         appBar: AppBar(
           backgroundColor: Colors.brown,
@@ -232,18 +231,12 @@ class _ShopScreenState extends State<ShopScreen> {
             )
           ],
         ),
-
         body: Container(
           width: double.infinity,
-          // height: MediaQuery.of(context).size.height,
-          // width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-
             image: DecorationImage(
-
               image: AssetImage(
                 "images/background_shop.png",
-
               ),
               fit: BoxFit.cover,
             ),
@@ -280,6 +273,7 @@ class _ShopScreenState extends State<ShopScreen> {
                   numberOfDiamonds: numberOfDiamonds(prod.price),
                   diamondCost: prod.price,
                   bonusKey: numberOfKeys(prod.price),
+                  isPurchasePending: _isPurchasePending,
                   onPressed: () {
                     _buyProduct(prod);
                     _currentPurchase = prod.id;
@@ -292,10 +286,6 @@ class _ShopScreenState extends State<ShopScreen> {
                   storeLoading(),
                   storeLoading(),
                   storeLoading(),
-                  
-               
-        
-   
                 ],
               )
           ]),
@@ -346,21 +336,20 @@ class _ShopScreenState extends State<ShopScreen> {
     return _numberOfKeys;
   }
 
-Widget storeLoading() {
-  return    FractionallySizedBox(
-                widthFactor: 0.9,
-                child: Shimmer.fromColors(
-
-                  baseColor: Colors.grey.shade300.withOpacity(0.5),
-                  highlightColor: Colors.white.withOpacity(0.5),
-                  child: CustomRaisedButton(
-                    color:  Colors.white,
-                    onPressed: () {},
-                    padding: 30,
-                  ),
-                ),
-              );
-}
+  Widget storeLoading() {
+    return FractionallySizedBox(
+      widthFactor: 0.9,
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300.withOpacity(0.5),
+        highlightColor: Colors.white.withOpacity(0.5),
+        child: CustomRaisedButton(
+          color: Colors.white,
+          onPressed: () {},
+          padding: 30,
+        ),
+      ),
+    );
+  }
 }
 
 class BuyTreasureChest extends StatelessWidget {

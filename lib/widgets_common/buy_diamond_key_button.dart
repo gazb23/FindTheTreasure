@@ -10,7 +10,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
   final double diamondTextSize;
   final double costTextSize;
   final VoidCallback onPressed;
-  
+  final bool isPurchasePending;
 
   const BuyDiamondOrKeyButton({
     Key key,
@@ -20,7 +20,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
     this.textColor,
     this.bonusKey,
     this.diamondTextSize = 30,
-    this.costTextSize = 15,
+    this.costTextSize = 15, this.isPurchasePending,
     
   }) : super(key: key);
 
@@ -33,7 +33,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
         color: Colors.orangeAccent,
         padding: 10,
         bottomPadding: 15,
-        onPressed: onPressed,
+        onPressed: isPurchasePending ? null : onPressed,
         child: FractionallySizedBox(
           widthFactor: 0.9,
           child: Row(
