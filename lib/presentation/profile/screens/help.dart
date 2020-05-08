@@ -1,50 +1,86 @@
 import 'package:find_the_treasure/presentation/profile/widgets/custom_list_tile.dart';
+import 'package:find_the_treasure/services/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 class HelpScreen extends StatelessWidget {
+  static const String _fAQsPrimaryUrl =
+      'https://www.findthetreasure.com.au/faqs/';
+  static const String _fallbackUrl = 'https://www.findthetreasure.com.au/';
+  static const String _contactPrimaryUrl =
+      'https://www.findthetreasure.com.au/contact-us/';
+  static const String _privacyPrimaryUrl =
+      'https://www.findthetreasure.com.au/privacy-policy/';
+  static const String _termsPrimaryUrl =
+      'https://www.findthetreasure.com.au/terms-conditions/';
+
   @override
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey,
         title: Text('Help'),
         centerTitle: true,
       ),
       body: Column(
-
-      children: <Widget>[
-        SizedBox(height: 20,),
-        CustomListTile(
-          title: 'FAQs',
-          leadingIcon: Icons.question_answer,
-          leadingContainerColor: Colors.grey.shade200,
-          
-        ),
-        CustomListTile(
-          title: 'Rate App',
-          leadingIcon: Icons.star,
-          leadingContainerColor: Colors.grey.shade200,
-        ),
-        CustomListTile(
-          title: 'Contact',
-          leadingIcon: Icons.email,
-          leadingContainerColor: Colors.grey.shade200,
-        ),
-        CustomListTile(
-          title: 'Privacy Policy',
-          leadingIcon: Icons.insert_drive_file,
-          leadingContainerColor: Colors.grey.shade200,
-        ),
-        CustomListTile(
-          title: 'Terms & Conditions',
-          leadingIcon: Icons.insert_drive_file,
-          leadingContainerColor: Colors.grey.shade200,
-        ),
-      ],
-    ),
+        children: <Widget>[
+          SizedBox(
+            height: 20,
+          ),
+          CustomListTile(
+            title: 'FAQs',
+            leadingIcon: Icons.question_answer,
+            leadingContainerColor: Colors.grey.shade200,
+            onTap: () {
+              UrlLauncher.socialAppLauncher(
+                context: context,
+                primaryUrl: _fAQsPrimaryUrl,
+                fallBackUrll: _fallbackUrl,
+              );
+            },
+          ),
+          CustomListTile(
+            title: 'Rate App',
+            leadingIcon: Icons.star,
+            leadingContainerColor: Colors.grey.shade200,
+          ),
+          CustomListTile(
+            title: 'Contact',
+            leadingIcon: Icons.email,
+            leadingContainerColor: Colors.grey.shade200,
+            onTap: () {
+              UrlLauncher.socialAppLauncher(
+                context: context,
+                primaryUrl: _contactPrimaryUrl,
+                fallBackUrll: _fallbackUrl,
+              );
+            },
+          ),
+          CustomListTile(
+            title: 'Privacy Policy',
+            leadingIcon: Icons.insert_drive_file,
+            leadingContainerColor: Colors.grey.shade200,
+            onTap: () {
+              UrlLauncher.socialAppLauncher(
+                context: context,
+                primaryUrl: _privacyPrimaryUrl,
+                fallBackUrll: _fallbackUrl,
+              );
+            },
+          ),
+          CustomListTile(
+            title: 'Terms & Conditions',
+            leadingIcon: Icons.insert_drive_file,
+            leadingContainerColor: Colors.grey.shade200,
+             onTap: () {
+              UrlLauncher.socialAppLauncher(
+                context: context,
+                primaryUrl: _termsPrimaryUrl,
+                fallBackUrll: _fallbackUrl,
+              );
+            },
+          ),
+        ],
+      ),
     );
-    
-    
   }
 }

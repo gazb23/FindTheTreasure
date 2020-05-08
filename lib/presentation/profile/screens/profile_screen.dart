@@ -9,6 +9,7 @@ import 'package:find_the_treasure/presentation/profile/screens/settings.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/firebase_storage_service.dart';
 import 'package:find_the_treasure/services/image_picker_service.dart';
+import 'package:find_the_treasure/services/url_launcher.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   static const String id = 'account_page';
@@ -30,14 +32,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isLoading = false;
   File _selectedFile;
   String _version = 'Unknown';
-
+  static const String _facebookPrimaryUrl = 'fb://page/1835933183360073';
+  static const String _facebookFallbackUrl =
+      'https://www.facebook.com/1835933183360073';
+  static const String _instagramPrimaryUrl =
+      'https://www.instagram.com/findthetreasureaus/';
+  static const String _instagramFallbackUrl = 'https://www.instagram.com/';
+  static const String _twitterPrimaryUrl = 'https://twitter.com/FTTreasure';
+  static const String _twitterFallbackUrl = 'https://www.twitter.com/';
   @override
   void initState() {
     super.initState();
     initPlatformState();
   }
-
-
 
   initPlatformState() async {
     String version;
@@ -51,8 +58,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _version = version;
     });
   }
-
-
 
   Future<void> _chooseAvatar(BuildContext context) async {
     File file;
@@ -247,7 +252,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               MaterialPageRoute(
                   builder: (context) => SettingsScreen(
                         version: _version,
-                     
                       )),
             );
           },
@@ -280,29 +284,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
           leadingContainerColor: Colors.grey.shade300,
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => HelpScreen(
-                        
-                     
-                      )),
+              MaterialPageRoute(builder: (context) => HelpScreen()),
             );
           },
-        
         ),
         SizedBox(height: 10),
         // Build social Icons
-        FractionallySizedBox(
-widthFactor: 0.7,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset('images/facebook.png', height: 35,)
-            ],
+        Container(
+          color: Colors.grey.shade100,
+          margin: EdgeInsets.zero,
+          padding: EdgeInsets.all(10),
+          child: FractionallySizedBox(
+            widthFactor: 0.6,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                GestureDetector(
+                    onTap: () => UrlLauncher.socialAppLauncher(
+                        context: context,
+                        primaryUrl: _facebookPrimaryUrl,
+                        fallBackUrll: _facebookFallbackUrl),
+                    child: Image.asset(
+                      'images/facebook.png',
+                      height: 35,
+                    )),
+                GestureDetector(
+                    onTap: () => UrlLauncher.socialAppLauncher(
+                        context: context,
+                        primaryUrl: _instagramPrimaryUrl,
+                        fallBackUrll: _instagramFallbackUrl),
+                    child: Image.asset(
+                      'images/instagram.png',
+                      height: 35,
+                    )),
+                GestureDetector(
+                    onTap: () => UrlLauncher.socialAppLauncher(
+                          context: context,
+                          primaryUrl: _twitterPrimaryUrl,
+                          fallBackUrll: _twitterFallbackUrl,
+                        ),
+                    child: Image.asset(
+                      'images/twitter.png',
+                      height: 35,
+                    ))
+              ],
+            ),
           ),
         )
       ],
     );
   }
+
+
 
   ListTile _buildListTile({
     @required String title,
