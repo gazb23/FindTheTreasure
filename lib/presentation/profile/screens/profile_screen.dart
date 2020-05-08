@@ -1,21 +1,16 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:expandable/expandable.dart';
 import 'package:find_the_treasure/models/avatar_model.dart';
-
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/leaderboard/screens/leaderboard_user_profile.dart';
-import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/presentation/profile/screens/help.dart';
+import 'package:find_the_treasure/presentation/profile/screens/settings.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/firebase_storage_service.dart';
 import 'package:find_the_treasure/services/image_picker_service.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
-
-import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
-import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -34,22 +29,15 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isLoading = false;
   File _selectedFile;
-  String _version = 'Unknown';  
-  
+  String _version = 'Unknown';
+
   @override
   void initState() {
     super.initState();
     initPlatformState();
   }
 
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signOut();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+
 
   initPlatformState() async {
     String version;
@@ -64,17 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSingOut = await PlatformAlertDialog(
-      title: 'Logout',
-      content: 'Are you sure?',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Logout',
-    ).show(context);
-    if (didRequestSingOut) {
-      _signOut(context);
-    }
-  }
+
 
   Future<void> _chooseAvatar(BuildContext context) async {
     File file;
@@ -145,40 +123,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       body: Stack(
-        children: <Widget>[     
-             
+        children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("images/bckgrnd_balon.png", ),
+                  image: AssetImage(
+                    "images/bckgrnd_balon.png",
+                  ),
                   alignment: Alignment.bottomCenter,
                   fit: BoxFit.cover),
             ),
-            child: Column(            
+            child: Column(
               children: <Widget>[
-                 
                 _buildUserInfo(context, user),
-              
                 _buildsettingsContainer(),
               ],
-              
             ),
-            
           ),
-          
         ],
       ),
     );
   }
 
-    Widget _buildUserInfo(BuildContext context, UserData user) {
+  Widget _buildUserInfo(BuildContext context, UserData user) {
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context);
     return Expanded(
       flex: 4,
-          child: Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Row(
@@ -186,31 +160,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(child: Image.asset('images/cloud_1.png')),
               Expanded(
                 flex: 3,
-                              child: Center(
-            child: StreamBuilder<AvatarReference>(
-                  stream: _databaseService.avatarReferenceStream(),
-                  builder: (context, snapshot) {
-                    final AvatarReference avatarReference = snapshot.data;
-                    return Avatar(
-                        photoURL: avatarReference?.photoURL ?? user.photoURL,
-                        radius: 70,
-                        borderColor: Colors.white,
-                        borderWidth: 5,
-                        onPressed: () =>
-                            _isLoading ? null : _chooseAvatar(context));
-                  }),
-          ),
+                child: Center(
+                  child: StreamBuilder<AvatarReference>(
+                      stream: _databaseService.avatarReferenceStream(),
+                      builder: (context, snapshot) {
+                        final AvatarReference avatarReference = snapshot.data;
+                        return Avatar(
+                            photoURL:
+                                avatarReference?.photoURL ?? user.photoURL,
+                            radius: 70,
+                            borderColor: Colors.white,
+                            borderWidth: 5,
+                            onPressed: () =>
+                                _isLoading ? null : _chooseAvatar(context));
+                      }),
+                ),
               ),
-          Expanded(child: Image.asset('images/cloud_2.png')),
+              Expanded(child: Image.asset('images/cloud_2.png')),
             ],
           ),
-          
           SizedBox(
             height: 15,
           ),
           Container(
-            constraints:
-                BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.5),
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width / 1.5),
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
@@ -223,7 +197,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          
         ],
       ),
     );
@@ -232,9 +205,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildsettingsContainer() {
     return Expanded(
       flex: 4,
-          child: Container(
-       
-          width: double.infinity,                  
+      child: Container(
+          width: double.infinity,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -249,23 +221,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: <Widget>[
         _buildListTile(
           title: 'My stats',
-          leading: Icon(Icons.equalizer, color: Colors.redAccent,),  
-          leadingContainerColor: Colors.red.shade100,        
+          leading: Icon(
+            Icons.equalizer,
+            color: Colors.redAccent,
+          ),
+          leadingContainerColor: Colors.red.shade100,
           onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                       
-                            builder: (context) => LeaderboardProfileScreen(
-                                  userData: _userData,
-                                )),
-                      );
-                    },
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => LeaderboardProfileScreen(
+                        userData: _userData,
+                      )),
+            );
+          },
         ),
-          _buildListTile(
+        _buildListTile(
           title: 'Settings',
-          leading: Icon(Icons.settings, color: Colors.orangeAccent,),  
-          leadingContainerColor: Colors.orange.shade100,        
-          onTap: null,
+          leading: Icon(
+            Icons.settings,
+            color: Colors.orangeAccent,
+          ),
+          leadingContainerColor: Colors.orange.shade100,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => SettingsScreen(
+                        version: _version,
+                     
+                      )),
+            );
+          },
         ),
         Divider(
           height: 25,
@@ -273,121 +258,76 @@ class _ProfileScreenState extends State<ProfileScreen> {
           indent: 30,
           endIndent: 35,
         ),
-            _buildListTile(
-          title: 'Invite a friend',
-          leading: Icon(Icons.person_add, color: Colors.black87,),  
-          leadingContainerColor: Colors.grey.shade300,        
-          onTap: () {
-            Share.share('Check out Find the Treasure https://play.google.com/store/apps/details?id=com.findthetreasure.find_the_treasure', subject: 'It\'s an awesome adventure app the helps you to explore places!');
-          }
-        ),
-                _buildListTile(
+        _buildListTile(
+            title: 'Invite a friend',
+            leading: Icon(
+              Icons.person_add,
+              color: Colors.black87,
+            ),
+            leadingContainerColor: Colors.grey.shade300,
+            onTap: () {
+              Share.share(
+                  'Check out Find the Treasure https://play.google.com/store/apps/details?id=com.findthetreasure.find_the_treasure',
+                  subject:
+                      'It\'s an awesome adventure app the helps you to explore places!');
+            }),
+        _buildListTile(
           title: 'Help',
-          leading: Icon(Icons.live_help, color: Colors.black87,),  
-          leadingContainerColor: Colors.grey.shade300,        
-          onTap: null,
+          leading: Icon(
+            Icons.live_help,
+            color: Colors.black87,
+          ),
+          leadingContainerColor: Colors.grey.shade300,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => HelpScreen(
+                        
+                     
+                      )),
+            );
+          },
+        
         ),
+        SizedBox(height: 10),
+        // Build social Icons
+        FractionallySizedBox(
+widthFactor: 0.7,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset('images/facebook.png', height: 35,)
+            ],
+          ),
+        )
       ],
     );
   }
 
   ListTile _buildListTile({
-    @required String title,    
+    @required String title,
     @required Icon leading,
     @required Function onTap,
     @required Color leadingContainerColor,
   }) {
     return ListTile(
-      
       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       title: Text(
         title,
-        style: TextStyle(color: Colors.black54, fontSize: 20, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: Colors.black54, fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      trailing: Icon(Icons.keyboard_arrow_right, size: 30,),
+      trailing: Icon(
+        Icons.keyboard_arrow_right,
+        size: 30,
+      ),
       leading: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: leadingContainerColor
-        ),
-        padding: EdgeInsets.all(10),
-       
-        child: leading),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: leadingContainerColor),
+          padding: EdgeInsets.all(10),
+          child: leading),
       onTap: onTap,
     );
-  }
-
-
-
-  Widget _buildTreasure(BuildContext context, UserData user) {
-    return CustomListView(
-      color: Colors.brown,
-      children: <Widget>[
-        Image.asset(
-          'images/ic_treasure.png',
-          height: 70,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        DiamondAndKeyContainer(
-          numberOfDiamonds: user.userDiamondCount,
-          numberOfKeys: user.userKeyCount,
-          diamondHeight: 30,
-          skullKeyHeight: 50,
-          fontSize: 20,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          fontWeight: FontWeight.bold,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLocationsExploredTile(BuildContext context, UserData userData) {
-    return FractionallySizedBox(
-      widthFactor: 0.95,
-      child: Card(
-          color: Colors.grey.shade700,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: ExpandablePanel(
-              theme: ExpandableThemeData(iconColor: Colors.white),
-              header: ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                leading: Image.asset(
-                  'images/hiker.png',
-                  height: 50,
-                ),
-                title: Text(
-                  'Locations Explored',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                trailing: Text(
-                  userData.locationsExplored.length.toString(),
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              expanded: getTextWidgets(userData.locationsExplored, userData))),
-    );
-  }
-
-  Widget getTextWidgets(List location, UserData userData) {
-    return Column(
-        children: location
-            .map((location) => Center(
-                    child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: AutoSizeText(
-                    location,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )))
-            .toList());
   }
 }

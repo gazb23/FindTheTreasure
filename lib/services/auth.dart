@@ -1,15 +1,16 @@
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
-
 class User {
   final String uid;
-
-  User({this.uid});
+  final String email;
+  User({this.email, this.uid});
 }
 
 abstract class AuthBase {
@@ -20,7 +21,10 @@ abstract class AuthBase {
   Future<User> createUserWithEmailAndPassword(String email, String password);
   Future<void> signOut();
   Future<void> resetPassword(String email);
-  // Future<void> updateUserData(FirebaseUser user);
+  Future<void> validateCurrentPassword({@required String password});
+  void updatePassword(String password);
+  Future<void> updateEmail(String email);
+  
 }
 
 class Auth implements AuthBase {
@@ -30,11 +34,12 @@ class Auth implements AuthBase {
   final FacebookLogin _facebookLogin = FacebookLogin();
   // final Firestore _firestore = Firestore.instance;
 
-
   User _userFromFirebase(FirebaseUser user) {
     return user != null
         ? User(
             uid: user.uid,
+            email: user.email
+            
           )
         : null;
   }
@@ -46,11 +51,9 @@ class Auth implements AuthBase {
 
   Future<User> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
-    
 
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      
 
       if (googleAuth.idToken != null && googleAuth.accessToken != null) {
         final authResult = await _firebaseAuth.signInWithCredential(
@@ -59,11 +62,11 @@ class Auth implements AuthBase {
             accessToken: googleAuth.accessToken,
           ),
         );
-       if (authResult.additionalUserInfo.isNewUser) {
-         print('newUser');
-         await _createUserData(authResult.user);
-       } 
-       
+        if (authResult.additionalUserInfo.isNewUser) {
+          print('newUser');
+          await _createUserData(authResult.user);
+        }
+
         return _userFromFirebase(authResult.user);
       } else {
         throw PlatformException(
@@ -87,9 +90,9 @@ class Auth implements AuthBase {
         ),
       );
       if (authResult.additionalUserInfo.isNewUser) {
-         print('newUser');
-         await _createUserData(authResult.user);
-       } 
+        print('newUser');
+        await _createUserData(authResult.user);
+      }
       return _userFromFirebase(authResult.user);
     } else {
       throw PlatformException(
@@ -125,25 +128,54 @@ class Auth implements AuthBase {
     return null;
   }
 
-  Future<void> _createUserData(FirebaseUser user)  {
-      final UserData updateUserData = UserData(
-      displayName: user.displayName ?? 'Adventurer',
-      locationsExplored: [],
-      email: user.email,
-      photoURL: user.photoUrl,
-      uid: user.uid,
-      points: 50,
-      userDiamondCount: 50,
-      userKeyCount: 1
-
-    );
-    return DatabaseService(uid: user.uid).updateUserData(
-      userData: updateUserData
-    );
- 
-
-
+  Future<void> _createUserData(FirebaseUser user) {
+    final UserData updateUserData = UserData(
+        displayName: user.displayName ?? 'Adventurer',
+        locationsExplored: [],
+        email: user.email,
+        photoURL: user.photoUrl,
+        uid: user.uid,
+        points: 50,
+        userDiamondCount: 50,
+        userKeyCount: 1);
+    return DatabaseService(uid: user.uid)
+        .updateUserData(userData: updateUserData);
   }
 
+  Future<bool> validateCurrentPassword({@required String password}) async {
+    FirebaseUser firebaseUser = await _firebaseAuth.currentUser();
+    AuthCredential authCredentials = EmailAuthProvider.getCredential(
+        email: firebaseUser.email, password: password);
+    try {
+      var authResult =
+          await firebaseUser.reauthenticateWithCredential(authCredentials);
+      return authResult.user != null;
+    } catch (e) {
+      PlatformExceptionAlertDialog(
+        title: 'Error!',
+        exception: e,
+      );
+      
+      return false;
+    }
+  }
 
+  void updatePassword(String password) async {
+    FirebaseUser firebaseUser = await _firebaseAuth.currentUser();
+
+    firebaseUser.updatePassword(password);
+  }
+
+    Future<void> updateEmail(String email) async {
+    FirebaseUser firebaseUser = await _firebaseAuth.currentUser();
+     
+      return   await firebaseUser.updateEmail(email);
+     
+     
+    
+    } 
+    
+      
+    
+  
 }

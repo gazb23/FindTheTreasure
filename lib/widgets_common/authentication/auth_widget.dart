@@ -20,7 +20,9 @@ class AuthWidget extends StatelessWidget {
     }
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
+        ),
       ),
     );
   }

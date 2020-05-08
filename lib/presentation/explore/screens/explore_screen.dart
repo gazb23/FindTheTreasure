@@ -74,6 +74,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 onTap: () {
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
+                      
                       builder: (context) => QuestDetailScreen(
                         userData: _userData,
                         questModel: quest,

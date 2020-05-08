@@ -87,7 +87,7 @@ class _AnswerBoxState extends State<AnswerBox> {
                   if (!widget.answers
                           .contains(value.toUpperCase().trimRight()) &&
                       value.isNotEmpty) {
-                    ChallengeViewModel().answerIncorrect(context: context);
+                    ChallengeViewModel().answerIscorrect(context: context);
 
                     return 'Incorrect, I\'m taking 1 diamond for your troubles!';
                   }

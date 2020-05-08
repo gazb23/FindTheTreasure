@@ -6,6 +6,7 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/permission_service.dart';
 import 'package:find_the_treasure/view_models/location_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
+import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class LocationService {
     double lat = locationModel.location['latitude'];
     double long = locationModel.location['longitude'];
 
-    _checkGps(context);
+    await _checkGps(context);
     PermissionService(context: context).requestLocationPermission();
     geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
@@ -57,7 +58,7 @@ class LocationService {
             questModel: questModel);
       }
     }).catchError((e) {
-      print(e.toString());
+      PlatformExceptionAlertDialog(title: 'Error', exception: e);
     });
   }
 

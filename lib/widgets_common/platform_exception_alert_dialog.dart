@@ -20,9 +20,10 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
   'ERROR_INVALID_EMAIL' : 'Please check your email, you may have made a whoopsy!',
   'ERROR_EMAIL_ALREADY_IN_USE' : 'Umm...This is awkward! That email is already in use by another account, please check your email and try again.',  
   'ERROR_WRONG_PASSWORD' : 'Wrong password, please try again.',
-  'ERROR_USER_DISABLED' : 'User has been disabled.',
+  'ERROR_USER_DISABLED' : 'Your account has been disabled, please contact support for help.',
   'ERROR_TOO_MANY_REQUESTS' : 'You have been locked out! Too many attempts to sign in.',
-  'ERROR_OPERATION_NOT_ALLOWED' : 'Indicates that Email & Password accounts are not enabled.'
+  'ERROR_OPERATION_NOT_ALLOWED' : 'Indicates that Email & Password accounts are not enabled.',  
+  'ERROR_REQUIRES_RECENT_LOGIN' : 'Please logout of the application and re-try after login.'
 };
 }
 

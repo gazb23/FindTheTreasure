@@ -340,8 +340,9 @@ class _ShopScreenState extends State<ShopScreen> {
     return FractionallySizedBox(
       widthFactor: 0.9,
       child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade300.withOpacity(0.5),
-        highlightColor: Colors.white.withOpacity(0.5),
+        period: Duration(milliseconds: 500),
+        baseColor: Colors.grey,
+        highlightColor: Colors.white,
         child: CustomRaisedButton(
           color: Colors.white,
           onPressed: () {},

@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 class ChallengeViewModel {
   // Challenge incorrect logic - if a question is answered incorrectly a pre-calculated amount of diamonds will be subtracted from the users total amount of diamonds.
 
-  void answerIncorrect({
+  void answerIscorrect({
     @required BuildContext context,
   }) async {
     final UserData _userData = Provider.of<UserData>(context, listen: false);

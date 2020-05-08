@@ -7,7 +7,7 @@ import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
-import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -109,7 +109,7 @@ class LocationViewModel {
   }) async {
     if (!locationModel.locationDiscoveredBy.contains(databaseService.uid)) {
       
-        final didNotDiscoverLocation = await ChallengePlatformAlertDialog(
+        final didNotDiscoverLocation = await PlatformAlertDialog(
 
           backgroundColor: Colors.white,          
           title: 'Close, but no cigar!',

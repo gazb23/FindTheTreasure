@@ -1,11 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expandable/expandable.dart';
 import 'package:find_the_treasure/models/user_model.dart';
-
 import 'package:find_the_treasure/widgets_common/avatar.dart';
-import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
-
-import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
 
 class LeaderboardProfileScreen extends StatelessWidget {
@@ -219,27 +215,5 @@ class LeaderboardProfileScreen extends StatelessWidget {
             .toList());
   }
 
-  Widget _buildTreasure(BuildContext context, UserData user) {
-    return CustomListView(
-      color: Colors.brown,
-      children: <Widget>[
-        Image.asset(
-          'images/ic_treasure.png',
-          height: 80,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        DiamondAndKeyContainer(
-          numberOfDiamonds: user.userDiamondCount,
-          numberOfKeys: user.userKeyCount,
-          diamondHeight: 40,
-          skullKeyHeight: 60,
-          fontSize: 20,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          fontWeight: FontWeight.bold,
-        ),
-      ],
-    );
-  }
+  
 }
