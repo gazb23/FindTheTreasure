@@ -27,7 +27,9 @@ class AuthWidgetBuilder extends StatelessWidget {
           InAppPurchaseConnection.enablePendingPurchases();
           return MultiProvider(
             providers: [
-              Provider<User>.value(value: user),
+              Provider<User>.value(
+                
+                value: user),
               Provider<DatabaseService>(
                 create: (_) => DatabaseService(uid: user.uid),
               ),

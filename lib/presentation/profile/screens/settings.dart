@@ -143,10 +143,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Provider.of<DatabaseService>(context, listen: false);
 
     if (_validateAndSaveEmailForm()) {
-      try {
+      print(_email);
+      setState(() {
         _isLoading = true;
-        
-        setState(() {});
+      });
+      try {
         _checkCurrentPasswordValid =
             await validateCurrentPassword(_currentPasswordController.text);
 
@@ -166,6 +167,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           if (_emailUpdated) {
             _editEmail = false;
+
             await _databaseService.updateUserData(userData: _updatedUserData);
             final snackBar = SnackBar(
                 content: Row(
@@ -184,21 +186,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _isLoading = false;
             setState(() {});
           } else {
-            _isLoading = !_isLoading;
-            _emailController.clear();
-            _currentPasswordController.clear();
-          setState(() {});
+            _isLoading = false;
           }
         } else {
           _isLoading = !_isLoading;
-          setState(() {});
         }
       } on PlatformException catch (e) {
+        print('platform');
         PlatformExceptionAlertDialog(
           title: 'Error',
           exception: e,
         ).show(context);
-        
+        _isLoading = false;
+      } catch (e) {
+        print('catch');
+        _isLoading = false;
+        print(e.toString());
       }
     }
   }
@@ -252,14 +255,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void updateUserPassword(String password) {
     AuthBase _auth = Provider.of<AuthBase>(context, listen: false);
-   try {
-     _auth.updatePassword(password);
-   } on PlatformException catch (e) {
-     PlatformExceptionAlertDialog(title: 'Error', exception: e).show(context);
-   } catch (e) {
-     print(e.toString());
-   }
-   
+    try {
+      _auth.updatePassword(password);
+    } on PlatformException catch (e) {
+      PlatformExceptionAlertDialog(title: 'Error', exception: e).show(context);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<bool> updateUserEmail(String email) async {
@@ -295,7 +297,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     final UserData _userData = Provider.of<UserData>(context);
-    final User _userEmail = Provider.of<User>(context);
+    final User _userEmail = Provider.of<User>(context,);
     return Scaffold(
       key: _scaffoldkey,
       resizeToAvoidBottomInset: true,
@@ -348,7 +350,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _editEmail
               ? _buildEmailTextField(_userData, userEmail)
               : _buildListTile(
-                  title: userEmail.email,
+                  title: _userData.email,
                   leading: Icon(
                     Icons.edit,
                     color: Colors.orangeAccent,
@@ -399,7 +401,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   height: 5,
                 ),
                 Text(
-                  userEmail.email,
+                  _userData.email,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                 ),
                 SizedBox(
@@ -447,8 +449,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             autovalidate: true,
             key: _nameFormKey,
             child: TextFormField(
-               autofocus: true,
-              controller: _nameController..text = userData.displayName..selection = TextSelection.collapsed(offset: userData.displayName.length),
+              autofocus: true,
+              controller: _nameController
+                ..text = userData.displayName
+                ..selection = TextSelection.collapsed(
+                    offset: userData.displayName.length),
               enabled: !_updatePassword,
               style: TextStyle(fontSize: 20),
               textCapitalization: TextCapitalization.words,
@@ -480,14 +485,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: Colors.orangeAccent,
                           ),
                     onPressed: () {
-                        Future.delayed(Duration(milliseconds: 50)).then((_) {
-                       _nameController.clear();
-                     
-
-                        });
-                    }
-                    
-                    ),
+                      Future.delayed(Duration(milliseconds: 50)).then((_) {
+                        _nameController.clear();
+                      });
+                    }),
               ),
               onSaved: (value) => _userName = value,
             ),
@@ -532,16 +533,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: <Widget>[
-          Form(          
+          Form(
             key: _emailFormKey,
             child: Column(
               children: <Widget>[
                 TextFormField(
                   autofocus: true,
                   onSaved: (value) => _email = value,
-                  controller: _emailController..text = userEmail.email..selection = TextSelection.collapsed(offset: userEmail.email.length),
+                  controller: _emailController,
                   enabled: _editEmail,
-                  
                   style: TextStyle(fontSize: 20),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
@@ -553,29 +553,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                   maxLines: 1,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(5),
-                    labelText: 'Enter your email',
-                    enabled: !_isLoading,
-                    suffixIcon: IconButton(
-                        enableFeedback: true,
-                        icon: _isLoading
-                            ? CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.orangeAccent),
-                              )
-                            : Icon(
-                                Icons.clear,
-                                color: Colors.orangeAccent,
-                              ),
-                        onPressed: () {
-                          Future.delayed(Duration(milliseconds: 50)).then((_) {
-                       _emailController.clear();
-                     
-
-                        });
-                        }
-                    )
-                  ),
+                      contentPadding: EdgeInsets.all(5),
+                      labelText: userData.email,
+                      enabled: !_isLoading,
+                      suffixIcon: IconButton(
+                          enableFeedback: true,
+                          icon: Icon(
+                            Icons.clear,
+                            color: Colors.orangeAccent,
+                          ),
+                          onPressed: () {
+                            Future.delayed(Duration(milliseconds: 50))
+                                .then((_) {
+                              _emailController.clear();
+                            });
+                          })),
                 ),
                 SizedBox(height: 15),
                 Container(
@@ -587,6 +579,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Please enter your password';
+                    }
+
+                    if (!(value.length >= 6)) {
+                      return "Whoops, looks like your password is too short";
                     }
                     return null;
                   },
@@ -615,7 +611,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: 20,
           ),
           FractionallySizedBox(
             widthFactor: 0.9,
@@ -635,8 +631,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.grey,
                     text: 'Cancel',
                     onPressed: () {
+                      _emailController.clear();
+                       _currentPasswordController.clear();
                       _editEmail = !_editEmail;
-                      _currentPasswordController.clear();
+                     
                       setState(() {});
                     },
                   ),
@@ -799,7 +797,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         onPressed: () {
                           _currentPasswordController.clear();
                           _updatePassword = false;
-                          
+
                           setState(() {});
                         },
                       ),

@@ -20,6 +20,7 @@ class LeaderBoardTile extends StatelessWidget {
         assert(onTap != null);
   @override
   Widget build(BuildContext context) {
+ 
     return Card(
       shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
@@ -30,22 +31,35 @@ class LeaderBoardTile extends StatelessWidget {
 
         onTap: onTap,
         leading: Container(
-          width: 85,
+          width: 100,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              if (place < 10)
               Text(
+              
                 '0' + place.toString(),
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: Colors.black54),
               ),
-              SizedBox(width: 15),
+              if (place >= 10)
+            AutoSizeText(
+                  
+                   place.toString(),
+                    maxLines: 1,
+                   
+                    style: TextStyle(
+                      
+                        fontWeight: FontWeight.bold, color: Colors.black54),
+                  ),
+              
               Avatar(
-                borderColor: Colors.black38,
-                borderWidth: 1,
-                radius: 20,
-                photoURL: photoURL,
-              )
+                  borderColor: Colors.black38,
+                  borderWidth: 1,
+                  radius: 20,
+                  photoURL: photoURL,
+                )
             ],
           ),
         ),
