@@ -4,7 +4,8 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:flutter/material.dart';
 
-class LeaderboardProfileScreen extends StatelessWidget {
+
+class LeaderboardProfileScreen extends StatefulWidget {
   final UserData userData;
 
   const LeaderboardProfileScreen({
@@ -13,7 +14,13 @@ class LeaderboardProfileScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  _LeaderboardProfileScreenState createState() => _LeaderboardProfileScreenState();
+}
+
+class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
+  @override
+  Widget build(BuildContext context,) {
+ 
     return Scaffold(
       
       body: Stack(children: [
@@ -33,13 +40,13 @@ class LeaderboardProfileScreen extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 elevation: 0,
               ),
-              Expanded(flex: 2, child: _buildUserInfo(context, userData)),
+              Expanded(flex: 2, child: _buildUserInfo(context, widget.userData)),
               Expanded(
                 flex: 4,
                 child: ListView(
                   children: <Widget>[
-                    _buildTreasureTile(context, userData),
-                    _buildLocationsExploredTile(context, userData)
+                    _buildTreasureTile(context, widget.userData),
+                    _buildLocationsExploredTile(context, widget.userData)
                   ],
                 ),
               ),
@@ -196,8 +203,8 @@ class LeaderboardProfileScreen extends StatelessWidget {
     );
   }
 
-  // Display each location
   Widget _buildLocations(List location, UserData userData) {
+    if (location.length > 0)
     return Column(
         children: location
             .map((location) => ListTile(
@@ -212,8 +219,12 @@ class LeaderboardProfileScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ))
-            .toList());
+            .toList()); else return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                
+                Center(child: Image.asset('images/ic_owl_wrong_dialog.png', height: 75,))
+              ],
+            );
   }
-
-  
 }

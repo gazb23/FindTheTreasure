@@ -133,7 +133,7 @@ class Auth implements AuthBase {
         displayName: user.displayName ?? 'Adventurer',
         locationsExplored: [],
         email: user.email,
-        photoURL: user.photoUrl,
+        photoURL: '',
         uid: user.uid,
         points: 50,
         userDiamondCount: 50,

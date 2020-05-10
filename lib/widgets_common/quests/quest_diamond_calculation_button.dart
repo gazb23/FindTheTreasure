@@ -82,7 +82,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
             userDiamondCount:
               updatedDiamondCount,
             userKeyCount: updatedKeyCount,
-            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamondCount, updatedKeys: updatedKeyCount),
+            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamondCount, updatedKeys: updatedKeyCount, locationExplored: userData.locationsExplored),
             displayName: userData.displayName,
             locationsExplored: userData.locationsExplored, 
             email: userData.email,

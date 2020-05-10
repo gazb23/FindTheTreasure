@@ -29,7 +29,7 @@ class ChallengeViewModel {
     final UserData _updateUserData = UserData(
       userDiamondCount: _userData.userDiamondCount - _diamonds,
       userKeyCount: _userData.userKeyCount,
-      points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamonds, updatedKeys: _userData.userKeyCount),
+      points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamonds, updatedKeys: _userData.userKeyCount, locationExplored: _userData.locationsExplored),
       displayName: _userData.displayName,
       email: _userData.email,
       photoURL: _userData.photoURL,
@@ -76,7 +76,7 @@ class ChallengeViewModel {
           final UserData _updateUserData = UserData(
             userDiamondCount: _userData.userDiamondCount - _hintCost,
             userKeyCount: _userData.userKeyCount,
-            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: _userData.userDiamondCount, updatedKeys: _userData.userKeyCount),
+            points: LeaderboardViewModel.pointsUnchanged(userData: _userData),
             displayName: _userData.displayName,
             email: _userData.email,
             photoURL: _userData.photoURL,

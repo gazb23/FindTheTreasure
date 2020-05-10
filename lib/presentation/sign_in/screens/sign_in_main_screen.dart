@@ -7,9 +7,11 @@ import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:find_the_treasure/widgets_common/social_sign_in_button.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'email_sign_in_screen.dart';
 // import 'package:carousel_pro/carousel_pro.dart';
 
@@ -181,7 +183,48 @@ class SignInMainScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(
+                
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      
+                      style: TextStyle(
+
+                        color: Colors.black54,
+                        fontFamily: 'quicksand'
+                      ),
+                      children: [
+
+                        TextSpan(
+                          text: 'By continuing you agree to Find the Treasure\'s '
+                        ),
+                        TextSpan(
+                          text: 'Terms & Conditions ',
+                          recognizer: TapGestureRecognizer()..onTap = () {
+                            launch('https://www.findthetreasure.com.au/terms-conditions/');
+                          },
+                          style: TextStyle(
+                            color: Colors.orangeAccent
+
+                          )
+                        ),
+                        TextSpan(
+                          
+                          text: 'and '
+                        ),
+                        TextSpan(
+                          text: 'Privacy Policy.',
+                           recognizer: TapGestureRecognizer()..onTap = () {
+                            launch('https://www.findthetreasure.com.au/privacy-policy/');
+                          },
+                          style: TextStyle(
+                            color: Colors.orangeAccent
+                          )
+                        )
+                      ]
+                    ),
+                  ),
+                    SizedBox(
                     height: 10.0,
                   ),
                 ],

@@ -101,7 +101,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     place: index + 1,
                     photoURL: user.photoURL ?? null,
                     displayName: user.displayName,
-                    points: LeaderboardViewModel.calculatePoints(updatedKeys: user.userKeyCount, updatedDiamonds: user.userDiamondCount),
+                    points: LeaderboardViewModel.calculatePoints(
+                      updatedKeys: user.userKeyCount,
+                      updatedDiamonds: user.userDiamondCount,
+                      locationExplored: user.locationsExplored
+                    ),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -113,6 +117,4 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   ));
         });
   }
-
-
 }

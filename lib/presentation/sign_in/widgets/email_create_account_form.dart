@@ -46,6 +46,8 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
         title: 'Sign up failed',
         exception: e,
       ).show(context);
+    } catch (e) {
+      print(e.toString());
     }
   }
       void _showDuplicateAccountSignInError(BuildContext context, PlatformException exception) {

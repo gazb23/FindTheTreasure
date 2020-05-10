@@ -20,7 +20,6 @@ import 'package:provider/provider.dart';
 import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   static const String id = 'account_page';
 
@@ -334,8 +333,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
-
-
 
   ListTile _buildListTile({
     @required String title,

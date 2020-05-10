@@ -7,6 +7,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_widgets/que
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
+import 'package:find_the_treasure/view_models/location_view_model.dart';
 
 import 'package:find_the_treasure/widgets_common/quests/answer_box.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -40,38 +41,78 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: 
           
-          title: Builder(
-            builder: (context) => StreamBuilder<QuestionsModel>(
+          
+          
+          
+          Builder(
+            builder: (context) => !locationQuestion ? StreamBuilder<QuestionsModel>(
                 stream: databaseService.challengeStream(
-                    questId: questModel.id,
-                    locationId: locationModel.id,
-                    challengeId: questionsModel.id),
+                    questId: questModel?.id,
+                    locationId: locationModel?.id,
+                    challengeId: questionsModel?.id),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active)  {
+                  if (snapshot.connectionState == ConnectionState.active) {
                     final questionsModelStream = snapshot.data;
                     return InkWell(
                       onTap: () {
-                        ChallengeViewModel.showHint(
-                            context: context,
-                            questionsModel: questionsModelStream,
-                            locationModel: locationModel,
-                            questModel: questModel,
-                            );
+                        
+                            ChallengeViewModel.showHint(
+                                context: context,
+                                questionsModel: questionsModelStream,
+                                locationModel: locationModel,
+                                questModel: questModel,
+                              );
+                            
                       },
                       child: Container(
                         padding: EdgeInsets.only(right: 15),
                         child: 
-                        
-                       AutoSizeText(
-                          !questionsModelStream.hintPurchasedBy.contains(databaseService.uid) ?
-                          'HINT?' : 'SHOW HINT',
-                          style: TextStyle(color: Colors.orangeAccent),
-                        ),
+                            AutoSizeText(
+                                !questionsModel.hintPurchasedBy
+                                        .contains(databaseService.uid)
+                                    ? 'HINT?'
+                                    : 'SHOW HINT',
+                                style: TextStyle(color: Colors.orangeAccent),
+                              )
+                           
                       ),
                     );
-                  } return Container();
-                }),
+                  }
+                  return Container();
+                }) : StreamBuilder<LocationModel>(
+                stream: databaseService.locationStream(
+                    questId: questModel?.id,
+                    locationId: locationModel?.id,
+                    ),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    final locationModelStream = snapshot.data;
+                    return InkWell(
+                      onTap: () {
+                       
+                          
+                            LocationViewModel().showHint(
+                                context: context,
+                                locationModel: locationModelStream,
+                                questModel: questModel);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(right: 15),
+                        child: 
+                            AutoSizeText(
+                                !locationModelStream.hintPurchasedBy
+                                        .contains(databaseService.uid)
+                                    ? 'HINT?'
+                                    : 'SHOW HINT',
+                                style: TextStyle(color: Colors.orangeAccent),
+                              ),
+                      ),
+                    );
+                  }
+                  return Container();
+                })
           ),
           centerTitle: true,
           iconTheme: IconThemeData(

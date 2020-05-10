@@ -3,17 +3,19 @@
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
+import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class LocationViewModel {
+class LocationViewModel extends ChangeNotifier {
   // When all LOCATIONS for a given QUEST have been completed, add the user UID to questCompletedBy. Also provide some visual feedback for the user.
 
   static void submitQuestConquered(
@@ -54,19 +56,21 @@ class LocationViewModel {
             userDiamondCount: updatedDiamondCount,
                locationsExplored: userData.locationsExplored, 
             userKeyCount: updatedKeyCount,
-            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamondCount, updatedKeys: updatedKeyCount),
+            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamondCount, updatedKeys: updatedKeyCount, locationExplored: userData.locationsExplored),
             displayName: userData.displayName,
             email: userData.email,
             photoURL: userData.photoURL,
             uid: userData.uid,
           );
           _databaseService.updateUserDiamondAndKey(userData: _userData);
+          
         }
       } catch (e) {
         print(e.toString());
       }
     } else
       return null;
+      
   }
 
 // Logic for when a location is discovered
@@ -83,7 +87,7 @@ class LocationViewModel {
             field: 'locationDiscoveredBy',
             collectionRef: APIPath.locations(questId: questModel.id));
 
-        final didDiscoverLocation = await PlatformAlertDialog(
+        final didDiscoverLocation = await ChallengePlatformAlertDialog(
           backgroundColor: Colors.amberAccent,
           title: 'Location Discovered!',
           content:
@@ -121,6 +125,86 @@ class LocationViewModel {
         if (didNotDiscoverLocation) {}
       } 
     } 
+    // LOGIC to show HINT
+    void showHint({
+    @required BuildContext context,   
+    @required LocationModel locationModel,
+    @required QuestModel questModel,
+
+  }) async {
+        final UserData _userData = Provider.of<UserData>(context, listen: false);
+    final DatabaseService _databaseService =
+        Provider.of<DatabaseService>(context, listen: false);
+    // Cost of a hint    
+    final int _hintCost = 5;
+    
+    //Show snackBar hint if the user has purchased it
+    if (locationModel.hintPurchasedBy.contains(_databaseService.uid)) {
+      final snackBar = SnackBar(
+        content: Text(
+          'HINT: ${locationModel.hint}',
+          style: TextStyle(fontSize: 18, fontFamily: 'Quicksand'),
+        ),
+        duration: Duration(seconds: 20),
+      );
+      Scaffold.of(context).showSnackBar(snackBar);
+    } else if (!locationModel.hintPurchasedBy.contains(_databaseService.uid) && _userData.userDiamondCount >= _hintCost) {
+      final didRequestHint = await PlatformAlertDialog(
+        title: 'Purchase Hint',
+        content:
+            'Having trouble with the challenge? I can give ya a hint but it\'ll cost ya $_hintCost diamonds from your treasure bounty!',
+        defaultActionText: 'Purchase Hint',
+        cancelActionText: 'Cancel',
+        image: Image.asset('images/ic_out_of_gems.png'),
+      ).show(context);
+      if (didRequestHint) {
+        try {
+          final UserData _updateUserData = UserData(
+            userDiamondCount: _userData.userDiamondCount - _hintCost,
+            userKeyCount: _userData.userKeyCount,
+            points: LeaderboardViewModel.pointsUnchanged(userData: _userData),
+            displayName: _userData.displayName,
+            email: _userData.email,
+            photoURL: _userData.photoURL,
+            uid: _userData.uid,
+          );
+
+          _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
+          _databaseService.arrayUnionField(
+            documentId: locationModel.id,            
+            field: 'hintPurchasedBy',
+            collectionRef: APIPath.locations(questId: questModel.id),
+          );
+          notifyListeners();
+         
+        }  
+        
+        
+        catch (e) {
+          print(e.toString());
+        }
+      }
+    } else if (!locationModel.hintPurchasedBy.contains(_databaseService.uid) && _userData.userDiamondCount < _hintCost) {
+      final didRequestHint = await PlatformAlertDialog(
+        title: 'Hint Purchase',
+        backgroundColor: Colors.brown,
+        contentTextColor: Colors.white,
+        titleTextColor: Colors.white,
+        content:
+            'Having trouble with the challenge? I can give ya a hint but it\'ll cost ya $_hintCost diamonds. Head to the store to purchase more.',
+        defaultActionText: 'Store',
+        cancelActionText: 'Cancel',
+        image: Image.asset('images/ic_out_of_gems.png'),
+      ).show(context);
+      if (didRequestHint) {
+        Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ShopScreen(),
+        ));
+      }
+    }
+  }
+    
   } 
 
 

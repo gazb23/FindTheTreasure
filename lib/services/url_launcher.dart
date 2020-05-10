@@ -14,7 +14,7 @@ class UrlLauncher {
         await launch(primaryUrl, forceSafariVC: false);
       }
     } catch (e) {
-      await launch(primaryUrl, forceSafariVC: false);
+      await launch(fallBackUrll, forceSafariVC: false);
     }
   }
 }
