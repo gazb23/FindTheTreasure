@@ -24,7 +24,7 @@ class CupertinoHomeScaffold extends StatelessWidget {
       
       tabBar: CupertinoTabBar(
         currentIndex: 2,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.shade800,
         items: [
           _buildItem(TabItem.profile),
           _buildItem(TabItem.myquests),
@@ -47,7 +47,8 @@ class CupertinoHomeScaffold extends StatelessWidget {
 
   BottomNavigationBarItem _buildItem(TabItem tabItem) {
     final itemData = TabItemData.allTabs[tabItem];
-    final color = currentTab == tabItem ? Colors.orangeAccent : Colors.black38;
+    final color = currentTab == tabItem ? Colors.orangeAccent : Colors.grey;
+    final textColor = Colors.white;
     return BottomNavigationBarItem(      
       icon: Icon(
         itemData.icon,
@@ -55,7 +56,7 @@ class CupertinoHomeScaffold extends StatelessWidget {
       ),
       title: Text(
         itemData.title,
-        style: TextStyle(color: color, fontFamily: 'quicksand', fontSize: 10.0, fontWeight: FontWeight.w600),
+        style: TextStyle(color: textColor, fontFamily: 'quicksand', fontSize: 10.0, fontWeight: FontWeight.w600),
       ),
     );
   }

@@ -31,12 +31,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-     backgroundColor: Colors.orangeAccent,
+     backgroundColor: Colors.grey.shade800,
 
-          leading: Icon(Icons.search, color: Colors.white,),
+          // leading: Icon(Icons.search, color: Colors.white,),
           iconTheme: IconThemeData(
             color: Colors.black87,
           ),
+          
           actions: <Widget>[
             DiamondAndKeyContainer(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

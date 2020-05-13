@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 
 class QuestDetailsListTile extends StatelessWidget {
   final String image;
   final String difficulty;
   final double imageHeight;
+  final String platformTitle;
+  final String platformContent;
+  final Widget platformImage;
   final BuildContext context;
 
   QuestDetailsListTile({
@@ -13,6 +17,8 @@ class QuestDetailsListTile extends StatelessWidget {
     @required this.imageHeight,
     @required this.difficulty,
     @required this.context,
+    @required this.platformTitle,
+    @required this.platformContent, this.platformImage,
   }) : super(key: key);
 
   Widget _questDifficulty(String difficulty) {
@@ -59,9 +65,19 @@ class QuestDetailsListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.asset(
-        image,
-        height: imageHeight,
+      leading: InkWell(
+        onTap: () {
+          PlatformAlertDialog(
+            title: platformTitle,
+            content: platformContent,
+            image: platformImage,
+            defaultActionText: 'OK',
+          ).show(context);
+        },
+        child: Image.asset(
+          image,
+          height: imageHeight,
+        ),
       ),
       title: _questDifficulty(difficulty),
     );

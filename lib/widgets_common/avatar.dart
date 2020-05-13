@@ -9,7 +9,7 @@ class Avatar extends StatelessWidget {
   final double borderWidth;
   final Color borderColor;
   final VoidCallback onPressed;
-  static const String _noImage = 'https://firebasestorage.googleapis.com/v0/b/find-the-treasure-8d58f.appspot.com/o/ic_single.png?alt=media&token=40e87e12-229b-4be0-a049-07f91bccd409';
+  static const String _noImage = 'https://firebasestorage.googleapis.com/v0/b/find-the-treasure-8d58f.appspot.com/o/ic_single.png?alt=media&token=3f9e2e42-8400-4f33-b483-9dfb0d9f72e7';
   const Avatar({
     Key key,
     @required this.photoURL,

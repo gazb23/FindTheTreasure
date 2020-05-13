@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
@@ -139,27 +140,30 @@ class _ShopScreenState extends State<ShopScreen> {
           locationsExplored: _userData.locationsExplored,
           photoURL: _userData.photoURL,
           uid: _userData.uid,
-          points: (_userData.userDiamondCount + _diamonds) *
-              (_userData.userKeyCount + _keys),
+          points: LeaderboardViewModel.pointsUnchanged(userData: _userData),
           userDiamondCount: _userData.userDiamondCount + _diamonds,
           userKeyCount: _userData.userKeyCount + _keys);
-
+      await _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
       final _didSelectOK = await PlatformAlertDialog(
+              backgroundColor: Colors.brown,
+              titleTextColor: Colors.white,
+              contentTextColor: Colors.white,
               title: 'Jackpot!',
               content:
-                  'I\'ll add the loot to ye treasure chest. Happy adventures.',
+                  'The loot has been added to ye treasure chest. Happy adventures.',
               image: Image.asset('images/ic_thnx.png'),
-              defaultActionText: 'Add Loot')
+              defaultActionText: 'Sweet')
           .show(context);
       if (_didSelectOK) {
-        _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
-
         _isPurchasePending = false;
       }
     } else if (_purchase != null &&
         _purchase.status == PurchaseStatus.pending) {
       _isPurchasePending = true;
       PlatformAlertDialog(
+              backgroundColor: Colors.brown,
+              titleTextColor: Colors.white,
+              contentTextColor: Colors.white,
               title: 'Purchase Pending',
               content:
                   'Your order is being processed, you\'ll recieve an order update very soon.',
@@ -169,6 +173,9 @@ class _ShopScreenState extends State<ShopScreen> {
     } else if (_purchase != null && _purchase.status == PurchaseStatus.error) {
       _isPurchasePending = true;
       PlatformAlertDialog(
+              backgroundColor: Colors.brown,
+              titleTextColor: Colors.white,
+              contentTextColor: Colors.white,
               title: 'Shiver Me Timbers!',
               content:
                   'There has been an error whilst processing your payment. Please try again.',
@@ -254,6 +261,9 @@ class _ShopScreenState extends State<ShopScreen> {
               tooltip: 'Store questions',
               onPressed: () async {
                 final _didSelectOK = await PlatformAlertDialog(
+                        backgroundColor: Colors.brown,
+                        titleTextColor: Colors.white,
+                        contentTextColor: Colors.white,
                         title: 'Welcome to The Shop',
                         content:
                             'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints!',
@@ -269,15 +279,18 @@ class _ShopScreenState extends State<ShopScreen> {
             if (_isAvailable)
               // Display products from store
               for (var prod in _products)
-                BuyDiamondOrKeyButton(
-                  numberOfDiamonds: numberOfDiamonds(prod.price),
-                  diamondCost: prod.price,
-                  bonusKey: numberOfKeys(prod.price),
-                  isPurchasePending: _isPurchasePending,
-                  onPressed: () {
-                    _buyProduct(prod);
-                    _currentPurchase = prod.id;
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: BuyDiamondOrKeyButton(
+                    numberOfDiamonds: numberOfDiamonds(prod.price),
+                    diamondCost: prod.price,
+                    bonusKey: numberOfKeys(prod.price),
+                    isPurchasePending: _isPurchasePending,
+                    onPressed: () {
+                      _buyProduct(prod);
+                      _currentPurchase = prod.id;
+                    },
+                  ),
                 )
             else
               Column(
@@ -337,16 +350,19 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   Widget storeLoading() {
-    return FractionallySizedBox(
-      widthFactor: 0.9,
-      child: Shimmer.fromColors(
-        period: Duration(milliseconds: 500),
-        baseColor: Colors.grey,
-        highlightColor: Colors.white,
-        child: CustomRaisedButton(
-          color: Colors.white,
-          onPressed: () {},
-          padding: 30,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: FractionallySizedBox(
+        widthFactor: 0.9,
+        child: Shimmer.fromColors(
+          period: Duration(milliseconds: 500),
+          baseColor: Colors.grey,
+          highlightColor: Colors.white,
+          child: CustomRaisedButton(
+            color: Colors.white,
+            onPressed: () {},
+            padding: 30,
+          ),
         ),
       ),
     );

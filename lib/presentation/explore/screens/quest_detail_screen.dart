@@ -222,8 +222,7 @@ class QuestDetailScreen extends StatelessWidget {
             ],
           ),
           theme: ExpandableThemeData(
-              sizeCurve: Curves.bounceOut,
-              animationDuration: Duration(milliseconds: 1000),
+              crossFadePoint: 0,
               tapBodyToCollapse: true,
               tapHeaderToExpand: true,
               hasIcon: true,
@@ -282,7 +281,7 @@ class QuestDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 child: Text(
                   'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound',
-                  maxLines: 3,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.justify,
                 ),
@@ -305,8 +304,7 @@ class QuestDetailScreen extends StatelessWidget {
             ],
           ),
           theme: ExpandableThemeData(
-            sizeCurve: Curves.bounceOut,
-            animationDuration: Duration(seconds: 1),
+            crossFadePoint: 0,
             tapBodyToCollapse: true,
             tapHeaderToExpand: true,
             hasIcon: true,
@@ -362,14 +360,16 @@ class QuestDetailScreen extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        color: Colors.grey.shade800.withOpacity(0.9),
+        padding: EdgeInsets.fromLTRB(10,0,10,0),
+        color: Colors.grey.shade800,
         width: double.infinity,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
               flex: 3,
               child: DiamondAndKeyContainer(
+
                 numberOfDiamonds: questModelStream.numberOfDiamonds,
                 numberOfKeys: questModelStream.numberOfKeys,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -381,10 +381,13 @@ class QuestDetailScreen extends StatelessWidget {
             ),
             Expanded(
                 flex: 3,
-                child: QuestDiamondCalulationButton(
-                  questModelStream: questModelStream,
-                  userData: userData,
-                  databaseService: database,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: QuestDiamondCalulationButton(
+                    questModelStream: questModelStream,
+                    userData: userData,
+                    databaseService: database,
+                  ),
                 ))
           ],
         ),
@@ -400,6 +403,9 @@ class QuestDetailScreen extends StatelessWidget {
           image: 'images/deadline.png',
           imageHeight: 40,
           difficulty: difficulty,
+          platformTitle: 'Quest Length',
+          platformContent: 'This indicates how much time to allow to complete the quest.',
+          platformImage: Image.asset('images/deadline.png',height: 80,),
         ),
       ],
     );
@@ -413,6 +419,9 @@ class QuestDetailScreen extends StatelessWidget {
           image: 'images/brain.png',
           imageHeight: 40,
           difficulty: difficulty,
+          platformTitle: 'Brain Strain',
+          platformContent: 'This indicates the mental fortitude one will need to conquer the quest.',
+          platformImage: Image.asset('images/brain.png',height: 80,),
         ),
       ],
     );
@@ -426,6 +435,9 @@ class QuestDetailScreen extends StatelessWidget {
           image: 'images/hiker.png',
           imageHeight: 40,
           difficulty: difficulty,
+          platformTitle: 'Physical Difficulty',
+          platformContent: 'This indicates how physical the quest may be.',
+          platformImage: Image.asset('images/hiker.png',height: 80,),
         ),
       ],
     );

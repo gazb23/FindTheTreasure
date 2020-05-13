@@ -58,7 +58,7 @@ final double diamondHeight;
             child: Row(
               children: <Widget>[
                 Image.asset(
-                  'images/explore/skull_key.png',
+                  'images/skull_key_outline.png',
                   height: skullKeyHeight ?? 30.0,
                 ),
                 Text(

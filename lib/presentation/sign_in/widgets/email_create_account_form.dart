@@ -34,6 +34,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
+  bool _obscureText = true;
 
   Future<void> _submit() async {
     try {
@@ -96,6 +97,18 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       onChanged: (email) => widget.bloc.updateWith(email: email),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
+      suffixIcon: IconButton(
+                          enableFeedback: true,
+                          icon: Icon(
+                            Icons.clear,
+                            color: Colors.orangeAccent,
+                          ),
+                          onPressed: () {
+                            Future.delayed(Duration(milliseconds: 50))
+                                .then((_) {
+                              _emailController.clear();
+                            });
+                          })
     );
   }
 
@@ -108,7 +121,20 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       onEditingComplete: model.canSubmit ? _submit : null,
       onChanged: (password) => widget.bloc.updateWith(password: password),
       errorText: model.passwordErrorText,
-      obscureText: true,
+      obscureText: _obscureText,
+      
+      suffixIcon: IconButton(
+                      icon: Icon(
+                        
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.orangeAccent,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
       textInputAction: TextInputAction.done,
     );
   }

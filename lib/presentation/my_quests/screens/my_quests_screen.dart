@@ -73,6 +73,7 @@ class MyQuestsScreen extends StatelessWidget {
             message:
                 'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',            
             buttonEnabled: false,
+            image: Image.asset('images/owl_thumbs.png'),
             snapshot: snapshot,
             itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
@@ -108,6 +109,7 @@ class MyQuestsScreen extends StatelessWidget {
           return ListItemsBuilder<QuestModel>(
             title: 'Ready for Adventure?',
             message: 'Head to the explore page, choose a quest to start your journey!',
+            
             buttonEnabled: false,            
             snapshot: snapshot,
             itemBuilder: (context, quest, index) => QuestListView(
@@ -158,6 +160,7 @@ class MyQuestsScreen extends StatelessWidget {
             title: 'No Quests Conquered!',
             message: 'Head to the explore page, choose a quest and start your journey!',
             buttonEnabled: false,            
+             image: Image.asset('images/ic_owl_wrong_dialog.png'),
             snapshot: snapshot,
             itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,

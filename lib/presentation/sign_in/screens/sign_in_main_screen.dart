@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
@@ -13,13 +14,12 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'email_sign_in_screen.dart';
-// import 'package:carousel_pro/carousel_pro.dart';
 
 class SignInMainScreen extends StatelessWidget {
   static const String id = 'sign_in_main';
   final SocialSignInBloc bloc;
   final bool isLoading;
-  
+
   const SignInMainScreen({
     Key key,
     this.bloc,
@@ -28,7 +28,7 @@ class SignInMainScreen extends StatelessWidget {
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context);
-    
+
     return ChangeNotifierProvider<ValueNotifier<bool>>(
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
@@ -52,7 +52,8 @@ class SignInMainScreen extends StatelessWidget {
     ).show(context);
   }
 
-    void _showDuplicateAccountSignInError(BuildContext context, PlatformException exception) {
+  void _showDuplicateAccountSignInError(
+      BuildContext context, PlatformException exception) {
     PlatformExceptionAlertDialog(
       title: 'Sign in failed',
       exception: exception,
@@ -60,12 +61,12 @@ class SignInMainScreen extends StatelessWidget {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
-    
     try {
       await bloc.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
-      if (e.code != 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') _showDuplicateAccountSignInError(context, e);
+      if (e.code != 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL')
+        _showDuplicateAccountSignInError(context, e);
     }
   }
 
@@ -79,8 +80,6 @@ class SignInMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -108,24 +107,65 @@ class SignInMainScreen extends StatelessWidget {
           Carousel(
             boxFit: BoxFit.fitHeight,
             images: [
-              Image.asset(
-                'images/slide_1.png',
-                alignment: Alignment.topCenter,
-                fit: BoxFit.fitWidth,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Image.asset(
+                    'images/slide_1.png',
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.fitWidth,
+                  ),
+                  SizedBox(height: 15),
+                  Container(
+                      child: AutoSizeText(
+                    'Sign up to begin your adventure!',
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54),
+                  ))
+                ],
               ),
-              Image.asset(
-                'images/slide_2.png',
-                alignment: Alignment.topCenter,
-                fit: BoxFit.fitWidth,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Image.asset(
+                    'images/slide_2.png',
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.fitWidth,
+                  ),
+                  SizedBox(height: 15),
+                  FractionallySizedBox(
+                    widthFactor: 0.8,
+                      child: AutoSizeText(
+                    'Explore amazing new places.',
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54),
+                  ))
+                ],
               ),
-              Image.asset(
-                'images/slide_3.png',
-                alignment: Alignment.topCenter,
-                fit: BoxFit.fitWidth,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Image.asset(
+                    'images/slide_3.png',
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.fitWidth,
+                  ),
+                  SizedBox(height: 15),
+                  Container(
+                      child: AutoSizeText(
+                    'Conquer quests to win treasure.',
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54),
+                  ))
+                ],
               )
             ],
             showIndicator: false,
             animationCurve: Curves.easeIn,
+            autoplayDuration: Duration(seconds: 3),
           ),
           FractionallySizedBox(
             widthFactor: 0.9,
@@ -139,19 +179,19 @@ class SignInMainScreen extends StatelessWidget {
                     text: 'Sign in with Facebook',
                     textcolor: Colors.white,
                     color: Color(0xFF4267B2),
-                    onPressed: () => connected ? _signInWithFacebook(context) : _showConnectionFailureDialog(context),
+                    onPressed: () => connected
+                        ? _signInWithFacebook(context)
+                        : _showConnectionFailureDialog(context),
                   ),
+                  SizedBox(height: 10),
                   SocialSignInButton(
                     assetName: 'images/google-logo.png',
                     text: 'Sign in with Google',
                     textcolor: Colors.black87,
                     color: Colors.grey[100],
-                    onPressed: () =>
-
-                      // connected ? 
-                      _signInWithGoogle(context) 
-                      // : _showConnectionFailureDialog(context),
-                    
+                    onPressed: () => connected
+                        ? _signInWithGoogle(context)
+                        : _showConnectionFailureDialog(context),
                   ),
                   SizedBox(
                     height: 10.0,
@@ -183,48 +223,35 @@ class SignInMainScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      
-                      style: TextStyle(
-
-                        color: Colors.black54,
-                        fontFamily: 'quicksand'
-                      ),
-                      children: [
-
-                        TextSpan(
-                          text: 'By continuing you agree to Find the Treasure\'s '
-                        ),
-                        TextSpan(
-                          text: 'Terms & Conditions ',
-                          recognizer: TapGestureRecognizer()..onTap = () {
-                            launch('https://www.findthetreasure.com.au/terms-conditions/');
-                          },
-                          style: TextStyle(
-                            color: Colors.orangeAccent
-
-                          )
-                        ),
-                        TextSpan(
-                          
-                          text: 'and '
-                        ),
-                        TextSpan(
-                          text: 'Privacy Policy.',
-                           recognizer: TapGestureRecognizer()..onTap = () {
-                            launch('https://www.findthetreasure.com.au/privacy-policy/');
-                          },
-                          style: TextStyle(
-                            color: Colors.orangeAccent
-                          )
-                        )
-                      ]
-                    ),
+                        style: TextStyle(
+                            color: Colors.black54, fontFamily: 'quicksand'),
+                        children: [
+                          TextSpan(
+                              text:
+                                  'By continuing you agree to Find the Treasure\'s '),
+                          TextSpan(
+                              text: 'Terms & Conditions ',
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  launch(
+                                      'https://www.findthetreasure.com.au/terms-conditions/');
+                                },
+                              style: TextStyle(color: Colors.orangeAccent)),
+                          TextSpan(text: 'and '),
+                          TextSpan(
+                              text: 'Privacy Policy.',
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  launch(
+                                      'https://www.findthetreasure.com.au/privacy-policy/');
+                                },
+                              style: TextStyle(color: Colors.orangeAccent))
+                        ]),
                   ),
-                    SizedBox(
+                  SizedBox(
                     height: 10.0,
                   ),
                 ],
@@ -234,12 +261,13 @@ class SignInMainScreen extends StatelessWidget {
         ],
       );
   }
- Future<void> _showConnectionFailureDialog(BuildContext context) async {
-   await  PlatformAlertDialog(
-     title: 'No network connection',
-     content: 'Uh no! We can\'t seem to find an internet connection, please check your network and try again.',
-     defaultActionText: 'OK',
-   ).show(context);
- }
 
+  Future<void> _showConnectionFailureDialog(BuildContext context) async {
+    await PlatformAlertDialog(
+      title: 'No network connection',
+      content:
+          'Uh no! We can\'t seem to find an internet connection, please check your network and try again.',
+      defaultActionText: 'OK',
+    ).show(context);
+  }
 }

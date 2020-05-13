@@ -29,8 +29,7 @@ class CustomTextField extends StatelessWidget {
         obscureText: obscureText,
         onChanged: onChanged,
         
-        textInputAction: textInputAction,
-        // textCapitalization: TextCapitalization.words,
+        textInputAction: textInputAction,       
         decoration: InputDecoration(
           suffixIcon: suffixIcon,
           labelText: labelText,

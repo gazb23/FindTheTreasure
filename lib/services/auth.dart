@@ -62,8 +62,7 @@ class Auth implements AuthBase {
             accessToken: googleAuth.accessToken,
           ),
         );
-        if (authResult.additionalUserInfo.isNewUser) {
-          print('newUser');
+        if (authResult.additionalUserInfo.isNewUser) {          
           await _createUserData(authResult.user);
         }
 
@@ -89,8 +88,7 @@ class Auth implements AuthBase {
           accessToken: result.accessToken.token,
         ),
       );
-      if (authResult.additionalUserInfo.isNewUser) {
-        print('newUser');
+      if (authResult.additionalUserInfo.isNewUser) {        
         await _createUserData(authResult.user);
       }
       return _userFromFirebase(authResult.user);
@@ -109,8 +107,7 @@ class Auth implements AuthBase {
 
   Future<User> signInWithEmailAndPassword(String email, String password) async {
     final authResult = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
-    // await updateUserData(authResult.user);
+        email: email, password: password);   
     return _userFromFirebase(authResult.user);
   }
 
@@ -133,8 +130,8 @@ class Auth implements AuthBase {
         displayName: user.displayName ?? 'Adventurer',
         locationsExplored: [],
         email: user.email,
-        photoURL: '',
-        uid: user.uid,
+        photoURL: user.photoUrl,
+        uid: user.uid ?? '',
         points: 50,
         userDiamondCount: 50,
         userKeyCount: 1);

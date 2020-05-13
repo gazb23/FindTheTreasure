@@ -30,6 +30,6 @@ class ConnectivityService {
       return ConnectivityStatus.Offline;
     }
   }
-
+  
 }
 

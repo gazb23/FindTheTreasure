@@ -35,7 +35,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
-
+  bool _obscureText = true;
   void _submit() async {
     try {
       await widget.bloc.submit();
@@ -99,6 +99,18 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       onChanged: widget.bloc.updateEmail,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
+       suffixIcon: IconButton(
+                          enableFeedback: true,
+                          icon: Icon(
+                            Icons.clear,
+                            color: Colors.orangeAccent,
+                          ),
+                          onPressed: () {
+                            Future.delayed(Duration(milliseconds: 50))
+                                .then((_) {
+                              _emailController.clear();
+                            });
+                          })
     );
   }
 
@@ -111,7 +123,19 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       onEditingComplete: model.canSubmit ? _submit : null,
       onChanged: widget.bloc.updatePassword,
       errorText: model.passwordErrorText,
-      obscureText: true,
+      obscureText: _obscureText,
+      suffixIcon: IconButton(
+                      icon: Icon(
+                        
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.orangeAccent,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
       textInputAction: TextInputAction.done,
     );
   }

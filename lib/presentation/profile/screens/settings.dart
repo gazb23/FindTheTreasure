@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/sign_in/screens/password_reset_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/validators.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
@@ -25,6 +27,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final TextEditingController _currentPasswordController =
       TextEditingController();
@@ -40,6 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _checkCurrentPasswordValid = true;
   bool _emailUpdated = true;
   bool _obscureText = true;
+
   String _userName = '';
   String _email = '';
 
@@ -293,8 +297,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+   
     Size _size = MediaQuery.of(context).size;
     final UserData _userData = Provider.of<UserData>(context);
     final User _userEmail = Provider.of<User>(context,);
@@ -312,8 +318,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _buildSettings(_userData, context, _userEmail),
-              _buildLogOut(_userData, context, _userEmail)
+              _buildSettings(_userData, context, _userEmail),              
+              _buildLogOut(_userData, context, _userEmail),
+             
             ],
           ),
         ),
@@ -323,6 +330,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Container _buildSettings(
       UserData _userData, BuildContext context, User userEmail) {
+ 
     return Container(
       child: Column(
         children: <Widget>[
@@ -332,14 +340,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // EDIT USERNAME
           _editName
               ? _buildUserNameTextField(_userData)
-              : _buildListTile(
+              :  _buildListTile(
                   title: _userData.displayName,
                   leading: Icon(
                     Icons.edit,
                     color: Colors.blueAccent,
                   ),
                   onTap: () {
+                   
                     setState(() {
+                      
                       _editName = true;
                       _editEmail = false;
                       _updatePassword = false;
@@ -387,9 +397,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Container _buildLogOut(
       UserData _userData, BuildContext context, User userEmail) {
+                 final connectionStatus = Provider.of<ConnectivityStatus>(context);
+    bool connected = connectionStatus == ConnectivityStatus.Online;
     return Container(
       child: Column(
         children: <Widget>[
+           connected ? Container() : Container(
+                width: double.infinity,
+                
+                color: Colors.redAccent.withOpacity(0.8),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('No network connection', textAlign: TextAlign.center, style: TextStyle(
+                    color: Colors.white
+                  ), ),
+                ),
+              ),
           Container(
             child: Column(
               children: <Widget>[
@@ -441,6 +464,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   //Build Update Name Text Field
   Widget _buildUserNameTextField(UserData userData) {
+   
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -503,7 +527,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: <Widget>[
                 Expanded(
                   child: SignInButton(
-                    text: 'Update username',
+                     padding: 0,
+                    text: 'Update',
                     isLoading: _isLoading,
                     onPressed: !_isLoading ? _submitName : null,
                   ),
@@ -595,8 +620,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     enabled: !_isLoading,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
                         color: Colors.orangeAccent,
                       ),
                       onPressed: () {
@@ -610,6 +635,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
+         
           SizedBox(
             height: 20,
           ),
@@ -620,7 +646,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: <Widget>[
                 Expanded(
                   child: SignInButton(
-                    text: 'Update email',
+                    padding: 0,
+                    text: 'Update',
                     isLoading: _isLoading,
                     onPressed: !_isLoading ? _submitEmail : null,
                   ),
@@ -642,6 +669,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
+          SizedBox(height: 10),
+           InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => PasswordResetScreen(),
+              ));
+            },
+            child: Container(child: Text('Forgotten password?'))),
         ],
       ),
     );
@@ -773,8 +809,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     textInputAction: TextInputAction.done,
                   )),
+             
+                 
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               FractionallySizedBox(
                 widthFactor: 0.9,
@@ -783,7 +821,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: <Widget>[
                     Expanded(
                       child: SignInButton(
-                        text: 'Update password',
+                         padding: 0,
+                        text: 'Update',
                         isLoading: _isLoading,
                         onPressed:
                             !_isLoading || !_editName ? _submitPass : null,
@@ -802,9 +841,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
                     ),
+                    
                   ],
                 ),
-              )
+              ),
+               InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => PasswordResetScreen(),
+              ));
+            },
+            child: Container(child: Text('Forgotten password?'))),
             ],
           ),
         ));
@@ -837,4 +885,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onTap: onTap,
     );
   }
+     
 }
