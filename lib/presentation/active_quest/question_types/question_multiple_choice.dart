@@ -54,7 +54,7 @@ class QuestionMultipleChoice extends StatelessWidget {
                             );
                       },
                       child: Container(
-                        padding: EdgeInsets.only(right: 15),
+                        padding: EdgeInsets.all(15),
                         child: 
                         
                         AutoSizeText(
@@ -77,14 +77,14 @@ class QuestionMultipleChoice extends StatelessWidget {
               numberOfKeys: userData.userKeyCount,
               color: Colors.black87,
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             )
           ],
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
                     'images/background_games.png',
@@ -99,7 +99,7 @@ class QuestionMultipleChoice extends StatelessWidget {
                 questionsModel: questionsModel,
                 locationQuestion: locationQuestion,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               MultipleChoice(

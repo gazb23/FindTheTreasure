@@ -131,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
                     "images/bckgrnd_balon.png",
@@ -183,13 +183,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(child: Image.asset('images/cloud_2.png')),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Container(
             constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width / 1.5),
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
             child: AutoSizeText(
@@ -225,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: <Widget>[
         _buildListTile(
           title: 'My stats',
-          leading: Icon(
+          leading: const Icon(
             Icons.equalizer,
             color: Colors.redAccent,
           ),
@@ -241,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         _buildListTile(
           title: 'Settings',
-          leading: Icon(
+          leading: const Icon(
             Icons.settings,
             color: Colors.orangeAccent,
           ),
@@ -263,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         _buildListTile(
             title: 'Invite a friend',
-            leading: Icon(
+            leading: const Icon(
               Icons.person_add,
               color: Colors.black87,
             ),
@@ -276,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }),
         _buildListTile(
           title: 'Help',
-          leading: Icon(
+          leading: const Icon(
             Icons.live_help,
             color: Colors.black87,
           ),
@@ -287,12 +287,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           },
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         // Build social Icons
         Container(
           color: Colors.grey.shade100,
           margin: EdgeInsets.zero,
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: FractionallySizedBox(
             widthFactor: 0.6,
             child: Row(
@@ -341,13 +341,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     @required Color leadingContainerColor,
   }) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.black54, fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      trailing: Icon(
+      trailing: const Icon(
         Icons.keyboard_arrow_right,
         size: 30,
       ),
@@ -355,7 +355,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: leadingContainerColor),
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: leading),
       onTap: onTap,
     );

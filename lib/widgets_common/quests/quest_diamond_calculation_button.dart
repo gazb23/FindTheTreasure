@@ -4,7 +4,6 @@ import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,8 @@ class QuestDiamondCalulationButton extends StatelessWidget {
     return SignInButton(
         padding: 15,
 
-        text: _isStartedBy || _isCompletedBy ? 'Continue Quest' : 'Start Quest',
+        text: 
+        _isStartedBy || _isCompletedBy ? 'Continue Quest' : 'Start Quest',
         onPressed: () {
           if (userData.userDiamondCount >= questModelStream.numberOfDiamonds &&
                   userData.userKeyCount >= questModelStream.numberOfKeys ||
@@ -51,6 +51,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
           } else
             return _confirmStoreKey(context, questModelStream, _keyCalc);
         });
+        
   }
 
   Future<void> _confirmQuest(BuildContext context, QuestModel questModelStream,
@@ -64,7 +65,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
         final didRequestQuest = await PlatformAlertDialog(
           title: '${userData.displayName}',
           content:
-              'It seems ya have enough treasure for the ${questModelStream.title} quest. Do you want to begin the quest?',
+              'It seems ya have enough treasure for the ${questModelStream.title} quest. Do you want to start your adventure?',
           cancelActionText: 'Cancel',
           defaultActionText: 'Confirm',
           image: Image.asset('images/ic_excalibur_owl.png'),
@@ -77,24 +78,23 @@ class QuestDiamondCalulationButton extends StatelessWidget {
               ),
             ),
           );
-          final int updatedDiamondCount =   userData.userDiamondCount - questModelStream.numberOfDiamonds;
-          final int updatedKeyCount = userData.userKeyCount - questModelStream.numberOfKeys;
+         
           final UserData _userData = UserData(
             userDiamondCount:
-              updatedDiamondCount,
-            userKeyCount: updatedKeyCount,
-            points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamondCount, updatedKeys: updatedKeyCount, locationExplored: userData.locationsExplored),
+              userData.userDiamondCount - questModelStream.numberOfDiamonds,
+            userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
+            points: userData.points,
             displayName: userData.displayName,
             locationsExplored: userData.locationsExplored, 
             email: userData.email,
             photoURL: userData.photoURL,
-            uid: userData.uid,
+            uid: userData.uid,            
           );
           await database.arrayUnionField(
               collectionRef: APIPath.quests(),
               documentId: questModelStream.id,             
               field: 'questStartedBy');
-          database.updateUserDiamondAndKey(userData: _userData);
+          database.updateUserData(userData: _userData);
         }
       } else if (_isStartedBy || _isCompletedBy) {
         Navigator.of(context, rootNavigator: true).push(

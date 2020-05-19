@@ -1,9 +1,11 @@
 
+import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
 
 class AnswerBox extends StatefulWidget {
+  final QuestModel questModel;
   final List<dynamic> answers;
   final bool islocationQuestion;
   final bool isFinalChallenge;
@@ -18,7 +20,7 @@ class AnswerBox extends StatefulWidget {
     @required this.arrayUnionCollectionRef,
     @required this.arrayUnionDocumentId,
     @required this.locationTitle,
-    @required this.isFinalChallenge,
+    @required this.isFinalChallenge, @required this.questModel,
   }) : super(key: key);
   @override
   _AnswerBoxState createState() => _AnswerBoxState();
@@ -65,7 +67,7 @@ class _AnswerBoxState extends State<AnswerBox> {
     return Opacity(
       opacity: .9,
       child: Card(
-        margin: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(
           horizontal: 10,
         ),
         color: Colors.white,
@@ -74,10 +76,10 @@ class _AnswerBoxState extends State<AnswerBox> {
         ),
         elevation: 1.0,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Form(
@@ -87,9 +89,9 @@ class _AnswerBoxState extends State<AnswerBox> {
                   if (!widget.answers
                           .contains(value.toUpperCase().trimRight()) &&
                       value.isNotEmpty) {
-                    ChallengeViewModel().answerIscorrect(context: context);
+                    ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel);
 
-                    return 'Incorrect, I\'m taking 1 diamond for your troubles!';
+                    return 'Answer incorrect';
                   }
                   if (widget.answers
                           .contains(value.trimRight().toUpperCase()) &&
@@ -113,7 +115,7 @@ class _AnswerBoxState extends State<AnswerBox> {
                               valueColor: AlwaysStoppedAnimation<Color>(
                                   Colors.orangeAccent),
                             )
-                          : Icon(
+                          : const Icon(
                               Icons.send,
                               color: Colors.orangeAccent,
                             ),
@@ -121,7 +123,7 @@ class _AnswerBoxState extends State<AnswerBox> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             )
           ]),

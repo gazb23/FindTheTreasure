@@ -3,6 +3,7 @@ import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
+import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   
       children: <Widget>[
         _buildMultiChoiceTiles(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         widget.showOwl ? Image.asset(_neutralOwl) : Container()
       ],
       ),
@@ -58,20 +59,20 @@ class _MultipleChoiceState extends State<MultipleChoice> {
       children: <Widget>[
         // Answer 1
         Container(
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
+          margin: const EdgeInsets.only(left: 10),
+          decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
               leading: Image.asset(_imageA, height: 40,),
               title: AutoSizeText(
                 widget.questionsModel.answerA.values.first,
                 maxLines: 2,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.black54),
@@ -80,23 +81,23 @@ class _MultipleChoiceState extends State<MultipleChoice> {
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         // Answer 2
         Container(
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
+          margin: const EdgeInsets.only(left: 10),
+          decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
               leading: Image.asset(_imageB, height: 40,),
               title: AutoSizeText(
                 widget.questionsModel.answerB.values.first,
                 maxLines: 2,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.black54),
@@ -105,23 +106,23 @@ class _MultipleChoiceState extends State<MultipleChoice> {
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         // Answer 3
         Container(
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
+          margin: const EdgeInsets.only(left: 10),
+          decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
               leading: Image.asset(_imageC, height: 40,),
               title: AutoSizeText(
                 widget.questionsModel.answerC.values.first,
                 maxLines: 2,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.black54),
@@ -130,23 +131,23 @@ class _MultipleChoiceState extends State<MultipleChoice> {
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         // Answer 4
         Container(
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
+          margin: const EdgeInsets.only(left: 10),
+          decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
               leading: Image.asset(_imageD, height: 40,),
               title: AutoSizeText(
                 widget.questionsModel.answerD.values.first,
                 maxLines: 2,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.black54),
@@ -184,16 +185,8 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           _neutralOwl = _wrongOwl;
           _submitted = true;
         });
-         final snackBar = SnackBar(
-          content: Text(
-            'Oh no, wrong answer!',
-            style: TextStyle(fontSize: 18,),
-            
-          ),
-          duration: Duration(milliseconds: 1800),
-        );
-        Scaffold.of(context).showSnackBar(snackBar);
-        await Future.delayed(Duration(milliseconds: 2000));
+         ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel, duration: Duration(milliseconds: 1800));
+         await Future.delayed(Duration(milliseconds: 2000));
         setState(() {
           _imageA = 'images/4.0x/ic_a_neutral.png';
           _neutralOwl = 'images/ic_owl_neutral.png';
@@ -229,14 +222,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           _neutralOwl = _wrongOwl;
           _submitted = true;
         });
-         final snackBar = SnackBar(
-          content: Text(
-            'Oh no, wrong answer!',
-            style: TextStyle(fontSize: 18,),
-          ),
-          duration: Duration(milliseconds: 1800),
-        );
-        Scaffold.of(context).showSnackBar(snackBar);
+        ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel, duration: Duration(milliseconds: 1800));
         await Future.delayed(Duration(milliseconds: 2000));
         setState(() {
           _imageB = 'images/4.0x/ic_b_neutral.png';
@@ -273,14 +259,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           _neutralOwl = _wrongOwl;
           _submitted = true;
         });
-         final snackBar = SnackBar(
-          content: Text(
-            'Oh no, wrong answer!',
-            style: TextStyle(fontSize: 18,),
-          ),
-          duration: Duration(milliseconds: 1800),
-        );
-        Scaffold.of(context).showSnackBar(snackBar);
+         ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel, duration: Duration(milliseconds: 1800));
         await Future.delayed(Duration(milliseconds: 2000));
         setState(() {
           _imageC = 'images/4.0x/ic_c_neutral.png';
@@ -317,15 +296,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           _neutralOwl = _wrongOwl;
           _submitted = true;
         });
-         final snackBar = SnackBar(
-
-          content: Text(
-            'Oh no, wrong answer!',
-            style: TextStyle(fontSize: 18,),
-          ),
-          duration: Duration(milliseconds: 1800),
-        );
-        Scaffold.of(context).showSnackBar(snackBar);
+        ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel, duration: Duration(milliseconds: 1800));
         await Future.delayed(Duration(milliseconds: 2000));
         setState(() {
           _imageD = 'images/4.0x/ic_d_neutral.png';

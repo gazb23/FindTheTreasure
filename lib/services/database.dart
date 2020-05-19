@@ -21,7 +21,7 @@ class DatabaseService {
   Stream<List<QuestModel>> questsStream() => _service.collectionStream(
       path: APIPath.quests(),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
-
+      
   
 
   //Receive a filtered stream of all quests where the field contains the UID of the current user
@@ -106,7 +106,7 @@ class DatabaseService {
    Future<void> arrayUnionFieldData({@required String documentId, @required String field, @required String collectionRef, @required String location}) async {
    final likedByRef = _db.collection(collectionRef).document(documentId);
    print('add');
-   await likedByRef.setData({field: FieldValue.arrayUnion([location]) }, merge: true);
+   await likedByRef.updateData({field: FieldValue.arrayUnion([location]) });
  }
 
     // Remove UID from chosen field Array on Firebase
@@ -116,13 +116,9 @@ class DatabaseService {
    await likedByRef.updateData({field: FieldValue.arrayRemove([uid])});
  }
 
-  // Update user diamonds and keys
-  Future<void> updateUserDiamondAndKey({UserData userData}) async => await _service.setData(
-    path: APIPath.user(uid: uid),
-    data: userData.toMap()
-  );
 
-    // Create user data on sign in
+
+    // Update user data
   Future<void> updateUserData({UserData userData}) async => await _service.setData(
     path: APIPath.user(uid: uid),
     data: userData.toMap()

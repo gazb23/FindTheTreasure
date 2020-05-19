@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
@@ -14,29 +15,42 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChallengeViewModel {
-  // Challenge incorrect logic - if a question is answered incorrectly a pre-calculated amount of diamonds will be subtracted from the users total amount of diamonds.
+  // Challenge incorrect logic - if a question is answered incorrectly a pre-calculated amount of points will be subtracted from the users total amount.
 
-  void answerIscorrect({
+  void answerIncorrect({
     @required BuildContext context,
+    @required QuestModel questModel,
+    Duration duration,
   }) async {
     final UserData _userData = Provider.of<UserData>(context, listen: false);
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
-    // How many diamonds to subtract for an incorrect answer
-    const int _diamonds = 1;
-    final int updatedDiamonds = _userData.userDiamondCount - _diamonds;
-    
-    final UserData _updateUserData = UserData(
-      userDiamondCount: _userData.userDiamondCount - _diamonds,
-      userKeyCount: _userData.userKeyCount,
-      points: LeaderboardViewModel.calculatePoints(updatedDiamonds: updatedDiamonds, updatedKeys: _userData.userKeyCount, locationExplored: _userData.locationsExplored),
-      displayName: _userData.displayName,
-      email: _userData.email,
-      photoURL: _userData.photoURL,
-      uid: _userData.uid,
-    );
 
-    _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
+    final UserData _updateUserData = UserData(
+        userDiamondCount: _userData.userDiamondCount,
+        userKeyCount: _userData.userKeyCount,
+        points: LeaderboardViewModel.questionIncorrect(
+            questModel: questModel, userData: _userData),
+        displayName: _userData.displayName,
+        email: _userData.email,
+        photoURL: _userData.photoURL,
+        uid: _userData.uid,
+        locationsExplored: _userData.locationsExplored);
+
+    await _databaseService.updateUserData(userData: _updateUserData);
+
+    final snackBar = SnackBar(
+      
+      duration: duration ?? Duration(seconds: 3),
+      backgroundColor: Colors.redAccent,
+      content: AutoSizeText(
+        'Oh No! That mistake cost you ${LeaderboardViewModel.showPointsLost(userData: _userData, questModel: questModel)} points ',
+        maxLines: 1,
+        style: TextStyle(
+            fontSize: 18, fontFamily: 'Quicksand', color: Colors.white),
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   static void showHint({
@@ -44,14 +58,13 @@ class ChallengeViewModel {
     @required QuestionsModel questionsModel,
     @required LocationModel locationModel,
     @required QuestModel questModel,
-
   }) async {
-        final UserData _userData = Provider.of<UserData>(context, listen: false);
+    final UserData _userData = Provider.of<UserData>(context, listen: false);
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
-    // Cost of a hint    
+    // Cost of a hint
     final int _hintCost = 5;
-    
+
     //Show snackBar hint if the user has purchased it
     if (questionsModel.hintPurchasedBy.contains(_databaseService.uid)) {
       final snackBar = SnackBar(
@@ -62,7 +75,8 @@ class ChallengeViewModel {
         duration: Duration(seconds: 20),
       );
       Scaffold.of(context).showSnackBar(snackBar);
-    } else if (!questionsModel.hintPurchasedBy.contains(_databaseService.uid) && _userData.userDiamondCount >= _hintCost) {
+    } else if (!questionsModel.hintPurchasedBy.contains(_databaseService.uid) &&
+        _userData.userDiamondCount >= _hintCost) {
       final didRequestHint = await PlatformAlertDialog(
         title: 'Purchase Hint',
         content:
@@ -74,31 +88,28 @@ class ChallengeViewModel {
       if (didRequestHint) {
         try {
           final UserData _updateUserData = UserData(
-            userDiamondCount: _userData.userDiamondCount - _hintCost,
-            userKeyCount: _userData.userKeyCount,
-            points: LeaderboardViewModel.pointsUnchanged(userData: _userData),
-            displayName: _userData.displayName,
-            email: _userData.email,
-            photoURL: _userData.photoURL,
-            uid: _userData.uid,
-          );
+              userDiamondCount: _userData.userDiamondCount - _hintCost,
+              userKeyCount: _userData.userKeyCount,
+              points: _userData.points,
+              displayName: _userData.displayName,
+              email: _userData.email,
+              photoURL: _userData.photoURL,
+              uid: _userData.uid,
+              locationsExplored: _userData.locationsExplored);
 
-          _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
+          _databaseService.updateUserData(userData: _updateUserData);
           _databaseService.arrayUnionField(
-            documentId: questionsModel.id,            
+            documentId: questionsModel.id,
             field: 'hintPurchasedBy',
-            collectionRef: APIPath.challenges(questId: questModel.id, locationId: locationModel.id),
+            collectionRef: APIPath.challenges(
+                questId: questModel.id, locationId: locationModel.id),
           );
-
-         
-        }  
-        
-        
-        catch (e) {
+        } catch (e) {
           print(e.toString());
         }
       }
-    } else if (!questionsModel.hintPurchasedBy.contains(_databaseService.uid) && _userData.userDiamondCount < _hintCost) {
+    } else if (!questionsModel.hintPurchasedBy.contains(_databaseService.uid) &&
+        _userData.userDiamondCount < _hintCost) {
       final didRequestHint = await PlatformAlertDialog(
         title: 'Hint Purchase',
         backgroundColor: Colors.brown,
@@ -111,8 +122,7 @@ class ChallengeViewModel {
         image: Image.asset('images/ic_out_of_gems.png'),
       ).show(context);
       if (didRequestHint) {
-        Navigator.of(context).push(
-        MaterialPageRoute(
+        Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ShopScreen(),
         ));
       }

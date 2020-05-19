@@ -24,7 +24,6 @@ abstract class AuthBase {
   Future<void> validateCurrentPassword({@required String password});
   void updatePassword(String password);
   Future<void> updateEmail(String email);
-  
 }
 
 class Auth implements AuthBase {
@@ -35,13 +34,7 @@ class Auth implements AuthBase {
   // final Firestore _firestore = Firestore.instance;
 
   User _userFromFirebase(FirebaseUser user) {
-    return user != null
-        ? User(
-            uid: user.uid,
-            email: user.email
-            
-          )
-        : null;
+    return user != null ? User(uid: user.uid, email: user.email) : null;
   }
 
   // onAuthStateChanged receives a FirebaseUser each time the user signs in or signs out. To remove dependency for the FireBase package we return a User class instead by calling the userFromFirebase method.
@@ -62,7 +55,7 @@ class Auth implements AuthBase {
             accessToken: googleAuth.accessToken,
           ),
         );
-        if (authResult.additionalUserInfo.isNewUser) {          
+        if (authResult.additionalUserInfo.isNewUser) {
           await _createUserData(authResult.user);
         }
 
@@ -88,7 +81,7 @@ class Auth implements AuthBase {
           accessToken: result.accessToken.token,
         ),
       );
-      if (authResult.additionalUserInfo.isNewUser) {        
+      if (authResult.additionalUserInfo.isNewUser) {
         await _createUserData(authResult.user);
       }
       return _userFromFirebase(authResult.user);
@@ -107,7 +100,7 @@ class Auth implements AuthBase {
 
   Future<User> signInWithEmailAndPassword(String email, String password) async {
     final authResult = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);   
+        email: email, password: password);
     return _userFromFirebase(authResult.user);
   }
 
@@ -127,14 +120,15 @@ class Auth implements AuthBase {
 
   Future<void> _createUserData(FirebaseUser user) {
     final UserData updateUserData = UserData(
-        displayName: user.displayName ?? 'Adventurer',
-        locationsExplored: [],
-        email: user.email,
-        photoURL: user.photoUrl,
-        uid: user.uid ?? '',
-        points: 50,
-        userDiamondCount: 50,
-        userKeyCount: 1);
+      displayName: user.displayName ?? 'Adventurer',
+      locationsExplored: [],
+      email: user.email,
+      photoURL: user.photoUrl,
+      uid: user.uid ?? '',
+      points: 0,
+      userDiamondCount: 50,
+      userKeyCount: 1,      
+    );
     return DatabaseService(uid: user.uid)
         .updateUserData(userData: updateUserData);
   }
@@ -152,7 +146,7 @@ class Auth implements AuthBase {
         title: 'Error!',
         exception: e,
       );
-      
+
       return false;
     }
   }
@@ -163,16 +157,9 @@ class Auth implements AuthBase {
     firebaseUser.updatePassword(password);
   }
 
-    Future<void> updateEmail(String email) async {
+  Future<void> updateEmail(String email) async {
     FirebaseUser firebaseUser = await _firebaseAuth.currentUser();
-     
-      return   await firebaseUser.updateEmail(email);
-     
-     
-    
-    } 
-    
-      
-    
-  
+
+    return await firebaseUser.updateEmail(email);
+  }
 }

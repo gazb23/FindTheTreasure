@@ -55,15 +55,15 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
                             );
                       },
                       child: Container(
-                        width: 150,
-                        padding: EdgeInsets.only(right: 10),
+                        
+                        padding: const EdgeInsets.all(15),
                         child: 
                         
                         AutoSizeText(
                           !questionsModelStream.hintPurchasedBy.contains(databaseService.uid) ?
                           'HINT?' : 'SHOW HINT',
                           maxLines: 1,
-                          style: TextStyle(color: Colors.orangeAccent,),
+                          style: const TextStyle(color: Colors.orangeAccent,),
                         ),
                       ),
                     
@@ -83,14 +83,14 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
               numberOfKeys: userData.userKeyCount,
               color: Colors.black87,
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             )
           ],
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
                     'images/background_games.png',
@@ -106,7 +106,7 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
                 showImage: true,
 
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               MultipleChoice(

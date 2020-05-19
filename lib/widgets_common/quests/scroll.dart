@@ -9,11 +9,11 @@ class Scroll extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Stack(children: <Widget>[
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
           color: Colors.brown.shade50,
           width: MediaQuery.of(context).size.width,
           constraints: BoxConstraints(
@@ -21,12 +21,12 @@ class Scroll extends StatelessWidget {
               maxHeight: MediaQuery.of(context).size.height / 2.5),
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               child: Center(
                 child: Text(
                   question,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, color: Colors.black87),
+                  style: const TextStyle(fontSize: 20, color: Colors.black87),
                 ),
               ),
             ),
@@ -55,7 +55,7 @@ class Scroll extends StatelessWidget {
           child: Container(
             height: 20,
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 22),
+            margin: const EdgeInsets.symmetric(horizontal: 22),
             color: Colors.brown.shade100.withOpacity(.8),
           ),
         ),
@@ -66,7 +66,7 @@ class Scroll extends StatelessWidget {
           child: Container(
             height: 10,
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 22),
+            margin: const EdgeInsets.symmetric(horizontal: 22),
             color: Colors.brown.shade100.withOpacity(.8),
           ),
         )

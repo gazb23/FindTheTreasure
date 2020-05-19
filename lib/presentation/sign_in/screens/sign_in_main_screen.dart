@@ -93,6 +93,7 @@ class SignInMainScreen extends StatelessWidget {
   Widget _buildContent(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
     bool connected = connectionStatus == ConnectivityStatus.Online;
+    // final pixelRatio = MediaQuery.of(context).size;
     if (isLoading) {
       return Center(
         child: Image.asset(
@@ -101,27 +102,31 @@ class SignInMainScreen extends StatelessWidget {
         ),
       );
     } else
+
       return Stack(
-        fit: StackFit.expand,
+       
+
         children: <Widget>[
           Carousel(
             boxFit: BoxFit.fitHeight,
             images: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                
+             crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Image.asset(
-                    'images/slide_1.png',
+                    'images/3.0x/slide_1.png',
+                  
                     alignment: Alignment.topCenter,
-                    fit: BoxFit.fitWidth,
+                    fit:  BoxFit.cover,
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Container(
                       child: AutoSizeText(
                     'Sign up to begin your adventure!',
                     maxLines: 2,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54),
+                    style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54),
                   ))
                 ],
               ),
@@ -131,9 +136,9 @@ class SignInMainScreen extends StatelessWidget {
                   Image.asset(
                     'images/slide_2.png',
                     alignment: Alignment.topCenter,
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   FractionallySizedBox(
                     widthFactor: 0.8,
                       child: AutoSizeText(
@@ -150,7 +155,7 @@ class SignInMainScreen extends StatelessWidget {
                   Image.asset(
                     'images/slide_3.png',
                     alignment: Alignment.topCenter,
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                   ),
                   SizedBox(height: 15),
                   Container(
@@ -167,94 +172,104 @@ class SignInMainScreen extends StatelessWidget {
             animationCurve: Curves.easeIn,
             autoplayDuration: Duration(seconds: 3),
           ),
-          FractionallySizedBox(
-            widthFactor: 0.9,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  SocialSignInButton(
-                    assetName: 'images/facebook-logo.png',
-                    text: 'Sign in with Facebook',
-                    textcolor: Colors.white,
-                    color: Color(0xFF4267B2),
-                    onPressed: () => connected
-                        ? _signInWithFacebook(context)
-                        : _showConnectionFailureDialog(context),
+          
+          Align(
+            alignment: Alignment.bottomCenter,
+                      child: SingleChildScrollView(
+
+                        child: FractionallySizedBox(
+                widthFactor: 0.9,
+                child: Container(
+                 
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      SocialSignInButton(
+                        assetName: 'images/facebook-logo.png',
+                        text: 'Sign in with Facebook',
+                        textcolor: Colors.white,
+                        color: Color(0xFF4267B2),
+                        onPressed: () => connected
+                            ? _signInWithFacebook(context)
+                            : _showConnectionFailureDialog(context),
+                      ),
+                      SizedBox(height: 10),
+                      SocialSignInButton(
+                        assetName: 'images/google-logo.png',
+                        text: 'Sign in with Google',
+                        textcolor: Colors.black87,
+                        color: Colors.grey[100],
+                        onPressed: () => connected
+                            ? _signInWithGoogle(context)
+                            : _showConnectionFailureDialog(context),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Center(
+                        child: Text(
+                          'OR',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      SignInButton(
+                        text: 'Create Account',
+                        textcolor: Colors.white,
+                        color: Colors.orangeAccent,
+                        onPressed: () {
+                          Navigator.pushNamed(context, EmailCreateAccountScreen.id);
+                        },
+                      ),
+                      FlatButton(
+                        shape: StadiumBorder(),
+                        onPressed: () {
+                          Navigator.pushNamed(context, EmailSignInScreen.id);
+                        },
+                        child: Text(
+                          'Already registered? Sign in here.',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      RichText(
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        text: TextSpan(
+                          
+                            style: TextStyle(
+                                color: Colors.black54, fontFamily: 'quicksand'),
+                            children: [
+                              TextSpan(
+                                  text:
+                                      'By continuing you agree to Find the Treasure\'s '),
+                              TextSpan(
+                                  text: 'Terms & Conditions ',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      launch(
+                                          'https://www.findthetreasure.com.au/terms-conditions/');
+                                    },
+                                  style: TextStyle(color: Colors.orangeAccent)),
+                              TextSpan(text: 'and '),
+                              TextSpan(
+                                  text: 'Privacy Policy.',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      launch(
+                                          'https://www.findthetreasure.com.au/privacy-policy/');
+                                    },
+                                  style: TextStyle(color: Colors.orangeAccent))
+                            ]),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 10),
-                  SocialSignInButton(
-                    assetName: 'images/google-logo.png',
-                    text: 'Sign in with Google',
-                    textcolor: Colors.black87,
-                    color: Colors.grey[100],
-                    onPressed: () => connected
-                        ? _signInWithGoogle(context)
-                        : _showConnectionFailureDialog(context),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Center(
-                    child: Text(
-                      'OR',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  SignInButton(
-                    text: 'Create Account',
-                    textcolor: Colors.white,
-                    color: Colors.orangeAccent,
-                    onPressed: () {
-                      Navigator.pushNamed(context, EmailCreateAccountScreen.id);
-                    },
-                  ),
-                  FlatButton(
-                    shape: StadiumBorder(),
-                    onPressed: () {
-                      Navigator.pushNamed(context, EmailSignInScreen.id);
-                    },
-                    child: Text(
-                      'Already registered? Sign in here.',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                        style: TextStyle(
-                            color: Colors.black54, fontFamily: 'quicksand'),
-                        children: [
-                          TextSpan(
-                              text:
-                                  'By continuing you agree to Find the Treasure\'s '),
-                          TextSpan(
-                              text: 'Terms & Conditions ',
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  launch(
-                                      'https://www.findthetreasure.com.au/terms-conditions/');
-                                },
-                              style: TextStyle(color: Colors.orangeAccent)),
-                          TextSpan(text: 'and '),
-                          TextSpan(
-                              text: 'Privacy Policy.',
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  launch(
-                                      'https://www.findthetreasure.com.au/privacy-policy/');
-                                },
-                              style: TextStyle(color: Colors.orangeAccent))
-                        ]),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                ],
+                ),
               ),
             ),
           )

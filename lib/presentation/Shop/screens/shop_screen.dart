@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
@@ -61,6 +60,7 @@ class _ShopScreenState extends State<ShopScreen> {
     // Check availilbility of In App Purchases
 
     _isAvailable = await _iap.isAvailable();
+    await Future.delayed(Duration(seconds: 1));
 
     if (_isAvailable) {
       List<Future> futures = [_getProducts(), _getPastPurchases()];
@@ -132,18 +132,19 @@ class _ShopScreenState extends State<ShopScreen> {
     print('productID: ${_purchase?.productID}');
 
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
-      _getCorrect(_purchase);
+      _displayDiamondAndKeys(_purchase);
       _isPurchasePending = true;
       final _updateUserData = UserData(
-          displayName: _userData.displayName,
-          email: _userData.email,
-          locationsExplored: _userData.locationsExplored,
-          photoURL: _userData.photoURL,
-          uid: _userData.uid,
-          points: LeaderboardViewModel.pointsUnchanged(userData: _userData),
-          userDiamondCount: _userData.userDiamondCount + _diamonds,
-          userKeyCount: _userData.userKeyCount + _keys);
-      await _databaseService.updateUserDiamondAndKey(userData: _updateUserData);
+        displayName: _userData.displayName,
+        email: _userData.email,
+        locationsExplored: _userData.locationsExplored,
+        photoURL: _userData.photoURL,
+        uid: _userData.uid,
+        points: _userData.points,
+        userDiamondCount: _userData.userDiamondCount + _diamonds,
+        userKeyCount: _userData.userKeyCount + _keys,
+      );
+      await _databaseService.updateUserData(userData: _updateUserData);
       final _didSelectOK = await PlatformAlertDialog(
               backgroundColor: Colors.brown,
               titleTextColor: Colors.white,
@@ -186,7 +187,7 @@ class _ShopScreenState extends State<ShopScreen> {
       _isPurchasePending = false;
   }
 
-  void _getCorrect(PurchaseDetails purchase) {
+  void _displayDiamondAndKeys(PurchaseDetails purchase) {
     switch (purchase.productID) {
       case _diamond50:
         _diamonds = 50;
@@ -225,7 +226,7 @@ class _ShopScreenState extends State<ShopScreen> {
         backgroundColor: Colors.brown,
         appBar: AppBar(
           backgroundColor: Colors.brown,
-          iconTheme: IconThemeData(color: Colors.black87),
+          iconTheme: const IconThemeData(color: Colors.black87),
           actions: <Widget>[
             DiamondAndKeyContainer(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -233,14 +234,14 @@ class _ShopScreenState extends State<ShopScreen> {
               numberOfKeys: _userData.userKeyCount,
               color: Colors.white,
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             )
           ],
         ),
         body: Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
                 "images/background_shop.png",
@@ -249,7 +250,7 @@ class _ShopScreenState extends State<ShopScreen> {
             ),
           ),
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             IconButton(
@@ -273,7 +274,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 if (_didSelectOK) {}
               },
             ),
-            SizedBox(
+           const SizedBox(
               height: 10,
             ),
             if (_isAvailable)
@@ -355,8 +356,9 @@ class _ShopScreenState extends State<ShopScreen> {
       child: FractionallySizedBox(
         widthFactor: 0.9,
         child: Shimmer.fromColors(
-          period: Duration(milliseconds: 500),
-          baseColor: Colors.grey,
+          period: Duration(milliseconds: 750),
+          baseColor: Colors.grey.shade300,
+          // direction: ShimmerDirection.btt,
           highlightColor: Colors.white,
           child: CustomRaisedButton(
             color: Colors.white,

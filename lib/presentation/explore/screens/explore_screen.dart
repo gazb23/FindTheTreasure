@@ -17,12 +17,24 @@ class ExploreScreen extends StatefulWidget {
   _ExploreScreenState createState() => _ExploreScreenState();
 }
 
-class _ExploreScreenState extends State<ExploreScreen> {
+class _ExploreScreenState extends State<ExploreScreen>
+    {
+  // AnimationController _controller;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _controller =
+  //       AnimationController(vsync: this, duration: Duration(seconds: 5));
+      
+  //   _controller.forward();
+    
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final _userData = Provider.of<UserData>(context);
-    // final _userKeyCount = Provider.of<UserData>(context).userKeyCount;
-    
+    final _userData = Provider.of<UserData>(context, listen: false);
+    // final animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
+
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -31,24 +43,26 @@ class _ExploreScreenState extends State<ExploreScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-     backgroundColor: Colors.grey.shade800,
+          backgroundColor: Colors.brown,
 
           // leading: Icon(Icons.search, color: Colors.white,),
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.black87,
           ),
-          
-          actions: <Widget>[
-            DiamondAndKeyContainer(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: _userData?.userDiamondCount,
-              numberOfKeys: _userData?.userKeyCount,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 20,
-            )
-          ],
+
+          // actions: <Widget>[
+          //   DiamondAndKeyContainer(
+          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //     numberOfDiamonds: _userData?.userDiamondCount,
+          //     numberOfKeys: _userData?.userKeyCount,
+          //     diamondHeight: 20,
+          //     skullKeyHeight: 30,
+          //     color: Colors.white,
+          //   ),
+          //   const SizedBox(
+          //     width: 20,
+          //   )
+          // ],
         ),
         body: _buildListView(context),
       ),
@@ -75,7 +89,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 onTap: () {
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
-                      
                       builder: (context) => QuestDetailScreen(
                         userData: _userData,
                         questModel: quest,
@@ -87,4 +100,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
           );
         });
   }
+  // @override
+  // void dispose() {
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 }

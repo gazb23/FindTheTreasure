@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expandable/expandable.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
@@ -44,7 +45,7 @@ class QuestLocationCard extends StatelessWidget {
         color: _locationProgressColor(
             locationStarted: _locationStartedBy,
             locationCompleted: _locationCompletedBy),
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: ExpandablePanel(
           theme: ExpandableThemeData(
@@ -164,6 +165,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                 questModel: widget.questModel,
                 locationModel: widget.locationModel)
             .getCurrentLocation(context);
+            //TODO: Fix the location found with chnageNotifier
         await Future.delayed(Duration(seconds: 3));
           _isLoading = false;
       setState(() {
@@ -181,14 +183,15 @@ class _LocationHeaderState extends State<LocationHeader> {
         children: <Widget>[
           ListTile(
             enabled: widget.isLoading,
-            contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             leading: _locationProgressImage(
                 locationCompleted: _locationCompletedBy,
                 locationStarted: _locationStartedBy),
-            title: Text(
+            title: AutoSizeText(
               _locationStartedBy
                   ? widget.locationModel.title
                   : 'Mystery Location',
+                  maxLines: 1,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _locationCompletedBy ? Colors.white : Colors.black54,

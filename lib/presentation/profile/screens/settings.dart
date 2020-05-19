@@ -165,7 +165,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               points: _userData.points,
               uid: _userData.uid,
               userDiamondCount: _userData.userDiamondCount,
-              userKeyCount: _userData.userKeyCount);
+              userKeyCount: _userData.userKeyCount,
+              );
 
           _emailUpdated = await updateUserEmail(_email);
 

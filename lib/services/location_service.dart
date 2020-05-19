@@ -35,7 +35,7 @@ class LocationService {
     await _checkGps(context);
     PermissionService(context: context).requestLocationPermission();
     geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
       currentPosition = position;
       

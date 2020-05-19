@@ -26,19 +26,17 @@ class QuestionIntroduction extends StatelessWidget {
     return Column(
       children: <Widget>[
         ConstrainedBox(
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             minHeight: 150,
-            // maxHeight: showImage
-            //     ? MediaQuery.of(context).size.height / 2.5
-            //     : MediaQuery.of(context).size.height / 4,
+         
           ),
           child: Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top: 10, left: 5, right: 10, bottom: 10),
+            padding: const EdgeInsets.only(top: 10, left: 5, right: 10, bottom: 10),
             // margin: EdgeInsets.only(right: 0),
             decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
+                  const BoxShadow(
                       color: Colors.black26,
                       offset: Offset(0.3, 0.1),
                       blurRadius: 1.0,
@@ -54,14 +52,14 @@ class QuestionIntroduction extends StatelessWidget {
                     locationQuestion
                         ? locationModel.questionIntroduction
                         : questionsModel.questionIntroduction,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
-                    maxLines: showImage ? 6 : null,
+                    maxLines: showImage ? 6 : 10,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   showImage

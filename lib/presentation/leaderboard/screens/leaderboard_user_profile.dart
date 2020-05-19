@@ -28,7 +28,7 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            image: DecorationImage(
+            image: const DecorationImage(
                 image: AssetImage("images/background_team.png"),
                 fit: BoxFit.cover),
           ),
@@ -72,7 +72,7 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
                 radius: 70,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Container(
@@ -86,7 +86,7 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -105,14 +105,14 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
             theme: ExpandableThemeData(iconColor: Colors.white),
             header: ListTile(
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
               leading: Image.asset(
                 'images/treasure.png',
                 height: 50,
               ),
               title: Text(
                 'Bounty',
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
@@ -122,39 +122,39 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 30),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 30),
                     leading: Image.asset('images/ic_diamond.png'),
                     title: AutoSizeText(
                       'Diamonds',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     trailing: AutoSizeText(
                       userData.userDiamondCount.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.amberAccent),
                     ),
                   ),
                   ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 30),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 30),
                     leading: Image.asset(
                       'images/explore/skull_key.png',
                       height: 30,
                     ),
                     title: AutoSizeText(
                       'Keys',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     trailing: AutoSizeText(
                       userData.userKeyCount.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.amberAccent),
                     ),
                   ),
-                  SizedBox(height: 20)
+                  const SizedBox(height: 20)
                 ],
               ),
             )),
@@ -173,7 +173,7 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
               theme: ExpandableThemeData(iconColor: Colors.white),
               header: ListTile(
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 leading: Image.asset(
                   'images/hiker.png',
                   height: 50,
@@ -181,14 +181,14 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
                 title: AutoSizeText(
                   'Locations Explored',
                   maxLines: 1,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
                 trailing: Text(
                   userData.locationsExplored.length.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
@@ -197,7 +197,7 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
               expanded: Column(
                 children: <Widget>[
                   _buildLocations(userData.locationsExplored, userData),
-                  SizedBox(height: 20)
+                  const SizedBox(height: 20)
                 ],
               ))),
     );
@@ -208,15 +208,15 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
     return Column(
         children: location
             .map((location) => ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 30),
-                  leading: Icon(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+                  leading: const Icon(
                     Icons.done,
                     color: Colors.amberAccent,
                   ),
                   title: AutoSizeText(
                     location,
                     maxLines: 1,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ))
             .toList()); else return Column(

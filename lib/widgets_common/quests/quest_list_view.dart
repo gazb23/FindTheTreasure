@@ -76,8 +76,8 @@ class _QuestListViewState extends State<QuestListView> {
                 placeholder: (context, url) => Container(
                   height: 200,
                 ),
-                fadeInDuration: Duration(milliseconds: 800),
-                fadeOutDuration: Duration(milliseconds: 1500),
+                fadeInDuration: Duration(milliseconds: 750),
+                // fadeOutDuration: Duration(milliseconds: 500),
                 errorWidget: (context, url, error) => Icon(Icons.error),
                 imageBuilder: (context, image) => Container(
                     width: MediaQuery.of(context).size.width,

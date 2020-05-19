@@ -17,6 +17,7 @@ import 'presentation/sign_in/screens/sign_in_main_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(
+
   DevicePreview(
     builder: (context) => MyApp(),
     enabled: false,
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       child: AuthWidgetBuilder(builder: (context, userSnapshot) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           locale: DevicePreview.of(context).locale, // <--- Add the locale
       builder: DevicePreview.appBuilder, // <--- Add the builder
           title: 'Find The Treasure',

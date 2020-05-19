@@ -1,23 +1,30 @@
+import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LeaderboardViewModel {
+  
 
-    static int calculatePoints({@required int updatedDiamonds, @required int updatedKeys, @required List locationExplored }) {
+  static int questComplete({@required UserData userData, @required QuestModel questModel}) {
+    int userPointsCalc = userData.points + questModel.questPoints;
+    
+    return userPointsCalc;
+ 
 
-    int _userPointsCalc;
-    if (updatedDiamonds > 0 && updatedKeys > 0 && locationExplored.length > 0) {
-      _userPointsCalc = ((updatedKeys * updatedDiamonds * locationExplored.length)/2).truncate();
-    } else _userPointsCalc = 0;
-    return _userPointsCalc;
   }
 
-      static int pointsUnchanged({@required UserData userData}) {
+  static int questionIncorrect({@required UserData userData, @required QuestModel questModel}) {
+    // The amount of points subtracted for an incorrect question
+     int incorrectQuestion = (questModel.questPoints * 0.05).truncate();
+     int userPointsCalc = userData.points - incorrectQuestion;
 
-    int _userPointsCalc = userData.points;
-   
-    return _userPointsCalc;
+
+     return userPointsCalc;
   }
 
+  static int showPointsLost({@required UserData userData, @required QuestModel questModel}) {
+     int incorrectQuestion = (questModel.questPoints * 0.05).truncate();
+     return incorrectQuestion;
+  }
 }

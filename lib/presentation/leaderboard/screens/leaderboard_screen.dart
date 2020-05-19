@@ -2,7 +2,6 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/presentation/leaderboard/screens/leaderboard_user_profile.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/leaderboard.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +22,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
+                image: const DecorationImage(
                     image: AssetImage("images/background_games.png"),
                     fit: BoxFit.fill),
               ),
@@ -50,9 +49,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   Container _buildLeaderBoardTitle() {
     return Container(
-      margin: EdgeInsets.only(left: 10, right: 10, top: 55),
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 55),
       height: 100,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15), topRight: Radius.circular(15))),
@@ -69,9 +68,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               children: <Widget>[
                 Text(
                   'No.',
-                  style: TextStyle(),
+                  style: const TextStyle(),
                 ),
-                SizedBox(
+               const SizedBox(
                   width: 20,
                 ),
                 Expanded(
@@ -101,11 +100,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     place: index + 1,
                     photoURL: user.photoURL ?? null,
                     displayName: user.displayName,
-                    points: LeaderboardViewModel.calculatePoints(
-                      updatedKeys: user.userKeyCount,
-                      updatedDiamonds: user.userDiamondCount,
-                      locationExplored: user.locationsExplored
-                    ),
+                    points: user.points,
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

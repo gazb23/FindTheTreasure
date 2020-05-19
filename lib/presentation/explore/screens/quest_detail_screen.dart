@@ -43,7 +43,7 @@ class QuestDetailScreen extends StatelessWidget {
                           _buildQuestTags(tags),
                           _buildQuestDescriptionCard(context, questModelStream),
                           _buildBountyCard(context, questModelStream),
-                          SizedBox(
+                          const SizedBox(
                             height: 80,
                           )
                         ],
@@ -101,7 +101,7 @@ class QuestDetailScreen extends StatelessWidget {
   Container _buildQuestTags(List tags) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Wrap(
         direction: Axis.horizontal,
         spacing: 5,
@@ -123,7 +123,7 @@ class QuestDetailScreen extends StatelessWidget {
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       title: Text(
         questModelStream.title,
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.white,
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
@@ -131,14 +131,14 @@ class QuestDetailScreen extends StatelessWidget {
       ),
       subtitle: Row(
         children: <Widget>[
-          Icon(
+          const Icon(
             Icons.room,
             color: Colors.amberAccent,
             size: 18,
           ),
           Text(
             questModelStream.location,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
                 fontFamily: 'JosefinSans'),
@@ -173,7 +173,7 @@ class QuestDetailScreen extends StatelessWidget {
       BuildContext context, QuestModel questModelStream) {
     return Card(
       elevation: 2,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: EdgeInsets.all(10),
         child: ExpandablePanel(
@@ -259,46 +259,49 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildBountyCard(BuildContext context, QuestModel questModelStream) {
     return Card(
       elevation: 2,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: ExpandablePanel(
           header: Column(
             children: <Widget>[
               Text(
                 'Bounty Details',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
               ),
             ],
           ),
           collapsed: Column(
             children: <Widget>[
               _buildTreasure(context, questModelStream),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
-                  'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound',
+                child: _buildBountyText(
+                  context: context,
                   maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.justify,
-                ),
+                  overflow: TextOverflow.ellipsis
+                )
+              
+              
               ),
             ],
           ),
           expanded: Column(
             children: <Widget>[
               _buildTreasure(context, questModelStream),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
-                    'Theres plenty of bounty to be discovered in this quest. Keep your eyes peeled and your wits in tact - who knows what treasures abound',
-                    textAlign: TextAlign.justify,),
+                child: _buildBountyText(
+                  context: context,
+                  maxLines: 20,
+                  overflow: TextOverflow.ellipsis
+                )
               ),
               
             ],
@@ -320,19 +323,19 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildTreasure(BuildContext context, QuestModel questModelStream) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6), color: Colors.brown),
       child: Column(
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Image.asset(
             'images/ic_treasure.png',
             height: 80,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           DiamondAndKeyContainer(
@@ -344,9 +347,10 @@ class QuestDetailScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
             spaceBetween: 60,
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
+          
         ],
       ),
     );
@@ -360,7 +364,7 @@ class QuestDetailScreen extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        padding: EdgeInsets.fromLTRB(10,0,10,0),
+        padding: const EdgeInsets.fromLTRB(10,0,10,0),
         color: Colors.grey.shade800,
         width: double.infinity,
         child: Row(
@@ -441,5 +445,42 @@ class QuestDetailScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+  Widget _buildBountyText({BuildContext context, int maxLines, TextOverflow overflow}) {
+    return RichText(
+      textAlign: TextAlign.justify,
+      maxLines: maxLines,
+      overflow: overflow,
+      text: TextSpan(
+      
+      style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20, height: 1.35, ),
+
+      children: [TextSpan(
+
+        text: 'If you have the skills to conquer this ${questModel.difficulty.toLowerCase()} quest, you will be rewarded with ' 
+      ),
+      TextSpan(
+        style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+        text: '${questModel.numberOfDiamonds} diamonds '
+      ),
+      TextSpan(
+        text: 'and '
+      ),
+      TextSpan(
+        style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+        text: '${questModel.numberOfKeys} key. '
+      ),
+         TextSpan(
+        text: 'Oh and I almost forgot! If you conquer all the challenges with no mistakes I\'ll give ya '
+      ),
+       TextSpan(
+        style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+        text: '${questModel.questPoints} points '
+      ),
+      TextSpan(
+        text: 'which should look pretty darn nice on the leaderboard! '
+      ),
+      ]
+    ));
   }
 }

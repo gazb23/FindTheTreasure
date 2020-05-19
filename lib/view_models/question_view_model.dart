@@ -101,17 +101,22 @@ class QuestionViewModel {
         lastChallengeCompleted) {
       final UserData _userData = Provider.of<UserData>(context);
       try {
-        _databaseService.arrayUnionField(
-            documentId: locationModel.id,
-            field: 'locationCompletedBy',
-            collectionRef: APIPath.locations(questId: questModel.id));
+        final Future<void> locationCompleteBy =
+            _databaseService.arrayUnionField(
+                documentId: locationModel.id,
+                field: 'locationCompletedBy',
+                collectionRef: APIPath.locations(questId: questModel.id));
 
-        _databaseService.arrayUnionFieldData(
+        final Future<void> locationsExplored =
+            _databaseService.arrayUnionFieldData(
+                documentId: _userData.uid,
+                location: locationModel.title,
+                field: 'locationsExplored',
+                collectionRef: APIPath.users());
 
-            documentId: _userData.uid,
-            location: locationModel.title,
-            field: 'locationsExplored',
-            collectionRef: APIPath.users());
+        final List<Future> futures = [locationCompleteBy, locationsExplored];
+        
+        await Future.wait(futures);
 
         if (lastLocationCompleted) {
           print('WOOOO');
@@ -137,7 +142,7 @@ class QuestionViewModel {
       return null;
   }
 
-// Logic to push the create challenge type for the QuestLocationCard
+// Logic to push the correct challenge type for the QuestLocationCard
   static void loadQuestion({
     @required BuildContext context,
     @required QuestionsModel questionsModel,
