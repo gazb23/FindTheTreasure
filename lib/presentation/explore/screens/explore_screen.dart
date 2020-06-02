@@ -1,10 +1,9 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
-
+import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,21 +18,13 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen>
     {
-  // AnimationController _controller;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _controller =
-  //       AnimationController(vsync: this, duration: Duration(seconds: 5));
-      
-  //   _controller.forward();
-    
-  // }
+
 
   @override
   Widget build(BuildContext context) {
+
     final _userData = Provider.of<UserData>(context, listen: false);
-    // final animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
+
 
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
@@ -43,26 +34,26 @@ class _ExploreScreenState extends State<ExploreScreen>
       child: Scaffold(
         backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
-          backgroundColor: Colors.brown,
+          backgroundColor: Colors.grey.shade800,
 
           // leading: Icon(Icons.search, color: Colors.white,),
           iconTheme: const IconThemeData(
             color: Colors.black87,
           ),
 
-          // actions: <Widget>[
-          //   DiamondAndKeyContainer(
-          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //     numberOfDiamonds: _userData?.userDiamondCount,
-          //     numberOfKeys: _userData?.userKeyCount,
-          //     diamondHeight: 20,
-          //     skullKeyHeight: 30,
-          //     color: Colors.white,
-          //   ),
-          //   const SizedBox(
-          //     width: 20,
-          //   )
-          // ],
+          actions: <Widget>[
+            DiamondAndKeyContainer(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              numberOfDiamonds: _userData?.userDiamondCount,
+              numberOfKeys: _userData?.userKeyCount,
+              diamondHeight: 20,
+              skullKeyHeight: 30,
+              color: Colors.white,
+            ),
+            const SizedBox(
+              width: 20,
+            )
+          ],
         ),
         body: _buildListView(context),
       ),

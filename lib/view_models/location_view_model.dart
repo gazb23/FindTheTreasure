@@ -7,14 +7,13 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class LocationViewModel extends ChangeNotifier {
-  // When all LOCATIONS for a given QUEST have been completed, add the user UID to questCompletedBy. Also provide some visual feedback for the user.
 
+  // When all LOCATIONS for a given QUEST have been completed, add the user UID to questCompletedBy. Also provide some visual feedback for the user.
   void submitQuestConquered(
     BuildContext context, {
     @required bool lastLocationCompleted,
@@ -59,7 +58,7 @@ class LocationViewModel extends ChangeNotifier {
             _databaseService.updateUserData(userData: _userData);
         List<Future> futures = [questCompleted, questStartedBy, updateUserData];
         await Future.wait(futures);
-        
+       Navigator.pop(context);
         final didCompleteQuest = await PlatformAlertDialog(
           backgroundColor: Colors.amberAccent,
           contentTextColor: Colors.black87,
@@ -134,7 +133,7 @@ class LocationViewModel extends ChangeNotifier {
     }
   }
 
-  // LOGIC to show HINT
+  // LOGIC to show HINT for a location question
   void showHint({
     @required BuildContext context,
     @required LocationModel locationModel,

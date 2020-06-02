@@ -8,7 +8,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_types/quest
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
-
+import 'package:find_the_treasure/view_models/location_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,13 +48,6 @@ class QuestionViewModel {
           } else {
             Navigator.of(context).popUntil((route) => route.isFirst);
           }
-        } else {
-          _databaseService.arrayUnionField(
-            documentId: documentId,
-            field: 'challengeCompletedBy',
-            collectionRef: collectionRef,
-          );
-          Navigator.pop(context);
         }
       } catch (e) {
         print(e.toString());
@@ -85,41 +78,51 @@ class QuestionViewModel {
       }
   }
 
-  // When all CHALLENGES for a given LOCATION have been completed, add the user UID to locationCompletedBy. Also provide some visual feedback for the user.
-
-  static void submitLocationConquered(
+  /*
+  This method will do the following:
+  1. When all CHALLENGES for a given LOCATION have been completed, add the user UID to locationCompletedBy. Also provide some visual feedback for the user.
+  2. If the last location has been completed, call the submitQuestConquered method
+  
+*/
+  static void checkQuestLogic(
     BuildContext context, {
     @required bool lastChallengeCompleted,
     @required bool lastLocationCompleted,
     @required LocationModel locationModel,
     @required QuestModel questModel,
   }) async {
+    final UserData _userData = Provider.of<UserData>(context);
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: true);
 
     if (!locationModel.locationCompletedBy.contains(_databaseService.uid) &&
-        lastChallengeCompleted) {
-      final UserData _userData = Provider.of<UserData>(context);
+        lastChallengeCompleted &&
+        !_userData.locationsExplored.contains(locationModel.title)) {
       try {
         final Future<void> locationCompleteBy =
             _databaseService.arrayUnionField(
                 documentId: locationModel.id,
                 field: 'locationCompletedBy',
                 collectionRef: APIPath.locations(questId: questModel.id));
-
+        //Add the title of the location to the users locationsExplored field
         final Future<void> locationsExplored =
             _databaseService.arrayUnionFieldData(
                 documentId: _userData.uid,
-                location: locationModel.title,
+                data: locationModel.title,
                 field: 'locationsExplored',
                 collectionRef: APIPath.users());
 
-        final List<Future> futures = [locationCompleteBy, locationsExplored];
-        
+        final List<Future> futures = [locationsExplored, locationCompleteBy];
+
         await Future.wait(futures);
 
+        // If the user has completed all the locations for a quest
         if (lastLocationCompleted) {
-          print('WOOOO');
+          LocationViewModel().submitQuestConquered(
+            context,
+            lastLocationCompleted: lastLocationCompleted,
+            questModel: questModel,
+          );
         } else if (!lastLocationCompleted) {
           final didCompleteLocation = await PlatformAlertDialog(
             backgroundColor: Colors.amberAccent,
@@ -131,7 +134,9 @@ class QuestionViewModel {
             image: Image.asset('images/ic_excalibur_owl.png'),
           ).show(context);
           if (didCompleteLocation) {
+            // Pop alert dialog
           } else {
+            //Take user back to explore screen
             Navigator.of(context).popUntil((route) => route.isFirst);
           }
         }

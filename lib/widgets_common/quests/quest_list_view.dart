@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -72,26 +74,28 @@ class _QuestListViewState extends State<QuestListView> {
           child: Column(
             children: <Widget>[
               CachedNetworkImage(
+                
                 imageUrl: widget.image,
                 placeholder: (context, url) => Container(
-                  height: 200,
+                  height: MediaQuery.of(context).size.height/4.5,
                 ),
-                fadeInDuration: Duration(milliseconds: 750),
-                // fadeOutDuration: Duration(milliseconds: 500),
+                fadeInDuration: Duration(milliseconds: 500),
+               fadeOutDuration: Duration(milliseconds: 500),
                 errorWidget: (context, url, error) => Icon(Icons.error),
                 imageBuilder: (context, image) => Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 200.0,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: image,
-                          fit: BoxFit.fill,
-                          colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.8), BlendMode.dstATop),
-                          alignment: Alignment.center),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height/4.5,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                        
+                            image: image,
+                            fit: BoxFit.fill,
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                            alignment: Alignment.center),
+                      ),
+                      child: buildQuestListTile(context, database),
                     ),
-                    child: buildQuestListTile(context, database),
-                  ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),

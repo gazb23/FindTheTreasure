@@ -172,6 +172,7 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildQuestDescriptionCard(
       BuildContext context, QuestModel questModelStream) {
     return Card(
+      
       elevation: 2,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
@@ -407,7 +408,7 @@ class QuestDetailScreen extends StatelessWidget {
           image: 'images/deadline.png',
           imageHeight: 40,
           difficulty: difficulty,
-          platformTitle: 'Quest Length',
+          platformTitle: 'Quest Length\n $difficulty',
           platformContent: 'This indicates how much time to allow to complete the quest.',
           platformImage: Image.asset('images/deadline.png',height: 80,),
         ),
@@ -423,7 +424,7 @@ class QuestDetailScreen extends StatelessWidget {
           image: 'images/brain.png',
           imageHeight: 40,
           difficulty: difficulty,
-          platformTitle: 'Brain Strain',
+          platformTitle: 'Brain Strain\n $difficulty ',
           platformContent: 'This indicates the mental fortitude one will need to conquer the quest.',
           platformImage: Image.asset('images/brain.png',height: 80,),
         ),
@@ -439,7 +440,7 @@ class QuestDetailScreen extends StatelessWidget {
           image: 'images/hiker.png',
           imageHeight: 40,
           difficulty: difficulty,
-          platformTitle: 'Physical Difficulty',
+          platformTitle: 'Physical Difficulty\n $difficulty',
           platformContent: 'This indicates how physical the quest may be.',
           platformImage: Image.asset('images/hiker.png',height: 80,),
         ),

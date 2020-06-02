@@ -99,20 +99,20 @@ class DatabaseService {
    // Add UID to chosen field Array on Firebase
    Future<void> arrayUnionField({@required String documentId, @required String field, @required String collectionRef}) async {
    final likedByRef = _db.collection(collectionRef).document(documentId);
-   print('add');
+   print('add uid');
    await likedByRef.updateData({field: FieldValue.arrayUnion([uid])});
  }
     // Add chosen data to chosen field Array on Firebase
-   Future<void> arrayUnionFieldData({@required String documentId, @required String field, @required String collectionRef, @required String location}) async {
+   Future<void> arrayUnionFieldData({@required String documentId, @required String field, @required String collectionRef, @required String data}) async {
    final likedByRef = _db.collection(collectionRef).document(documentId);
-   print('add');
-   await likedByRef.updateData({field: FieldValue.arrayUnion([location]) });
+   print('add data');
+   await likedByRef.updateData({field: FieldValue.arrayUnion([data]) });
  }
 
     // Remove UID from chosen field Array on Firebase
    Future<void> arrayRemoveField({@required String documentId,  @required String field, @required String collectionRef}) async {
    final likedByRef = _db.collection(collectionRef).document(documentId);
-   print('add');
+   print('remove uid');
    await likedByRef.updateData({field: FieldValue.arrayRemove([uid])});
  }
 

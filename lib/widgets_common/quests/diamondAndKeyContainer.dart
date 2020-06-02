@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 
+
 class  DiamondAndKeyContainer extends StatelessWidget {
 
 final double diamondHeight;
@@ -44,10 +45,11 @@ final double diamondHeight;
                   width: 10,
                 ),
                 
+               numberOfDiamonds != null ? 
                 Text(
                   numberOfDiamonds.toString(),
                   style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
-                ),
+                ) : CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.grey.shade800),)
               ],
             ),
           ) : Container(),
@@ -61,10 +63,11 @@ final double diamondHeight;
                   'images/skull_key_outline.png',
                   height: skullKeyHeight ?? 30.0,
                 ),
+                numberOfKeys != null ?
                 Text(
                   numberOfKeys.toString(),
                   style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
-                ),
+                ) : CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.grey.shade800),)
               ],
             ),
           ) : Container(),

@@ -28,9 +28,11 @@ class ActiveQuestScreen extends StatelessWidget {
         builder: (context, locationViewModel, _) => SafeArea(
           child: Scaffold(
             appBar: AppBar(
-              title: AutoSizeText(questModel.title, 
-              maxLines: 1,
-              style: const TextStyle(color: Colors.black87),),
+              title: AutoSizeText(
+                questModel.title,
+                maxLines: 1,
+                style: const TextStyle(color: Colors.black87),
+              ),
               iconTheme: const IconThemeData(
                 color: Colors.black87,
               ),
@@ -71,13 +73,6 @@ class ActiveQuestScreen extends StatelessWidget {
                                   .locationCompletedBy
                                   .contains(databaseService.uid))
                               .length;
-                          // If final challenge, quest will be complete.    
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            locationViewModel.submitQuestConquered(context,
-                                lastLocationCompleted:
-                                    _numberOfLocations == _locationsCompleted,
-                                questModel: questModel);
-                          });
 
                           return ListItemsBuilder<LocationModel>(
                             title: 'Say whhhaaat!',

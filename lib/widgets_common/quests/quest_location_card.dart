@@ -57,11 +57,18 @@ class QuestLocationCard extends StatelessWidget {
                 _locationStartedBy && _locationDiscoveredBy ? true : false,
             hasIcon: false,
           ),
-          header: LocationHeader(
-            lastLocationCompleted: lastLocationCompleted,
-            questModel: questModel,
-            locationModel: locationModel,
-            isLoading: isLoading,
+          header: ChangeNotifierProvider<LocationService>(
+            create: (context) => LocationService(
+              questModel: questModel,
+              locationModel: locationModel,
+              databaseService: databaseService,
+            ),
+            child: LocationHeader(
+              lastLocationCompleted: lastLocationCompleted,
+              questModel: questModel,
+              locationModel: locationModel,
+              isLoading: isLoading,
+            ),
           ),
           expanded:
               // Build challenges in Location Card
@@ -144,7 +151,7 @@ class LocationHeader extends StatefulWidget {
 }
 
 class _LocationHeaderState extends State<LocationHeader> {
-  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final UserData _userData = Provider.of<UserData>(context);
@@ -154,27 +161,15 @@ class _LocationHeaderState extends State<LocationHeader> {
         widget.locationModel.locationStartedBy.contains(_userData.uid);
     final DatabaseService databaseService =
         Provider.of<DatabaseService>(context);
+    final LocationService locationService = context.watch<LocationService>();
 
     void _submit() async {
       try {
-            _isLoading = true; 
-        
-        setState(() {});
-        LocationService(
-                databaseService: databaseService,
-                questModel: widget.questModel,
-                locationModel: widget.locationModel)
+        locationService
             .getCurrentLocation(context);
-            //TODO: Fix the location found with chnageNotifier
-        await Future.delayed(Duration(seconds: 3));
-          _isLoading = false;
-      setState(() {
-        
-      });
       } catch (e) {
-     
-     
-      } 
+        print(e.toString());
+      }
     }
 
     return Padding(
@@ -183,7 +178,8 @@ class _LocationHeaderState extends State<LocationHeader> {
         children: <Widget>[
           ListTile(
             enabled: widget.isLoading,
-            contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             leading: _locationProgressImage(
                 locationCompleted: _locationCompletedBy,
                 locationStarted: _locationStartedBy),
@@ -191,7 +187,7 @@ class _LocationHeaderState extends State<LocationHeader> {
               _locationStartedBy
                   ? widget.locationModel.title
                   : 'Mystery Location',
-                  maxLines: 1,
+              maxLines: 1,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _locationCompletedBy ? Colors.white : Colors.black54,
@@ -206,23 +202,23 @@ class _LocationHeaderState extends State<LocationHeader> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     final _numberOfChallenges = snapshot.data.length;
-                    final _numberofChallengesCompletedCard = snapshot.data
+                    final _numberofChallengesCompleted = snapshot.data
                         .where((questionsModel) => questionsModel
                             .challengeCompletedBy
                             .contains(databaseService.uid))
                         .length;
 
-                    QuestionViewModel.submitLocationConquered(
+                    QuestionViewModel.checkQuestLogic(
                       context,
                       locationModel: widget.locationModel,
                       questModel: widget.questModel,
                       lastLocationCompleted: widget.lastLocationCompleted,
                       lastChallengeCompleted: (_numberOfChallenges ==
-                              _numberofChallengesCompletedCard) &&
-                          (_numberofChallengesCompletedCard > 0),
+                              _numberofChallengesCompleted) &&
+                          (_numberofChallengesCompleted > 0),
                     );
                     return Text(
-                        '$_numberofChallengesCompletedCard/$_numberOfChallenges');
+                        '$_numberofChallengesCompleted/$_numberOfChallenges');
                   }
 
                   return CircularProgressIndicator(
@@ -260,7 +256,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                         child: RaisedButton(
                           shape: StadiumBorder(),
                           color: Colors.orangeAccent,
-                          child: _isLoading
+                          child: locationService.isLoading
                               ? CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       Colors.white),
@@ -270,7 +266,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                                   color: Colors.white,
                                   size: 30,
                                 ),
-                          onPressed: !_isLoading ? _submit : null,
+                          onPressed: !locationService.isLoading ? _submit : null,
                         ),
                       )
                     ],

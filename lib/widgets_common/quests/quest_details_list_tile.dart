@@ -18,7 +18,8 @@ class QuestDetailsListTile extends StatelessWidget {
     @required this.difficulty,
     @required this.context,
     @required this.platformTitle,
-    @required this.platformContent, this.platformImage,
+    @required this.platformContent,
+    this.platformImage,
   }) : super(key: key);
 
   Widget _questDifficulty(String difficulty) {
@@ -27,6 +28,8 @@ class QuestDetailsListTile extends StatelessWidget {
     switch (difficulty) {
       case 'Easy':
         return LinearPercentIndicator(
+          animation: true,
+          animationDuration: 800,
           width: width,
           lineHeight: 15,
           percent: 0.33,
@@ -36,6 +39,8 @@ class QuestDetailsListTile extends StatelessWidget {
         break;
       case 'Moderate':
         return LinearPercentIndicator(
+          animation: true,
+          animationDuration: 800,
           width: width,
           lineHeight: 15,
           percent: 0.66,
@@ -45,6 +50,8 @@ class QuestDetailsListTile extends StatelessWidget {
         break;
       case 'Hard':
         return LinearPercentIndicator(
+          animation: true,
+          animationDuration: 800,
           width: width,
           lineHeight: 15,
           percent: 1,

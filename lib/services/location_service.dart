@@ -1,4 +1,3 @@
-
 import 'package:app_settings/app_settings.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
@@ -13,10 +12,14 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 // This class will take the users current location and compare this to lat long of the quest location. If they match, then the user is at the correct location and the challenges will be presented, else, they'll be prompted to head to the location.
-class LocationService {
+
+class LocationService extends ChangeNotifier {
+  bool isLoading = false;
+
   final QuestModel questModel;
   final LocationModel locationModel;
   final DatabaseService databaseService;
+
   Position currentPosition;
   LocationService({
     @required this.questModel,
@@ -26,7 +29,9 @@ class LocationService {
         assert(databaseService != null),
         assert(locationModel != null);
 
- void getCurrentLocation(BuildContext context) async {
+  void getCurrentLocation(BuildContext context) async {
+    isLoading = true;
+    notifyListeners();
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
     double lat = locationModel.location['latitude'];
@@ -38,19 +43,21 @@ class LocationService {
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
       currentPosition = position;
-      
 
       if ((lat * 100).truncateToDouble() / 100 ==
-            (currentPosition.latitude * 100).truncateToDouble() / 100  &&
-         (long * 100).truncateToDouble() / 100 ==
-            (currentPosition.longitude * 100).truncateToDouble() / 100)  {
+              (currentPosition.latitude * 100).truncateToDouble() / 100 &&
+          (long * 100).truncateToDouble() / 100 ==
+              (currentPosition.longitude * 100).truncateToDouble() / 100) {
         LocationViewModel.submitLocationDiscovered(
             context: context,
             databaseService: databaseService,
             locationModel: locationModel,
             questModel: questModel);
+        isLoading = false;
+        notifyListeners();
       } else {
-        
+        isLoading = false;
+        notifyListeners();
         LocationViewModel.submitLocationNotDiscovered(
             context: context,
             locationModel: locationModel,
@@ -64,20 +71,18 @@ class LocationService {
 
   Future _checkGps(BuildContext context) async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
-      
-        final didRequest = await PlatformAlertDialog(
-          title: 'Location Disabled',
-          content: 'To continue your adventure please enable your location service.',
-          image: Image.asset('images/event.png'),
-          defaultActionText: 'ENABLE',
-        ).show(context);
-        if (didRequest) {
-           AppSettings.openLocationSettings();
-                    
-        } else {
-          return null;
-        }
+      final didRequest = await PlatformAlertDialog(
+        title: 'Location Disabled',
+        content:
+            'To continue your adventure please enable your location service.',
+        image: Image.asset('images/event.png'),
+        defaultActionText: 'ENABLE',
+      ).show(context);
+      if (didRequest) {
+        AppSettings.openLocationSettings();
+      } else {
+        return null;
       }
     }
   }
-
+}

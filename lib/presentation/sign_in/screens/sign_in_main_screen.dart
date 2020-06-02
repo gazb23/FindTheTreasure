@@ -93,7 +93,7 @@ class SignInMainScreen extends StatelessWidget {
   Widget _buildContent(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
     bool connected = connectionStatus == ConnectivityStatus.Online;
-    // final pixelRatio = MediaQuery.of(context).size;
+    // final deviceSize = MediaQuery.of(context).size;
     if (isLoading) {
       return Center(
         child: Image.asset(
@@ -102,32 +102,32 @@ class SignInMainScreen extends StatelessWidget {
         ),
       );
     } else
-
       return Stack(
-       
-
+        alignment: Alignment.center,
         children: <Widget>[
           Carousel(
             boxFit: BoxFit.fitHeight,
             images: [
               Column(
-                
-             crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Image.asset(
                     'images/3.0x/slide_1.png',
-                  
                     alignment: Alignment.topCenter,
-                    fit:  BoxFit.cover,
+                    fit: BoxFit.cover,
                   ),
                   const SizedBox(height: 15),
-                  Container(
+                  FractionallySizedBox(
+                      widthFactor: 0.9,
                       child: AutoSizeText(
-                    'Sign up to begin your adventure!',
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54),
-                  ))
+                        'Sign up to begin your adventure!',
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54),
+                      ))
                 ],
               ),
               Column(
@@ -140,13 +140,16 @@ class SignInMainScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   FractionallySizedBox(
-                    widthFactor: 0.8,
+                      widthFactor: 0.9,
                       child: AutoSizeText(
-                    'Explore amazing new places.',
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54),
-                  ))
+                        'Explore amazing new places.',
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54),
+                      ))
                 ],
               ),
               Column(
@@ -158,13 +161,17 @@ class SignInMainScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                   SizedBox(height: 15),
-                  Container(
+                  FractionallySizedBox(
+                      widthFactor: 0.9,
                       child: AutoSizeText(
-                    'Conquer quests to win treasure.',
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black54),
-                  ))
+                        'Conquer quests to win treasure.',
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54),
+                      ))
                 ],
               )
             ],
@@ -172,20 +179,18 @@ class SignInMainScreen extends StatelessWidget {
             animationCurve: Curves.easeIn,
             autoplayDuration: Duration(seconds: 3),
           ),
-          
           Align(
             alignment: Alignment.bottomCenter,
-                      child: SingleChildScrollView(
-
-                        child: FractionallySizedBox(
+            child: SingleChildScrollView(
+              child: FractionallySizedBox(
                 widthFactor: 0.9,
                 child: Container(
-                 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       SocialSignInButton(
+                        
                         assetName: 'images/facebook-logo.png',
                         text: 'Sign in with Facebook',
                         textcolor: Colors.white,
@@ -221,7 +226,8 @@ class SignInMainScreen extends StatelessWidget {
                         textcolor: Colors.white,
                         color: Colors.orangeAccent,
                         onPressed: () {
-                          Navigator.pushNamed(context, EmailCreateAccountScreen.id);
+                          Navigator.pushNamed(
+                              context, EmailCreateAccountScreen.id);
                         },
                       ),
                       FlatButton(
@@ -238,7 +244,6 @@ class SignInMainScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         text: TextSpan(
-                          
                             style: TextStyle(
                                 color: Colors.black54, fontFamily: 'quicksand'),
                             children: [

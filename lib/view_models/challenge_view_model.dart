@@ -108,6 +108,7 @@ class ChallengeViewModel {
           print(e.toString());
         }
       }
+      //If the user does not have enough diamonds, send them to the store
     } else if (!questionsModel.hintPurchasedBy.contains(_databaseService.uid) &&
         _userData.userDiamondCount < _hintCost) {
       final didRequestHint = await PlatformAlertDialog(
