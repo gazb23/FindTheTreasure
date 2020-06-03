@@ -32,7 +32,7 @@ class _ExploreScreenState extends State<ExploreScreen>
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.grey.shade800,
 

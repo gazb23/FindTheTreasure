@@ -62,8 +62,9 @@ class _QuestListViewState extends State<QuestListView> {
   Widget build(BuildContext context) {
     final DatabaseService database = Provider.of<DatabaseService>(context);
     return Card(
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       clipBehavior: Clip.antiAlias,
-      elevation: 4.0,
+      elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Material(
         color: Colors.grey.shade800,
@@ -77,14 +78,14 @@ class _QuestListViewState extends State<QuestListView> {
                 
                 imageUrl: widget.image,
                 placeholder: (context, url) => Container(
-                  height: MediaQuery.of(context).size.height/4.5,
+                  height: MediaQuery.of(context).size.height/4.2,
                 ),
                 fadeInDuration: Duration(milliseconds: 500),
                fadeOutDuration: Duration(milliseconds: 500),
                 errorWidget: (context, url, error) => Icon(Icons.error),
                 imageBuilder: (context, image) => Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height/4.5,
+                      height: MediaQuery.of(context).size.height/4.2,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                         
