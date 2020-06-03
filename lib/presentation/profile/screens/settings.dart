@@ -3,7 +3,7 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/password_reset_screen.dart';
 import 'package:find_the_treasure/presentation/sign_in/validators.dart';
 import 'package:find_the_treasure/services/auth.dart';
-import 'package:find_the_treasure/services/connectivity_service.dart';
+
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
@@ -306,8 +306,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final UserData _userData = Provider.of<UserData>(context);
     final User _userEmail = Provider.of<User>(context,);
     return Scaffold(
+
       key: _scaffoldkey,
-      resizeToAvoidBottomInset: true,
+      
       appBar: AppBar(
         title: Text('Settings'),
         centerTitle: true,
@@ -398,22 +399,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Container _buildLogOut(
       UserData _userData, BuildContext context, User userEmail) {
-                 final connectionStatus = Provider.of<ConnectivityStatus>(context);
-    bool connected = connectionStatus == ConnectivityStatus.Online;
+   
     return Container(
       child: Column(
         children: <Widget>[
-           connected ? Container() : Container(
-                width: double.infinity,
-                
-                color: Colors.redAccent.withOpacity(0.8),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('No network connection', textAlign: TextAlign.center, style: TextStyle(
-                    color: Colors.white
-                  ), ),
-                ),
-              ),
+           
           Container(
             child: Column(
               children: <Widget>[
@@ -445,7 +435,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () => _confirmSignOut(context),
             child: Container(
               color: Colors.grey,
-              height: 70,
+              height: MediaQuery.of(context).size.height/20,
               width: double.infinity,
               child: Center(
                 child: Text(

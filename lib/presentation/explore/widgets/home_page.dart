@@ -5,6 +5,7 @@ import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/presentation/profile/screens/profile_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/CupertinoHomeScaffold.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/tab_item.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
 
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-   
+   ConnectivityService.checkNetwork(context);
     return WillPopScope(
       onWillPop: () async => !await navigatorKeys[_currentTab].currentState.maybePop(),
           child: CupertinoHomeScaffold(      
