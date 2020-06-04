@@ -29,6 +29,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
     return     
     Container(
       width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height/14,
       child: CustomRaisedButton(
         color: Colors.orangeAccent,
         padding: 10,
@@ -66,7 +67,10 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
               ),
               Expanded(
                 flex: 3,
-                child: Row(
+                
+                child: 
+                bonusKey == '0' ? Container() : 
+                Row(
                   children: <Widget>[
                     Text(
                       '+$bonusKey',

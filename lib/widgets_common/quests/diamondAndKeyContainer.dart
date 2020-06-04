@@ -27,7 +27,7 @@ final double diamondHeight;
   @override
   Widget build(BuildContext context) {
     return Container(
-      
+     
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.end,

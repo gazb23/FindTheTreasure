@@ -82,6 +82,7 @@ class SignInMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ConnectivityService.checkNetwork(context);
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -106,6 +107,7 @@ class SignInMainScreen extends StatelessWidget {
       );
     } else
       return Stack(
+        fit: StackFit.expand,
           alignment: Alignment.center,
           children: <Widget>[
             Carousel(
@@ -233,6 +235,7 @@ class SignInMainScreen extends StatelessWidget {
                                 context, EmailCreateAccountScreen.id);
                           },
                         ),
+                       
                         FlatButton(
                           shape: StadiumBorder(),
                           onPressed: () {
@@ -242,7 +245,7 @@ class SignInMainScreen extends StatelessWidget {
                             'Already registered? Sign in here.',
                             textAlign: TextAlign.center,
                           ),
-                        ),
+                        ) ,
                         RichText(
                           textAlign: TextAlign.center,
                           maxLines: 2,

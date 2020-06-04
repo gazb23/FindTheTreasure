@@ -60,7 +60,8 @@ class _ShopScreenState extends State<ShopScreen> {
     // Check availilbility of In App Purchases
 
     _isAvailable = await _iap.isAvailable();
-    await Future.delayed(Duration(seconds: 1));
+   
+    // await Future.delayed(Duration(seconds: 2));
 
     if (_isAvailable) {
       List<Future> futures = [_getProducts(), _getPastPurchases()];
@@ -221,89 +222,90 @@ class _ShopScreenState extends State<ShopScreen> {
   @override
   Widget build(BuildContext context) {
     final UserData _userData = Provider.of<UserData>(context);
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.brown,
+      appBar: AppBar(
+        title: _isAvailable ? null : Text('Shop Loading...'),
         backgroundColor: Colors.brown,
-        appBar: AppBar(
-          backgroundColor: Colors.brown,
-          iconTheme: const IconThemeData(color: Colors.black87),
-          actions: <Widget>[
-            DiamondAndKeyContainer(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: _userData.userDiamondCount,
-              numberOfKeys: _userData.userKeyCount,
-              color: Colors.white,
-            ),
-            const SizedBox(
-              width: 20,
-            )
-          ],
-        ),
-        body: Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                "images/background_shop.png",
-              ),
-              fit: BoxFit.cover,
-            ),
+        iconTheme: const IconThemeData(color: Colors.black87),
+        actions: <Widget>[
+          DiamondAndKeyContainer(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            numberOfDiamonds: _userData.userDiamondCount,
+            numberOfKeys: _userData.userKeyCount,
+            color: Colors.white,
           ),
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            const SizedBox(
-              height: 10,
+          const SizedBox(
+            width: 20,
+          )
+        ],
+      ),
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            alignment: Alignment.bottomCenter,
+            image: AssetImage(
+              
+              "images/background_shop.png",
             ),
-            IconButton(
-              icon: Icon(
-                Icons.help_outline,
-                color: Colors.brown.shade300,
-                size: 40,
-              ),
-              tooltip: 'Store questions',
-              onPressed: () async {
-                final _didSelectOK = await PlatformAlertDialog(
-                        backgroundColor: Colors.brown,
-                        titleTextColor: Colors.white,
-                        contentTextColor: Colors.white,
-                        title: 'Welcome to The Shop',
-                        content:
-                            'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints!',
-                        image: Image.asset('images/ic_thnx.png'),
-                        defaultActionText: 'OK')
-                    .show(context);
-                if (_didSelectOK) {}
-              },
-            ),
-           const SizedBox(
-              height: 10,
-            ),
-            if (_isAvailable)
-              // Display products from store
-              for (var prod in _products)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: BuyDiamondOrKeyButton(
-                    numberOfDiamonds: numberOfDiamonds(prod.price),
-                    diamondCost: prod.price,
-                    bonusKey: numberOfKeys(prod.price),
-                    isPurchasePending: _isPurchasePending,
-                    onPressed: () {
-                      _buyProduct(prod);
-                      _currentPurchase = prod.id;
-                    },
-                  ),
-                )
-            else
-              Column(
-                children: <Widget>[
-                  storeLoading(),
-                  storeLoading(),
-                  storeLoading(),
-                  storeLoading(),
-                ],
-              )
-          ]),
+            fit: BoxFit.cover,
+          ),
         ),
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          const SizedBox(
+            height: 10,
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.help_outline,
+              color: Colors.brown.shade300,
+              size: 40,
+            ),
+            tooltip: 'Store questions',
+            onPressed: () async {
+              final _didSelectOK = await PlatformAlertDialog(
+                      backgroundColor: Colors.brown,
+                      titleTextColor: Colors.white,
+                      contentTextColor: Colors.white,
+                      title: 'Welcome to The Shop',
+                      content:
+                          'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints!',
+                      image: Image.asset('images/ic_thnx.png'),
+                      defaultActionText: 'OK')
+                  .show(context);
+              if (_didSelectOK) {}
+            },
+          ),
+         const SizedBox(
+            height: 10,
+          ),
+          if (_isAvailable)
+            // Display products from store
+            for (var prod in _products)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: BuyDiamondOrKeyButton(
+                  numberOfDiamonds: numberOfDiamonds(prod.price),
+                  diamondCost: prod.price,
+                  bonusKey: numberOfKeys(prod.price),
+                  isPurchasePending: _isPurchasePending,
+                  onPressed: () {
+                    _buyProduct(prod);
+                    _currentPurchase = prod.id;
+                  },
+                ),
+              )
+          else
+            Column(
+              children: <Widget>[
+                storeLoading(),
+                storeLoading(),
+                storeLoading(),
+                storeLoading(),
+              ],
+            )
+        ]),
       ),
     );
   }
@@ -333,10 +335,10 @@ class _ShopScreenState extends State<ShopScreen> {
     String _numberOfKeys;
     switch (productPrice) {
       case '\$4.99':
-        _numberOfKeys = '1';
+        _numberOfKeys = '0';
         break;
       case '\$9.99':
-        _numberOfKeys = '2';
+        _numberOfKeys = '1';
         break;
       case '\$19.99':
         _numberOfKeys = '3';
@@ -354,8 +356,10 @@ class _ShopScreenState extends State<ShopScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: FractionallySizedBox(
+        
         widthFactor: 0.9,
         child: Shimmer.fromColors(
+          
           period: Duration(milliseconds: 750),
           baseColor: Colors.grey.shade300,
           // direction: ShimmerDirection.btt,
@@ -363,7 +367,7 @@ class _ShopScreenState extends State<ShopScreen> {
           child: CustomRaisedButton(
             color: Colors.white,
             onPressed: () {},
-            padding: 30,
+            padding: MediaQuery.of(context).size.height/30,
           ),
         ),
       ),

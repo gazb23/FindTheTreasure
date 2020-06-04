@@ -30,6 +30,7 @@ class Avatar extends StatelessWidget {
           Icons.error,
           size: radius,
         ),
+        
         placeholder: (context, url) => CustomCircularProgressIndicator(),
         imageBuilder: (context, photoURL) => InkWell(
           onTap: onPressed,

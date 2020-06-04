@@ -46,7 +46,7 @@ class ConnectivityService {
           gravity: ToastGravity.TOP,          
           backgroundColor: Colors.redAccent,
           textColor: Colors.white,
-          fontSize: 16.0
+          fontSize: 16.0          
       );
     }
   }
