@@ -53,6 +53,7 @@ class _ShopScreenState extends State<ShopScreen> {
   @override
   void dispose() {
     _subscription.cancel();
+    _isPurchasePending = false;
     super.dispose();
   }
 
@@ -60,7 +61,7 @@ class _ShopScreenState extends State<ShopScreen> {
     // Check availilbility of In App Purchases
 
     _isAvailable = await _iap.isAvailable();
-   
+
     // await Future.delayed(Duration(seconds: 2));
 
     if (_isAvailable) {
@@ -70,11 +71,19 @@ class _ShopScreenState extends State<ShopScreen> {
 
       // Listen to new purchases
 
-      _subscription = _iap.purchaseUpdatedStream.listen((data) => setState(() {
+      _subscription = _iap.purchaseUpdatedStream.listen((data) {
+         setState(() {
             _purchases.addAll(data);
 
             _verifyPurchase();
-          }));
+          });
+        
+      }, onDone: () {
+_subscription.cancel();
+      }, onError: (error) {
+        print(error.toString());
+      }
+      );
     }
   }
 
@@ -174,7 +183,7 @@ class _ShopScreenState extends State<ShopScreen> {
           .show(context);
     } else if (_purchase != null && _purchase.status == PurchaseStatus.error) {
       _isPurchasePending = true;
-      PlatformAlertDialog(
+      final _didSelectOK = await PlatformAlertDialog(
               backgroundColor: Colors.brown,
               titleTextColor: Colors.white,
               contentTextColor: Colors.white,
@@ -184,8 +193,11 @@ class _ShopScreenState extends State<ShopScreen> {
               image: Image.asset('images/ic_owl_wrong.png'),
               defaultActionText: 'OK')
           .show(context);
+      if (_didSelectOK) {
+        _isPurchasePending = false;
+      }
     } else
-      _isPurchasePending = false;
+      setState(() => _isPurchasePending = false);
   }
 
   void _displayDiamondAndKeys(PurchaseDetails purchase) {
@@ -209,14 +221,23 @@ class _ShopScreenState extends State<ShopScreen> {
     }
   }
 
-  void _buyProduct(ProductDetails productDetails) {
+  void _buyProduct(ProductDetails productDetails) async {
     _isPurchasePending = true;
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: productDetails);
-    _iap.buyConsumable(
+        
+    try {
+  
+  await _iap.buyConsumable(
       purchaseParam: purchaseParam,
     );
-    _getPastPurchases();
+         await _getPastPurchases();
+   
+    } catch(e) {
+        _isPurchasePending = false;
+      print(e.toString());
+    }
+  
   }
 
   @override
@@ -246,7 +267,6 @@ class _ShopScreenState extends State<ShopScreen> {
           image: DecorationImage(
             alignment: Alignment.bottomCenter,
             image: AssetImage(
-              
               "images/background_shop.png",
             ),
             fit: BoxFit.cover,
@@ -277,7 +297,7 @@ class _ShopScreenState extends State<ShopScreen> {
               if (_didSelectOK) {}
             },
           ),
-         const SizedBox(
+          const SizedBox(
             height: 10,
           ),
           if (_isAvailable)
@@ -356,10 +376,8 @@ class _ShopScreenState extends State<ShopScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: FractionallySizedBox(
-        
         widthFactor: 0.9,
         child: Shimmer.fromColors(
-          
           period: Duration(milliseconds: 750),
           baseColor: Colors.grey.shade300,
           // direction: ShimmerDirection.btt,
@@ -367,7 +385,7 @@ class _ShopScreenState extends State<ShopScreen> {
           child: CustomRaisedButton(
             color: Colors.white,
             onPressed: () {},
-            padding: MediaQuery.of(context).size.height/30,
+            padding: MediaQuery.of(context).size.height / 30,
           ),
         ),
       ),

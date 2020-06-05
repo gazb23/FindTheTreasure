@@ -569,7 +569,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   image_cropper: 3c16d7651730ffe85897f5a1c4e2547e6b54989a
   image_picker: e3eacd46b94694dde7cf2705955cece853aa1a8f
-  in_app_purchase: 6b3a6d6944354f353d59eb1f2a0db3fd7a40917b
+  in_app_purchase: 3e2155afa9d03d4fa32d9e62d567885080ce97d6
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   location_permissions: 4a49d4e5bec5b653643e551ab77963cc99bb0e4a
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
