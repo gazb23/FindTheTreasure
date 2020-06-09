@@ -1,6 +1,5 @@
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionService {
@@ -21,13 +20,13 @@ class PermissionService {
   /// Requests the users permission to read their location when the app is in use
   Future<bool> requestLocationPermission() async {
     
-    var permissionStatus = await Permission.location.serviceStatus.isEnabled;
+    var permissionStatus = await Permission.locationWhenInUse.isGranted;
         print(permissionStatus);
     if (permissionStatus) {
       return null;
     } else {
       var granted = await _requestPermission(Permission.locationWhenInUse);
-      if (!granted && (await Geolocator().isLocationServiceEnabled())) {
+      if (!granted && await Permission.locationWhenInUse.serviceStatus.isEnabled) {
         permissionDenied(context);
       }
 
