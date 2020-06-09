@@ -122,7 +122,7 @@ class LocationViewModel extends ChangeNotifier {
       final didNotDiscoverLocation = await PlatformAlertDialog(
         backgroundColor: Colors.white,
         title: 'Close, but no cigar!',
-        content: 'Head to ${locationModel.title}to unlock the challenges! ',
+        content: 'Head to ${locationModel.title} to unlock the challenges! ',
         defaultActionText: 'OK',
         image: Image.asset(
           'images/ic_owl_wrong_dialog.png',
