@@ -34,7 +34,7 @@ dependencies:
   connectivity: ^0.4.8+6
   intl: ^0.16.1
   geolocator: ^5.3.0
-  permission_handler: ^4.4.0+hotfix.2
+  permission_handler: ^5.0.0+hotfix.9
   app_settings: ^3.0.1
   in_app_purchase: ^0.3.4
   image_picker: ^0.6.5  

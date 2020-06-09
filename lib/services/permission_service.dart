@@ -5,13 +5,14 @@ import 'package:permission_handler/permission_handler.dart';
 
 class PermissionService {
   final BuildContext context;
-  final PermissionHandler _permessionHandler = PermissionHandler();
+  // final Permission _permessionHandler;
   PermissionService({@required this.context});
 
-  Future<bool> _requestPermission(PermissionGroup permissionGroup) async {
-    var result = await _permessionHandler.requestPermissions([permissionGroup]);
+  Future<bool> _requestPermission(Permission permissionGroup) async {
+    var result = await permissionGroup.request();
 
-    if (result[permissionGroup] == PermissionStatus.granted) {
+
+    if (result == PermissionStatus.granted) {
       return true;
     }
     return false;
@@ -20,13 +21,12 @@ class PermissionService {
   /// Requests the users permission to read their location when the app is in use
   Future<bool> requestLocationPermission() async {
     
-    var permissionStatus = await _permessionHandler
-        .checkPermissionStatus(PermissionGroup.location);
+    var permissionStatus = await Permission.location.serviceStatus.isEnabled;
         print(permissionStatus);
-    if (permissionStatus == PermissionStatus.granted) {
+    if (permissionStatus) {
       return null;
     } else {
-      var granted = await _requestPermission(PermissionGroup.locationWhenInUse);
+      var granted = await _requestPermission(Permission.locationWhenInUse);
       if (!granted && (await Geolocator().isLocationServiceEnabled())) {
         permissionDenied(context);
       }
@@ -44,6 +44,6 @@ void permissionDenied(BuildContext context) async {
           defaultActionText: 'ENABLE')
       .show(context);
   if (permission) {
-    PermissionHandler().openAppSettings();
+    await openAppSettings();
   }
 }
