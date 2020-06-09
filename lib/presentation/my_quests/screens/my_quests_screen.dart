@@ -21,40 +21,38 @@ class MyQuestsScreen extends StatelessWidget {
       ),
       home: DefaultTabController(
         length: 3,
-        child: SafeArea(
-          child: Scaffold(
-            backgroundColor: Colors.grey.shade400,
-            appBar: AppBar(
-              bottom: TabBar(
-                indicatorColor: Colors.orangeAccent,
-                labelColor: Colors.white,
-                labelStyle: TextStyle(
-                    fontFamily: 'quicksand', fontWeight: FontWeight.bold),
-                tabs: <Widget>[
-                  Tab(
-                    text: 'Current',
-                  ),
-                  Tab(
-                    text: 'Liked',
-                  ),
-                  Tab(
-                    text: 'Conquered',
-                  ),
-                ],
-              ),
-              title: Text(
-                'Your Quests',
-                style:
-                    TextStyle(fontFamily: 'JosefinSans', color: Colors.white),
-              ),
-            ),
-            body: TabBarView(
-              children: <Widget>[
-                _buildCurrentQuestListView(context, database, user),
-                _buildLikedQuestListView(context, database, user),
-                _buildConqueredQuestListView(context, database, user),
+        child: Scaffold(
+          backgroundColor: Colors.grey.shade400,
+          appBar: AppBar(
+            bottom: TabBar(
+              indicatorColor: Colors.orangeAccent,
+              labelColor: Colors.white,
+              labelStyle: TextStyle(
+                  fontFamily: 'quicksand', fontWeight: FontWeight.bold),
+              tabs: <Widget>[
+                Tab(
+                  text: 'Current',
+                ),
+                Tab(
+                  text: 'Liked',
+                ),
+                Tab(
+                  text: 'Conquered',
+                ),
               ],
             ),
+            title: Text(
+              'Your Quests',
+              style:
+                  TextStyle(fontFamily: 'JosefinSans', color: Colors.white),
+            ),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              _buildCurrentQuestListView(context, database, user),
+              _buildLikedQuestListView(context, database, user),
+              _buildConqueredQuestListView(context, database, user),
+            ],
           ),
         ),
       ),

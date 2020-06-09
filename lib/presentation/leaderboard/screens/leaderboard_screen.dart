@@ -16,33 +16,31 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   @override
   Widget build(BuildContext context) {
     final _database = Provider.of<DatabaseService>(context);
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                    image: AssetImage("images/background_games.png"),
-                    fit: BoxFit.fill),
-              ),
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                  image: AssetImage("images/background_games.png"),
+                  fit: BoxFit.fill),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 155.0),
-              child: _buildListTile(_database),
-            ),
-            _buildLeaderBoardTitle(),
-            Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    'images/2.0x/ic_trophy.png',
-                    height: 90,
-                  ),
-                )),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 155.0),
+            child: _buildListTile(_database),
+          ),
+          _buildLeaderBoardTitle(),
+          Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 25.0),
+                child: Image.asset(
+                  'images/2.0x/ic_trophy.png',
+                  height: 90,
+                ),
+              )),
+        ],
       ),
     );
   }

@@ -9,7 +9,9 @@ import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
+
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase/store_kit_wrappers.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -46,6 +48,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   void initState() {
+    
     _initialise();
     super.initState();
   }
@@ -59,7 +62,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-
+   
     _isAvailable = await _iap.isAvailable();
 
     // await Future.delayed(Duration(seconds: 2));
@@ -72,17 +75,13 @@ class _ShopScreenState extends State<ShopScreen> {
       // Listen to new purchases
 
       _subscription = _iap.purchaseUpdatedStream.listen((data) {
-         setState(() {
-            _purchases.addAll(data);
+        setState(() {
+          _purchases.addAll(data);
 
-            _verifyPurchase();
-          });
-        
-      }, onDone: () {
-_subscription.cancel();
-      }, onError: (error) {
-        print(error.toString());
+          _verifyPurchase();
+        });
       }
+       
       );
     }
   }
@@ -167,20 +166,24 @@ _subscription.cancel();
           .show(context);
       if (_didSelectOK) {
         _isPurchasePending = false;
+       
       }
-    } else if (_purchase != null &&
-        _purchase.status == PurchaseStatus.pending) {
-      _isPurchasePending = true;
-      PlatformAlertDialog(
-              backgroundColor: Colors.brown,
-              titleTextColor: Colors.white,
-              contentTextColor: Colors.white,
-              title: 'Purchase Pending',
-              content:
-                  'Your order is being processed, you\'ll recieve an order update very soon.',
-              image: Image.asset('images/ic_credit_card.png'),
-              defaultActionText: 'OK')
-          .show(context);
+    // } else if (_purchase != null &&
+    //     _purchase.status == PurchaseStatus.pending) {
+    //   _isPurchasePending = true;
+
+    //   PlatformAlertDialog(
+    //           backgroundColor: Colors.brown,
+    //           titleTextColor: Colors.white,
+    //           contentTextColor: Colors.white,
+    //           title: 'Purchase Pending',
+    //           content:
+    //               'Your order is being processed, you\'ll recieve an order update very soon.',
+    //           image: Image.asset('images/ic_credit_card.png'),
+    //           defaultActionText: 'OK')
+    //       .show(context);
+     
+      
     } else if (_purchase != null && _purchase.status == PurchaseStatus.error) {
       _isPurchasePending = true;
       final _didSelectOK = await PlatformAlertDialog(
@@ -195,6 +198,7 @@ _subscription.cancel();
           .show(context);
       if (_didSelectOK) {
         _isPurchasePending = false;
+       
       }
     } else
       setState(() => _isPurchasePending = false);
@@ -204,11 +208,11 @@ _subscription.cancel();
     switch (purchase.productID) {
       case _diamond50:
         _diamonds = 50;
-        _keys = 1;
+        _keys = 0;
         break;
       case _diamond150:
         _diamonds = 150;
-        _keys = 2;
+        _keys = 1;
         break;
       case _diamond300:
         _diamonds = 300;
@@ -225,19 +229,23 @@ _subscription.cancel();
     _isPurchasePending = true;
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: productDetails);
-        
+if (Platform.isIOS) {
+    var paymentWrapper = SKPaymentQueueWrapper();
+    var transactions = await paymentWrapper.transactions();
+    for (var i = 0; i < transactions.length; i++) {
+      await paymentWrapper.finishTransaction(transactions[i]);
+    } 
+    await Future.delayed(Duration(milliseconds: 300));   
+  }
     try {
-  
-  await _iap.buyConsumable(
-      purchaseParam: purchaseParam,
-    );
-         await _getPastPurchases();
-   
-    } catch(e) {
-        _isPurchasePending = false;
+      await _iap.buyConsumable(
+        purchaseParam: purchaseParam,
+      );
+      await _getPastPurchases();
+    } catch (e) {
+      _isPurchasePending = false;
       print(e.toString());
     }
-  
   }
 
   @override

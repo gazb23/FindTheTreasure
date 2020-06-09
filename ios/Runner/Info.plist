@@ -44,13 +44,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Find The Treasure requires access to your camera to display your avatar</string>
+	<string>Find The Treasure requires access to your camera to create a new image for your avatar.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Find The Treasure requires access to your location to check you are at the correct place and allow you to continue your quest.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Find The Treasure requires access to your location</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Find The Treasure requires access to your microphone to display your avatar</string>
+	<string>Find The Treasure requires access to your location to check you are at the correct place and allow you to continue your quest.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Find The Treasure requires access to your photo gallery to display your avatar</string>
+	<string>Find The Treasure requires access to your photo gallery to select a new image for your avatar.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

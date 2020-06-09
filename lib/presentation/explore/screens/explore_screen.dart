@@ -30,33 +30,32 @@ class _ExploreScreenState extends State<ExploreScreen>
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.grey.shade800,
+    return Scaffold(
+      
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.grey.shade800,
 
-          // leading: Icon(Icons.search, color: Colors.white,),
-          iconTheme: const IconThemeData(
-            color: Colors.black87,
-          ),
-
-          actions: <Widget>[
-            DiamondAndKeyContainer(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: _userData?.userDiamondCount,
-              numberOfKeys: _userData?.userKeyCount,
-              diamondHeight: 20,
-              skullKeyHeight: 30,
-              color: Colors.white,
-            ),
-            const SizedBox(
-              width: 20,
-            )
-          ],
+        // leading: Icon(Icons.search, color: Colors.white,),
+        iconTheme: const IconThemeData(
+          color: Colors.black87,
         ),
-        body: _buildListView(context),
+
+        actions: <Widget>[
+          DiamondAndKeyContainer(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            numberOfDiamonds: _userData?.userDiamondCount,
+            numberOfKeys: _userData?.userKeyCount,
+            diamondHeight: 20,
+            skullKeyHeight: 30,
+            color: Colors.white,
+          ),
+          const SizedBox(
+            width: 20,
+          )
+        ],
       ),
+      body: _buildListView(context),
     );
   }
 

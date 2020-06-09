@@ -40,7 +40,7 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
                 backgroundColor: Colors.transparent,
                 elevation: 0,
               ),
-              Expanded(flex: 2, child: _buildUserInfo(context, widget.userData)),
+              Expanded(flex: 3, child: _buildUserInfo(context, widget.userData)),
               Expanded(
                 flex: 4,
                 child: ListView(
