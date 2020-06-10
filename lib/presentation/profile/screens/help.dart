@@ -26,7 +26,7 @@ class HelpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.grey.shade800,
         title: Text('Help'),
         centerTitle: true,
       ),
@@ -113,7 +113,7 @@ class HelpScreen extends StatelessWidget {
                context: context,
                applicationIcon: Image.asset('images/andicon.png', height: 30,),
                applicationName: 'Find The Treasure',
-               applicationVersion: version,
+               applicationVersion: 'version:' + version,
                 
 
              );

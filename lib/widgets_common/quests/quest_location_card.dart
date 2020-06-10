@@ -187,7 +187,7 @@ class _LocationHeaderState extends State<LocationHeader> {
               _locationStartedBy
                   ? widget.locationModel.title
                   : 'Mystery Location',
-              maxLines: 1,
+              maxLines: 2,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _locationCompletedBy ? Colors.white : Colors.black54,
@@ -240,7 +240,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(
                     children: <Widget>[
-                      Image.asset('images/pirate.png'),
+                      Image.asset('images/pirate.png', height: 70,),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Text(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expandable/expandable.dart';
 import 'package:find_the_treasure/models/user_model.dart';
@@ -32,27 +34,35 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
                 image: AssetImage("images/background_team.png"),
                 fit: BoxFit.cover),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              AppBar(
+          
+          child: BackdropFilter(filter: ImageFilter.blur(
+                    sigmaX: 5, sigmaY: 5, 
+                  ),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.05),
+                  
+                      child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                AppBar(
 
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-              ),
-              Expanded(flex: 3, child: _buildUserInfo(context, widget.userData)),
-              Expanded(
-                flex: 4,
-                child: ListView(
-                  children: <Widget>[
-                    _buildTreasureTile(context, widget.userData),
-                    _buildLocationsExploredTile(context, widget.userData)
-                  ],
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
                 ),
-              ),
-            ],
+                Expanded(flex: 3, child: _buildUserInfo(context, widget.userData)),
+                Expanded(
+                  flex: 4,
+                  child: ListView(
+                    children: <Widget>[
+                      _buildTreasureTile(context, widget.userData),
+                      _buildLocationsExploredTile(context, widget.userData)
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+         ) ),
       ]),
     );
   }

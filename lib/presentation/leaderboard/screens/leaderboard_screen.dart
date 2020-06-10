@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/presentation/leaderboard/screens/leaderboard_user_profile.dart';
@@ -25,6 +27,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   image: AssetImage("images/background_games.png"),
                   fit: BoxFit.fill),
             ),
+             child: BackdropFilter(filter: ImageFilter.blur(
+                    sigmaX: 5, sigmaY: 5, 
+                  ),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.05),
+                  ),),
+                
           ),
           Padding(
             padding: const EdgeInsets.only(top: 155.0),

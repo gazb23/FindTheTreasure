@@ -32,7 +32,7 @@ class PlatformAlertDialog extends PlatformWidget {
             context: context,
             builder: (context) => this,
           )
-        : await showDialog<bool>(
+        : await showDialog<bool>(          
             context: context,
             builder: (context) => this,
             barrierDismissible: false);
@@ -43,6 +43,7 @@ class PlatformAlertDialog extends PlatformWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: CupertinoAlertDialog(
+
         title: Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: Text(
@@ -80,6 +81,7 @@ class PlatformAlertDialog extends PlatformWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
+        scrollable: true,        
         backgroundColor: backgroundColor ?? Colors.white,
         title: Center(
           child: Center(

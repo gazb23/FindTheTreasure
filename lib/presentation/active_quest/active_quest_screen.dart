@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
@@ -55,9 +57,16 @@ class ActiveQuestScreen extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
+                      
                         image: AssetImage("images/bckgrnd_balon.png"),
                         fit: BoxFit.fill),
                   ),
+                  child: BackdropFilter(filter: ImageFilter.blur(
+                    sigmaX: 5, sigmaY: 5, 
+                  ),
+                  child: Container(
+                    color: Colors.black.withOpacity(0),
+                  ),),
                 ),
                 Consumer<DatabaseService>(
                   builder: (_, _databaseService, __) => StreamBuilder<

@@ -298,7 +298,7 @@ if (Platform.isIOS) {
                       contentTextColor: Colors.white,
                       title: 'Welcome to The Shop',
                       content:
-                          'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints!',
+                          'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints',
                       image: Image.asset('images/ic_thnx.png'),
                       defaultActionText: 'OK')
                   .show(context);
