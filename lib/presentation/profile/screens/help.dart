@@ -5,6 +5,7 @@ import 'package:find_the_treasure/services/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 class HelpScreen extends StatelessWidget {
+  final String version;
   static const String _fAQsPrimaryUrl =
       'https://www.findthetreasure.com.au/faqs/';
   static const String _fallbackUrl = 'https://www.findthetreasure.com.au/';
@@ -18,6 +19,8 @@ class HelpScreen extends StatelessWidget {
       'https://play.google.com/store/apps/details?id=com.findthetreasure.find_the_treasure';
   static const String _applePrimaryUrl =
       'https://www.apple.com/au/ios/app-store/';
+
+  const HelpScreen({Key key, @required this.version}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +102,21 @@ class HelpScreen extends StatelessWidget {
                 primaryUrl: _termsPrimaryUrl,
                 fallBackUrll: _fallbackUrl,
               );
+            },
+          ),
+          CustomListTile(
+            title: 'About',
+            leadingIcon: Icons.help,
+            leadingContainerColor: Colors.grey.shade200,
+            onTap: () {
+             showAboutDialog(
+               context: context,
+               applicationIcon: Image.asset('images/andicon.png', height: 30,),
+               applicationName: 'Find The Treasure',
+               applicationVersion: version,
+                
+
+             );
             },
           ),
         ],

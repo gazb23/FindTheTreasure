@@ -283,7 +283,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           leadingContainerColor: Colors.grey.shade300,
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => HelpScreen()),
+              MaterialPageRoute(builder: (context) => HelpScreen(
+                version: _version,
+              )),
             );
           },
         ),

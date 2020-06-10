@@ -34,7 +34,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.only(top: 25.0),
+                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 10),
                 child: Image.asset(
                   'images/2.0x/ic_trophy.png',
                   height: 90,
@@ -47,7 +47,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   Container _buildLeaderBoardTitle() {
     return Container(
-      margin: const EdgeInsets.only(left: 10, right: 10, top: 55),
+      margin:  EdgeInsets.only(left: 10, right: 10, top: 55 + MediaQuery.of(context).padding.top),
       height: 100,
       decoration: const BoxDecoration(
           color: Colors.white,
