@@ -8,6 +8,7 @@ import 'package:find_the_treasure/presentation/explore/widgets/list_items_builde
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/location_service.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -73,7 +74,7 @@ class QuestLocationCard extends StatelessWidget {
           expanded:
               // Build challenges in Location Card
               SizedBox(
-            height: 400,
+            height: MediaQuery.of(context).size.height/2,
             child: StreamBuilder<List<QuestionsModel>>(
               stream: databaseService.challengesStream(
                   questId: questModel.id, locationId: locationModel.id),
@@ -151,7 +152,6 @@ class LocationHeader extends StatefulWidget {
 }
 
 class _LocationHeaderState extends State<LocationHeader> {
-
   @override
   Widget build(BuildContext context) {
     final UserData _userData = Provider.of<UserData>(context);
@@ -165,15 +165,14 @@ class _LocationHeaderState extends State<LocationHeader> {
 
     void _submit() async {
       try {
-        locationService
-            .getCurrentLocation(context);
+        locationService.getCurrentLocation(context);
       } catch (e) {
         print(e.toString());
       }
     }
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(10.0),
       child: Column(
         children: <Widget>[
           ListTile(
@@ -191,7 +190,7 @@ class _LocationHeaderState extends State<LocationHeader> {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _locationCompletedBy ? Colors.white : Colors.black54,
-                  fontFamily: 'JosefinSans',
+                  
                   fontSize: 22),
             ),
             subtitle: _locationCompletedBy ? Text('Conquered') : null,
@@ -233,27 +232,63 @@ class _LocationHeaderState extends State<LocationHeader> {
                       .contains(databaseService.uid)
               ? Container()
               : Container(
-                  margin: EdgeInsets.only(bottom: 1),
-                  padding: EdgeInsets.all(10),
+                  // margin: EdgeInsets.only(bottom: 0),
+                  // padding: EdgeInsets.all(0),
                   decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(
                     children: <Widget>[
-                      Image.asset('images/pirate.png', height: 70,),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          'Tap the button below to unlock the challenges once you\'re at ${widget.locationModel.title}.',
-                          textAlign: TextAlign.center,
+                      Container(
+                    
+                        padding: EdgeInsets.all(10),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade600,
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            
+                             IconButton(
+                                icon: Icon(
+                                  Icons.help_outline,
+                                  color: Colors.white30,
+                                  size: 35,
+                                ),
+                                onPressed: () {
+                                  PlatformAlertDialog(
+                                          title: 'X marks the spot!',
+                                          image: Image.asset('images/compass.gif', height: 150,),
+                                          content:
+                                              'Tap the button to unlock the challenges once you\'re at ${widget.locationModel.title}.',
+                                          defaultActionText: 'OK')
+                                      .show(context);
+                                }),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              widget.locationModel.locationDirections ?? '',
+                              style: TextStyle(
+                                
+                                  color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                           
+                          ],
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 30,
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width / 2,
+                        width: MediaQuery.of(context).size.width / 1.5,
                         child: RaisedButton(
+                          padding: EdgeInsets.symmetric(vertical: 5),
                           shape: StadiumBorder(),
                           color: Colors.orangeAccent,
                           child: locationService.isLoading
@@ -264,10 +299,14 @@ class _LocationHeaderState extends State<LocationHeader> {
                               : Icon(
                                   Icons.vpn_lock,
                                   color: Colors.white,
-                                  size: 30,
+                                  size: 40,
                                 ),
-                          onPressed: !locationService.isLoading ? _submit : null,
+                          onPressed:
+                              !locationService.isLoading ? _submit : null,
                         ),
+                      ),
+                      SizedBox(
+                        height: 20,
                       )
                     ],
                   ),
@@ -310,27 +349,32 @@ class Challenges extends StatelessWidget {
     bool _challengeCompleted =
         questionsModel.challengeCompletedBy.contains(databaseService.uid);
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 5, bottom: 10),
-      child: Container(
-        height: 50,
-        child: ListTile(
-          enabled: _isCurrentChallenge,
-          leading: _challengeProgressImage(
-              challengeCompleted: _challengeCompleted,
-              isCurrentChallenge: _isCurrentChallenge),
-          title: Text(
-            questionsModel.challengeTitle,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black54,
-                fontFamily: 'quicksand',
-                decoration:
-                    _challengeCompleted ? TextDecoration.lineThrough : null,
-                fontSize: 18),
-          ),
-          onTap: onTap,
+    return Container(
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      color:  Colors.white,
+      
+      child: ListTile(
+        
+        contentPadding: EdgeInsets.only(left: 20, right: 20),
+        enabled: _isCurrentChallenge,
+        leading: _challengeProgressImage(
+            challengeCompleted: _challengeCompleted,
+            isCurrentChallenge: _isCurrentChallenge),
+        title: Text(
+          questionsModel.challengeTitle,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: _challengeCompleted ? Colors.grey.shade300: Colors.black54,
+              fontFamily: 'quicksand',
+              
+              fontSize: 18),
         ),
+        subtitle: _challengeCompleted ? Text('Challenge Complete', style: TextStyle(color: Colors.grey.shade300, fontSize: 15)) : null,
+        trailing: Text(currentIndex.toString(), style: TextStyle(
+          color: _challengeCompleted ? Colors.grey.shade300 : Colors.black54
+        ),),
+        onTap: onTap,
       ),
     );
   }

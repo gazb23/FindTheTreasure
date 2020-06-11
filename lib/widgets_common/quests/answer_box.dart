@@ -1,11 +1,12 @@
-
 import 'package:find_the_treasure/models/quest_model.dart';
+import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
 
 class AnswerBox extends StatefulWidget {
   final QuestModel questModel;
+  final QuestionsModel questionsModel;
   final List<dynamic> answers;
   final bool islocationQuestion;
   final bool isFinalChallenge;
@@ -20,7 +21,9 @@ class AnswerBox extends StatefulWidget {
     @required this.arrayUnionCollectionRef,
     @required this.arrayUnionDocumentId,
     @required this.locationTitle,
-    @required this.isFinalChallenge, @required this.questModel,
+    @required this.isFinalChallenge,
+    @required this.questModel,
+    @required this.questionsModel,
   }) : super(key: key);
   @override
   _AnswerBoxState createState() => _AnswerBoxState();
@@ -50,6 +53,8 @@ class _AnswerBoxState extends State<AnswerBox> {
 
           QuestionViewModel.submit(context,
               documentId: widget.arrayUnionDocumentId,
+              challengeCompletedMessage:
+                  widget.questionsModel.challengeCompletedMessage,
               collectionRef: widget.arrayUnionCollectionRef,
               isLocation: widget.islocationQuestion,
               locationTitle: widget.locationTitle,
@@ -89,7 +94,8 @@ class _AnswerBoxState extends State<AnswerBox> {
                   if (!widget.answers
                           .contains(value.toUpperCase().trimRight()) &&
                       value.isNotEmpty) {
-                    ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel);
+                    ChallengeViewModel().answerIncorrect(
+                        context: context, questModel: widget.questModel);
 
                     return 'Answer incorrect';
                   }
@@ -98,9 +104,8 @@ class _AnswerBoxState extends State<AnswerBox> {
                       value.isNotEmpty) {
                     return null;
                   }
-               
+
                   return value.isNotEmpty ? null : 'Please enter your answer';
-                  
                 },
                 onSaved: (value) => _answer = value.toUpperCase().trimRight(),
                 textCapitalization: TextCapitalization.sentences,

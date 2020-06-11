@@ -172,6 +172,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         QuestionViewModel.submit(
           context,
           isLocation: false,
+          challengeCompletedMessage: widget.questionsModel.challengeCompletedMessage,
           isFinalChallenge: widget.isFinalChallenge,
           documentId: widget.questionsModel.id,
           collectionRef: APIPath.challenges(
@@ -209,6 +210,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         QuestionViewModel.submit(
           context,
           isLocation: false,
+            challengeCompletedMessage: widget.questionsModel.challengeCompletedMessage,
           isFinalChallenge: widget.isFinalChallenge,
           documentId: widget.questionsModel.id,
           collectionRef: APIPath.challenges(
@@ -246,6 +248,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         QuestionViewModel.submit(
           context,
           isLocation: false,
+            challengeCompletedMessage: widget.questionsModel.challengeCompletedMessage,
           isFinalChallenge: widget.isFinalChallenge,
           documentId: widget.questionsModel.id,
           collectionRef: APIPath.challenges(
@@ -283,6 +286,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         QuestionViewModel.submit(
           context,
           isLocation: false,
+            challengeCompletedMessage: widget.questionsModel.challengeCompletedMessage,
           isFinalChallenge: widget.isFinalChallenge,
           documentId: widget.questionsModel.id,
           collectionRef: APIPath.challenges(

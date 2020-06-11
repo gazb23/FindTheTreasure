@@ -38,7 +38,9 @@ class LocationService extends ChangeNotifier {
     double long = locationModel.location['longitude'];
 
     await _checkGps(context);
+    
     PermissionService(context: context).requestLocationPermission();
+
     geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
@@ -81,6 +83,8 @@ class LocationService extends ChangeNotifier {
       if (didRequest) {
         AppSettings.openLocationSettings();
       } else {
+        isLoading = false;
+    notifyListeners();
         return null;
       }
     }

@@ -70,6 +70,7 @@ class DatabaseService {
 
   //Receice a stream of all Challenges for a given location from Firebase
   Stream<List<QuestionsModel>> challengesStream({@required String questId, @required String locationId}) => _service.collectionStream(
+    orderBy: 'challengeNumber',
     descending: false,
       path: APIPath.challenges(questId: questId, locationId: locationId),
       builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));    

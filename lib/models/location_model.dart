@@ -6,6 +6,7 @@ class LocationModel {
   final String questionIntroduction;
   final String question;
   final String hint;
+  final String locationDirections;
   final List<dynamic> hintPurchasedBy;
   final List<dynamic> answers;
   final List<dynamic> locationStartedBy;
@@ -25,6 +26,7 @@ class LocationModel {
     @required this.locationDiscoveredBy,
     @required this.hint,
     @required this.hintPurchasedBy,
+    @required this.locationDirections, 
   });
 
   factory LocationModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -42,7 +44,8 @@ class LocationModel {
       locationDiscoveredBy: data['locationDiscoveredBy'],
       location: data['location'],
       hint: data['hint'],
-      hintPurchasedBy: data['hintPurchasedBy']
+      hintPurchasedBy: data['hintPurchasedBy'],
+      locationDirections: data['locationDirections'],
     );
   }
 
@@ -57,6 +60,7 @@ class LocationModel {
       'locationDiscoveredBy': locationDiscoveredBy,
       'hintPurchasedBy' : hintPurchasedBy,
       'hint' : hint,
+      'locationDirections': locationDirections,
     };
   }
 }

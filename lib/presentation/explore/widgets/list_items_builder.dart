@@ -64,7 +64,7 @@ class ListItemsBuilder<T> extends StatelessWidget {
     if (isSeperated) {
       return ListView.separated(
           separatorBuilder: (context, index) => Divider(
-                thickness: 0.5,
+                thickness: 0.25,
                 color: Colors.black26,
               ),
           itemCount: items.length + 2,

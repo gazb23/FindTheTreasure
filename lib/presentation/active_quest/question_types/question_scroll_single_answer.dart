@@ -68,6 +68,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
               ),
               locationQuestion
                   ? AnswerBox(
+                    questionsModel: questionsModel,
                     questModel: questModel,
                       isFinalChallenge: isFinalChallenge,
                       answers: locationModel.answers,
@@ -78,6 +79,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                       locationTitle: locationModel.title,
                     )
                   : AnswerBox(
+                      questionsModel: questionsModel,
                     questModel: questModel,
                       isFinalChallenge: isFinalChallenge,
                       answers: questionsModel.answers,

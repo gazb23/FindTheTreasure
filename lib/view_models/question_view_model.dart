@@ -21,6 +21,7 @@ class QuestionViewModel {
     @required String documentId,
     @required String collectionRef,
     @required String locationTitle,
+    @required String challengeCompletedMessage,
   }) async {
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
@@ -35,7 +36,7 @@ class QuestionViewModel {
         if (!isFinalChallenge) {
           final _didRequestNext = await PlatformAlertDialog(
             title: 'Congratulations!',
-            content: 'You\'ve completed the challenge!',
+            content:  challengeCompletedMessage ?? 'You\'ve completed the challenge!',
             cancelActionText: 'Not Now',
             defaultActionText: 'Next challenge',
             image: Image.asset(

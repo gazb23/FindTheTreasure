@@ -6,6 +6,7 @@ class QuestionsModel {
   final String questionType;
   final String image;
   final String hint;
+  final String challengeCompletedMessage;
   final Map<String, dynamic> answerA;
   final Map<String, dynamic> answerB;
   final Map<String, dynamic> answerC;
@@ -29,6 +30,7 @@ class QuestionsModel {
     this.answerC,
     this.answerD,
     this.image, 
+    this.challengeCompletedMessage, 
   });
 
   factory QuestionsModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -41,6 +43,7 @@ class QuestionsModel {
       challengeTitle: data['challengeTitle'],
       question: data['question'],
       hint: data['hint'],
+      challengeCompletedMessage: data['challengeCompletedMessage'],
       questionIntroduction: data['questionIntroduction'],
       challengeCompletedBy: data['challengeCompletedBy'],
       hintPurchasedBy: data['hintPurchasedBy'],
@@ -59,7 +62,8 @@ class QuestionsModel {
       'challengeTitle': challengeTitle,
       'question': question,
       'questionIntroduction': questionIntroduction,
-      'challengeCompletedBy': challengeCompletedBy
+      'challengeCompletedBy': challengeCompletedBy,
+      'challengeCompletedMessage': challengeCompletedMessage,
     };
   }
 }

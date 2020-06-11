@@ -31,9 +31,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isLoading = false;
   File _selectedFile;
   String _version = 'Unknown';
-  static const String _facebookPrimaryUrl = 'fb://page/1835933183360073';
+  static const String _facebookPrimaryUrl = 'https://www.facebook.com/FindtheTreasureAus/';
   static const String _facebookFallbackUrl =
-      'https://www.facebook.com/1835933183360073';
+      'https://www.facebook.com/';
   static const String _instagramPrimaryUrl =
       'https://www.instagram.com/findthetreasureaus/';
   static const String _instagramFallbackUrl = 'https://www.instagram.com/';
@@ -223,6 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     UserData _userData = Provider.of<UserData>(context);
     return ListView(
       children: <Widget>[
+       
         _buildListTile(
           title: 'My stats',
           leading: const Icon(
@@ -290,9 +291,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
         ),
         const SizedBox(height: 10),
+        Divider(
+          height: 25,
+          thickness: 1,
+          indent: 30,
+          endIndent: 35,
+        ),
         // Build social Icons
         Container(
-          color: Colors.grey.shade100,
+          color: Colors.white,
           margin: EdgeInsets.zero,
           padding: const EdgeInsets.all(10),
           child: FractionallySizedBox(
@@ -307,7 +314,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fallBackUrll: _facebookFallbackUrl),
                     child: Image.asset(
                       'images/facebook.png',
-                      height: 35,
+                      height: 50,
                     )),
                 GestureDetector(
                     onTap: () => UrlLauncher.socialAppLauncher(
@@ -316,7 +323,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fallBackUrll: _instagramFallbackUrl),
                     child: Image.asset(
                       'images/instagram.png',
-                      height: 35,
+                      height: 50,
                     )),
                 GestureDetector(
                     onTap: () => UrlLauncher.socialAppLauncher(
@@ -326,8 +333,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                     child: Image.asset(
                       'images/twitter.png',
-                      height: 35,
-                    ))
+                      height: 50,
+                    )),
+                    SizedBox(height: 20)
               ],
             ),
           ),
