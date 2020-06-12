@@ -96,6 +96,7 @@ class QuestLocationCard extends StatelessWidget {
                     snapshot: snapshot,
                     isSeperated: true,
                     itemBuilder: (context, questionsModel, index) => Challenges(
+                      questModel: questModel,
                       questionsModel: questionsModel,
                       currentIndex: index,
                       locationModel: locationModel,
@@ -330,6 +331,7 @@ class _LocationHeaderState extends State<LocationHeader> {
 class Challenges extends StatelessWidget {
   final QuestionsModel questionsModel;
   final LocationModel locationModel;
+  final QuestModel questModel;
   final VoidCallback onTap;
   final int currentIndex;
   final int numberOfChallengesCompleted;
@@ -341,18 +343,21 @@ class Challenges extends StatelessWidget {
       this.currentIndex,
       this.locationModel,
       this.numberOfChallengesCompleted,
-      this.databaseService})
+      this.databaseService, @required this.questModel})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     bool _isCurrentChallenge = numberOfChallengesCompleted == currentIndex - 1;
     bool _challengeCompleted =
         questionsModel.challengeCompletedBy.contains(databaseService.uid);
-
+         final _locationCompletedBy =
+        locationModel.locationCompletedBy.contains(databaseService.uid);
+final _questCompletedBy =
+        questModel.questCompletedBy.contains(databaseService.uid);
     return Container(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
-      color:  Colors.white,
+      color:  Colors.transparent,
       
       child: ListTile(
         
@@ -365,14 +370,14 @@ class Challenges extends StatelessWidget {
           questionsModel.challengeTitle,
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: _challengeCompleted ? Colors.grey.shade300: Colors.black54,
+              color: _locationCompletedBy || _questCompletedBy ? Colors.white : _challengeCompleted ? Colors.grey.shade300 : Colors.black54,
               fontFamily: 'quicksand',
               
               fontSize: 18),
         ),
-        subtitle: _challengeCompleted ? Text('Challenge Complete', style: TextStyle(color: Colors.grey.shade300, fontSize: 15)) : null,
+        subtitle: _challengeCompleted ? Text('Challenge Complete', style: TextStyle(color: _locationCompletedBy || _questCompletedBy ? Colors.black54 : _challengeCompleted ? Colors.grey.shade300 : Colors.black54, fontSize: 15)) : null,
         trailing: Text(currentIndex.toString(), style: TextStyle(
-          color: _challengeCompleted ? Colors.grey.shade300 : Colors.black54
+          color: _locationCompletedBy || _questCompletedBy ? Colors.white : _challengeCompleted ? Colors.grey.shade300 : Colors.black54
         ),),
         onTap: onTap,
       ),

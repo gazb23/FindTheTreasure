@@ -4,6 +4,7 @@ import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_multiple_choice.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_multiple_choice_picture.dart';
+import 'package:find_the_treasure/presentation/active_quest/question_types/question_picture_single_answer.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -28,7 +29,7 @@ class QuestionViewModel {
     // If Challenge Question
     if (!isLocation) {
       try {
-        _databaseService.arrayUnionField(
+       await _databaseService.arrayUnionField(
           documentId: documentId,
           field: 'challengeCompletedBy',
           collectionRef: collectionRef,
@@ -49,6 +50,9 @@ class QuestionViewModel {
           } else {
             Navigator.of(context).popUntil((route) => route.isFirst);
           }
+        } else {
+          // If final challenge for a location
+          Navigator.pop(context);
         }
       } catch (e) {
         print(e.toString());
@@ -97,14 +101,14 @@ class QuestionViewModel {
         Provider.of<DatabaseService>(context, listen: true);
 
     if (!locationModel.locationCompletedBy.contains(_databaseService.uid) &&
-        lastChallengeCompleted &&
-        !_userData.locationsExplored.contains(locationModel.title)) {
+        lastChallengeCompleted ) {
       try {
         final Future<void> locationCompleteBy =
             _databaseService.arrayUnionField(
                 documentId: locationModel.id,
                 field: 'locationCompletedBy',
                 collectionRef: APIPath.locations(questId: questModel.id));
+                
         //Add the title of the location to the users locationsExplored field
         final Future<void> locationsExplored =
             _databaseService.arrayUnionFieldData(
@@ -113,9 +117,13 @@ class QuestionViewModel {
                 field: 'locationsExplored',
                 collectionRef: APIPath.users());
 
-        final List<Future> futures = [locationsExplored, locationCompleteBy];
+        if (
+        !_userData.locationsExplored.contains(locationModel.title)) {
+          await locationsExplored;
+        }
+        
 
-        await Future.wait(futures);
+        await locationCompleteBy;
 
         // If the user has completed all the locations for a quest
         if (lastLocationCompleted) {
@@ -132,6 +140,7 @@ class QuestionViewModel {
                 'Well done, you\'ve conquered  ${locationModel.title}. Time for your next adventure!',
             defaultActionText: 'Next Location',
             cancelActionText: 'Not Now',
+           contentTextColor: Colors.white, 
             image: Image.asset('images/ic_excalibur_owl.png'),
           ).show(context);
           if (didCompleteLocation) {
@@ -187,6 +196,19 @@ class QuestionViewModel {
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => QuestionMultipleChoiceWithPicture(
+              isFinalChallenge: isFinalChallenge,
+              locationQuestion: false,
+              questModel: questModel,
+              questionsModel: questionsModel,
+              locationModel: locationModel,
+            ),
+          ),
+        );
+        break;
+          case 'questionSingleAnswerPicture':
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => QuestionSingleAnswerPicture(
               isFinalChallenge: isFinalChallenge,
               locationQuestion: false,
               questModel: questModel,

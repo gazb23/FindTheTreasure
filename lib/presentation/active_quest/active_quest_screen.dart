@@ -61,12 +61,9 @@ class ActiveQuestScreen extends StatelessWidget {
                         image: AssetImage("images/bckgrnd_balon.png"),
                         fit: BoxFit.fill),
                   ),
-                  child: BackdropFilter(filter: ImageFilter.blur(
-                    sigmaX: 5, sigmaY: 5, 
-                  ),
                   child: Container(
                     color: Colors.black.withOpacity(0),
-                  ),),
+                  ),
                 ),
                 Consumer<DatabaseService>(
                   builder: (_, _databaseService, __) => StreamBuilder<

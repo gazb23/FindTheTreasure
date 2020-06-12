@@ -225,7 +225,7 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
                   ),
                   title: AutoSizeText(
                     location,
-                    maxLines: 1,
+                    maxLines: 2,
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ))

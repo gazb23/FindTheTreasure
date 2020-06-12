@@ -68,6 +68,8 @@ class LocationService extends ChangeNotifier {
       }
     }).catchError((e) {
       PlatformExceptionAlertDialog(title: 'Error', exception: e);
+      isLoading = false;
+      notifyListeners();
     });
   }
 
