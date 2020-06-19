@@ -116,9 +116,9 @@ class QuestDiamondCalulationButton extends StatelessWidget {
     final didRequestQuest = await PlatformAlertDialog(
       title: '${userData.displayName}',
       content:
-          'It seems you need ${questModelStream.numberOfKeys - userData.userKeyCount} ${keyPluralCount(_keyCalc)} to complete the ${questModelStream.title} quest. Head to the store to buy some more or head off on an adventure that requires less keys.',
+          'It seems you need ${questModelStream.numberOfKeys - userData.userKeyCount} ${keyPluralCount(_keyCalc)} to complete the ${questModelStream.title} quest. Head to the shop to buy some more or head off on an adventure that requires less keys.',
       cancelActionText: 'Cancel',
-      defaultActionText: 'Store',
+      defaultActionText: 'Shop',
       image: Image.asset('images/ic_owl_wrong_dialog.png'),
     ).show(context);
     if (didRequestQuest) {
@@ -135,9 +135,9 @@ class QuestDiamondCalulationButton extends StatelessWidget {
     final didRequestQuest = await PlatformAlertDialog(
       title: '${userData.displayName}',
       content:
-          'It seems you need ${questModelStream.numberOfDiamonds - userData.userDiamondCount} ${diamondPluralCount(_diamondCalc)} to complete the ${questModelStream.title} quest. Head to the store to buy some more',
+          'It seems you need ${questModelStream.numberOfDiamonds - userData.userDiamondCount} ${diamondPluralCount(_diamondCalc)} to complete the ${questModelStream.title} quest. Head to the shop to buy some more.',
       cancelActionText: 'Cancel',
-      defaultActionText: 'Store',
+      defaultActionText: 'Shop',
       image: Image.asset('images/ic_owl_wrong_dialog.png'),
     ).show(context);
     if (didRequestQuest) {

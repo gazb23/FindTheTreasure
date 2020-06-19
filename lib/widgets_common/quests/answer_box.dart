@@ -33,7 +33,7 @@ class _AnswerBoxState extends State<AnswerBox> {
   final _formKey = GlobalKey<FormState>();
   String _answer;
   bool _isLoading = false;
-
+  bool _correctAnswer = false;
   bool _validateAndSaveForm() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -44,22 +44,26 @@ class _AnswerBoxState extends State<AnswerBox> {
     return false;
   }
 
+
+
   void _submit() async {
     if (_validateAndSaveForm()) {
       try {
-        if (widget.answers.contains(_answer.toUpperCase().trimRight())) {
-          _isLoading = true;
-          setState(() {});
+        if (checkAnswer(_answer)) {
+            _isLoading = true;
+        setState(() {});
 
-          QuestionViewModel.submit(context,
-              documentId: widget.arrayUnionDocumentId,
-              challengeCompletedMessage:
-                  widget.questionsModel.challengeCompletedMessage,
-              collectionRef: widget.arrayUnionCollectionRef,
-              isLocation: widget.islocationQuestion,
-              locationTitle: widget.locationTitle,
-              isFinalChallenge: widget.isFinalChallenge);
+        QuestionViewModel.submit(context,
+            documentId: widget.arrayUnionDocumentId,
+            challengeCompletedMessage:
+                widget.questionsModel?.challengeCompletedMessage,
+            collectionRef: widget.arrayUnionCollectionRef,
+            isLocation: widget.islocationQuestion,
+            locationTitle: widget.locationTitle,
+            isFinalChallenge: widget.isFinalChallenge);
         }
+
+      
       } catch (e) {
         print(e.toString());
         _isLoading = false;
@@ -91,24 +95,21 @@ class _AnswerBoxState extends State<AnswerBox> {
               key: _formKey,
               child: TextFormField(
                 validator: (value) {
-                  if (!widget.answers
-                          .contains(value.toUpperCase().trimRight()) &&
-                      value.isNotEmpty) {
+                  if (!checkAnswer(value.toUpperCase().trim()) && value.isNotEmpty) {
                     ChallengeViewModel().answerIncorrect(
                         context: context, questModel: widget.questModel);
 
                     return 'Answer incorrect';
                   }
-                  if (widget.answers
-                          .contains(value.trimRight().toUpperCase()) &&
+                  if (checkAnswer(value.toUpperCase().trim()) &&
                       value.isNotEmpty) {
                     return null;
                   }
 
                   return value.isNotEmpty ? null : 'Please enter your answer';
                 },
-                onSaved: (value) => _answer = value.toUpperCase().trimRight(),
-                textCapitalization: TextCapitalization.sentences,
+                onSaved: (value) => _answer = value.toUpperCase().trim(),
+                textCapitalization: TextCapitalization.characters,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(5),
                   hintText: 'Enter your answer',
@@ -135,5 +136,18 @@ class _AnswerBoxState extends State<AnswerBox> {
         ),
       ),
     );
+  }
+    bool checkAnswer(String answer) {
+    List _answers = widget.answers;
+
+    for (var i = 0; i < _answers.length; ++i) {
+      // This 
+      _correctAnswer = RegExp("${widget.answers[i]}s?").hasMatch(answer);
+    if (_correctAnswer) {
+      return _correctAnswer;
+    }
+ 
+    }
+    return false;
   }
 }

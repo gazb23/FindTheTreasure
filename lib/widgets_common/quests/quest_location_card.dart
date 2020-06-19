@@ -8,9 +8,8 @@ import 'package:find_the_treasure/presentation/explore/widgets/list_items_builde
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/location_service.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
-import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
-
+import 'package:find_the_treasure/services/permission_service.dart';
 import 'package:provider/provider.dart';
 
 class QuestLocationCard extends StatelessWidget {
@@ -58,19 +57,29 @@ class QuestLocationCard extends StatelessWidget {
                 _locationStartedBy && _locationDiscoveredBy ? true : false,
             hasIcon: false,
           ),
-          header: ChangeNotifierProvider<LocationService>(
-            create: (context) => LocationService(
-              questModel: questModel,
-              locationModel: locationModel,
-              databaseService: databaseService,
+          header: MultiProvider(
+            providers: [
+              ChangeNotifierProvider<LocationService>(
+              create: (context) => LocationService(
+                questModel: questModel,
+                locationModel: locationModel,
+                databaseService: databaseService,
+              )),
+              ChangeNotifierProvider<PermissionService>(
+                create: (context) => PermissionService(
+                  context: context
+                ),
+              )
+            ],
+                    
+              child: LocationHeader(
+                lastLocationCompleted: lastLocationCompleted,
+                questModel: questModel,
+                locationModel: locationModel,
+                isLoading: isLoading,
+              ),
             ),
-            child: LocationHeader(
-              lastLocationCompleted: lastLocationCompleted,
-              questModel: questModel,
-              locationModel: locationModel,
-              isLoading: isLoading,
-            ),
-          ),
+          
           expanded:
               // Build challenges in Location Card
               SizedBox(
@@ -163,6 +172,7 @@ class _LocationHeaderState extends State<LocationHeader> {
     final DatabaseService databaseService =
         Provider.of<DatabaseService>(context);
     final LocationService locationService = context.watch<LocationService>();
+    final PermissionService permissionService = context.watch<PermissionService>();
 
     void _submit() async {
       try {
@@ -179,7 +189,7 @@ class _LocationHeaderState extends State<LocationHeader> {
           ListTile(
             enabled: widget.isLoading,
             contentPadding:
-                const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 3),
             leading: _locationProgressImage(
                 locationCompleted: _locationCompletedBy,
                 locationStarted: _locationStartedBy),
@@ -234,7 +244,7 @@ class _LocationHeaderState extends State<LocationHeader> {
               ? Container()
               : Container(
                   // margin: EdgeInsets.only(bottom: 0),
-                  // padding: EdgeInsets.all(0),
+                  
                   decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                       borderRadius: BorderRadius.circular(15)),
@@ -245,30 +255,18 @@ class _LocationHeaderState extends State<LocationHeader> {
                         padding: EdgeInsets.all(10),
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Colors.grey.shade600,
+                            color: Colors.grey,
                             borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             
-                             IconButton(
-                                icon: Icon(
-                                  Icons.help_outline,
-                                  color: Colors.white30,
-                                  size: 35,
-                                ),
-                                onPressed: () {
-                                  PlatformAlertDialog(
-                                          title: 'X marks the spot!',
-                                          image: Image.asset('images/compass.gif', height: 150,),
-                                          content:
-                                              'Tap the button to unlock the challenges once you\'re at ${widget.locationModel.title}.',
-                                          defaultActionText: 'OK')
-                                      .show(context);
-                                }),
+                           
                             SizedBox(
                               height: 5,
                             ),
+                            Image.asset('images/pin.png', height: 40,),
+                            SizedBox(height: 10),
                             Text(
                               widget.locationModel.locationDirections ?? '',
                               style: TextStyle(
@@ -279,12 +277,12 @@ class _LocationHeaderState extends State<LocationHeader> {
                             SizedBox(
                               height: 15,
                             ),
-                           
+ 
                           ],
                         ),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width / 1.5,
@@ -292,7 +290,8 @@ class _LocationHeaderState extends State<LocationHeader> {
                           padding: EdgeInsets.symmetric(vertical: 5),
                           shape: StadiumBorder(),
                           color: Colors.orangeAccent,
-                          child: locationService.isLoading
+                          child: locationService.isLoading || 
+                          !permissionService.isLoading
                               ? CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       Colors.white),
@@ -300,10 +299,10 @@ class _LocationHeaderState extends State<LocationHeader> {
                               : Icon(
                                   Icons.vpn_lock,
                                   color: Colors.white,
-                                  size: 40,
+                                  size: 30,
                                 ),
                           onPressed:
-                              !locationService.isLoading ? _submit : null,
+                              !locationService.isLoading || !permissionService.isLoading ? _submit : null,
                         ),
                       ),
                       SizedBox(
@@ -361,7 +360,7 @@ final _questCompletedBy =
       
       child: ListTile(
         
-        contentPadding: EdgeInsets.only(left: 20, right: 20),
+        contentPadding: EdgeInsets.only(left: 15, right: 20),
         enabled: _isCurrentChallenge,
         leading: _challengeProgressImage(
             challengeCompleted: _challengeCompleted,

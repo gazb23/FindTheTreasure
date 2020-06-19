@@ -8,6 +8,7 @@ import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class QuestListView extends StatefulWidget {
   final QuestModel questModel;
@@ -62,67 +63,96 @@ class _QuestListViewState extends State<QuestListView> {
   Widget build(BuildContext context) {
     final DatabaseService database = Provider.of<DatabaseService>(context);
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       clipBehavior: Clip.antiAlias,
-      elevation: 5,
+      elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Material(
         color: Colors.grey.shade800,
         child: InkWell(
-          enableFeedback: true,          
-          splashColor: Colors.orangeAccent,
+          enableFeedback: true,
+          splashColor: Colors.white,
           onTap: widget.onTap,
           child: Column(
             children: <Widget>[
               CachedNetworkImage(
-                
-                imageUrl: widget.image,
-                placeholder: (context, url) => Container(
-                  height: MediaQuery.of(context).size.height/4.2,
-                ),
-                fadeInDuration: Duration(milliseconds: 500),
-               fadeOutDuration: Duration(milliseconds: 500),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-                imageBuilder: (context, image) => Container(
+                  imageUrl: widget.image,
+                  placeholder: (context, url) => Container(
+                        height: MediaQuery.of(context).size.height / 4.2,
+                      ),
+                  fadeInDuration: Duration(milliseconds: 500),
+                  fadeOutDuration: Duration(milliseconds: 500),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  imageBuilder: (context, image) => Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height/4.2,
+                      height: MediaQuery.of(context).size.height / 4.2,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                        
                             image: image,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                                Colors.black.withOpacity(0.8),
+                                BlendMode.dstATop),
                             alignment: Alignment.center),
                       ),
-                      child: buildQuestListTile(context, database),
-                    ),
-              ),
+                      child: widget.questModel.questCompletedBy
+                              .contains(database.uid)
+                          ? BackdropFilter(
+                              filter: ImageFilter.blur(
+                                sigmaX: 5,
+                                sigmaY: 5,
+                              ),
+                              child: Container(
+                                  color: Colors.black.withOpacity(0.3),
+                                  child: buildQuestListTile(context, database)),
+                            )
+                          : buildQuestListTile(context, database))),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 decoration: BoxDecoration(
+                    border: Border(
+                        top: BorderSide(
+                      color: Colors.white,
+                      width: 1
+                    )),
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         stops: [
-                      0.5,
-                      0.8,
-                    ],
+                          0.5,
+                          0.8,
+                        ],
                         colors: [
-                      Colors.grey.shade900,
-                      Colors.grey.shade800
-                    ])),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    buildDifficultyIndicator(),
-                    buildNumberOfLocations(locationPluralCount),
-                    DiamondAndKeyContainer(
-                      numberOfDiamonds: widget.numberOfDiamonds,
-                      numberOfKeys: widget.numberOfKeys,
-                    ),
-                  ],
-                ),
+                          Colors.grey.shade800,
+                          Colors.grey.shade700
+                        ])),
+                child: widget.questModel.questCompletedBy.contains(database.uid)
+                    ? Container(
+                        width: double.infinity,
+                        child: Shimmer.fromColors(
+                          period: Duration(milliseconds: 750),
+                          baseColor: Colors.amberAccent,
+                          loop: 3,
+                          highlightColor: Colors.grey.shade100,
+                          child: Text(
+                            'QUEST CONQUERED',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.amberAccent,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ))
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          buildDifficultyIndicator(),
+                          buildNumberOfLocations(locationPluralCount),
+                          DiamondAndKeyContainer(
+                            numberOfDiamonds: widget.numberOfDiamonds,
+                            numberOfKeys: widget.numberOfKeys,
+                          ),
+                        ],
+                      ),
               )
             ],
           ),

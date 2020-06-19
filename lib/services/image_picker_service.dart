@@ -1,11 +1,12 @@
 
-import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerService {
+  final picker = ImagePicker();
   // Returns a [File] object pointing to the image that was picked.
-  Future<File> pickImage({@required ImageSource source}) async {
-    return ImagePicker.pickImage(source: source);
+  Future<PickedFile> pickImage({@required ImageSource source}) async {
+    return picker.getImage(source: source);
   }
 }

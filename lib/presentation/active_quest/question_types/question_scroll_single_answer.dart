@@ -76,7 +76,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                       arrayUnionCollectionRef:
                           APIPath.locations(questId: questModel.id),
                       arrayUnionDocumentId: locationModel.id,
-                      locationTitle: locationModel.title,
+                      locationTitle: locationModel.title,                    
                     )
                   : AnswerBox(
                       questionsModel: questionsModel,

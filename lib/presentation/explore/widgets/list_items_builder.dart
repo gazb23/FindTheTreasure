@@ -38,8 +38,7 @@ class ListItemsBuilder<T> extends StatelessWidget {
 
       if (items.isNotEmpty) {
         return _buildList(items);
-      } else {
-      print('NO DATA!');
+      } else {    
         return EmptyContent(
           title: title,
           message: message,

@@ -31,7 +31,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     sigmaX: 5, sigmaY: 5, 
                   ),
                   child: Container(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.grey.withOpacity(0.3),
                   ),),
                 
           ),

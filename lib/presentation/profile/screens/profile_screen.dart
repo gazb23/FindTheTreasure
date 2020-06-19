@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     initPlatformState();
   }
-
+  // Get app version
   initPlatformState() async {
     String version;
     try {
@@ -58,8 +58,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  // User can select their avatar from gallery or camera
   Future<void> _chooseAvatar(BuildContext context) async {
-    File file;
+    PickedFile file;
     try {
       this.setState(() {
         _isLoading = true;
@@ -152,6 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildUserInfo(BuildContext context, UserData user) {
+
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context);
     return Expanded(
@@ -161,6 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: <Widget>[
           Row(
             children: <Widget>[
+             
               Expanded(child: Image.asset('images/cloud_1.png')),
               Expanded(
                 flex: 3,
@@ -201,6 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
+          
         ],
       ),
     );

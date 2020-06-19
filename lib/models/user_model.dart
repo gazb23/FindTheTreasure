@@ -6,7 +6,7 @@ class UserData {
   final String photoURL;
   final int userDiamondCount;
   final int userKeyCount;
-  final int points;
+  final int points; 
   final List locationsExplored;
   
 
@@ -33,7 +33,7 @@ class UserData {
       'userDiamondCount': userDiamondCount,
       'userKeyCount': userKeyCount,
       'points': points,
-      'locationsExplored' : locationsExplored
+      'locationsExplored' : locationsExplored,
     };
   }
 
@@ -56,7 +56,7 @@ class UserData {
       userKeyCount: data['userKeyCount'],
       points: data['points'], 
       locationsExplored:  data['locationsExplored'] != null ? data['locationsExplored'] : [],
-    );
+      );
   }
 
 

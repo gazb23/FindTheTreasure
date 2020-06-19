@@ -29,7 +29,7 @@ class QuestionViewModel {
     // If Challenge Question
     if (!isLocation) {
       try {
-       await _databaseService.arrayUnionField(
+        _databaseService.arrayUnionField(
           documentId: documentId,
           field: 'challengeCompletedBy',
           collectionRef: collectionRef,
@@ -57,7 +57,7 @@ class QuestionViewModel {
       } catch (e) {
         print(e.toString());
       }
-    } else
+    } else if (isLocation )
       // If Location Question
       try {
         _databaseService.arrayUnionField(
@@ -140,7 +140,7 @@ class QuestionViewModel {
                 'Well done, you\'ve conquered  ${locationModel.title}. Time for your next adventure!',
             defaultActionText: 'Next Location',
             cancelActionText: 'Not Now',
-           contentTextColor: Colors.white, 
+           contentTextColor: Colors.black87, 
             image: Image.asset('images/ic_excalibur_owl.png'),
           ).show(context);
           if (didCompleteLocation) {

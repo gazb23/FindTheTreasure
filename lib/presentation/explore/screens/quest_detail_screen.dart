@@ -30,27 +30,25 @@ class QuestDetailScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final QuestModel questModelStream = snapshot.data;
-            return SafeArea(
-              child: Scaffold(
-                backgroundColor: Colors.grey.shade50,
-                body: Container(
-                  width: double.infinity,
-                  child: Stack(
-                    children: <Widget>[
-                      ListView(
-                        children: <Widget>[
-                          _buildImage(context, questModelStream),
-                          _buildQuestTags(tags),
-                          _buildQuestDescriptionCard(context, questModelStream),
-                          _buildBountyCard(context, questModelStream),
-                          const SizedBox(
-                            height: 80,
-                          )
-                        ],
-                      ),
-                      _buildBottomBar(context, questModelStream, userData),
-                    ],
-                  ),
+            return Scaffold(
+              backgroundColor: Colors.grey.shade50,
+              body: Container(
+                width: double.infinity,
+                child: Stack(
+                  children: <Widget>[
+                    ListView(
+                      children: <Widget>[
+                        _buildImage(context, questModelStream),
+                        _buildQuestTags(tags),
+                        _buildQuestDescriptionCard(context, questModelStream),
+                        _buildBountyCard(context, questModelStream),
+                        const SizedBox(
+                          height: 80,
+                        )
+                      ],
+                    ),
+                    _buildBottomBar(context, questModelStream, userData),
+                  ],
                 ),
               ),
             );
@@ -101,7 +99,7 @@ class QuestDetailScreen extends StatelessWidget {
   Container _buildQuestTags(List tags) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Wrap(
         direction: Axis.horizontal,
         spacing: 5,
@@ -120,7 +118,7 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildQuestListTile(
       BuildContext context, QuestModel questModelStream) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+      contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       title: Text(
         questModelStream.title,
         style: const TextStyle(

@@ -256,7 +256,7 @@ if (Platform.isIOS) {
       appBar: AppBar(
         title: _isAvailable ? null : Text('Shop Loading...'),
         backgroundColor: Colors.brown,
-        iconTheme: const IconThemeData(color: Colors.black87),
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: <Widget>[
           DiamondAndKeyContainer(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -308,6 +308,8 @@ if (Platform.isIOS) {
           const SizedBox(
             height: 10,
           ),
+
+          
           if (_isAvailable)
             // Display products from store
             for (var prod in _products)

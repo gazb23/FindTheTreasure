@@ -39,7 +39,13 @@ class LocationService extends ChangeNotifier {
 
     await _checkGps(context);
     
-    PermissionService(context: context).requestLocationPermission();
+  
+    bool permissionGranted = await PermissionService(context: context).requestLocationPermission
+    ();
+    if (permissionGranted) {
+
+    //       isLoading = false;
+    // notifyListeners();
 
     geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
@@ -71,7 +77,16 @@ class LocationService extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     });
+  } else {
+    print('denied');
+     isLoading = false;
+      notifyListeners();
+    return null;
   }
+
+
+
+    }
 
   Future _checkGps(BuildContext context) async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
@@ -83,6 +98,8 @@ class LocationService extends ChangeNotifier {
         defaultActionText: 'ENABLE',
       ).show(context);
       if (didRequest) {
+               isLoading = false;
+    notifyListeners();
         AppSettings.openLocationSettings();
       } else {
         isLoading = false;

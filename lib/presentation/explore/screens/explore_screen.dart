@@ -16,31 +16,26 @@ class ExploreScreen extends StatefulWidget {
   _ExploreScreenState createState() => _ExploreScreenState();
 }
 
-class _ExploreScreenState extends State<ExploreScreen>
-    {
-
-
+class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
-
     final _userData = Provider.of<UserData>(context, listen: false);
-
 
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return Scaffold(
-      
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.grey.shade800,
-
-        // leading: Icon(Icons.search, color: Colors.white,),
+        leading: Icon(
+          Icons.filter_list,
+          color: Colors.white,
+        ),
         iconTheme: const IconThemeData(
           color: Colors.black87,
         ),
-
         actions: <Widget>[
           DiamondAndKeyContainer(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -79,6 +74,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                 onTap: () {
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
+                      
                       builder: (context) => QuestDetailScreen(
                         userData: _userData,
                         questModel: quest,

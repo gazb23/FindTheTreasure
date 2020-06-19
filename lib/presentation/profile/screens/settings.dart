@@ -434,8 +434,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           GestureDetector(
             onTap: () => _confirmSignOut(context),
             child: Container(
-              color: Colors.grey,
-              height: MediaQuery.of(context).size.height/20,
+              color: Colors.redAccent,
+              height: MediaQuery.of(context).size.height/12,
               width: double.infinity,
               child: Center(
                 child: Text(

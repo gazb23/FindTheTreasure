@@ -98,7 +98,7 @@ class LocationViewModel extends ChangeNotifier {
           backgroundColor: Colors.amberAccent,
           title: 'Location Discovered!',
           content:
-              'Well done, you\'ve found ${locationModel.title}and unlocked the challenges! ',
+              'Well done, you\'ve found ${locationModel.title} and unlocked the challenges! ',
           defaultActionText: 'Continue',
           image: Image.asset(
             'images/2.0x/ic_avatar_pirate.png',

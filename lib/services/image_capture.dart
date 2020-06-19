@@ -12,11 +12,11 @@ class ImageCapture extends StatefulWidget {
 
 class _ImageCaptureState extends State<ImageCapture> {
   File _imageFile;
-
+  final _picker = ImagePicker();
   Future<void> _pickImage(ImageSource source) async {
-    File selected = await ImagePicker.pickImage(source: source);
+   final selected = await _picker.getImage(source: source);
     setState(() {
-      _imageFile = selected;
+      _imageFile = File(selected.path);
     });
     
   }
