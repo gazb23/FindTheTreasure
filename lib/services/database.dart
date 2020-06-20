@@ -31,6 +31,13 @@ class DatabaseService {
       path: APIPath.quests(),
       builder: (data, documentId) => QuestModel.fromMap(data, documentId));
 
+   //Receive a filtered stream of all quests where the isAdmin contains true
+  Stream<List<QuestModel>> questFieldIsAdmin({@required String field, @required isEqualTo}) => _service.collectionStreamEqualTo(
+      field: field,
+      isEqualTo: isEqualTo,
+      path: APIPath.quests(),
+      builder: (data, documentId) => QuestModel.fromMap(data, documentId));   
+
     //Receive a filtered stream of all challenges completed by a user for a given location 
     
   Stream<List<LocationModel>> locationFieldContainsUID({@required String field}) => _service.filteredArrayCollectionStream(

@@ -88,6 +88,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
             locationsExplored: userData.locationsExplored, 
             email: userData.email,
             photoURL: userData.photoURL,
+             isAdmin: userData.isAdmin,
             uid: userData.uid,            
           );
           await database.arrayUnionField(

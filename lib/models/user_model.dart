@@ -7,6 +7,7 @@ class UserData {
   final int userDiamondCount;
   final int userKeyCount;
   final int points; 
+  final bool isAdmin;
   final List locationsExplored;
   
 
@@ -21,6 +22,7 @@ class UserData {
     this.userKeyCount,
     this.points,  
     this.locationsExplored, 
+    this.isAdmin, 
   }) : assert(UserData != null);
 
 
@@ -34,6 +36,7 @@ class UserData {
       'userKeyCount': userKeyCount,
       'points': points,
       'locationsExplored' : locationsExplored,
+      'isAdmin' : isAdmin
     };
   }
 
@@ -56,6 +59,7 @@ class UserData {
       userKeyCount: data['userKeyCount'],
       points: data['points'], 
       locationsExplored:  data['locationsExplored'] != null ? data['locationsExplored'] : [],
+      isAdmin:  data['isAdmin'],
       );
   }
 

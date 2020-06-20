@@ -35,6 +35,7 @@ class ChallengeViewModel {
         email: _userData.email,
         photoURL: _userData.photoURL,
         uid: _userData.uid,
+         isAdmin: _userData.isAdmin,
         locationsExplored: _userData.locationsExplored);
 
     await _databaseService.updateUserData(userData: _updateUserData);
@@ -95,6 +96,7 @@ class ChallengeViewModel {
               email: _userData.email,
               photoURL: _userData.photoURL,
               uid: _userData.uid,
+               isAdmin: _userData.isAdmin,
               locationsExplored: _userData.locationsExplored);
 
           _databaseService.updateUserData(userData: _updateUserData);

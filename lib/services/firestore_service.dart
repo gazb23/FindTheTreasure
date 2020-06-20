@@ -30,7 +30,7 @@ class FirestoreService {
       @required
           String field,
       @required
-          String arrayContains,
+          dynamic arrayContains,
       @required
           T builder(
         Map<String, dynamic> data,
@@ -39,6 +39,28 @@ class FirestoreService {
     final reference = Firestore.instance
         .collection(path)
         .where(field, arrayContains: arrayContains);
+
+    final snapshots = reference.snapshots();
+    return snapshots.map((snapshot) => snapshot.documents
+        .map((snapshot) => builder(snapshot.data, snapshot.documentID))
+        .toList());
+  }
+
+    Stream<List<T>> collectionStreamEqualTo<T>(
+      {@required
+          String path,
+      @required
+          String field,
+      @required
+          bool isEqualTo,
+      @required
+          T builder(
+        Map<String, dynamic> data,
+        String documentId,
+      )}) {
+    final reference = Firestore.instance
+        .collection(path)
+        .where(field, isEqualTo: isEqualTo);
 
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.documents

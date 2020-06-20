@@ -174,6 +174,7 @@ class LocationViewModel extends ChangeNotifier {
             displayName: _userData.displayName,
             email: _userData.email,
             photoURL: _userData.photoURL,
+             isAdmin: _userData.isAdmin,
             locationsExplored: _userData.locationsExplored,
             uid: _userData.uid,
           );

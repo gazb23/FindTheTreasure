@@ -128,6 +128,7 @@ class Auth implements AuthBase {
       points: 0,
       userDiamondCount: 50,
       userKeyCount: 1,          
+      isAdmin: false,
     );
     return DatabaseService(uid: user.uid)
         .updateUserData(userData: updateUserData);

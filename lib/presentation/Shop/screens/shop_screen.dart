@@ -150,6 +150,7 @@ class _ShopScreenState extends State<ShopScreen> {
         photoURL: _userData.photoURL,
         uid: _userData.uid,
         points: _userData.points,
+         isAdmin: _userData.isAdmin,
         userDiamondCount: _userData.userDiamondCount + _diamonds,
         userKeyCount: _userData.userKeyCount + _keys,
       );
