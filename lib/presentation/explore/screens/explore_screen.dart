@@ -19,7 +19,7 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
-    final _userData = Provider.of<UserData>(context, listen: false);
+       
     final database = Provider.of<DatabaseService>(context);
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
@@ -28,7 +28,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questsStream(),
         builder: (context, questModel) {
-          if (questModel.connectionState == ConnectionState.active) {
+          if (questModel.connectionState == ConnectionState.active && questModel.data != null) {
+            final _userData = context.watch<UserData>(); 
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
@@ -54,7 +55,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   )
                 ],
               ),
-              body: !_userData.isAdmin ?? false
+              body: _userData != null ? !_userData.isAdmin
                   ? _buildLiveListView(context)
                   : ListView(children: <Widget>[
                       Column(
@@ -76,14 +77,20 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               child: _buildLiveListView(context))
                         ],
                       ),
-                    ]),
+                    ]) : null
             );
-          } else
+          } else if (questModel.connectionState == ConnectionState.waiting) {
             return Container(
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Colors.white,
-                child: Image.asset('images/compass.gif', height: 200,));
+                child: Image.asset('images/compass.gif', height: 100,));
+          } 
+            return Container(
+                height: MediaQuery.of(context).size.height,
+                width: double.infinity,
+                color: Colors.white,
+                child: Image.asset('images/compass.gif', height: 100,));
         });
   }
 

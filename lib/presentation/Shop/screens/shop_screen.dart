@@ -3,16 +3,11 @@ import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
-
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
-
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
-
 import 'package:in_app_purchase/in_app_purchase.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -49,8 +44,9 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   void initState() {
+     _initialise();
     super.initState();
-    _initialise();
+   
   }
 
   @override
@@ -66,7 +62,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-    // FlutterInappPurchase.instance.clearTransactionIOS();
+
     _isAvailable = await _iap.isAvailable();
 
     if (_isAvailable) {
@@ -128,7 +124,7 @@ class _ShopScreenState extends State<ShopScreen> {
   PurchaseDetails _hasPurchased(String productID) {
     return _purchases.firstWhere(
       (purchase) => purchase.productID == productID,
-      // orElse: () => null,
+      orElse: () => null,
     );
   }
 
