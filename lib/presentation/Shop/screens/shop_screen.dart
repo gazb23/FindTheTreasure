@@ -11,7 +11,7 @@ import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.d
 import 'package:flutter/material.dart';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase/store_kit_wrappers.dart';
+// import 'package:in_app_purchase/store_kit_wrappers.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -79,6 +79,8 @@ class _ShopScreenState extends State<ShopScreen> {
           _purchases.addAll(data);
 
           _verifyPurchase();
+
+         
         });
       }
        
@@ -230,18 +232,19 @@ class _ShopScreenState extends State<ShopScreen> {
     _isPurchasePending = true;
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: productDetails);
-if (Platform.isIOS) {
-    var paymentWrapper = SKPaymentQueueWrapper();
-    var transactions = await paymentWrapper.transactions();
-    for (var i = 0; i < transactions.length; i++) {
-      await paymentWrapper.finishTransaction(transactions[i]);
-    } 
-    await Future.delayed(Duration(milliseconds: 300));   
-  }
+// if (Platform.isIOS) {
+//     var paymentWrapper = SKPaymentQueueWrapper();
+//     var transactions = await paymentWrapper.transactions();
+//     for (var i = 0; i < transactions.length; i++) {
+//       await paymentWrapper.finishTransaction(transactions[i]);
+//     } 
+//     await Future.delayed(Duration(milliseconds: 300));   
+//   }
     try {
       await _iap.buyConsumable(
         purchaseParam: purchaseParam,
       );
+      
       await _getPastPurchases();
     } catch (e) {
       _isPurchasePending = false;
