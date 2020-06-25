@@ -153,6 +153,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 onTap: () {
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
+                      fullscreenDialog: true,
+                    
                       builder: (context) => QuestDetailScreen(
                         userData: _userData,
                         questModel: quest,

@@ -30,27 +30,30 @@ class QuestDetailScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final QuestModel questModelStream = snapshot.data;
-            return Scaffold(
-              backgroundColor: Colors.grey.shade50,
-              body: Container(
-                width: double.infinity,
-                child: Stack(
-                  children: <Widget>[
-                    ListView(
+            return SafeArea(
+                          child: Scaffold(
+                  
+                  backgroundColor: Colors.grey.shade50,
+                  body: Container(
+                    width: double.infinity,
+                    child: Stack(
                       children: <Widget>[
-                        _buildImage(context, questModelStream),
-                        _buildQuestTags(tags),
-                        _buildQuestDescriptionCard(context, questModelStream),
-                        _buildBountyCard(context, questModelStream),
-                        const SizedBox(
-                          height: 80,
-                        )
+                        ListView(
+                          children: <Widget>[
+              _buildImage(context, questModelStream),
+              _buildQuestTags(tags),
+              _buildQuestDescriptionCard(context, questModelStream),
+              _buildBountyCard(context, questModelStream),
+              const SizedBox(
+                height: 80,
+              )
+                          ],
+                        ),
+                        _buildBottomBar(context, questModelStream, userData),
                       ],
                     ),
-                    _buildBottomBar(context, questModelStream, userData),
-                  ],
+                  ),
                 ),
-              ),
             );
           }
           return 
@@ -69,7 +72,7 @@ class QuestDetailScreen extends StatelessWidget {
       imageUrl: questModelStream.image,
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) => Icon(Icons.error),
-      fadeInDuration: Duration(milliseconds: 1000),
+      fadeInDuration: Duration(milliseconds: 500),
       fadeOutDuration: Duration(milliseconds: 400),
       imageBuilder: (context, image) => Container(
         width: MediaQuery.of(context).size.width,
