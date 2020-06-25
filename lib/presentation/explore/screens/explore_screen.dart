@@ -54,7 +54,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   )
                 ],
               ),
-              body: !_userData.isAdmin
+              body: !_userData.isAdmin ?? false
                   ? _buildLiveListView(context)
                   : ListView(children: <Widget>[
                       Column(

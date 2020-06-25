@@ -9,9 +9,10 @@ import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
-// import 'package:in_app_purchase/store_kit_wrappers.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -48,24 +49,25 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   void initState() {
-    
-    _initialise();
     super.initState();
+    _initialise();
   }
 
   @override
   void dispose() {
-    _subscription.cancel();
-    _isPurchasePending = false;
     super.dispose();
+    if (_subscription != null) {
+      _subscription.cancel();
+      _subscription = null;
+    }
+
+    _isPurchasePending = false;
   }
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-   
+    // FlutterInappPurchase.instance.clearTransactionIOS();
     _isAvailable = await _iap.isAvailable();
-
-    // await Future.delayed(Duration(seconds: 2));
 
     if (_isAvailable) {
       List<Future> futures = [_getProducts(), _getPastPurchases()];
@@ -77,14 +79,10 @@ class _ShopScreenState extends State<ShopScreen> {
       _subscription = _iap.purchaseUpdatedStream.listen((data) {
         setState(() {
           _purchases.addAll(data);
-
+          
           _verifyPurchase();
-
-         
         });
-      }
-       
-      );
+      });
     }
   }
 
@@ -112,11 +110,11 @@ class _ShopScreenState extends State<ShopScreen> {
 
     for (PurchaseDetails purchase in response.pastPurchases) {
       if (Platform.isIOS) {
-        InAppPurchaseConnection.instance.completePurchase(
+        _iap.completePurchase(
           purchase,
         );
       } else
-        InAppPurchaseConnection.instance.consumePurchase(
+        _iap.consumePurchase(
           purchase,
         );
     }
@@ -130,11 +128,12 @@ class _ShopScreenState extends State<ShopScreen> {
   PurchaseDetails _hasPurchased(String productID) {
     return _purchases.firstWhere(
       (purchase) => purchase.productID == productID,
-      orElse: () => null,
+      // orElse: () => null,
     );
   }
 
   void _verifyPurchase() async {
+     
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
@@ -152,7 +151,7 @@ class _ShopScreenState extends State<ShopScreen> {
         photoURL: _userData.photoURL,
         uid: _userData.uid,
         points: _userData.points,
-         isAdmin: _userData.isAdmin,
+        isAdmin: _userData.isAdmin,
         userDiamondCount: _userData.userDiamondCount + _diamonds,
         userKeyCount: _userData.userKeyCount + _keys,
       );
@@ -169,25 +168,24 @@ class _ShopScreenState extends State<ShopScreen> {
           .show(context);
       if (_didSelectOK) {
         _isPurchasePending = false;
-       
       }
-    // } else if (_purchase != null &&
-    //     _purchase.status == PurchaseStatus.pending) {
-    //   _isPurchasePending = true;
+      // } else if (_purchase != null &&
+      //     _purchase.status == PurchaseStatus.pending) {
+      //   _isPurchasePending = true;
 
-    //   PlatformAlertDialog(
-    //           backgroundColor: Colors.brown,
-    //           titleTextColor: Colors.white,
-    //           contentTextColor: Colors.white,
-    //           title: 'Purchase Pending',
-    //           content:
-    //               'Your order is being processed, you\'ll recieve an order update very soon.',
-    //           image: Image.asset('images/ic_credit_card.png'),
-    //           defaultActionText: 'OK')
-    //       .show(context);
-     
-      
+      //   PlatformAlertDialog(
+      //           backgroundColor: Colors.brown,
+      //           titleTextColor: Colors.white,
+      //           contentTextColor: Colors.white,
+      //           title: 'Purchase Pending',
+      //           content:
+      //               'Your order is being processed, you\'ll recieve an order update very soon.',
+      //           image: Image.asset('images/ic_credit_card.png'),
+      //           defaultActionText: 'OK')
+      //       .show(context);
+
     } else if (_purchase != null && _purchase.status == PurchaseStatus.error) {
+     
       _isPurchasePending = true;
       final _didSelectOK = await PlatformAlertDialog(
               backgroundColor: Colors.brown,
@@ -200,10 +198,12 @@ class _ShopScreenState extends State<ShopScreen> {
               defaultActionText: 'OK')
           .show(context);
       if (_didSelectOK) {
-        _isPurchasePending = false;
-       
+        setState(() {
+          _isPurchasePending = false;
+        });
       }
     } else
+    
       setState(() => _isPurchasePending = false);
   }
 
@@ -235,16 +235,16 @@ class _ShopScreenState extends State<ShopScreen> {
 // if (Platform.isIOS) {
 //     var paymentWrapper = SKPaymentQueueWrapper();
 //     var transactions = await paymentWrapper.transactions();
+//     if (transactions != null)
 //     for (var i = 0; i < transactions.length; i++) {
 //       await paymentWrapper.finishTransaction(transactions[i]);
-//     } 
-//     await Future.delayed(Duration(milliseconds: 300));   
+//     }
+//     await Future.delayed(Duration(milliseconds: 300));
 //   }
     try {
       await _iap.buyConsumable(
         purchaseParam: purchaseParam,
       );
-      
       await _getPastPurchases();
     } catch (e) {
       _isPurchasePending = false;
@@ -312,8 +312,6 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-
-          
           if (_isAvailable)
             // Display products from store
             for (var prod in _products)
