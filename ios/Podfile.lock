@@ -371,7 +371,7 @@ PODS:
     - Flutter
   - path_provider_macos (0.0.1):
     - Flutter
-  - permission_handler (5.0.1):
+  - "permission_handler (5.0.1+1)":
     - Flutter
   - Reachability (3.2)
   - share (0.0.1):
@@ -543,7 +543,7 @@ SPEC CHECKSUMS:
   app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   AppAuth: bce82c76043657c99d91e7882e8a9e1a93650cd4
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
-  cloud_firestore: 4cc700e236ebfe2d5d980e49cb066d202cfee0e9
+  cloud_firestore: 2a4f8f802fb0b701cf809b283b6bec7477ebaa6f
   cloud_firestore_web: 9ec3dc7f5f98de5129339802d491c1204462bfec
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   connectivity_macos: e2e9731b6b22dda39eb1b128f6969d574460e191
@@ -593,7 +593,7 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   path_provider_linux: 4d630dc393e1f20364f3e3b4a2ff41d9674a84e4
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
-  permission_handler: 7022f8972d2d85ce95c1040db945f28bdbfa45d1
+  permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d

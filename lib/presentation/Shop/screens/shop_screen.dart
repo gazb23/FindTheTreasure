@@ -9,7 +9,6 @@ import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.d
 import 'package:flutter/material.dart';
 import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase/store_kit_wrappers.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -64,25 +63,25 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-    
 
     _isAvailable = await _iap.isAvailable();
-
+    FlutterInappPurchase.instance.clearTransactionIOS();
     if (_isAvailable) {
-      FlutterInappPurchase.instance.clearTransactionIOS();
       List<Future> futures = [_getProducts(), _getPastPurchases()];
       await Future.wait(futures);
       _verifyPurchase();
 
       // Listen to new purchases
-
-      _subscription = _iap.purchaseUpdatedStream.listen((data) {
-        setState(() {
-          _purchases.addAll(data);
-
-          _verifyPurchase();
-        });
-      });
+      _subscription = _iap.purchaseUpdatedStream.listen(
+        (purchaseDetails) {
+          setState(
+            () {
+              _purchases.addAll(purchaseDetails);
+              _verifyPurchase();
+            },
+          );
+        },
+      );
     }
   }
 
@@ -143,9 +142,8 @@ class _ShopScreenState extends State<ShopScreen> {
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
       _displayDiamondAndKeys(_purchase);
 
-      
-        _isPurchasePending = true;
-      
+      _isPurchasePending = true;
+
       final _updateUserData = UserData(
         displayName: _userData.displayName,
         email: _userData.email,
@@ -169,24 +167,32 @@ class _ShopScreenState extends State<ShopScreen> {
               defaultActionText: 'Sweet')
           .show(context);
       if (_didSelectOK) {
+        _iap.completePurchase(_purchase);
         setState(() {
           _isPurchasePending = false;
+          _purchases = [ ];
         });
       }
-    }  else if (_purchase != null &&
+    } else if (_purchase != null &&
         _purchase.status == PurchaseStatus.pending) {
-          print('pending');
+      _getPastPurchases();
+      print('pending');
       setState(() {
-        _isPurchasePending = false;
+        _isPurchasePending = true;
       });
-    } else if (_purchase == null) {
+    } else if (_purchase != null && _purchase.pendingCompletePurchase) {
+      print('pendingComplete');
+
+      _iap.completePurchase(_purchase);
+      _isPurchasePending = false;
+
       setState(() {
-        _isPurchasePending = false;
+        _purchases = [];
       });
     } else
-    setState(() {
-      _isPurchasePending = false;
-    });
+      setState(() {
+        _isPurchasePending = false;
+      });
   }
 
   void _displayDiamondAndKeys(PurchaseDetails purchase) {
@@ -211,21 +217,14 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _buyProduct(ProductDetails productDetails) async {
-    print('buy1');
-    
-       _isPurchasePending = true;
-  
-   print('buy2');
+    _isPurchasePending = true;
+
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: productDetails);
 
-print('buy3');
-await FlutterInappPurchase.instance.clearTransactionIOS() ;
-   print('buy4');
- 
-  
+    // await FlutterInappPurchase.instance.clearTransactionIOS();
+
     try {
-      print('buy5');
       await _iap.buyConsumable(
         purchaseParam: purchaseParam,
       );
