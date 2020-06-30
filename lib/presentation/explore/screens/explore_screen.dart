@@ -84,13 +84,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Colors.white,
-                child: Image.asset('images/compass.gif', height: 100,));
+                child: Image.asset('images/compass.gif', height: 50,));
           } 
             return Container(
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Colors.white,
-                child: Image.asset('images/compass.gif', height: 100,));
+                child: Image.asset('images/compass.gif', height: 50,));
         });
   }
 

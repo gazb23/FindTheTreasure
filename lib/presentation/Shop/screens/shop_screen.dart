@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
@@ -237,6 +238,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ConnectivityStatus connectivityStatus = Provider.of<ConnectivityStatus>(context);
     final UserData _userData = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: Colors.brown,
@@ -295,7 +297,7 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-          if (_isAvailable)
+          if (_isAvailable && connectivityStatus == ConnectivityStatus.Online)
             // Display products from store
             for (var prod in _products)
               Padding(
