@@ -1,56 +1,55 @@
 import 'dart:async';
+
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 
-
 enum ConnectivityStatus {
-  Offline, 
+  Offline,
   Online,
 }
 
 class ConnectivityService {
-
-  StreamController<ConnectivityStatus> connectionStatusController = StreamController<ConnectivityStatus>();
+  StreamController<ConnectivityStatus> connectionStatusController =
+      StreamController<ConnectivityStatus>();
 
   ConnectivityService() {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       var connectionStatus = _getStatusFromResult(result);
 
       connectionStatusController.add(connectionStatus);
-  
     });
   }
   ConnectivityStatus _getStatusFromResult(ConnectivityResult result) {
     switch (result) {
-      case ConnectivityResult.none: 
+      case ConnectivityResult.none:
         return ConnectivityStatus.Offline;
-      case ConnectivityResult.wifi: 
-        return ConnectivityStatus.Online;  
-      case ConnectivityResult.mobile: 
-        return ConnectivityStatus.Online;   
-        
+      case ConnectivityResult.wifi:
+        return ConnectivityStatus.Online;
+      case ConnectivityResult.mobile:
+        return ConnectivityStatus.Online;
+
       default:
-      return ConnectivityStatus.Offline;
+        return ConnectivityStatus.Offline;
     }
   }
-  static checkNetwork(BuildContext context) {
-    final connectionStatus = context.watch<ConnectivityStatus>();
-    
-           if (connectionStatus == ConnectivityStatus.Offline) {
+
+  static bool checkNetwork(BuildContext context) {
+    final isConnected = context.watch<DataConnectionStatus>();
+
+    //  if (connectionStatus == ConnectivityStatus.Offline)
+    if (isConnected == DataConnectionStatus.disconnected) {
       Fluttertoast.showToast(
           msg: "Check your internet connection",
-          timeInSecForIosWeb: 3,
+          timeInSecForIosWeb: 4,
           toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,          
-          backgroundColor: Colors.redAccent,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.grey.withOpacity(0.7),
           textColor: Colors.white,
-          fontSize: 16.0          
-      );
+          fontSize: 16.0);
     }
+    return false;
   }
-
 }
-
-

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
@@ -89,21 +90,30 @@ class _SignInMainScreenState extends State<SignInMainScreen>
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
+      bool isConnected = Provider.of<DataConnectionStatus>(context, listen: false) ==
+        DataConnectionStatus.connected;
+    if (isConnected)
     try {
       await widget.bloc.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
-      if (e.code != 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL')
-        _showDuplicateAccountSignInError(context, e);
-    }
+      if (e.code != 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') 
+       _showDuplicateAccountSignInError(context, e);
+    
+    } else 
+    _showConnectionFailureDialog(context);
   }
 
   Future<void> _signInWithFacebook(BuildContext context) async {
+      bool isConnected = Provider.of<DataConnectionStatus>(context, listen: false) ==
+        DataConnectionStatus.connected;
+    if (isConnected)
     try {
       await widget.bloc.signInWithFacebook();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
-    }
+    } else 
+    _showConnectionFailureDialog(context);
   }
 
   @override
@@ -115,35 +125,33 @@ class _SignInMainScreenState extends State<SignInMainScreen>
 
     return Scaffold(
         backgroundColor: Colors.white,
-        body: 
-        widget.isLoading ?  Center(
-        child: Image.asset(
-          'images/compass.gif',
-          height: 200,
-        ),
-      ) :
-        Stack(children: <Widget>[
-          Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: const AssetImage("images/bckgrnd.png"),
-                    fit: BoxFit.cover),
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: 7,
-                  sigmaY: 7,
+        body: widget.isLoading
+            ? Center(
+                child: Image.asset(
+                  'images/compass.gif',
+                  height: 200,
                 ),
-                child: Container(color: Colors.black.withOpacity(0.1)),
-              )),
-          _buildContent(context),
-        ]));
+              )
+            : Stack(children: <Widget>[
+                Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: const AssetImage("images/bckgrnd.png"),
+                          fit: BoxFit.cover),
+                    ),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 7,
+                        sigmaY: 7,
+                      ),
+                      child: Container(color: Colors.black.withOpacity(0.1)),
+                    )),
+                _buildContent(context),
+              ]));
   }
 
   Widget _buildContent(BuildContext context) {
-    final connectionStatus = context.watch<ConnectivityStatus>();
-    bool connected = connectionStatus == ConnectivityStatus.Online;
-
+  
     // final deviceSize = MediaQuery.of(context).size;
     if (widget.isLoading) {
       return Center(
@@ -181,18 +189,18 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                       text: 'Sign in with Facebook',
                       textcolor: Colors.white,
                       color: Color(0xFF4267B2),
-                      onPressed: () => connected
-                          ? _signInWithFacebook(context)
-                          : _showConnectionFailureDialog(context),
+                      onPressed: () => 
+                          _signInWithFacebook(context)
+                          // : _showConnectionFailureDialog(context),
                     ),
                     SocialSignInButton(
                       assetName: 'images/google-logo.png',
                       text: 'Sign in with Google',
                       textcolor: Colors.black87,
                       color: Colors.grey[100],
-                      onPressed: () => connected
-                          ? _signInWithGoogle(context)
-                          : _showConnectionFailureDialog(context),
+                      onPressed: () => 
+                          _signInWithGoogle(context)
+                         
                     ),
                     Center(
                       child: Text(

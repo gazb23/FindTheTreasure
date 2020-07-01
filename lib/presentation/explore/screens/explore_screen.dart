@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
@@ -84,13 +85,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Colors.white,
-                child: Image.asset('images/compass.gif', height: 50,));
+                child: Center(child: CustomCircularProgressIndicator(color: Colors.orangeAccent,)));
           } 
             return Container(
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Colors.white,
-                child: Image.asset('images/compass.gif', height: 50,));
+                child: Center(child: CustomCircularProgressIndicator(color: Colors.orangeAccent,)));
         });
   }
 

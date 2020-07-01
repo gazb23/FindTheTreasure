@@ -17,6 +17,7 @@ class LeaderboardScreen extends StatefulWidget {
 class _LeaderboardScreenState extends State<LeaderboardScreen> {
   @override
   Widget build(BuildContext context) {
+
     final _database = Provider.of<DatabaseService>(context);
     return Scaffold(
       body: Stack(

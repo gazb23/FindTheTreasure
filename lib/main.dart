@@ -1,6 +1,7 @@
 
 
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
@@ -8,6 +9,7 @@ import 'package:find_the_treasure/presentation/profile/screens/profile_screen.da
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
+import 'package:find_the_treasure/services/data_connectivity_service.dart';
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget.dart';
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget_builder.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,9 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               ConnectivityService().connectionStatusController.stream,
         ),
+        StreamProvider<DataConnectionStatus>(
+          create: (context) => DataConnectivityService().connectivityStreamController.stream,
+        )
       ],
       child: AuthWidgetBuilder(builder: (context, userSnapshot) {
         return MaterialApp(
