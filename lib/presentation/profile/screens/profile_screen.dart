@@ -196,13 +196,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
             child: AutoSizeText(
-              user.displayName,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              minFontSize: 12,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+                user.displayName,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                minFontSize: 12,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
           ),
           
         ],

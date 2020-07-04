@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:data_connection_checker/data_connection_checker.dart';
+
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -86,6 +86,10 @@ class _ShopScreenState extends State<ShopScreen> {
           );
         },
       );
+    } else if (!_isAvailable ||  ConnectivityService.checkNetwork(context)) {
+   setState(() {
+     
+   });
     }
   }
 
@@ -241,13 +245,12 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final ConnectivityStatus connectivityStatus = Provider.of<ConnectivityStatus>(context);
-    final DataConnectionStatus dataConnectionStatus = context.watch<DataConnectionStatus>();
+
     final UserData _userData = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: Colors.brown,
       appBar: AppBar(
-        title: _isAvailable && dataConnectionStatus == DataConnectionStatus.connected ? null : Text('Shop Loading...'),
+        title: _isAvailable && ConnectivityService.checkNetwork(context) ? null : Text('Shop Loading...'),
         backgroundColor: Colors.brown,
         iconTheme: const IconThemeData(color: Colors.white),
         actions: <Widget>[
@@ -301,7 +304,7 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-          if (_isAvailable && dataConnectionStatus == DataConnectionStatus.connected)
+          if (_isAvailable && ConnectivityService.checkNetwork(context))
             // Display products from store
             for (var prod in _products)
               Padding(

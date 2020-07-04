@@ -1,11 +1,7 @@
 import 'dart:ui';
-
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
-import 'package:find_the_treasure/services/connectivity_service.dart';
-import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:find_the_treasure/widgets_common/social_sign_in_button.dart';
@@ -89,36 +85,47 @@ class _SignInMainScreenState extends State<SignInMainScreen>
     ).show(context);
   }
 
+  void _showNetworkError(BuildContext context, PlatformException exception) {
+    PlatformExceptionAlertDialog(
+      title: 'Network Error',
+      exception: exception,
+    ).show(context);
+  }
+
   Future<void> _signInWithGoogle(BuildContext context) async {
-      bool isConnected = Provider.of<DataConnectionStatus>(context, listen: false) ==
-        DataConnectionStatus.connected;
-    if (isConnected)
+    
     try {
       await widget.bloc.signInWithGoogle();
     } on PlatformException catch (e) {
-      if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
-      if (e.code != 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') 
-       _showDuplicateAccountSignInError(context, e);
-    
-    } else 
-    _showConnectionFailureDialog(context);
+      print('ERROR:' + e.toString());
+      if (e.code == 'ERROR_ABORTED_BY_USER') {
+        _showSignInError(context, e);
+      } else if (e.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') {
+        _showDuplicateAccountSignInError(context, e);
+      } else if (e.code == 'network_error') {
+        _showNetworkError(context, e);
+      } else {
+          _showSignInError(context, e);
+      }
+    }
   }
 
   Future<void> _signInWithFacebook(BuildContext context) async {
-      bool isConnected = Provider.of<DataConnectionStatus>(context, listen: false) ==
-        DataConnectionStatus.connected;
-    if (isConnected)
+
     try {
       await widget.bloc.signInWithFacebook();
     } on PlatformException catch (e) {
-      if (e.code != 'ERROR_ABORTED_BY_USER') _showSignInError(context, e);
-    } else 
-    _showConnectionFailureDialog(context);
+      if (e.code != 'ERROR_ABORTED_BY_USER') {
+        _showSignInError(context, e);
+      } 
+      
+      
+      }
   }
 
   @override
   Widget build(BuildContext context) {
-    ConnectivityService.checkNetwork(context);
+ 
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -151,7 +158,6 @@ class _SignInMainScreenState extends State<SignInMainScreen>
   }
 
   Widget _buildContent(BuildContext context) {
-  
     // final deviceSize = MediaQuery.of(context).size;
     if (widget.isLoading) {
       return Center(
@@ -185,23 +191,19 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     SocialSignInButton(
-                      assetName: 'images/facebook-logo.png',
-                      text: 'Sign in with Facebook',
-                      textcolor: Colors.white,
-                      color: Color(0xFF4267B2),
-                      onPressed: () => 
-                          _signInWithFacebook(context)
-                          // : _showConnectionFailureDialog(context),
-                    ),
+                        assetName: 'images/facebook-logo.png',
+                        text: 'Sign in with Facebook',
+                        textcolor: Colors.white,
+                        color: Color(0xFF4267B2),
+                        onPressed: () => _signInWithFacebook(context)
+                        // : _showConnectionFailureDialog(context),
+                        ),
                     SocialSignInButton(
-                      assetName: 'images/google-logo.png',
-                      text: 'Sign in with Google',
-                      textcolor: Colors.black87,
-                      color: Colors.grey[100],
-                      onPressed: () => 
-                          _signInWithGoogle(context)
-                         
-                    ),
+                        assetName: 'images/google-logo.png',
+                        text: 'Sign in with Google',
+                        textcolor: Colors.black87,
+                        color: Colors.grey[100],
+                        onPressed: () => _signInWithGoogle(context)),
                     Center(
                       child: Text(
                         'OR',
@@ -269,12 +271,12 @@ class _SignInMainScreenState extends State<SignInMainScreen>
       ]);
   }
 
-  Future<void> _showConnectionFailureDialog(BuildContext context) async {
-    await PlatformAlertDialog(
-      title: 'No network connection',
-      content:
-          'Uh no! We can\'t seem to find an internet connection, please check your network and try again.',
-      defaultActionText: 'OK',
-    ).show(context);
-  }
+  // Future<void> _showConnectionFailureDialog(BuildContext context) async {
+  //   await PlatformAlertDialog(
+  //     title: 'No network connection',
+  //     content:
+  //         'Uh no! We can\'t seem to find an internet connection, please check your network and try again.',
+  //     defaultActionText: 'OK',
+  //   ).show(context);
+  // }
 }

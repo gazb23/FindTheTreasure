@@ -12,6 +12,7 @@ import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/data_connectivity_service.dart';
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget.dart';
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget_builder.dart';
+import 'package:find_the_treasure/widgets_common/confetti.dart';
 import 'package:flutter/material.dart';
 import 'presentation/sign_in/screens/email_sign_in_screen.dart';
 import 'presentation/sign_in/screens/password_reset_screen.dart';
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
             ProfileScreen.id: (context) => ProfileScreen(),            
             HomePage.id: (context) => HomePage(),
             ActiveQuestScreen.id : (context) => ActiveQuestScreen(),
+            Confetti.id : (context) => Confetti()
           },
         );
       }),

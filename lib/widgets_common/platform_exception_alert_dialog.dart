@@ -23,7 +23,8 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
   'ERROR_USER_DISABLED' : 'Your account has been disabled, please contact support for help.',
   'ERROR_TOO_MANY_REQUESTS' : 'You have been locked out! Too many attempts to sign in.',
   'ERROR_OPERATION_NOT_ALLOWED' : 'Indicates that Email & Password accounts are not enabled.',  
-  'ERROR_REQUIRES_RECENT_LOGIN' : 'Please logout of the application and re-try after login.'
+  'ERROR_REQUIRES_RECENT_LOGIN' : 'Please logout of the application and re-try after login.',
+  'network_error' : 'Please check your network connection and try again.'
 };
 }
 

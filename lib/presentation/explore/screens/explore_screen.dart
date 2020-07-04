@@ -1,6 +1,5 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
-import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
@@ -88,7 +87,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 color: Colors.white,
                 child: Center(child: CustomCircularProgressIndicator(color: Colors.orangeAccent,)));
           } 
-          ConnectivityService.checkNetwork(context);
+      
             return Container(
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,

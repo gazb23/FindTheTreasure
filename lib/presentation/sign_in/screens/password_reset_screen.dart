@@ -1,5 +1,5 @@
 import 'package:find_the_treasure/presentation/sign_in/widgets/password_reset_form.dart';
-import 'package:find_the_treasure/services/connectivity_service.dart';
+
 import 'package:flutter/material.dart';
 
 
@@ -9,7 +9,7 @@ class PasswordResetScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-     ConnectivityService.checkNetwork(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

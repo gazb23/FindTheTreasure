@@ -37,10 +37,17 @@ class ConnectivityService {
   }
 
   static bool checkNetwork(BuildContext context) {
-    final isConnected = context.watch<DataConnectionStatus>();
-
-    //  if (connectionStatus == ConnectivityStatus.Offline)
-    if (isConnected == DataConnectionStatus.disconnected) {
+    final isConnected = Provider.of<DataConnectionStatus>(context, listen: true);
+    final connectionStatus = Provider.of<ConnectivityStatus>(context, listen: true);
+   
+    if (connectionStatus == ConnectivityStatus.Online) {
+      if (isConnected == DataConnectionStatus.connected) {
+        return true;
+      
+      }
+     
+    } else {
+      
       Fluttertoast.showToast(
           msg: "Check your internet connection",
           timeInSecForIosWeb: 4,
@@ -52,4 +59,5 @@ class ConnectivityService {
     }
     return false;
   }
+  
 }

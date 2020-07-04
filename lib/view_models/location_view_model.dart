@@ -5,6 +5,7 @@ import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
+import 'package:find_the_treasure/widgets_common/confetti.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class LocationViewModel extends ChangeNotifier {
             _databaseService.updateUserData(userData: _userData);
         List<Future> futures = [questCompleted, questStartedBy, updateUserData];
         await Future.wait(futures);
-       Navigator.pop(context);
+    Navigator.of(context).pushNamed(Confetti.id);
         final didCompleteQuest = await PlatformAlertDialog(
           backgroundColor: Colors.amberAccent,
           contentTextColor: Colors.black87,
@@ -71,7 +72,7 @@ class LocationViewModel extends ChangeNotifier {
         ).show(context);
 
         if (didCompleteQuest) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).pop();
         }
       } catch (e) {
         print(e.toString());

@@ -1,6 +1,6 @@
 
 import 'package:find_the_treasure/presentation/sign_in/widgets/email_create_account_form.dart';
-import 'package:find_the_treasure/services/connectivity_service.dart';
+
 import 'package:flutter/material.dart';
 
 class EmailCreateAccountScreen extends StatelessWidget {
@@ -8,7 +8,7 @@ class EmailCreateAccountScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-     ConnectivityService.checkNetwork(context);
+     
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
