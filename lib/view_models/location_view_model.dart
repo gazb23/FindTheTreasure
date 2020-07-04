@@ -40,6 +40,7 @@ class LocationViewModel extends ChangeNotifier {
         email: userData.email,
         photoURL: userData.photoURL,
         uid: userData.uid,
+        isAdmin: userData.isAdmin
       );
       try {
         // Add UID to quest completed by

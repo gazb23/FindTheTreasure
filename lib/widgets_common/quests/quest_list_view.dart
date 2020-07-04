@@ -99,11 +99,11 @@ class _QuestListViewState extends State<QuestListView> {
                               .contains(database.uid)
                           ? BackdropFilter(
                               filter: ImageFilter.blur(
-                                sigmaX: 5,
-                                sigmaY: 5,
+                                sigmaX: 6,
+                                sigmaY: 6,
                               ),
                               child: Container(
-                                  color: Colors.black.withOpacity(0.3),
+                                  color: Colors.black.withOpacity(0.4),
                                   child: buildQuestListTile(context, database)),
                             )
                           : buildQuestListTile(context, database))),
