@@ -64,7 +64,7 @@ class ChallengeViewModel {
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     // Cost of a hint
-    final int _hintCost = 5;
+    final int _hintCost = questModel.hintCost;
 
     //Show snackBar hint if the user has purchased it
     if (questionsModel.hintPurchasedBy.contains(_databaseService.uid)) {
@@ -81,7 +81,7 @@ class ChallengeViewModel {
       final didRequestHint = await PlatformAlertDialog(
         title: 'Purchase Hint',
         content:
-            'Having trouble with the challenge? I can give ya a hint but it\'ll cost ya $_hintCost diamonds from your treasure bounty!',
+            'Having trouble with the challenge? I can give ya a hint but it\'ll cost $_hintCost diamonds from your treasure bounty!',
         defaultActionText: 'Purchase Hint',
         cancelActionText: 'Cancel',
         image: Image.asset('images/ic_out_of_gems.png'),
@@ -119,7 +119,7 @@ class ChallengeViewModel {
         contentTextColor: Colors.white,
         titleTextColor: Colors.white,
         content:
-            'Having trouble with the challenge? I can give ya a hint but it\'ll cost ya $_hintCost diamonds. Head to the store to purchase more.',
+            'Having trouble with the challenge? I can give ya a hint but it\'ll cost $_hintCost diamonds. Head to the store to purchase more.',
         defaultActionText: 'Store',
         cancelActionText: 'Cancel',
         image: Image.asset('images/ic_out_of_gems.png'),

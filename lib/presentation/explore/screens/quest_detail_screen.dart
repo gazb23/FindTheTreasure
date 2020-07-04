@@ -459,7 +459,7 @@ class QuestDetailScreen extends StatelessWidget {
 
       children: [TextSpan(
 
-        text: 'If you have the skills to conquer this ${questModel.difficulty.toLowerCase()} quest, you will be rewarded with ' 
+        text: 'If you have the skills to conquer this quest you will be rewarded with ' 
       ),
       TextSpan(
         style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
@@ -473,14 +473,14 @@ class QuestDetailScreen extends StatelessWidget {
         text: '${questModel.numberOfKeys} key. '
       ),
          TextSpan(
-        text: 'Oh and I almost forgot! If you conquer all the challenges with no mistakes I\'ll give ya '
+        text: 'Conquer all of the challenges with no mistakes and you\'ll receive '
       ),
        TextSpan(
         style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
         text: '${questModel.questPoints} points '
       ),
       TextSpan(
-        text: 'which should look pretty darn nice on the leaderboard! '
+        text: 'which will look pretty darn nice on the leaderboard! '
       ),
       ]
     ));

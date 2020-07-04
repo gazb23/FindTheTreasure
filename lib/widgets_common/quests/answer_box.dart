@@ -142,7 +142,7 @@ class _AnswerBoxState extends State<AnswerBox> {
 
     for (var i = 0; i < _answers.length; ++i) {
       // This 
-      _correctAnswer = RegExp("${widget.answers[i]}s?").hasMatch(answer);
+      _correctAnswer = RegExp("an?|the?|a?${widget.answers[i]}es?|s?|.?").hasMatch(answer);
     if (_correctAnswer) {
       return _correctAnswer;
     }

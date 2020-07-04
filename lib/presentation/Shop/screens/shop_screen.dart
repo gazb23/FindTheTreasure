@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
@@ -64,10 +65,11 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-
+    
     _isAvailable = await _iap.isAvailable();
     FlutterInappPurchase.instance.clearTransactionIOS();
     if (_isAvailable) {
+     
       List<Future> futures = [_getProducts(), _getPastPurchases()];
       await Future.wait(futures);
       _verifyPurchase();
@@ -77,6 +79,7 @@ class _ShopScreenState extends State<ShopScreen> {
         (purchaseDetails) {
           setState(
             () {
+              
               _purchases.addAll(purchaseDetails);
               _verifyPurchase();
             },
@@ -313,7 +316,8 @@ class _ShopScreenState extends State<ShopScreen> {
                     _currentPurchase = prod.id;
                   },
                 ),
-              )
+              ) 
+        
           else
             Column(
               children: <Widget>[
