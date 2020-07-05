@@ -212,7 +212,10 @@ class LocationViewModel extends ChangeNotifier {
       }
     }
   }
+  
 }
+
+
 
 // String Plurals for diamond/s and key/s
 diamondPluralCount(int howMany) =>

@@ -33,6 +33,23 @@ class QuestionMultipleChoice extends StatelessWidget {
     final DatabaseService databaseService = Provider.of<DatabaseService>(context);
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: locationQuestion
+            ? Container()
+            : FloatingActionButton.extended(
+                label: Text('Skip?'),
+                elevation: 0,
+                focusElevation: 0,
+                highlightElevation: 0,
+                backgroundColor: Colors.transparent,
+                onPressed: () async {
+                  ChallengeViewModel.showChallengeSkip(
+                    context: context,
+                    questionsModel: questionsModel,
+                    locationModel: locationModel,
+                    questModel: questModel,
+                  );
+                  
+                }),
         appBar: AppBar(
           centerTitle: true,
           title: Builder(

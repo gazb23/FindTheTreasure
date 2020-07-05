@@ -47,8 +47,8 @@ class ConnectivityService {
       }
      
     } else {
-      
-      Fluttertoast.showToast(
+      if (isConnected == DataConnectionStatus.disconnected) {
+        Fluttertoast.showToast(
           msg: "Check your internet connection",
           timeInSecForIosWeb: 4,
           toastLength: Toast.LENGTH_LONG,
@@ -56,6 +56,8 @@ class ConnectivityService {
           backgroundColor: Colors.grey.withOpacity(0.7),
           textColor: Colors.white,
           fontSize: 16.0);
+      }
+      
     }
     return false;
   }

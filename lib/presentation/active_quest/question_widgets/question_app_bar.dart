@@ -7,6 +7,7 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/location_view_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +35,9 @@ class QuestionAppBar extends StatelessWidget implements PreferredSizeWidget {
           iconTheme: const IconThemeData(
             color: Colors.black87,
           ),
+          
           actions: <Widget>[
+            
             DiamondAndKeyContainer(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               numberOfDiamonds: userData.userDiamondCount,

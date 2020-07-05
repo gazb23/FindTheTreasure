@@ -19,7 +19,8 @@ class MultipleChoice extends StatefulWidget {
     @required this.questionsModel,
     @required this.isFinalChallenge,
     @required this.questModel,
-    @required this.locationModel, this.showOwl = false, 
+    @required this.locationModel,
+    this.showOwl = false,
   }) : super(key: key);
 
   @override
@@ -35,21 +36,17 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   String _correctOwl = 'images/ic_owl_correct.png';
   String _wrongOwl = 'images/ic_owl_wrong.png';
   bool _submitted = false;
-  
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
-  
-      child: Column(    
-        
-      mainAxisAlignment: MainAxisAlignment.start,
-  
-      children: <Widget>[
-        _buildMultiChoiceTiles(),
-        const SizedBox(height: 20),
-        widget.showOwl ? Image.asset(_neutralOwl) : Container()
-      ],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          _buildMultiChoiceTiles(),
+          const SizedBox(height: 20),
+          widget.showOwl ? Image.asset(_neutralOwl) : Container()
+        ],
       ),
     );
   }
@@ -63,12 +60,17 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
+                  topLeft: Radius.circular(50),
+                  bottomLeft: Radius.circular(50))),
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-              leading: Image.asset(_imageA, height: 40,),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              leading: Image.asset(
+                _imageA,
+                height: 40,
+              ),
               title: AutoSizeText(
                 widget.questionsModel.answerA.values.first,
                 maxLines: 2,
@@ -88,12 +90,17 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
+                  topLeft: Radius.circular(50),
+                  bottomLeft: Radius.circular(50))),
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-              leading: Image.asset(_imageB, height: 40,),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              leading: Image.asset(
+                _imageB,
+                height: 40,
+              ),
               title: AutoSizeText(
                 widget.questionsModel.answerB.values.first,
                 maxLines: 2,
@@ -113,12 +120,17 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
+                  topLeft: Radius.circular(50),
+                  bottomLeft: Radius.circular(50))),
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-              leading: Image.asset(_imageC, height: 40,),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              leading: Image.asset(
+                _imageC,
+                height: 40,
+              ),
               title: AutoSizeText(
                 widget.questionsModel.answerC.values.first,
                 maxLines: 2,
@@ -138,12 +150,17 @@ class _MultipleChoiceState extends State<MultipleChoice> {
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), bottomLeft: Radius.circular(50))),
+                  topLeft: Radius.circular(50),
+                  bottomLeft: Radius.circular(50))),
           child: Center(
             child: ListTile(
               enabled: !_submitted,
-              contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-              leading: Image.asset(_imageD, height: 40,),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              leading: Image.asset(
+                _imageD,
+                height: 40,
+              ),
               title: AutoSizeText(
                 widget.questionsModel.answerD.values.first,
                 maxLines: 2,
@@ -161,155 +178,159 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitA() async {
-      bool _isCorrect = widget.questionsModel.answerA.containsValue(true);
-      if (_isCorrect) {
-        setState(() {
-          _imageA = 'images/4.0x/ic_a_correct.png';
-          _neutralOwl = _correctOwl;
+    bool _isCorrect = widget.questionsModel.answerA.containsValue(true);
+    if (_isCorrect) {
+      setState(() {
+        _imageA = 'images/4.0x/ic_a_correct.png';
+        _neutralOwl = _correctOwl;
         _submitted = true;
-        });
-        
-        QuestionViewModel.submit(
-          context,
-          isLocation: false,
-          challengeCompletedMessage: widget.questionsModel.challengeCompletedMessage,
-          isFinalChallenge: widget.isFinalChallenge,
-          documentId: widget.questionsModel.id,
-          collectionRef: APIPath.challenges(
-              questId: widget.questModel.id,
-              locationId: widget.locationModel.id),
-          locationTitle: widget.locationModel.title,
-        );
-      } else {
-        setState(() {
-          _imageA = 'images/4.0x/ic_a_wrong.png';
-          _neutralOwl = _wrongOwl;
-          _submitted = true;
-        });
-         ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel, duration: Duration(milliseconds: 1800));
-         await Future.delayed(Duration(milliseconds: 2000));
-        setState(() {
-          _imageA = 'images/4.0x/ic_a_neutral.png';
-          _neutralOwl = 'images/ic_owl_neutral.png';
-          _submitted = false;
-        });
-         
-       
-      }
-    
+      });
+
+      QuestionViewModel.submit(
+        context,
+        isLocation: false,
+        challengeCompletedMessage:
+            widget.questionsModel.challengeCompletedMessage,
+        isFinalChallenge: widget.isFinalChallenge,
+        documentId: widget.questionsModel.id,
+        collectionRef: APIPath.challenges(
+            questId: widget.questModel.id, locationId: widget.locationModel.id),
+        locationTitle: widget.locationModel.title,
+      );
+    } else {
+      setState(() {
+        _imageA = 'images/4.0x/ic_a_wrong.png';
+        _neutralOwl = _wrongOwl;
+        _submitted = true;
+      });
+      ChallengeViewModel().answerIncorrect(
+        context: context,
+        questModel: widget.questModel,      
+        duration: Duration(milliseconds: 1800),
+      );
+      await Future.delayed(Duration(milliseconds: 2000));
+      setState(() {
+        _imageA = 'images/4.0x/ic_a_neutral.png';
+        _neutralOwl = 'images/ic_owl_neutral.png';
+        _submitted = false;
+      });
+    }
   }
+
   void _submitB() async {
-    
-      if (widget.questionsModel.answerB.containsValue(true)) {
-        setState(() {
-          _imageB = 'images/4.0x/ic_b_correct.png';
-          _neutralOwl = _correctOwl;
+    if (widget.questionsModel.answerB.containsValue(true)) {
+      setState(() {
+        _imageB = 'images/4.0x/ic_b_correct.png';
+        _neutralOwl = _correctOwl;
         _submitted = true;
-        });
-        
-        QuestionViewModel.submit(
-          context,
-          isLocation: false,
-            challengeCompletedMessage: widget.questionsModel.challengeCompletedMessage,
-          isFinalChallenge: widget.isFinalChallenge,
-          documentId: widget.questionsModel.id,
-          collectionRef: APIPath.challenges(
-              questId: widget.questModel.id,
-              locationId: widget.locationModel.id),
-          locationTitle: widget.locationModel.title,
-        );
-      } else {
-        setState(() {
-          _imageB = 'images/4.0x/ic_b_wrong.png';
-          _neutralOwl = _wrongOwl;
-          _submitted = true;
-        });
-        ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel, duration: Duration(milliseconds: 1800));
-        await Future.delayed(Duration(milliseconds: 2000));
-        setState(() {
-          _imageB = 'images/4.0x/ic_b_neutral.png';
-          _neutralOwl = 'images/ic_owl_neutral.png';
-          _submitted = false;
-        });
-         
+      });
+
+      QuestionViewModel.submit(
+        context,
+        isLocation: false,
+        challengeCompletedMessage:
+            widget.questionsModel.challengeCompletedMessage,
+        isFinalChallenge: widget.isFinalChallenge,
+        documentId: widget.questionsModel.id,
+        collectionRef: APIPath.challenges(
+            questId: widget.questModel.id, locationId: widget.locationModel.id),
+        locationTitle: widget.locationModel.title,
+      );
+    } else {
+      setState(() {
+        _imageB = 'images/4.0x/ic_b_wrong.png';
+        _neutralOwl = _wrongOwl;
+        _submitted = true;
+      });
+      ChallengeViewModel().answerIncorrect(
+          context: context,
+          questModel: widget.questModel,
        
-      }
-    
+          duration: Duration(milliseconds: 1800));
+      await Future.delayed(Duration(milliseconds: 2000));
+      setState(() {
+        _imageB = 'images/4.0x/ic_b_neutral.png';
+        _neutralOwl = 'images/ic_owl_neutral.png';
+        _submitted = false;
+      });
+    }
   }
+
   void _submitC() async {
-    
-      if (widget.questionsModel.answerC.containsValue(true)) {
-        setState(() {
-          _imageC = 'images/4.0x/ic_c_correct.png';
-          _neutralOwl = _correctOwl;
+    if (widget.questionsModel.answerC.containsValue(true)) {
+      setState(() {
+        _imageC = 'images/4.0x/ic_c_correct.png';
+        _neutralOwl = _correctOwl;
         _submitted = true;
-        });
-        
-        QuestionViewModel.submit(
-          context,
-          isLocation: false,
-            challengeCompletedMessage: widget.questionsModel.challengeCompletedMessage,
-          isFinalChallenge: widget.isFinalChallenge,
-          documentId: widget.questionsModel.id,
-          collectionRef: APIPath.challenges(
-              questId: widget.questModel.id,
-              locationId: widget.locationModel.id),
-          locationTitle: widget.locationModel.title,
-        );
-      } else {
-        setState(() {
-          _imageC = 'images/4.0x/ic_c_wrong.png';
-          _neutralOwl = _wrongOwl;
-          _submitted = true;
-        });
-         ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel, duration: Duration(milliseconds: 1800));
-        await Future.delayed(Duration(milliseconds: 2000));
-        setState(() {
-          _imageC = 'images/4.0x/ic_c_neutral.png';
-          _neutralOwl = 'images/ic_owl_neutral.png';
-          _submitted = false;
-        });
-         
-       
-      }
-    
+      });
+
+      QuestionViewModel.submit(
+        context,
+        isLocation: false,
+        challengeCompletedMessage:
+            widget.questionsModel.challengeCompletedMessage,
+        isFinalChallenge: widget.isFinalChallenge,
+        documentId: widget.questionsModel.id,
+        collectionRef: APIPath.challenges(
+            questId: widget.questModel.id, locationId: widget.locationModel.id),
+        locationTitle: widget.locationModel.title,
+      );
+    } else {
+      setState(() {
+        _imageC = 'images/4.0x/ic_c_wrong.png';
+        _neutralOwl = _wrongOwl;
+        _submitted = true;
+      });
+      ChallengeViewModel().answerIncorrect(
+          context: context,
+          questModel: widget.questModel,
+  
+          duration: Duration(milliseconds: 1800));
+      await Future.delayed(Duration(milliseconds: 2000));
+      setState(() {
+        _imageC = 'images/4.0x/ic_c_neutral.png';
+        _neutralOwl = 'images/ic_owl_neutral.png';
+        _submitted = false;
+      });
+    }
   }
+
   void _submitD() async {
-    
-      if (widget.questionsModel.answerD.containsValue(true)) {
-        setState(() {
-          _imageD = 'images/4.0x/ic_d_correct.png';
-          _neutralOwl = _correctOwl;
+    if (widget.questionsModel.answerD.containsValue(true)) {
+      setState(() {
+        _imageD = 'images/4.0x/ic_d_correct.png';
+        _neutralOwl = _correctOwl;
         _submitted = true;
-        });
+      });
+
+      QuestionViewModel.submit(
+        context,
+        isLocation: false,
+        challengeCompletedMessage:
+            widget.questionsModel.challengeCompletedMessage,
+        isFinalChallenge: widget.isFinalChallenge,
+        documentId: widget.questionsModel.id,
+        collectionRef: APIPath.challenges(
+            questId: widget.questModel.id, locationId: widget.locationModel.id),
+        locationTitle: widget.locationModel.title,
+      );
+    } else {
+      setState(() {
+        _imageD = 'images/4.0x/ic_d_wrong.png';
+        _neutralOwl = _wrongOwl;
+        _submitted = true;
+      });
+      ChallengeViewModel().answerIncorrect(
+          context: context,
+          questModel: widget.questModel,
         
-        QuestionViewModel.submit(
-          context,
-          isLocation: false,
-            challengeCompletedMessage: widget.questionsModel.challengeCompletedMessage,
-          isFinalChallenge: widget.isFinalChallenge,
-          documentId: widget.questionsModel.id,
-          collectionRef: APIPath.challenges(
-              questId: widget.questModel.id,
-              locationId: widget.locationModel.id),
-          locationTitle: widget.locationModel.title,
-        );
-      } else {
-        setState(() {
-          _imageD = 'images/4.0x/ic_d_wrong.png';
-          _neutralOwl = _wrongOwl;
-          _submitted = true;
-        });
-        ChallengeViewModel().answerIncorrect(context: context, questModel: widget.questModel, duration: Duration(milliseconds: 1800));
-        await Future.delayed(Duration(milliseconds: 2000));
-        setState(() {
-          _imageD = 'images/4.0x/ic_d_neutral.png';
-          _neutralOwl = 'images/ic_owl_neutral.png';
-          _submitted = false;
-        });
-         
-       
-      }
-    
+          duration: Duration(milliseconds: 1800));
+      await Future.delayed(Duration(milliseconds: 2000));
+      setState(() {
+        _imageD = 'images/4.0x/ic_d_neutral.png';
+        _neutralOwl = 'images/ic_owl_neutral.png';
+        _submitted = false;
+      });
+    }
   }
 }

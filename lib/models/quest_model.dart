@@ -15,6 +15,7 @@ class QuestModel {
   final int bountyKeys;
   final int questPoints;
   final int hintCost;
+  final int skipCost;
   final bool isLive;
   final List tags;
   final List likedBy;
@@ -42,7 +43,8 @@ class QuestModel {
     this.bountyKeys,
     this.questPoints, 
     this.isLive, 
-    this.hintCost
+    this.hintCost,
+    this.skipCost
   });
 
   factory QuestModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -73,7 +75,8 @@ class QuestModel {
       bountyKeys: data['bountyKeys'],
       questPoints: data['questPoints'],
       isLive: data['isLive'],
-      hintCost: data['hintCost']
+      hintCost: data['hintCost'],
+      skipCost: data['skipCost'],
     );
   }
 

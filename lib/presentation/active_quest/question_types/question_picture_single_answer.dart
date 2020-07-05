@@ -6,6 +6,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_widgets/que
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_introduction.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/answer_box.dart';
 
 import 'package:flutter/material.dart';
@@ -31,6 +32,23 @@ class QuestionSingleAnswerPicture extends StatelessWidget {
         Provider.of<DatabaseService>(context);
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: locationQuestion
+            ? Container()
+            : FloatingActionButton.extended(
+                label: Text('Skip?'),
+                elevation: 0,
+                focusElevation: 0,
+                highlightElevation: 0,
+                backgroundColor: Colors.transparent,
+                onPressed: () async {
+                  ChallengeViewModel.showChallengeSkip(
+                    context: context,
+                    questionsModel: questionsModel,
+                    locationModel: locationModel,
+                    questModel: questModel,
+                  );
+                  
+                }),
         appBar: QuestionAppBar(
           locationQuestion: locationQuestion,
           locationModel: locationModel,

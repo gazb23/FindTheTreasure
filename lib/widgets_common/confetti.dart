@@ -43,7 +43,7 @@ class _ConfettiState extends State<Confetti> {
           Positioned(
             top: 50,
             left: 10,
-                      child: Text('Congratualtions ' + userData.displayName, style: TextStyle(
+                      child: Text('Congratulations ' + userData.displayName, style: TextStyle(
               color: Colors.black87,
               fontSize: 28,
               fontWeight: FontWeight.bold

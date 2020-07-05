@@ -32,8 +32,7 @@ class AnswerBox extends StatefulWidget {
 class _AnswerBoxState extends State<AnswerBox> {
   final _formKey = GlobalKey<FormState>();
   String _answer;
-  bool _isLoading = false;
-  bool _correctAnswer = false;
+  bool _isLoading = false;  
   bool _validateAndSaveForm() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -44,26 +43,22 @@ class _AnswerBoxState extends State<AnswerBox> {
     return false;
   }
 
-
-
   void _submit() async {
     if (_validateAndSaveForm()) {
       try {
         if (checkAnswer(_answer)) {
-            _isLoading = true;
-        setState(() {});
+          _isLoading = true;
+          setState(() {});
 
-        QuestionViewModel.submit(context,
-            documentId: widget.arrayUnionDocumentId,
-            challengeCompletedMessage:
-                widget.questionsModel?.challengeCompletedMessage,
-            collectionRef: widget.arrayUnionCollectionRef,
-            isLocation: widget.islocationQuestion,
-            locationTitle: widget.locationTitle,
-            isFinalChallenge: widget.isFinalChallenge);
+          QuestionViewModel.submit(context,
+              documentId: widget.arrayUnionDocumentId,
+              challengeCompletedMessage:
+                  widget.questionsModel?.challengeCompletedMessage,
+              collectionRef: widget.arrayUnionCollectionRef,
+              isLocation: widget.islocationQuestion,
+              locationTitle: widget.locationTitle,
+              isFinalChallenge: widget.isFinalChallenge);
         }
-
-      
       } catch (e) {
         print(e.toString());
         _isLoading = false;
@@ -95,9 +90,12 @@ class _AnswerBoxState extends State<AnswerBox> {
               key: _formKey,
               child: TextFormField(
                 validator: (value) {
-                  if (!checkAnswer(value.toUpperCase().trim()) && value.isNotEmpty) {
+                  if (!checkAnswer(value.toUpperCase().trim()) &&
+                      value.isNotEmpty) {
                     ChallengeViewModel().answerIncorrect(
-                        context: context, questModel: widget.questModel);
+                      context: context,
+                      questModel: widget.questModel,
+                    );
 
                     return 'Answer incorrect';
                   }
@@ -137,16 +135,26 @@ class _AnswerBoxState extends State<AnswerBox> {
       ),
     );
   }
-    bool checkAnswer(String answer) {
-    List _answers = widget.answers;
+  //   bool checkAnswer(String answer) {
+  //   List _answers = widget.answers;
 
-    for (var i = 0; i < _answers.length; ++i) {
-      // This 
-      _correctAnswer = RegExp("an?|the?|a?${widget.answers[i]}es?|s?|.?").hasMatch(answer);
-    if (_correctAnswer) {
-      return _correctAnswer;
-    }
- 
+  //   for (var i = 0; i < _answers.length; ++i) {
+  //     // This
+  //     _correctAnswer = RegExp("?!(the)|(an)?${widget.answers[i]}s?").hasMatch(answer);
+  //   if (_correctAnswer) {
+  //     return _correctAnswer;
+  //   }
+
+  //   }
+  //   return false;
+  // }
+
+  bool checkAnswer(String answer) {
+    List _answers = widget.answers;
+    for (var i = 0; i < _answers.length; i++) {
+      var re = RegExp("^(?:the |an |a )?${_answers[i]}(?:s|es)?.?\$",
+          caseSensitive: false);
+      if (re.hasMatch(answer)) return true;
     }
     return false;
   }
