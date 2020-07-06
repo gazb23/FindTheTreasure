@@ -13,7 +13,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class LocationViewModel extends ChangeNotifier {
-
   // When all LOCATIONS for a given QUEST have been completed, add the user UID to questCompletedBy. Also provide some visual feedback for the user.
   void submitQuestConquered(
     BuildContext context, {
@@ -30,19 +29,18 @@ class LocationViewModel extends ChangeNotifier {
       final int updatedKeyCount = userData.userKeyCount + questModel.bountyKeys;
 
       final UserData _userData = UserData(
-        userDiamondCount: updatedDiamondCount,
-        locationsExplored: userData.locationsExplored,
-        userKeyCount: updatedKeyCount,
-        points: LeaderboardViewModel.questComplete(
-          userData: userData,
-          questModel: questModel,
-        ),
-        displayName: userData.displayName,
-        email: userData.email,
-        photoURL: userData.photoURL,
-        uid: userData.uid,
-        isAdmin: userData.isAdmin
-      );
+          userDiamondCount: updatedDiamondCount,
+          locationsExplored: userData.locationsExplored,
+          userKeyCount: updatedKeyCount,
+          points: LeaderboardViewModel.questComplete(
+            userData: userData,
+            questModel: questModel,
+          ),
+          displayName: userData.displayName,
+          email: userData.email,
+          photoURL: userData.photoURL,
+          uid: userData.uid,
+          isAdmin: userData.isAdmin);
       try {
         // Add UID to quest completed by
         final questCompleted = _databaseService.arrayUnionField(
@@ -60,20 +58,24 @@ class LocationViewModel extends ChangeNotifier {
             _databaseService.updateUserData(userData: _userData);
         List<Future> futures = [questCompleted, questStartedBy, updateUserData];
         await Future.wait(futures);
-    Navigator.of(context).pushNamed(Confetti.id);
-        final didCompleteQuest = await PlatformAlertDialog(
-          backgroundColor: Colors.amberAccent,
-          contentTextColor: Colors.black87,
-          title: 'Quest Conquered!',
-          content:
-              'Well done, you\'ve conquered  ${questModel.title}! For your troubles here\'s ${questModel.bountyDiamonds} ${diamondPluralCount(questModel.bountyDiamonds)} and ${questModel.bountyKeys} ${keyPluralCount(questModel.bountyKeys)} for your treasure chest.',
-          defaultActionText: 'Oh Yeah!',
-          image: Image.asset('images/ic_treasure.png'),
-        ).show(context);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => Confetti(
+                    questModel: questModel,
+                  )),
+        );
 
-        if (didCompleteQuest) {
-          Navigator.of(context).pop();
-        }
+        // final didCompleteQuest = await PlatformAlertDialog(
+        //   backgroundColor: Colors.amberAccent,
+        //   contentTextColor: Colors.black87,
+        //   title: 'Quest Conquered!',
+        //   content:
+        //       'Well done, you\'ve conquered  ${questModel.title}! For your troubles here\'s ${questModel.bountyDiamonds} ${diamondPluralCount(questModel.bountyDiamonds)} and ${questModel.bountyKeys} ${keyPluralCount(questModel.bountyKeys)} for your treasure chest.',
+        //   defaultActionText: 'Oh Yeah!',
+        //   image: Image.asset('images/ic_treasure.png'),
+        // ).show(context);
+
+        // if (didCompleteQuest) {}
       } catch (e) {
         print(e.toString());
       }
@@ -176,7 +178,7 @@ class LocationViewModel extends ChangeNotifier {
             displayName: _userData.displayName,
             email: _userData.email,
             photoURL: _userData.photoURL,
-             isAdmin: _userData.isAdmin,
+            isAdmin: _userData.isAdmin,
             locationsExplored: _userData.locationsExplored,
             uid: _userData.uid,
           );
@@ -212,10 +214,7 @@ class LocationViewModel extends ChangeNotifier {
       }
     }
   }
-  
 }
-
-
 
 // String Plurals for diamond/s and key/s
 diamondPluralCount(int howMany) =>

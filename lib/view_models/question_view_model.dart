@@ -2,6 +2,7 @@ import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_multiple_choice.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_multiple_choice_picture.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_picture_single_answer.dart';
@@ -37,7 +38,8 @@ class QuestionViewModel {
         if (!isFinalChallenge) {
           final _didRequestNext = await PlatformAlertDialog(
             title: 'Congratulations!',
-            content:  challengeCompletedMessage ?? 'You\'ve completed the challenge!',
+            content:
+                challengeCompletedMessage ?? 'You\'ve completed the challenge!',
             cancelActionText: 'Not Now',
             defaultActionText: 'Next challenge',
             image: Image.asset(
@@ -57,7 +59,7 @@ class QuestionViewModel {
       } catch (e) {
         print(e.toString());
       }
-    } else if (isLocation )
+    } else if (isLocation)
       // If Location Question
       try {
         _databaseService.arrayUnionField(
@@ -101,14 +103,14 @@ class QuestionViewModel {
         Provider.of<DatabaseService>(context, listen: true);
 
     if (!locationModel.locationCompletedBy.contains(_databaseService.uid) &&
-        lastChallengeCompleted ) {
+        lastChallengeCompleted) {
       try {
         final Future<void> locationCompleteBy =
             _databaseService.arrayUnionField(
                 documentId: locationModel.id,
                 field: 'locationCompletedBy',
                 collectionRef: APIPath.locations(questId: questModel.id));
-                
+
         //Add the title of the location to the users locationsExplored field
         final Future<void> locationsExplored =
             _databaseService.arrayUnionFieldData(
@@ -117,11 +119,9 @@ class QuestionViewModel {
                 field: 'locationsExplored',
                 collectionRef: APIPath.users());
 
-        if (
-        !_userData.locationsExplored.contains(locationModel.title)) {
+        if (!_userData.locationsExplored.contains(locationModel.title)) {
           await locationsExplored;
         }
-        
 
         await locationCompleteBy;
 
@@ -140,7 +140,7 @@ class QuestionViewModel {
                 'Well done, you\'ve conquered  ${locationModel.title}. Time for your next adventure!',
             defaultActionText: 'Next Location',
             cancelActionText: 'Not Now',
-           contentTextColor: Colors.black87, 
+            contentTextColor: Colors.black87,
             image: Image.asset('images/ic_excalibur_owl.png'),
           ).show(context);
           if (didCompleteLocation) {
@@ -205,7 +205,7 @@ class QuestionViewModel {
           ),
         );
         break;
-          case 'questionSingleAnswerPicture':
+      case 'questionSingleAnswerPicture':
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => QuestionSingleAnswerPicture(
@@ -218,6 +218,82 @@ class QuestionViewModel {
           ),
         );
         break;
+    }
+  }
+
+  // Logic to show SKIP for a challenge **Cannot skip a location based question
+  static void showChallengeSkip({
+    @required BuildContext context,
+    @required QuestionsModel questionsModel,
+    @required LocationModel locationModel,
+    @required QuestModel questModel,
+    @required bool isFinalChallenge,
+  }) async {
+    final UserData _userData = Provider.of<UserData>(context, listen: false);
+    final DatabaseService _databaseService = Provider.of<DatabaseService>(context, listen: false);
+    // Cost of a skip
+    final int _skipCost = questModel.skipCost;
+
+    //Show snackBar hint if the user has purchased it
+    if (_userData.userDiamondCount >= _skipCost) {
+      final didRequestSkip = await PlatformAlertDialog(
+        title: 'Purchase Skip',
+        content:
+            'Having trouble with the challenge? I can let ya a skip but it\'ll cost $_skipCost diamonds from your treasure bounty!',
+        defaultActionText: 'Purchase Skip',
+        backgroundColor: Colors.brown,
+        contentTextColor: Colors.white,
+        titleTextColor: Colors.white,
+        cancelActionText: 'Cancel',
+        image: Image.asset('images/ic_out_of_gems.png'),
+      ).show(context);
+      if (didRequestSkip) {
+        try {
+           final UserData _updateUserData = UserData(
+              userDiamondCount: _userData.userDiamondCount - _skipCost,
+              userKeyCount: _userData.userKeyCount,
+              points: _userData.points,
+              displayName: _userData.displayName,
+              email: _userData.email,
+              photoURL: _userData.photoURL,
+              uid: _userData.uid,
+              isAdmin: _userData.isAdmin,
+              locationsExplored: _userData.locationsExplored);
+
+          _databaseService.updateUserData(userData: _updateUserData);
+          QuestionViewModel.submit(
+            context,
+            isLocation: false,
+            challengeCompletedMessage: questionsModel.challengeCompletedMessage,
+            isFinalChallenge: isFinalChallenge,
+            documentId: questionsModel.id,
+            collectionRef: APIPath.challenges(
+                questId: questModel.id, locationId: locationModel.id),
+            locationTitle: locationModel.title,
+          );
+        } catch (e) {
+          print(e.toString());
+        }
+      }
+      //If the user does not have enough diamonds, send them to the store
+    } else if (_userData.userDiamondCount < _skipCost) {
+      final didRequestSkip = await PlatformAlertDialog(
+        title: 'Purchase Skip',
+        backgroundColor: Colors.brown,
+        contentTextColor: Colors.white,
+        titleTextColor: Colors.white,
+        content:
+            'Having trouble with the challenge? I can let ya skip but it\'ll cost $_skipCost diamonds. Head to the store to purchase more.',
+        defaultActionText: 'Store',
+        cancelActionText: 'Cancel',
+        image: Image.asset('images/ic_out_of_gems.png'),
+      ).show(context);
+      if (didRequestSkip) {
+        Navigator.of(context).push(MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => ShopScreen(),
+        ));
+      }
     }
   }
 }

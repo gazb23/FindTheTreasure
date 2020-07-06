@@ -238,7 +238,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (context) => LeaderboardProfileScreen(
+                  builder: (context) => 
+                  
+                  
+                  LeaderboardProfileScreen(
                         userData: _userData,
                       )),
             );

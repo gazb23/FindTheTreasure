@@ -4,8 +4,9 @@ import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_app_bar.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_introduction.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
-import 'package:find_the_treasure/view_models/challenge_view_model.dart';
-import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
+
+import 'package:find_the_treasure/view_models/question_view_model.dart';
+
 import 'package:find_the_treasure/widgets_common/quests/answer_box.dart';
 import 'package:find_the_treasure/widgets_common/quests/scroll.dart';
 import 'package:flutter/material.dart';
@@ -35,19 +36,26 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
         floatingActionButton: locationQuestion
             ? Container()
             : FloatingActionButton.extended(
-                label: Text('Skip?'),
+                label: Text(
+                  'SKIP?',
+                  style: TextStyle(
+                    fontSize: 18,
+                   
+                    color: Colors.orangeAccent,
+                  ),
+                ),
                 elevation: 0,
                 focusElevation: 0,
                 highlightElevation: 0,
-                backgroundColor: Colors.transparent,
-                onPressed: () async {
-                  ChallengeViewModel.showChallengeSkip(
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  QuestionViewModel.showChallengeSkip(
                     context: context,
                     questionsModel: questionsModel,
                     locationModel: locationModel,
                     questModel: questModel,
+                    isFinalChallenge: isFinalChallenge,
                   );
-                  
                 }),
         appBar: QuestionAppBar(
           locationQuestion: locationQuestion,

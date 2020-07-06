@@ -7,6 +7,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_widgets/mul
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_introduction.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
+import 'package:find_the_treasure/view_models/question_view_model.dart';
 
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
@@ -36,17 +37,25 @@ class QuestionMultipleChoice extends StatelessWidget {
         floatingActionButton: locationQuestion
             ? Container()
             : FloatingActionButton.extended(
-                label: Text('Skip?'),
+               label: Text(
+                  'SKIP?',
+                  style: TextStyle(
+                    fontSize: 18,
+                   
+                    color: Colors.orangeAccent,
+                  ),
+                ),
                 elevation: 0,
                 focusElevation: 0,
                 highlightElevation: 0,
-                backgroundColor: Colors.transparent,
-                onPressed: () async {
-                  ChallengeViewModel.showChallengeSkip(
+                backgroundColor: Colors.white,
+                onPressed: ()  {
+                  QuestionViewModel.showChallengeSkip(
                     context: context,
                     questionsModel: questionsModel,
                     locationModel: locationModel,
                     questModel: questModel,
+                    isFinalChallenge: isFinalChallenge,
                   );
                   
                 }),
