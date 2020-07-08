@@ -304,7 +304,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-   
+  
+
     Size _size = MediaQuery.of(context).size;
     final UserData _userData = Provider.of<UserData>(context);
     final User _userEmail = Provider.of<User>(context,);
@@ -319,10 +320,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(children: <Widget>[
         Container(
-          height: _size.height - kToolbarHeight,
+          height: _size.height - kToolbarHeight - 75,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              
               _buildSettings(_userData, context, _userEmail),              
               _buildLogOut(_userData, context, _userEmail),
              
@@ -335,7 +337,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Container _buildSettings(
       UserData _userData, BuildContext context, User userEmail) {
- 
+  User user = Provider.of<User>(context);
+  bool loginFacebook = user.loginCredential == 'facebook.com';
+  bool loginGoogle = user.loginCredential == 'google.com';
+  bool login = loginFacebook || loginGoogle;
     return Container(
       child: Column(
         children: <Widget>[
@@ -362,6 +367,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                   leadingContainerColor: Colors.blue.shade100),
           // EDIT EMAIL
+          login ? Container() :
           _editEmail
               ? _buildEmailTextField(_userData, userEmail)
               : _buildListTile(
@@ -379,6 +385,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                   leadingContainerColor: Colors.orange.shade100),
           //EDIT PASSWORD
+          login ? Container() :
           _updatePassword
               ? _buildPasswordTextFields()
               : _buildListTile(
@@ -437,7 +444,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           GestureDetector(
             onTap: () => _confirmSignOut(context),
             child: Container(
-              color: Colors.redAccent,
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(35)
+              ),
+              
               height: MediaQuery.of(context).size.height/12,
               width: double.infinity,
               child: Center(
@@ -561,6 +573,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onSaved: (value) => _email = value,
                   controller: _emailController,
                   enabled: _editEmail,
+                  textCapitalization: TextCapitalization.none,
                   style: TextStyle(fontSize: 20),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {

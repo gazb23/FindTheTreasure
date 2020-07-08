@@ -41,23 +41,23 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
                   child: Container(
                     color: Colors.black.withOpacity(0.05),
                   
-                      child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+                      child: ListView(
+             
               children: <Widget>[
                 AppBar(
 
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                 ),
-                Expanded(flex: 3, child: _buildUserInfo(context, widget.userData)),
-                Expanded(
-                  flex: 4,
-                  child: ListView(
-                    children: <Widget>[
-                      _buildTreasureTile(context, widget.userData),
-                      _buildLocationsExploredTile(context, widget.userData)
-                    ],
-                  ),
+                
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    _buildUserInfo(context, widget.userData),
+                    SizedBox(height: 50,),
+                    _buildTreasureTile(context, widget.userData),
+                    _buildLocationsExploredTile(context, widget.userData)
+                  ],
                 ),
               ],
             ),
@@ -71,35 +71,30 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: Avatar(
-                borderColor: Colors.white,
-                borderWidth: 3,
-                photoURL: user.photoURL,
-                radius: 70,
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Container(
-              constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width / 1.5),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(30)),
-              child: AutoSizeText(
-                user.displayName,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+        Center(
+          child: Avatar(
+            borderColor: Colors.white,
+            borderWidth: 3,
+            photoURL: user.photoURL,
+            radius: 70,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Container(
+          constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width / 1.5),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(30)),
+          child: AutoSizeText(
+            user.displayName,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );

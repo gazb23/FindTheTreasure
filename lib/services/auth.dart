@@ -10,7 +10,8 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 class User {
   final String uid;
   final String email;
-  User({this.email, this.uid});
+  final String loginCredential;
+  User({this.email, this.uid, this.loginCredential});
 }
 
 abstract class AuthBase {
@@ -34,7 +35,8 @@ class Auth implements AuthBase {
   // final Firestore _firestore = Firestore.instance;
 
   User _userFromFirebase(FirebaseUser user) {
-    return user != null ? User(uid: user.uid, email: user.email) : null;
+    return user != null ? User(uid: user.uid, email: user.email, loginCredential: user.providerData[0].providerId) : null;
+    
   }
 
   // onAuthStateChanged receives a FirebaseUser each time the user signs in or signs out. To remove dependency for the FireBase package we return a User class instead by calling the userFromFirebase method.
@@ -90,6 +92,7 @@ class Auth implements AuthBase {
           code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
     }
   }
+ 
 
   Future<void> signOut() async {
     await _googleSignIn.signOut();
@@ -163,4 +166,5 @@ class Auth implements AuthBase {
 
     return await firebaseUser.updateEmail(email);
   }
+
 }

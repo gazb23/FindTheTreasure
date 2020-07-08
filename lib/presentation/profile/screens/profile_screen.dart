@@ -128,6 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       body: Stack(
+        
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height,
@@ -140,9 +141,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   alignment: Alignment.bottomCenter,
                   fit: BoxFit.cover),
             ),
-            child: Column(
+            child: ListView(
               children: <Widget>[
+                SizedBox(height: 50,),
                 _buildUserInfo(context, user),
+                SizedBox(height: 50,),
                 _buildsettingsContainer(),
               ],
             ),
@@ -156,78 +159,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context);
-    return Expanded(
-      flex: 4,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-             
-              Expanded(child: Image.asset('images/cloud_1.png')),
-              Expanded(
-                flex: 3,
-                child: Center(
-                  child: StreamBuilder<AvatarReference>(
-                      stream: _databaseService.avatarReferenceStream(),
-                      builder: (context, snapshot) {
-                        final AvatarReference avatarReference = snapshot.data;
-                        return Avatar(
-                            photoURL:
-                                avatarReference?.photoURL ?? user.photoURL,
-                            radius: 70,
-                            borderColor: Colors.white,
-                            borderWidth: 5,
-                            onPressed: () =>
-                                _isLoading ? null : _chooseAvatar(context));
-                      }),
-                ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+           
+            Expanded(child: Image.asset('images/cloud_1.png')),
+            Expanded(
+              flex: 3,
+              child: Center(
+                child: StreamBuilder<AvatarReference>(
+                    stream: _databaseService.avatarReferenceStream(),
+                    builder: (context, snapshot) {
+                      final AvatarReference avatarReference = snapshot.data;
+                      return Avatar(
+                          photoURL:
+                              avatarReference?.photoURL ?? user.photoURL,
+                          radius: 70,
+                          borderColor: Colors.white,
+                          borderWidth: 5,
+                          onPressed: () =>
+                              _isLoading ? null : _chooseAvatar(context));
+                    }),
               ),
-              Expanded(child: Image.asset('images/cloud_2.png')),
-            ],
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Container(
-            constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width / 1.5),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(30)),
-            child: AutoSizeText(
-                user.displayName,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                minFontSize: 12,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-          ),
-          
-        ],
-      ),
+            ),
+            Expanded(child: Image.asset('images/cloud_2.png')),
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Container(
+          constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width / 1.5),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(30)),
+          child: AutoSizeText(
+              user.displayName,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              minFontSize: 12,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+        ),
+        
+      ],
     );
   }
 
   Widget _buildsettingsContainer() {
-    return Expanded(
-      flex: 4,
-      child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(35), topRight: Radius.circular(35))),
-          child: _buildSettingsItems()),
-    );
+    return Container(
+      height: 450,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(35), topRight: Radius.circular(35))),
+        child: _buildSettingsItems());
   }
 
   Widget _buildSettingsItems() {
     UserData _userData = Provider.of<UserData>(context);
-    return ListView(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-       
+       SizedBox(height: 10,),
         _buildListTile(
           title: 'My stats',
           leading: const Icon(
