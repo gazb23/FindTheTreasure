@@ -72,7 +72,7 @@ class QuestDetailsListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: InkWell(
+      leading: GestureDetector(
         onTap: () {
           PlatformAlertDialog(
             title: platformTitle,

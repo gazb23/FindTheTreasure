@@ -35,10 +35,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
               backgroundColor: Colors.white,
               appBar: AppBar(
                 backgroundColor: Colors.grey.shade800,
-                leading: Icon(
-                  Icons.filter_list,
-                  color: Colors.white,
-                ),
+                // leading: Icon(
+                //   Icons.filter_list,
+                //   color: Colors.white,
+                // ),
                 iconTheme: const IconThemeData(
                   color: Colors.black87,
                 ),

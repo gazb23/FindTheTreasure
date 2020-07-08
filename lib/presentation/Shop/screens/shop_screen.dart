@@ -228,7 +228,7 @@ class _ShopScreenState extends State<ShopScreen> {
     _isPurchasePending = true;
 
     final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetails);
+        PurchaseParam(productDetails: productDetails, sandboxTesting: true);
 
     // await FlutterInappPurchase.instance.clearTransactionIOS();
 

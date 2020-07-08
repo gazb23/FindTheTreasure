@@ -410,11 +410,25 @@ class QuestDetailScreen extends StatelessWidget {
           imageHeight: 40,
           difficulty: difficulty,
           platformTitle: 'Quest Length\n $difficulty',
-          platformContent: 'This indicates how much time to allow to complete the quest.',
+          platformContent: 'Allow ${questTimeCalc(difficulty)} to complete this quest.',
           platformImage: Image.asset('images/deadline.png',height: 80,),
         ),
       ],
     );
+  }
+  String questTimeCalc(String difficulty) {
+    switch (difficulty) {
+      case 'Easy':
+        return 'up to 3 hours';
+        break;
+      case 'Moderate':
+      return 'up to 8 hours';
+      break;
+      case 'Hard':
+      return 'more than 1 day';  
+      default: 
+      return 'Up to 3 hours';
+    }
   }
 
   Widget _buildBrainListTile(BuildContext context, String difficulty) {
