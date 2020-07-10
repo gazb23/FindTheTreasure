@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_treasure/models/avatar_model.dart';
+import 'package:find_the_treasure/models/faq_model.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
@@ -87,6 +88,12 @@ class DatabaseService {
       path: APIPath.challenge(questId: questId, locationId: locationId, challengeId: challengeId),
       builder: (data, documentId) => QuestionsModel.fromMap(data, documentId));           
 
+
+    //Receice a stream of all FAQs from Firebase
+  Stream<List<FAQModel>> faqsStream() => _service.collectionStream(
+    
+      path: APIPath.faqs(),
+      builder: (data, documentId) => FAQModel.fromMap(data, documentId));
 
   //WRITE DATA:
   

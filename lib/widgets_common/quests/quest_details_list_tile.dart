@@ -71,9 +71,9 @@ class QuestDetailsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: GestureDetector(
-        onTap: () {
+    return GestureDetector(
+      
+      onTap:  () {
           PlatformAlertDialog(
             title: platformTitle,
             content: platformContent,
@@ -81,12 +81,13 @@ class QuestDetailsListTile extends StatelessWidget {
             defaultActionText: 'OK',
           ).show(context);
         },
-        child: Image.asset(
+          child: ListTile(
+        leading: Image.asset(
           image,
           height: imageHeight,
         ),
+        title: _questDifficulty(difficulty),
       ),
-      title: _questDifficulty(difficulty),
     );
   }
 }

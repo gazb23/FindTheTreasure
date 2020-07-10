@@ -29,7 +29,7 @@ dependencies:
   provider: ^4.1.2
   carousel_pro: ^1.0.0  
   cloud_firestore: ^0.13.4+2
-  expandable: ^4.1.2
+  expandable: ^4.1.4
   percent_indicator: ^2.1.1+1
   connectivity: ^0.4.8+6
   data_connection_checker: ^0.3.4

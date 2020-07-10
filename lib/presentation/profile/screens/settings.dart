@@ -446,11 +446,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: Colors.redAccent,
+                color: Colors.orangeAccent,
                 borderRadius: BorderRadius.circular(35)
               ),
               
-              height: MediaQuery.of(context).size.height/12,
+              height: 60,
               width: double.infinity,
               child: Center(
                 child: Text(
@@ -462,7 +462,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ),
-          )
+          ),
+          SizedBox(height: 20)
         ],
       ),
     );

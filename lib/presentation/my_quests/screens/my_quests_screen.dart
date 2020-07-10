@@ -119,28 +119,16 @@ class MyQuestsScreen extends StatelessWidget {
               numberOfLocations: quest.numberOfLocations,
               location: quest.location,
               questModel: quest,
-              onTap: () {
-                final _questStartedBy = quest.questStartedBy.contains(user.uid);
-                
-                if (!_questStartedBy) {
-                    Navigator.of(context, rootNavigator: true).push(
+             onTap: () {
+                Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) => QuestDetailScreen(
+                      database: database,
                       userData: user,
                       questModel: quest,
-                      database: database,
                     ),
                   ),
                 );
-                } else {
-                  Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) => ActiveQuestScreen(
-                      questModel: quest,
-                    ),
-                  ),
-                );
-                }
               },
             ),
           );

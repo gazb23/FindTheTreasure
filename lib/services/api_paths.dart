@@ -6,6 +6,7 @@ class APIPath {
   static String user({String uid}) => 'users/$uid';
   static String users() => 'users';
   static String quests() => 'quests';
+  static String faqs() => 'faqs';
   static String quest({@required String questId}) => 'quests/$questId';
   static String locations({@required String questId}) => 'quests/$questId/locations';
   static String location({@required String questId, @required String locationId}) => 'quests/$questId/locations/$locationId';
