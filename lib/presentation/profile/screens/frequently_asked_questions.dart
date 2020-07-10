@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/models/faq_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/expandable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,7 +59,7 @@ class _FAQScreenState extends State<FAQScreen> {
            return Container(
              height: MediaQuery.of(context).size.height,
              width: double.infinity,
-             child: CircularProgressIndicator(),
+             child: Center(child: CircularProgressIndicator()),
            );
          }
          
@@ -66,7 +67,7 @@ class _FAQScreenState extends State<FAQScreen> {
            return Container(
              height: MediaQuery.of(context).size.height,
              width: double.infinity,
-             child: CircularProgressIndicator(),
+             child: CustomCircularProgressIndicator(),
            );
         });
   }

@@ -214,10 +214,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       height: 450,
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(35), topRight: Radius.circular(35))),
+                topLeft: const Radius.circular(35), topRight: const Radius.circular(35))),
         child: _buildSettingsItems());
   }
 
