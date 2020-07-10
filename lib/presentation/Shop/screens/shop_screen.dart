@@ -69,7 +69,7 @@ class _ShopScreenState extends State<ShopScreen> {
     _isAvailable = await _iap.isAvailable();
     FlutterInappPurchase.instance.clearTransactionIOS();
     if (_isAvailable) {
-     
+    
       List<Future> futures = [_getProducts(), _getPastPurchases()];
       await Future.wait(futures);
       _verifyPurchase();
@@ -86,7 +86,8 @@ class _ShopScreenState extends State<ShopScreen> {
           );
         },
       );
-    } else if (!_isAvailable ||  ConnectivityService.checkNetwork(context)) {
+    } else if (!_isAvailable) {
+      print('not');
    setState(() {
      
    });
@@ -226,7 +227,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _buyProduct(ProductDetails productDetails) async {
     _isPurchasePending = true;
-
+//TODO: change to sandboxTesting: false on final release
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: productDetails, sandboxTesting: true);
 
@@ -304,7 +305,8 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-          if (_isAvailable && ConnectivityService.checkNetwork(context))
+          
+          if (_isAvailable && ConnectivityService.checkNetwork(context) ) 
             // Display products from store
             for (var prod in _products)
               Padding(

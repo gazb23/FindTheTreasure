@@ -463,7 +463,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ),
-          SizedBox(height: 20)
+         
         ],
       ),
     );

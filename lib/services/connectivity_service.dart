@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,29 +38,37 @@ class ConnectivityService {
   }
 
   static bool checkNetwork(BuildContext context) {
-    final isConnected = Provider.of<DataConnectionStatus>(context, listen: true);
-    final connectionStatus = Provider.of<ConnectivityStatus>(context, listen: true);
-   
-    if (connectionStatus == ConnectivityStatus.Online) {
-      if (isConnected == DataConnectionStatus.connected) {
+    print('ioS');
+    final isConnected =
+        Provider.of<DataConnectionStatus>(context, listen: true);
+    final connectionStatus =
+        Provider.of<ConnectivityStatus>(context, listen: true);
+
+    if (Platform.isAndroid) {
+      if (connectionStatus == ConnectivityStatus.Online) {
+        if (isConnected == DataConnectionStatus.connected) {
+          return true;
+        }
+      }
+    } else if (Platform.isIOS) {
+      print('ioS');
+      if (isConnected == DataConnectionStatus.connected ||
+          connectionStatus == ConnectivityStatus.Online) {
         return true;
-      
       }
-     
     } else {
-      if (isConnected == DataConnectionStatus.disconnected) {
+      if (isConnected == DataConnectionStatus.disconnected ||
+          connectionStatus == ConnectivityStatus.Offline) {
         Fluttertoast.showToast(
-          msg: "Check your internet connection",
-          timeInSecForIosWeb: 4,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          backgroundColor: Colors.grey.withOpacity(0.7),
-          textColor: Colors.white,
-          fontSize: 16.0);
+            msg: "Check your internet connection",
+            timeInSecForIosWeb: 4,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            backgroundColor: Colors.grey.withOpacity(0.7),
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
-      
     }
     return false;
   }
-  
 }

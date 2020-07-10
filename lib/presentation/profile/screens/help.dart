@@ -8,6 +8,12 @@ import 'package:flutter/material.dart';
 class HelpScreen extends StatelessWidget {
   final String version;
   static const String _fallbackUrl = 'https://www.findthetreasure.com.au/';
+  static Uri mail = Uri(
+    scheme: 'mailto',
+    path: 'support@findthetreasure.com.au',
+    query: 'subject=App question&body=Hi,<br><br> I have a question regarding the Find The Treasure App.'
+  );
+  
   static const String _contactPrimaryUrl =
       'mailto:support@findthetreasure.com.au?subject=App question&body=Hi,<br><br> I have a question regarding the Find The Treasure App.';
   static const String _contactFallbackUrl = 'https://www.findthetreasure.com.au/';    
@@ -76,9 +82,16 @@ class HelpScreen extends StatelessWidget {
             leadingIcon: Icons.email,
             leadingContainerColor: Colors.grey.shade200,
             onTap: () {
+              if (Platform.isAndroid)
               UrlLauncher.socialAppLauncher(
                 context: context,
                 primaryUrl: _contactPrimaryUrl,
+                fallBackUrll: _contactFallbackUrl,
+              );
+              else 
+              UrlLauncher.socialAppLauncher(
+                context: context,
+                primaryUrl: mail.toString(),
                 fallBackUrll: _contactFallbackUrl,
               );
             },
