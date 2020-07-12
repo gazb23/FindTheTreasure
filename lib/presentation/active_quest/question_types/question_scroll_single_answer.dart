@@ -33,6 +33,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         floatingActionButton: locationQuestion
             ? Container()
             : FloatingActionButton.extended(
@@ -40,7 +41,6 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                   'SKIP?',
                   style: TextStyle(
                     fontSize: 18,
-                   
                     color: Colors.orangeAccent,
                   ),
                 ),
