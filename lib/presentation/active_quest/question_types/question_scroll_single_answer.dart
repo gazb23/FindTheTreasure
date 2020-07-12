@@ -31,10 +31,10 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        floatingActionButton: locationQuestion
+        floatingActionButton: locationQuestion || keyboardIsOpened
             ? Container()
             : FloatingActionButton.extended(
                 label: Text(
@@ -113,6 +113,9 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                       arrayUnionDocumentId: questionsModel.id,
                       locationTitle: locationModel.title,
                     ),
+              SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),

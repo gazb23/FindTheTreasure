@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
@@ -98,20 +100,27 @@ class LocationViewModel extends ChangeNotifier {
             field: 'locationDiscoveredBy',
             collectionRef: APIPath.locations(questId: questModel.id));
 
-        final didDiscoverLocation = await ChallengePlatformAlertDialog(
+        final didDiscoverLocation = await PlatformAlertDialog(
           backgroundColor: Colors.amberAccent,
           title: 'Location Discovered!',
           content:
               'Well done, you\'ve found ${locationModel.title} and unlocked the challenges! ',
           defaultActionText: 'Continue',
+          cancelActionText: 'Now now',
           image: Image.asset(
             'images/2.0x/ic_avatar_pirate.png',
             height: 100,
           ),
         ).show(context);
 
-        if (didDiscoverLocation) {}
-      } catch (e) {}
+        if (didDiscoverLocation) {
+        } else {
+          print('click');
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
 

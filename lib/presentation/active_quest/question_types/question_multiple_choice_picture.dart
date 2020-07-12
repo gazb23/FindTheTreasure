@@ -30,19 +30,19 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     final UserData userData = Provider.of<UserData>(context);
     final DatabaseService databaseService =
         Provider.of<DatabaseService>(context);
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: locationQuestion
+        floatingActionButton: locationQuestion || keyboardIsOpened
             ? Container()
             : FloatingActionButton.extended(
-              label: Text(
+                label: Text(
                   'SKIP?',
                   style: TextStyle(
                     fontSize: 18,
-                   
                     color: Colors.orangeAccent,
                   ),
                 ),
@@ -50,7 +50,7 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
                 focusElevation: 0,
                 highlightElevation: 0,
                 backgroundColor: Colors.white,
-                onPressed: ()  {
+                onPressed: () {
                   QuestionViewModel.showChallengeSkip(
                     context: context,
                     questionsModel: questionsModel,

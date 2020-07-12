@@ -30,18 +30,19 @@ class QuestionMultipleChoice extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     final UserData userData = Provider.of<UserData>(context);
-    final DatabaseService databaseService = Provider.of<DatabaseService>(context);
+    final DatabaseService databaseService =
+        Provider.of<DatabaseService>(context);
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: locationQuestion
+        floatingActionButton: locationQuestion || keyboardIsOpened
             ? Container()
             : FloatingActionButton.extended(
-               label: Text(
+                label: Text(
                   'SKIP?',
                   style: TextStyle(
                     fontSize: 18,
-                   
                     color: Colors.orangeAccent,
                   ),
                 ),
@@ -49,7 +50,7 @@ class QuestionMultipleChoice extends StatelessWidget {
                 focusElevation: 0,
                 highlightElevation: 0,
                 backgroundColor: Colors.white,
-                onPressed: ()  {
+                onPressed: () {
                   QuestionViewModel.showChallengeSkip(
                     context: context,
                     questionsModel: questionsModel,
@@ -57,7 +58,6 @@ class QuestionMultipleChoice extends StatelessWidget {
                     questModel: questModel,
                     isFinalChallenge: isFinalChallenge,
                   );
-                  
                 }),
         appBar: AppBar(
           centerTitle: true,
@@ -68,29 +68,30 @@ class QuestionMultipleChoice extends StatelessWidget {
                     locationId: locationModel.id,
                     challengeId: questionsModel.id),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active)  {
+                  if (snapshot.connectionState == ConnectionState.active) {
                     final questionsModelStream = snapshot.data;
                     return InkWell(
                       onTap: () {
                         ChallengeViewModel.showHint(
-                            context: context,
-                            questionsModel: questionsModelStream,
-                            locationModel: locationModel,
-                            questModel: questModel,
-                            );
+                          context: context,
+                          questionsModel: questionsModelStream,
+                          locationModel: locationModel,
+                          questModel: questModel,
+                        );
                       },
                       child: Container(
                         padding: EdgeInsets.all(15),
-                        child: 
-                        
-                        AutoSizeText(
-                          !questionsModelStream.hintPurchasedBy.contains(databaseService.uid) ?
-                          'HINT?' : 'SHOW HINT',
+                        child: AutoSizeText(
+                          !questionsModelStream.hintPurchasedBy
+                                  .contains(databaseService.uid)
+                              ? 'HINT?'
+                              : 'SHOW HINT',
                           style: TextStyle(color: Colors.orangeAccent),
                         ),
                       ),
                     );
-                  } return Container();
+                  }
+                  return Container();
                 }),
           ),
           iconTheme: IconThemeData(
@@ -117,7 +118,6 @@ class QuestionMultipleChoice extends StatelessWidget {
                   ),
                   fit: BoxFit.fill)),
           child: ListView(
-            
             children: <Widget>[
               QuestionIntroduction(
                 context: context,
@@ -129,7 +129,6 @@ class QuestionMultipleChoice extends StatelessWidget {
                 height: 10,
               ),
               MultipleChoice(
-                
                 questionsModel: questionsModel,
                 locationModel: locationModel,
                 isFinalChallenge: isFinalChallenge,

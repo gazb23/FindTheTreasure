@@ -32,7 +32,7 @@ class AnswerBox extends StatefulWidget {
 class _AnswerBoxState extends State<AnswerBox> {
   final _formKey = GlobalKey<FormState>();
   String _answer;
-  bool _isLoading = false;  
+  bool _isLoading = false;
   bool _validateAndSaveForm() {
     final form = _formKey.currentState;
     if (form.validate()) {

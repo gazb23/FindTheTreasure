@@ -28,10 +28,11 @@ class QuestionSingleAnswerPicture extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     Provider.of<DatabaseService>(context);
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: locationQuestion
+        floatingActionButton: locationQuestion || keyboardIsOpened
             ? Container()
             : FloatingActionButton.extended(
                 label: Text(

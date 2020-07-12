@@ -53,6 +53,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
         title: 'Sign up failed',
         exception: e,
       ).show(context);
+      print(e.toString());
     }
   }
 
