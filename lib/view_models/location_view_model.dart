@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
@@ -9,7 +7,6 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/confetti.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
-import 'package:find_the_treasure/widgets_common/quests/challenge_platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -115,7 +112,6 @@ class LocationViewModel extends ChangeNotifier {
 
         if (didDiscoverLocation) {
         } else {
-          print('click');
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
       } catch (e) {

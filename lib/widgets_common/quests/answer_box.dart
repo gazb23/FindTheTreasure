@@ -71,66 +71,54 @@ class _AnswerBoxState extends State<AnswerBox> {
     return Opacity(
       opacity: .9,
       child: Card(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 10,
-        ),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 1.0,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Form(
-              key: _formKey,
-              child: TextFormField(
-                validator: (value) {
-                  if (!checkAnswer(value.toUpperCase().trim()) &&
-                      value.isNotEmpty) {
-                    ChallengeViewModel().answerIncorrect(
-                      context: context,
-                      questModel: widget.questModel,
-                    );
+          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15),
+          child: Form(
+            key: _formKey,
+            child: TextFormField(
+              validator: (value) {
+                if (!checkAnswer(value.toUpperCase().trim()) &&
+                    value.isNotEmpty) {
+                  ChallengeViewModel().answerIncorrect(
+                    context: context,
+                    questModel: widget.questModel,
+                  );
 
-                    return 'Answer incorrect';
-                  }
-                  if (checkAnswer(value.toUpperCase().trim()) &&
-                      value.isNotEmpty) {
-                    return null;
-                  }
+                  return 'Answer incorrect';
+                }
+                if (checkAnswer(value.toUpperCase().trim()) &&
+                    value.isNotEmpty) {
+                  return null;
+                }
 
-                  return value.isNotEmpty ? null : 'Please enter your answer';
-                },
-                onSaved: (value) => _answer = value.toUpperCase().trim(),
-                textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(5),
-                  hintText: 'Enter your answer',
-                  enabled: !_isLoading,
-                  suffixIcon: IconButton(
-                      enableFeedback: true,
-                      icon: _isLoading
-                          ? CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.orangeAccent),
-                            )
-                          : const Icon(
-                              Icons.send,
-                              color: Colors.orangeAccent,
-                            ),
-                      onPressed: !_isLoading ? _submit : null),
-                ),
+                return value.isNotEmpty ? null : 'Please enter your answer';
+              },
+              onSaved: (value) => _answer = value.toUpperCase().trim(),
+              textCapitalization: TextCapitalization.characters,
+              decoration: InputDecoration(
+                labelText: 'Enter your answer',
+                enabled: !_isLoading,
+                suffixIcon: IconButton(
+                    enableFeedback: true,
+                    icon: _isLoading
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.orangeAccent),
+                          )
+                        : const Icon(
+                            Icons.send,
+                            color: Colors.orangeAccent,
+                          ),
+                    onPressed: !_isLoading ? _submit : null),
               ),
             ),
-            const SizedBox(
-              height: 10,
-            )
-          ]),
+          ),
         ),
       ),
     );
