@@ -27,7 +27,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final TextEditingController _currentPasswordController =
       TextEditingController();
@@ -120,8 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             uid: _userData.uid,
             userDiamondCount: _userData.userDiamondCount,
             userKeyCount: _userData.userKeyCount,
-            isAdmin: _userData.isAdmin
-            );
+            isAdmin: _userData.isAdmin);
         await _databaseService.updateUserData(userData: _updatedUserData);
         _isLoading = false;
         final snackBar = SnackBar(
@@ -168,8 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               uid: _userData.uid,
               userDiamondCount: _userData.userDiamondCount,
               userKeyCount: _userData.userKeyCount,
-               isAdmin: _userData.isAdmin
-              );
+              isAdmin: _userData.isAdmin);
 
           _emailUpdated = await updateUserEmail(_email);
 
@@ -301,18 +298,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-  
-
     Size _size = MediaQuery.of(context).size;
     final UserData _userData = Provider.of<UserData>(context);
-    final User _userEmail = Provider.of<User>(context,);
+    final User _userEmail = Provider.of<User>(
+      context,
+    );
     return Scaffold(
-
       key: _scaffoldkey,
-      
       appBar: AppBar(
         title: Text('Settings'),
         centerTitle: true,
@@ -324,10 +318,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              
-              _buildSettings(_userData, context, _userEmail),              
+              _buildSettings(_userData, context, _userEmail),
               _buildLogOut(_userData, context, _userEmail),
-             
             ],
           ),
         ),
@@ -337,10 +329,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Container _buildSettings(
       UserData _userData, BuildContext context, User userEmail) {
-  User user = Provider.of<User>(context);
-  bool loginFacebook = user.loginCredential == 'facebook.com';
-  bool loginGoogle = user.loginCredential == 'google.com';
-  bool login = loginFacebook || loginGoogle;
+    User user = Provider.of<User>(context);
+
+    bool loginFacebook = user.loginCredential == 'facebook.com';
+    bool loginGoogle = user.loginCredential == 'google.com';
+    bool login = loginFacebook || loginGoogle;
+    print(user.loginCredential);
     return Container(
       child: Column(
         children: <Widget>[
@@ -350,16 +344,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // EDIT USERNAME
           _editName
               ? _buildUserNameTextField(_userData)
-              :  _buildListTile(
+              : _buildListTile(
                   title: _userData.displayName,
                   leading: Icon(
                     Icons.edit,
                     color: Colors.blueAccent,
                   ),
                   onTap: () {
-                   
                     setState(() {
-                      
                       _editName = true;
                       _editEmail = false;
                       _updatePassword = false;
@@ -367,41 +359,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                   leadingContainerColor: Colors.blue.shade100),
           // EDIT EMAIL
-          login ? Container() :
-          _editEmail
-              ? _buildEmailTextField(_userData, userEmail)
-              : _buildListTile(
-                  title: _userData.email,
-                  leading: Icon(
-                    Icons.edit,
-                    color: Colors.orangeAccent,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _editEmail = true;
-                      _updatePassword = false;
-                      _editName = false;
-                    });
-                  },
-                  leadingContainerColor: Colors.orange.shade100),
+          login
+              ? Container()
+              : _editEmail
+                  ? _buildEmailTextField(_userData, userEmail)
+                  : _buildListTile(
+                      title: _userData.email,
+                      leading: Icon(
+                        Icons.edit,
+                        color: Colors.orangeAccent,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _editEmail = true;
+                          _updatePassword = false;
+                          _editName = false;
+                        });
+                      },
+                      leadingContainerColor: Colors.orange.shade100),
           //EDIT PASSWORD
-          login ? Container() :
-          _updatePassword
-              ? _buildPasswordTextFields()
-              : _buildListTile(
-                  title: 'Password',
-                  leading: Icon(
-                    Icons.edit,
-                    color: Colors.redAccent,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _updatePassword = true;
-                      _editName = false;
-                      _editEmail = false;
-                    });
-                  },
-                  leadingContainerColor: Colors.red.shade100),
+          login
+              ? Container()
+              : _updatePassword
+                  ? _buildPasswordTextFields()
+                  : _buildListTile(
+                      title: 'Password',
+                      leading: Icon(
+                        Icons.edit,
+                        color: Colors.redAccent,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _updatePassword = true;
+                          _editName = false;
+                          _editEmail = false;
+                        });
+                      },
+                      leadingContainerColor: Colors.red.shade100),
         ],
       ),
     );
@@ -409,11 +403,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Container _buildLogOut(
       UserData _userData, BuildContext context, User userEmail) {
-   
     return Container(
       child: Column(
         children: <Widget>[
-           
           Container(
             child: Column(
               children: <Widget>[
@@ -446,10 +438,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: Colors.orangeAccent,
-                borderRadius: BorderRadius.circular(35)
-              ),
-              
+                  color: Colors.orangeAccent,
+                  borderRadius: BorderRadius.circular(35)),
               height: 60,
               width: double.infinity,
               child: Center(
@@ -463,7 +453,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ),
-         
         ],
       ),
     );
@@ -471,7 +460,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   //Build Update Name Text Field
   Widget _buildUserNameTextField(UserData userData) {
-   
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -534,7 +522,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: <Widget>[
                 Expanded(
                   child: SignInButton(
-                     padding: 0,
+                    padding: 0,
                     text: 'Update',
                     isLoading: _isLoading,
                     onPressed: !_isLoading ? _submitName : null,
@@ -628,7 +616,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     enabled: !_isLoading,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        
                         _obscureText ? Icons.visibility_off : Icons.visibility,
                         color: Colors.orangeAccent,
                       ),
@@ -643,7 +630,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
-         
           SizedBox(
             height: 20,
           ),
@@ -667,9 +653,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     text: 'Cancel',
                     onPressed: () {
                       _emailController.clear();
-                       _currentPasswordController.clear();
+                      _currentPasswordController.clear();
                       _editEmail = !_editEmail;
-                     
+
                       setState(() {});
                     },
                   ),
@@ -678,14 +664,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           SizedBox(height: 10),
-           InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context) => PasswordResetScreen(),
-              ));
-            },
-            child: Container(child: Text('Forgotten password?'))),
+          InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => PasswordResetScreen(),
+                    ));
+              },
+              child: Container(child: Text('Forgotten password?'))),
         ],
       ),
     );
@@ -817,8 +805,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     textInputAction: TextInputAction.done,
                   )),
-             
-                 
+
               SizedBox(
                 height: 20,
               ),
@@ -829,7 +816,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: <Widget>[
                     Expanded(
                       child: SignInButton(
-                         padding: 0,
+                        padding: 0,
                         text: 'Update',
                         isLoading: _isLoading,
                         onPressed:
@@ -849,18 +836,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
                     ),
-                    
                   ],
                 ),
               ),
-               InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context) => PasswordResetScreen(),
-              ));
-            },
-            child: Container(child: Text('Forgotten password?'))),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => PasswordResetScreen(),
+                        ));
+                  },
+                  child: Container(child: Text('Forgotten password?'))),
             ],
           ),
         ));
@@ -893,5 +881,4 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onTap: onTap,
     );
   }
-     
 }

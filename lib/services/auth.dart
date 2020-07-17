@@ -25,6 +25,7 @@ abstract class AuthBase {
   Future<void> validateCurrentPassword({@required String password});
   void updatePassword(String password);
   Future<void> updateEmail(String email);
+
 }
 
 class Auth implements AuthBase {
@@ -35,7 +36,7 @@ class Auth implements AuthBase {
   // final Firestore _firestore = Firestore.instance;
 
   User _userFromFirebase(FirebaseUser user) {
-    return user != null ? User(uid: user.uid, email: user.email, loginCredential: user.providerData[0].providerId) : null;
+    return user != null ? User(uid: user.uid, email: user.email, loginCredential: user?.providerData[1]?.providerId) : null;
     
   }
 
@@ -166,5 +167,6 @@ class Auth implements AuthBase {
 
     return await firebaseUser.updateEmail(email);
   }
+
 
 }
