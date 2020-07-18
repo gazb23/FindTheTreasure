@@ -1,4 +1,5 @@
 import 'package:find_the_treasure/presentation/explore/widgets/tab_item.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,7 @@ class CupertinoHomeScaffold extends StatelessWidget {
 
   BottomNavigationBarItem _buildItem(TabItem tabItem) {
     final itemData = TabItemData.allTabs[tabItem];
-    final color = currentTab == tabItem ? Colors.orangeAccent : Colors.grey;
+    final color = currentTab == tabItem ? MaterialTheme.orange : Colors.grey;
     final textColor = Colors.white;
     return BottomNavigationBarItem(      
       icon: Icon(

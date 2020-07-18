@@ -7,6 +7,7 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/location_service.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:find_the_treasure/services/permission_service.dart';
@@ -233,7 +234,7 @@ class _LocationHeaderState extends State<LocationHeader> {
 
                   return CircularProgressIndicator(
                     valueColor:
-                        new AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
+                        new AlwaysStoppedAnimation<Color>(MaterialTheme.orange),
                   );
                 }),
           ),
@@ -289,7 +290,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                         child: RaisedButton(
                           padding: EdgeInsets.symmetric(vertical: 5),
                           shape: StadiumBorder(),
-                          color: Colors.orangeAccent,
+                          color: MaterialTheme.orange,
                           child: locationService.isLoading || 
                           !permissionService.isLoading
                               ? CircularProgressIndicator(

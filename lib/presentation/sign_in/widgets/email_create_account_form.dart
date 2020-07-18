@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/blocs/sign_in/email_create_account_bloc.dart';
 import 'package:find_the_treasure/models/email_sign_in_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/theme.dart';
 
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:flutter/services.dart';
@@ -108,7 +109,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
             enableFeedback: true,
             icon: Icon(
               Icons.clear,
-              color: Colors.orangeAccent,
+              color: MaterialTheme.orange,
             ),
             onPressed: () {
               Future.delayed(Duration(milliseconds: 50)).then((_) {
@@ -130,7 +131,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       suffixIcon: IconButton(
         icon: Icon(
           _obscureText ? Icons.visibility_off : Icons.visibility,
-          color: Colors.orangeAccent,
+          color: MaterialTheme.orange,
         ),
         onPressed: () {
           setState(() {
@@ -147,7 +148,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
         isLoading: model.isLoading,
         text: 'Sign up',
         textcolor: Colors.white,
-        color: Colors.orangeAccent,
+        color: MaterialTheme.orange,
         onPressed: model.canSubmit ? _submit : null);
   }
 

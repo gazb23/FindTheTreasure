@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +49,7 @@ class EmptyContent extends StatelessWidget {
             SizedBox(height: 15),
             buttonEnabled ? SignInButton(text: buttonText,
             onPressed: onPressed,
-            color: Colors.orangeAccent,
+            color: MaterialTheme.orange,
             ) : Container()
           ],
         ),

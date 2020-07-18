@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/models/faq_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/expandable_card.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _FAQScreenState extends State<FAQScreen> {
         appBar: AppBar(
           title: Text('FAQs'),
           
-          backgroundColor: Colors.grey.shade800,
+          backgroundColor: MaterialTheme.red,
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.height/14,
       child: CustomRaisedButton(
-        color: Colors.orangeAccent,
+        color: MaterialTheme.orange,
         padding: 10,
         
         onPressed: isPurchasePending ? null : onPressed,

@@ -1,6 +1,7 @@
 import 'package:confetti/confetti.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +129,7 @@ class _ConfettiState extends State<Confetti> {
                 colors: const [
                   Colors.green,
                   Colors.amberAccent,
-                  Colors.orangeAccent,
+                 MaterialTheme.orange,
                   Colors.redAccent
                 ], // manually specify the colors to be used
               ),

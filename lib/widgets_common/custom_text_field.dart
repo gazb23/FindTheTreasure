@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -22,7 +23,7 @@ class CustomTextField extends StatelessWidget {
       child: TextField(
         
         controller: controller,
-        cursorColor: Colors.orangeAccent,     
+        cursorColor: MaterialTheme.orange,     
         onEditingComplete: onEditingComplete,
         focusNode: focusNode,   
         keyboardType: keyboardType,

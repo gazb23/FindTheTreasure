@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
@@ -34,7 +35,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                backgroundColor: Colors.grey.shade800,
+                backgroundColor: MaterialTheme.blue,
                 // leading: Icon(
                 //   Icons.filter_list,
                 //   color: Colors.white,
@@ -50,6 +51,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     diamondHeight: 20,
                     skullKeyHeight: 30,
                     color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                   const SizedBox(
                     width: 20,
@@ -85,14 +87,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Colors.white,
-                child: Center(child: CustomCircularProgressIndicator(color: Colors.orangeAccent,)));
+                child: Center(child: CustomCircularProgressIndicator(color: MaterialTheme.orange,)));
           } 
       
             return Container(
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Colors.white,
-                child: Center(child: CustomCircularProgressIndicator(color: Colors.orangeAccent,)));
+                child: Center(child: CustomCircularProgressIndicator(color: MaterialTheme.orange,)));
         });
   }
 

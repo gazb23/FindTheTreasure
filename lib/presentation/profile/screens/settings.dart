@@ -5,6 +5,7 @@ import 'package:find_the_treasure/presentation/sign_in/validators.dart';
 import 'package:find_the_treasure/services/auth.dart';
 
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/services.dart';
@@ -310,7 +311,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: Text('Settings'),
         centerTitle: true,
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: MaterialTheme.orange,
       ),
       body: ListView(children: <Widget>[
         Container(
@@ -367,7 +368,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: _userData.email,
                       leading: Icon(
                         Icons.edit,
-                        color: Colors.orangeAccent,
+                        color: MaterialTheme.orange,
                       ),
                       onTap: () {
                         setState(() {
@@ -438,7 +439,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                  color: Colors.orangeAccent,
+                  color: MaterialTheme.orange,
                   borderRadius: BorderRadius.circular(35)),
               height: 60,
               width: double.infinity,
@@ -497,11 +498,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     icon: _isLoading
                         ? CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.orangeAccent),
+                               MaterialTheme.orange),
                           )
                         : Icon(
                             Icons.clear,
-                            color: Colors.orangeAccent,
+                            color: MaterialTheme.orange,
                           ),
                     onPressed: () {
                       Future.delayed(Duration(milliseconds: 50)).then((_) {
@@ -581,7 +582,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           enableFeedback: true,
                           icon: Icon(
                             Icons.clear,
-                            color: Colors.orangeAccent,
+                            color: MaterialTheme.orange,
                           ),
                           onPressed: () {
                             Future.delayed(Duration(milliseconds: 50))
@@ -617,7 +618,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: Colors.orangeAccent,
+                        color: MaterialTheme.orange,
                       ),
                       onPressed: () {
                         setState(() {
@@ -715,7 +716,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           _obscureText
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Colors.orangeAccent,
+                          color: MaterialTheme.orange,
                         ),
                         onPressed: () {
                           setState(() {
@@ -753,7 +754,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           _obscureText
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Colors.orangeAccent,
+                          color: MaterialTheme.orange,
                         ),
                         onPressed: () {
                           setState(() {
@@ -794,7 +795,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           _obscureText
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Colors.orangeAccent,
+                          color: MaterialTheme.orange,
                         ),
                         onPressed: () {
                           setState(() {

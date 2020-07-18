@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/heart.dart';
@@ -226,7 +227,7 @@ class QuestDetailScreen extends StatelessWidget {
               tapBodyToExpand: true,
               tapBodyToCollapse: true,
               hasIcon: true,
-              iconColor: Colors.orangeAccent,
+              iconColor: MaterialTheme.orange,
               headerAlignment: ExpandablePanelHeaderAlignment.center,
               iconSize: 40),
         ),
@@ -309,7 +310,7 @@ class QuestDetailScreen extends StatelessWidget {
             tapHeaderToExpand: true,
             hasIcon: true,
             iconSize: 40,
-            iconColor: Colors.orangeAccent,
+            iconColor: MaterialTheme.orange,
             headerAlignment: ExpandablePanelHeaderAlignment.center,
           ),
         ),

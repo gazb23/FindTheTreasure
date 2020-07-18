@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:find_the_treasure/presentation/profile/screens/frequently_asked_questions.dart';
+import 'package:find_the_treasure/presentation/profile/screens/privacy_policy.dart';
 import 'package:find_the_treasure/presentation/profile/widgets/custom_list_tile.dart';
 import 'package:find_the_treasure/services/url_launcher.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/material.dart';
 
 class HelpScreen extends StatelessWidget {
@@ -17,8 +19,7 @@ class HelpScreen extends StatelessWidget {
   static const String _contactPrimaryUrl =
       'mailto:support@findthetreasure.com.au?subject=App question&body=Hi,<br><br> I have a question regarding the Find The Treasure App.';
   static const String _contactFallbackUrl = 'https://www.findthetreasure.com.au/';    
-  static const String _privacyPrimaryUrl =
-      'https://www.findthetreasure.com.au/privacy-policy/';
+
   static const String _termsPrimaryUrl =
       'https://www.findthetreasure.com.au/terms-conditions/';
         static const String _googlePrimaryUrl =
@@ -33,7 +34,7 @@ class HelpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade800,
+        backgroundColor: MaterialTheme.red,
         title: Text('Help'),
         centerTitle: true,
       ),
@@ -113,11 +114,13 @@ class HelpScreen extends StatelessWidget {
             leadingIcon: Icons.insert_drive_file,
             leadingContainerColor: Colors.grey.shade200,
             onTap: () {
-              UrlLauncher.socialAppLauncher(
-                context: context,
-                primaryUrl: _privacyPrimaryUrl,
-                fallBackUrll: _fallbackUrl,
-              );
+               Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) => PrivacyPolicy(
+                         
+                        ),
+                      ),
+                    );
             },
           ),
           CustomListTile(

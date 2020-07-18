@@ -6,6 +6,7 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/multiple_choice.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_introduction.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 
@@ -43,7 +44,7 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
                   'SKIP?',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.orangeAccent,
+                    color: MaterialTheme.orange,
                   ),
                 ),
                 elevation: 0,
@@ -88,7 +89,7 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
                               : 'SHOW HINT',
                           maxLines: 1,
                           style: const TextStyle(
-                            color: Colors.orangeAccent,
+                            color: MaterialTheme.orange,
                           ),
                         ),
                       ),

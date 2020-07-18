@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
@@ -109,11 +110,11 @@ class _AnswerBoxState extends State<AnswerBox> {
                     icon: _isLoading
                         ? CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.orangeAccent),
+                                MaterialTheme.orange),
                           )
                         : const Icon(
                             Icons.send,
-                            color: Colors.orangeAccent,
+                            color: MaterialTheme.orange,
                           ),
                     onPressed: !_isLoading ? _submit : null),
               ),

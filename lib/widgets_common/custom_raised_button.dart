@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomRaisedButton extends StatelessWidget {
@@ -18,7 +19,7 @@ class CustomRaisedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaisedButton(
       elevation: 1.0,
-      color: color ?? Colors.orangeAccent,
+      color: color ?? MaterialTheme.orange,
       child: child,
       onPressed: onPressed,
       padding: EdgeInsets.all(padding ?? 10),

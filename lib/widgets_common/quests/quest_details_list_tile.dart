@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
@@ -44,7 +45,7 @@ class QuestDetailsListTile extends StatelessWidget {
           width: width,
           lineHeight: 15,
           percent: 0.66,
-          progressColor: Colors.orangeAccent,
+          progressColor: MaterialTheme.orange,
           backgroundColor: color,
         );
         break;

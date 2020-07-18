@@ -4,6 +4,7 @@ import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_app_bar.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_introduction.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
+import 'package:find_the_treasure/theme.dart';
 
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 
@@ -41,7 +42,7 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
                   'SKIP?',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.orangeAccent,
+                    color: MaterialTheme.orange,
                   ),
                 ),
                 elevation: 0,

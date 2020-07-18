@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_treasure/models/avatar_model.dart';
 import 'package:find_the_treasure/models/faq_model.dart';
+import 'package:find_the_treasure/models/legal_model.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
@@ -95,8 +96,14 @@ class DatabaseService {
       path: APIPath.faqs(),
       builder: (data, documentId) => FAQModel.fromMap(data, documentId));
 
-  //WRITE DATA:
+  //Receice a stream of legal documents
+  Stream<LegalModel> legalStream() => _service.documentStream(
+      path: APIPath.legals(),
+      builder: (data, documentId) => LegalModel.fromMap(data, documentId));   
+
   
+  
+  //WRITE DATA:  
 
   // Add UID to likedBy Array on Firebase
    Future<void> arrayUnion(String documentId) async {

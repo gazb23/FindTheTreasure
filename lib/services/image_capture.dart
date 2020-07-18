@@ -1,6 +1,7 @@
 import 'dart:io';
 
 
+import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,7 +28,7 @@ class _ImageCaptureState extends State<ImageCapture> {
         maxHeight: 512,
         maxWidth: 512,
         androidUiSettings: AndroidUiSettings(
-            toolbarColor: Colors.orangeAccent,
+            toolbarColor: MaterialTheme.orange,
             toolbarWidgetColor: Colors.white,
             toolbarTitle: 'Crop image'),
         iosUiSettings: IOSUiSettings(title: 'Crop image'));

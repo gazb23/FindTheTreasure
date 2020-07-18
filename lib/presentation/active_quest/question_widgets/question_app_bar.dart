@@ -4,6 +4,7 @@ import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/location_view_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -74,7 +75,7 @@ class QuestionAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     .contains(databaseService.uid)
                                 ? 'HINT?'
                                 : 'SHOW HINT',
-                            style: TextStyle(color: Colors.orangeAccent),
+                            style: TextStyle(color: MaterialTheme.orange),
                           )),
                     );
                   }
@@ -102,7 +103,7 @@ class QuestionAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   .contains(databaseService.uid)
                               ? 'HINT?'
                               : 'SHOW HINT',
-                          style: TextStyle(color: Colors.orangeAccent),
+                          style: TextStyle(color: MaterialTheme.orange),
                         ),
                       ),
                     );

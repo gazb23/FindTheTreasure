@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/material.dart';
 
 
@@ -49,7 +50,7 @@ final double diamondHeight;
                 Text(
                   numberOfDiamonds.toString(),
                   style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
-                ) : CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.grey.shade800),)
+                ) : CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(MaterialTheme.blue.withOpacity(0.5)),)
               ],
             ),
           ) : Container(),
@@ -67,7 +68,7 @@ final double diamondHeight;
                 Text(
                   numberOfKeys.toString(),
                   style: TextStyle(color: color ?? Colors.white, fontSize: fontSize ?? 13, fontWeight: fontWeight),
-                ) : CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.grey.shade800),)
+                ) : CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(MaterialTheme.blue.withOpacity(0.5)))
               ],
             ),
           ) : Container(),

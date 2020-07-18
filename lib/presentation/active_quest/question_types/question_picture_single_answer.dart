@@ -5,6 +5,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_widgets/que
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/question_introduction.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/answer_box.dart';
 
@@ -39,7 +40,7 @@ class QuestionSingleAnswerPicture extends StatelessWidget {
                   'SKIP?',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.orangeAccent,
+                    color: MaterialTheme.orange,
                   ),
                 ),
                 elevation: 0,

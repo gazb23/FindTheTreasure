@@ -10,6 +10,7 @@ import 'package:find_the_treasure/presentation/sign_in/screens/email_create_acco
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/data_connectivity_service.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget.dart';
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget_builder.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
           locale: DevicePreview.of(context).locale, // <--- Add the locale
       builder: DevicePreview.appBuilder, // <--- Add the builder
           title: 'Find The Treasure',
-          theme: _buildThemeData(),
+          theme: MaterialTheme.buildThemeData(),
           home: AuthWidget(userSnapshot: userSnapshot),
           routes: {
             // Each screen class has a static const to create that screen
@@ -71,59 +72,5 @@ class MyApp extends StatelessWidget {
     );
   }
 
-// Theme for the app
-  ThemeData _buildThemeData() {
-    return ThemeData(
-      buttonTheme: ButtonThemeData(
-        height: 45.0,
-      ),
-      dialogTheme: DialogTheme(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          titleTextStyle: TextStyle(
-              color: Colors.black87,
-              fontSize: 22.0,
-              fontWeight: FontWeight.w500),
-          contentTextStyle: TextStyle(
-            color: Colors.grey[500],
-            fontSize: 18.0,
-          )),
-      fontFamily: 'quicksand',
-      // Define the text theme for the app
-      textTheme: TextTheme(
-          headline5: TextStyle(
-              color: Colors.black54, fontSize: 28, fontWeight: FontWeight.bold),
-          bodyText2: TextStyle(
-              fontSize: 18,
-              color: Colors.grey.shade500,
-              fontFamily: 'quicksand'),
-              bodyText1: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-              fontFamily: 'quicksand'),
-          button: TextStyle(
-            fontSize: 15.0,
-          )),
-      inputDecorationTheme: InputDecorationTheme(
-        enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey[500])),
-        focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.orangeAccent)),
-        labelStyle: TextStyle(color: Colors.grey[500]),
-      ),
-      backgroundColor: Colors.white,
-      appBarTheme: AppBarTheme(
-        actionsIconTheme: IconThemeData(
-          color: Colors.black87
-        ),
-          color: Colors.white,
-          textTheme: TextTheme(
-              headline5: TextStyle(fontFamily: 'quicksand', fontSize: 20, color: Colors.black87))),
-              iconTheme: IconThemeData(
-                color: Colors.black87
 
-              )
-    );
-  }
 }

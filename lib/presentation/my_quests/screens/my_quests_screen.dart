@@ -4,6 +4,7 @@ import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class MyQuestsScreen extends StatelessWidget {
           backgroundColor: Colors.grey.shade400,
           appBar: AppBar(
             bottom: TabBar(
-              indicatorColor: Colors.orangeAccent,
+              indicatorColor: MaterialTheme.orange,
               labelColor: Colors.white,
               labelStyle: TextStyle(
                   fontFamily: 'quicksand', fontWeight: FontWeight.bold),

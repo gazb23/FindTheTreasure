@@ -1,6 +1,7 @@
 import 'package:find_the_treasure/blocs/sign_in/password_reset_bloc.dart';
 import 'package:find_the_treasure/models/password_reset_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
@@ -102,7 +103,7 @@ class _EmailSignInFormState extends State<PasswordResetForm> {
       isLoading: model.isLoading,
       text: 'Reset Password',
       textcolor: Colors.white,
-      color: Colors.orangeAccent,
+      color: MaterialTheme.orange,
       onPressed: model.canSubmit ? _submit : null,
     );
   }

@@ -10,6 +10,7 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/firebase_storage_service.dart';
 import 'package:find_the_treasure/services/image_picker_service.dart';
 import 'package:find_the_treasure/services/url_launcher.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(
                 toolbarTitle: 'Crop image',
-                toolbarColor: Colors.orangeAccent,
+                toolbarColor: MaterialTheme.orange,
                 toolbarWidgetColor: Colors.white));
         this.setState(() {
           _selectedFile = cropped;
@@ -250,7 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: 'Settings',
           leading: const Icon(
             Icons.settings,
-            color: Colors.orangeAccent,
+            color: MaterialTheme.orange,
           ),
           leadingContainerColor: Colors.orange.shade100,
           onTap: () {

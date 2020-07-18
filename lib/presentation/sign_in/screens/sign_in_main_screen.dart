@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:find_the_treasure/widgets_common/social_sign_in_button.dart';
@@ -215,7 +216,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                       text: 'Create Account',
                       textcolor: Colors.white,
                       padding: 12,
-                      color: Colors.orangeAccent,
+                      color: MaterialTheme.orange,
                       onPressed: () {
                         Navigator.pushNamed(
                             context, EmailCreateAccountScreen.id);
@@ -250,7 +251,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                                     launch(
                                         'https://www.findthetreasure.com.au/terms-conditions/');
                                   },
-                                style: TextStyle(color: Colors.orangeAccent)),
+                                style: TextStyle(color: MaterialTheme.orange)),
                             TextSpan(text: 'and '),
                             TextSpan(
                                 text: 'Privacy Policy.',
@@ -259,7 +260,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                                     launch(
                                         'https://www.findthetreasure.com.au/privacy-policy/');
                                   },
-                                style: TextStyle(color: Colors.orangeAccent))
+                                style: TextStyle(color: MaterialTheme.orange))
                           ]),
                     ),
                   ],

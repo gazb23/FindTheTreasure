@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _QuestListViewState extends State<QuestListView> {
         return Colors.green;
         break;
       case 'Moderate':
-        return Colors.orangeAccent;
+        return MaterialTheme.orange;
         break;
       case 'Hard':
         return Colors.redAccent;

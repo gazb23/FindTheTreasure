@@ -3,6 +3,7 @@
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/sign_in_main_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/material.dart';
 
 
@@ -28,7 +29,7 @@ class AuthWidget extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
+          valueColor: AlwaysStoppedAnimation<Color>(MaterialTheme.orange),
         ),
       ),
     );

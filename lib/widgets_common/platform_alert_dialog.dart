@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/platform_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -142,7 +143,7 @@ class PlatformAlertDialog extends PlatformWidget {
         style: TextStyle(
           fontSize: 18.0,
           fontWeight: FontWeight.w700,
-          color: Colors.orangeAccent,
+          color: MaterialTheme.orange,
         ),
       ),
       onPressed: () => Navigator.of(context).pop(true),
