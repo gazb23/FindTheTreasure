@@ -33,7 +33,7 @@ class QuestDetailScreen extends StatelessWidget {
             final QuestModel questModelStream = snapshot.data;
             return SafeArea(
               child: Scaffold(
-                backgroundColor: Colors.grey.shade50,
+                backgroundColor: Colors.white,
                 body: Container(
                   width: double.infinity,
                   child: Stack(
@@ -73,7 +73,7 @@ class QuestDetailScreen extends StatelessWidget {
       fadeOutDuration: Duration(milliseconds: 400),
       imageBuilder: (context, image) => Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 3,
+        height: MediaQuery.of(context).size.height / 2.75,
         decoration: BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
@@ -170,7 +170,7 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildQuestDescriptionCard(
       BuildContext context, QuestModel questModelStream) {
     return Card(
-      elevation: 2,
+      elevation: 5,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: EdgeInsets.all(10),
@@ -184,7 +184,7 @@ class QuestDetailScreen extends StatelessWidget {
             ],
           ),
           collapsed: ExpandableButton(
-                      child: Column(
+            child: Column(
               children: <Widget>[
                 _buildQuestDetailCard(context, questModelStream),
                 SizedBox(
@@ -205,7 +205,7 @@ class QuestDetailScreen extends StatelessWidget {
             ),
           ),
           expanded: ExpandableButton(
-                      child: Column(
+            child: Column(
               children: <Widget>[
                 _buildQuestDetailCard(context, questModelStream),
                 SizedBox(
@@ -258,61 +258,24 @@ class QuestDetailScreen extends StatelessWidget {
 
   Widget _buildBountyCard(BuildContext context, QuestModel questModelStream) {
     return Card(
-      elevation: 2,
+      elevation: 5,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: const EdgeInsets.all(10),
-        child: ExpandablePanel(
-          header: Column(
-            children: <Widget>[
-              Text(
-                'Bounty Details',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
-              ),
-            ],
-          ),
-          collapsed: ExpandableButton(
-                      child: Column(
-              children: <Widget>[
-                _buildTreasure(context, questModelStream),
-                const SizedBox(
-                  height: 15,
-                ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: _buildBountyText(
-                        context: context,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis)),
-              ],
+        child: Column(
+          children: <Widget>[
+            Text(
+              'Bounty Details',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
             ),
-          ),
-          expanded: ExpandableButton(
-                      child: Column(
-              children: <Widget>[
-                _buildTreasure(context, questModelStream),
-                const SizedBox(
-                  height: 15,
-                ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: _buildBountyText(
-                        context: context,
-                        maxLines: 20,
-                        overflow: TextOverflow.ellipsis)),
-              ],
+            const SizedBox(
+              height: 10,
             ),
-          ),
-          theme: ExpandableThemeData(
-            crossFadePoint: 0,
-            tapBodyToCollapse: true,
-            tapHeaderToExpand: true,
-            hasIcon: true,
-            iconSize: 40,
-            iconColor: MaterialTheme.orange,
-            headerAlignment: ExpandablePanelHeaderAlignment.center,
-          ),
+            _buildTreasure(context, questModelStream),
+            const SizedBox(
+              height: 5,
+            ),
+          ],
         ),
       ),
     );
@@ -326,28 +289,36 @@ class QuestDetailScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(6), color: Colors.brown),
       child: Column(
         children: <Widget>[
-          const SizedBox(
-            height: 15,
+          SizedBox(height: 15),
+          ListTile(
+            leading: Image.asset(
+              'images/treasure.png',
+              height: 45,
+            ),
+            title: DiamondAndKeyContainer(
+              numberOfDiamonds: questModelStream.bountyDiamonds,
+              numberOfKeys: questModelStream.bountyKeys,
+              diamondHeight: 20,
+              skullKeyHeight: 30,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              mainAxisAlignment: MainAxisAlignment.start,
+              spaceBetween: 0,
+            ),
+            trailing: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.brown.shade400,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(width: 1, color: Colors.amberAccent),
+              ),
+              child: Text('${questModel.questPoints.toString()} points', style: TextStyle(
+                color: Colors.amberAccent,
+                fontWeight: FontWeight.bold
+              ),),
+            ),
           ),
-          Image.asset(
-            'images/ic_treasure.png',
-            height: 80,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          DiamondAndKeyContainer(
-            numberOfDiamonds: questModelStream.bountyDiamonds,
-            numberOfKeys: questModelStream.bountyKeys,
-            diamondHeight: 30,
-            skullKeyHeight: 40,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            spaceBetween: 60,
-          ),
-          const SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
         ],
       ),
     );
@@ -439,8 +410,7 @@ class QuestDetailScreen extends StatelessWidget {
           imageHeight: 40,
           difficulty: difficulty,
           platformTitle: 'Brain Strain\n $difficulty ',
-          platformContent:
-              '${questBrainCalc(difficulty)}',
+          platformContent: '${questBrainCalc(difficulty)}',
           platformImage: Image.asset(
             'images/brain.png',
             height: 80,
@@ -450,13 +420,13 @@ class QuestDetailScreen extends StatelessWidget {
     );
   }
 
-    String questBrainCalc(String difficulty) {
+  String questBrainCalc(String difficulty) {
     switch (difficulty) {
       case 'Easy':
-        return 'Expect to be asked simple questions or riddles during the quest.';
+        return 'During the quest expect to be asked simple questions.';
         break;
       case 'Moderate':
-        return 'During the quest expect that some of the questions or riddles may take some time to complete.';
+        return 'During the quest expect that some of the questions or riddles to be challenging.';
         break;
       case 'Hard':
         return 'Time to put your thinking cap on! During the quest expect difficult questions or riddles that will use all of your mental fortitude to complete.';
@@ -484,7 +454,7 @@ class QuestDetailScreen extends StatelessWidget {
     );
   }
 
-   String questHikeCalc(String difficulty) {
+  String questHikeCalc(String difficulty) {
     switch (difficulty) {
       case 'Easy':
         return 'During the quest expect mainly flat terrain and walking distances no greater than a few kilometers.';
@@ -499,46 +469,46 @@ class QuestDetailScreen extends StatelessWidget {
     }
   }
 
-  Widget _buildBountyText(
-      {BuildContext context, int maxLines, TextOverflow overflow}) {
-    return RichText(
-        textAlign: TextAlign.justify,
-        maxLines: maxLines,
-        overflow: overflow,
-        text: TextSpan(
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  fontSize: 20,
-                  height: 1.35,
-                ),
-            children: [
-              TextSpan(
-                  text:
-                      'If you have the skills to conquer this quest you will be rewarded with '),
-              TextSpan(
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
-                  text: '${questModel.numberOfDiamonds} diamonds '),
-              TextSpan(text: 'and '),
-              TextSpan(
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
-                  text: '${questModel.numberOfKeys} key. '),
-              TextSpan(
-                  text:
-                      'Conquer all of the challenges with no mistakes and you\'ll receive '),
-              TextSpan(
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
-                  text: '${questModel.questPoints} points '),
-              TextSpan(
-                  text:
-                      'which will look pretty darn nice on the leaderboard! '),
-            ]));
-  }
+  // Widget _buildBountyText(
+  //     {BuildContext context, int maxLines, TextOverflow overflow}) {
+  //   return RichText(
+  //       textAlign: TextAlign.justify,
+  //       maxLines: maxLines,
+  //       overflow: overflow,
+  //       text: TextSpan(
+  //           style: Theme.of(context).textTheme.bodyText2.copyWith(
+  //                 fontSize: 20,
+  //                 height: 1.35,
+  //               ),
+  //           children: [
+  //             TextSpan(
+  //                 text:
+  //                     'If you have the skills to conquer this quest you will be rewarded with '),
+  //             TextSpan(
+  //                 style: Theme.of(context)
+  //                     .textTheme
+  //                     .bodyText2
+  //                     .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+  //                 text: '${questModel.numberOfDiamonds} diamonds '),
+  //             TextSpan(text: 'and '),
+  //             TextSpan(
+  //                 style: Theme.of(context)
+  //                     .textTheme
+  //                     .bodyText2
+  //                     .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+  //                 text: '${questModel.numberOfKeys} key. '),
+  //             TextSpan(
+  //                 text:
+  //                     'Conquer all of the challenges with no mistakes and you\'ll receive '),
+  //             TextSpan(
+  //                 style: Theme.of(context)
+  //                     .textTheme
+  //                     .bodyText2
+  //                     .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+  //                 text: '${questModel.questPoints} points '),
+  //             TextSpan(
+  //                 text:
+  //                     'which will look pretty darn nice on the leaderboard! '),
+  //           ]));
+  // }
 }

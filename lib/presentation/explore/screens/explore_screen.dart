@@ -1,7 +1,9 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/explore/screens/intro_screen.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
+
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/presentation/explore/screens/quest_detail_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
@@ -21,7 +23,6 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
-       
     final database = Provider.of<DatabaseService>(context);
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
@@ -30,77 +31,91 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questsStream(),
         builder: (context, questModel) {
-          if (questModel.connectionState == ConnectionState.active && questModel.data != null) {
-            final _userData = context.watch<UserData>(); 
+          if (questModel.connectionState == ConnectionState.active &&
+              questModel.data != null) {
+            final _userData = Provider.of<UserData>(context);
+
             return Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                backgroundColor: MaterialTheme.blue,
-                // leading: Icon(
-                //   Icons.filter_list,
-                //   color: Colors.white,
-                // ),
-                iconTheme: const IconThemeData(
-                  color: Colors.black87,
-                ),
-                actions: <Widget>[
-                  DiamondAndKeyContainer(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    numberOfDiamonds: _userData?.userDiamondCount,
-                    numberOfKeys: _userData?.userKeyCount,
-                    diamondHeight: 20,
-                    skullKeyHeight: 30,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                backgroundColor: Colors.white,
+                appBar: AppBar(
+                  backgroundColor: MaterialTheme.blue,
+                  // leading: Icon(
+                  //   Icons.filter_list,
+                  //   color: Colors.white,
+                  // ),
+                  iconTheme: const IconThemeData(
+                    color: Colors.black87,
                   ),
-                  const SizedBox(
-                    width: 20,
-                  )
-                ],
-              ),
-              body: _userData != null ? !_userData.isAdmin
-                  ? _buildLiveListView(context)
-                  : ListView(children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text('Test Quests',
-                              style: TextStyle(
-                                  fontSize: 26, fontWeight: FontWeight.bold)),
-                          Container(
-                              height: MediaQuery.of(context).size.height / 2.5,
-                              child: _buildTestListView(context)),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text('Live Quests',
-                              style: TextStyle(
-                                  fontSize: 26, fontWeight: FontWeight.bold)),
-                          Container(
-                              height: MediaQuery.of(context).size.height / 2.5,
-                              child: _buildLiveListView(context))
-                        ],
-                      ),
-                    ]) : null
-            );
+                  actions: <Widget>[
+                    DiamondAndKeyContainer(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      numberOfDiamonds: _userData?.userDiamondCount,
+                      numberOfKeys: _userData?.userKeyCount,
+                      diamondHeight: 20,
+                      skullKeyHeight: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    )
+                  ],
+                ),
+                body: _userData != null
+                    ? !_userData.isAdmin
+                        ? _buildLiveListView(context)
+                        : ListView(children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Text('Test Quests',
+                                    style: TextStyle(
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.bold)),
+                                Container(
+                                    height: MediaQuery.of(context).size.height /
+                                        2.5,
+                                    child: _buildTestListView(context)),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text('Live Quests',
+                                    style: TextStyle(
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.bold)),
+                                Container(
+                                    height: MediaQuery.of(context).size.height /
+                                        2.5,
+                                    child: _buildLiveListView(context))
+                              ],
+                            ),
+                          ])
+                    : null);
           } else if (questModel.connectionState == ConnectionState.waiting) {
             return Container(
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Colors.white,
-                child: Center(child: CustomCircularProgressIndicator(color: MaterialTheme.orange,)));
-          } 
-      
-            return Container(
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                color: Colors.white,
-                child: Center(child: CustomCircularProgressIndicator(color: MaterialTheme.orange,)));
+                child: Center(
+                    child: CustomCircularProgressIndicator(
+                  color: MaterialTheme.orange,
+                )));
+          }
+
+          return Container(
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              color: Colors.white,
+              child: Center(
+                  child: CustomCircularProgressIndicator(
+                color: MaterialTheme.orange,
+              )));
         });
   }
 
   Widget _buildTestListView(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
+
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: false),
         builder: (context, snapshot) {
@@ -135,9 +150,26 @@ class _ExploreScreenState extends State<ExploreScreen> {
         });
   }
 
+  void _showIntroDialog(UserData userData) async {
+    await Future.delayed(Duration(seconds: 1));
+      if (!userData.seenIntro) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+          
+            fullscreenDialog: true,
+            builder: (context) => IntroScreen(),
+          ),
+        );
+      } else {
+        return null;
+      
+    }
+  }
+
   Widget _buildLiveListView(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
+    _showIntroDialog(_userData);
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: true),
         builder: (context, snapshot) {
@@ -158,7 +190,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
                       fullscreenDialog: true,
-                    
                       builder: (context) => QuestDetailScreen(
                         userData: _userData,
                         questModel: quest,

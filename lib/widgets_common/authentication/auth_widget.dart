@@ -1,10 +1,12 @@
 
 
+
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/sign_in_main_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:flutter/material.dart';
+
 
 
 /// Builds the signed-in or non signed-in UI, depending on the user snapshot.
@@ -19,7 +21,7 @@ class AuthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+  
     
     if (userSnapshot.connectionState == ConnectionState.active) {
      

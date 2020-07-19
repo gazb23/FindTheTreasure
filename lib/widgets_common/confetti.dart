@@ -1,7 +1,6 @@
 import 'package:confetti/confetti.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
-import 'package:find_the_treasure/presentation/explore/screens/explore_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';

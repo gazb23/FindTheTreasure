@@ -149,7 +149,7 @@ class _QuestListViewState extends State<QuestListView> {
                                   .contains(database.uid)
                               ? Image.asset(
                                   'images/unlock.png',
-                                  height: 30,
+                                  height: 25,
                                 )
                               : DiamondAndKeyContainer(
                                   numberOfDiamonds: widget.numberOfDiamonds,
