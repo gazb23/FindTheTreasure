@@ -1,6 +1,8 @@
 import 'package:confetti/confetti.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/explore/screens/explore_screen.dart';
+import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -40,11 +42,16 @@ class _ConfettiState extends State<Confetti> {
   Widget build(BuildContext context) {
     final UserData userData = Provider.of<UserData>(context);
     return Scaffold(
-     
+     appBar: AppBar(
+       backgroundColor: MaterialTheme.orange,
+       leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+         Navigator.pushNamed(context, HomePage.id);
+       }),
+     ),
       body: Container(
         decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.blue.shade100,Colors.blue.shade500],
+                  colors: [Colors.blue.shade200, MaterialTheme.blue],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   )),

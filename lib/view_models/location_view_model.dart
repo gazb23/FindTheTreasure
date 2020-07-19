@@ -98,7 +98,7 @@ class LocationViewModel extends ChangeNotifier {
             collectionRef: APIPath.locations(questId: questModel.id));
 
         final didDiscoverLocation = await PlatformAlertDialog(
-          backgroundColor: Colors.amberAccent,
+       
           title: 'Location Discovered!',
           content:
               'Well done, you\'ve found ${locationModel.title} and unlocked the challenges! ',

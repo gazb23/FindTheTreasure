@@ -100,22 +100,19 @@ class _QuestListViewState extends State<QuestListView> {
                               .contains(database.uid)
                           ? BackdropFilter(
                               filter: ImageFilter.blur(
-                                sigmaX: 6,
-                                sigmaY: 6,
+                                sigmaX: 0,
+                                sigmaY: 0,
                               ),
                               child: Container(
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: Colors.black.withOpacity(0.5),
                                   child: buildQuestListTile(context, database)),
                             )
                           : buildQuestListTile(context, database))),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(
-                      color: Colors.white,
-                      width: 1
-                    )),
+                    border:
+                        Border(top: BorderSide(color: Colors.white, width: 1)),
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -148,10 +145,16 @@ class _QuestListViewState extends State<QuestListView> {
                         children: <Widget>[
                           buildDifficultyIndicator(),
                           buildNumberOfLocations(locationPluralCount),
-                          DiamondAndKeyContainer(
-                            numberOfDiamonds: widget.numberOfDiamonds,
-                            numberOfKeys: widget.numberOfKeys,
-                          ),
+                          widget.questModel.questStartedBy
+                                  .contains(database.uid)
+                              ? Image.asset(
+                                  'images/unlock.png',
+                                  height: 30,
+                                )
+                              : DiamondAndKeyContainer(
+                                  numberOfDiamonds: widget.numberOfDiamonds,
+                                  numberOfKeys: widget.numberOfKeys,
+                                ),
                         ],
                       ),
               )
