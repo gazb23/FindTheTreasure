@@ -11,7 +11,7 @@ import 'package:find_the_treasure/widgets_common/quests/quest_diamond_calculatio
 import 'package:find_the_treasure/widgets_common/quests/quest_tags.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
-
+import 'package:auto_size_text/auto_size_text.dart';
 class QuestDetailScreen extends StatelessWidget {
   final QuestModel questModel;
   final UserData userData;
@@ -284,7 +284,7 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildTreasure(BuildContext context, QuestModel questModelStream) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6), color: Colors.brown),
       child: Column(
@@ -293,29 +293,35 @@ class QuestDetailScreen extends StatelessWidget {
           ListTile(
             leading: Image.asset(
               'images/treasure.png',
-              height: 45,
+              height: 35,
             ),
             title: DiamondAndKeyContainer(
               numberOfDiamonds: questModelStream.bountyDiamonds,
               numberOfKeys: questModelStream.bountyKeys,
-              diamondHeight: 20,
-              skullKeyHeight: 30,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              mainAxisAlignment: MainAxisAlignment.start,
+              diamondHeight: 15,
+              skullKeyHeight: 20,
+              fontSize: 16,
+              
+              mainAxisAlignment: MainAxisAlignment.center,
               spaceBetween: 0,
             ),
             trailing: Container(
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Colors.brown.shade400,
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(width: 1, color: Colors.amberAccent),
               ),
-              child: Text('${questModel.questPoints.toString()} points', style: TextStyle(
+              child: AutoSizeText(
+                
+                '${questModel.questPoints.toString()} points', style: TextStyle(
                 color: Colors.amberAccent,
                 fontWeight: FontWeight.bold
-              ),),
+              ),
+              maxLines: 1,
+              minFontSize: 15,
+              
+              ),
             ),
           ),
           SizedBox(height: 15),

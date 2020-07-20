@@ -38,7 +38,7 @@ class HelpScreen extends StatelessWidget {
         title: Text('Help'),
         centerTitle: true,
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           SizedBox(
             height: 20,

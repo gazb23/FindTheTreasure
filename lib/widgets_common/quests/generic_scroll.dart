@@ -17,8 +17,8 @@ class CustomScroll extends StatelessWidget {
           color: Colors.brown.shade50,
           width: MediaQuery.of(context).size.width,
           constraints: BoxConstraints(
-            minHeight: 300,
-              maxHeight: MediaQuery.of(context).size.height / 2.5),
+            minHeight: 250,
+              maxHeight: MediaQuery.of(context).size.height / 2),
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 5),

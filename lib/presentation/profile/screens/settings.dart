@@ -440,7 +440,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                   color: MaterialTheme.orange,
-                  borderRadius: BorderRadius.circular(35)),
+                  borderRadius: BorderRadius.circular(15)),
               height: 60,
               width: double.infinity,
               child: Center(

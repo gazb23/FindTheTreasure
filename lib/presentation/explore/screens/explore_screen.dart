@@ -10,6 +10,7 @@ import 'package:find_the_treasure/presentation/explore/widgets/list_items_builde
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<DatabaseService>(context);
+    final _userData = Provider.of<UserData>(context);
+
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -33,16 +36,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
         builder: (context, questModel) {
           if (questModel.connectionState == ConnectionState.active &&
               questModel.data != null) {
-            final _userData = Provider.of<UserData>(context);
-
             return Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
                   backgroundColor: MaterialTheme.blue,
-                  // leading: Icon(
-                  //   Icons.filter_list,
-                  //   color: Colors.white,
-                  // ),
                   iconTheme: const IconThemeData(
                     color: Colors.black87,
                   ),
@@ -75,7 +72,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                     height: MediaQuery.of(context).size.height /
                                         2.5,
                                     child: _buildTestListView(context)),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 Text('Live Quests',
@@ -150,26 +147,29 @@ class _ExploreScreenState extends State<ExploreScreen> {
         });
   }
 
-  void _showIntroDialog(UserData userData) async {
-    await Future.delayed(Duration(seconds: 1));
-      if (!userData.seenIntro) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-          
-            fullscreenDialog: true,
+  void _showIntroDialog(BuildContext context) {
+    print('dialog');
+    SchedulerBinding.instance.scheduleFrameCallback((_)  {
+      try {
+        // await Future.delayed(Duration(seconds: 8));
+        {
+         
+          Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => IntroScreen(),
-          ),
-        );
-      } else {
-        return null;
-      
-    }
+          ));
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+    });
   }
 
   Widget _buildLiveListView(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
-    _showIntroDialog(_userData);
+    _userData != null
+        ? _userData.seenIntro ? SizedBox() : _showIntroDialog(context)
+        : SizedBox();
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: true),
         builder: (context, snapshot) {

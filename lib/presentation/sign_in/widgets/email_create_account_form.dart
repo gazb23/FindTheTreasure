@@ -42,20 +42,21 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       await widget.bloc.submit();
       Navigator.of(context).pop();
     } on PlatformException catch (e) {
-      if (e.code != 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL')
+      if (e.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL')
         _showDuplicateAccountSignInError(context, e);
-      else
-        PlatformExceptionAlertDialog(
+      else 
+         PlatformExceptionAlertDialog(
           title: 'Sign up failed',
           exception: e,
         ).show(context);
-    } catch (e) {
-      PlatformExceptionAlertDialog(
-        title: 'Sign up failed',
-        exception: e,
-      ).show(context);
-      print(e.toString());
-    }
+      
+       
+    } 
+    
+    
+      
+     
+    
   }
 
   void _showDuplicateAccountSignInError(

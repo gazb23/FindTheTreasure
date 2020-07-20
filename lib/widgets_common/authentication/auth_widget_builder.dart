@@ -28,6 +28,7 @@ class AuthWidgetBuilder extends StatelessWidget {
           InAppPurchaseConnection.enablePendingPurchases();
           return MultiProvider(
             providers: [
+            
               Provider<User>.value(
                 
                 value: user),
@@ -45,12 +46,14 @@ class AuthWidgetBuilder extends StatelessWidget {
             child: Consumer<DatabaseService>(
               builder: (_, databaseService, __) =>
                   StreamProvider<UserData>.value(
-                value: databaseService.userStream(),    
+                value: databaseService.userStream(),                   
                 child: builder(context, snapshot),
+                
               ),
             ),
           );
         }
+        
         return builder(context, snapshot);
       },
     );

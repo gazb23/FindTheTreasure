@@ -99,7 +99,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
       await widget.bloc.signInWithGoogle();
     } on PlatformException catch (e) {
       print('ERROR:' + e.toString());
-      if (e.code == 'ERROR_ABORTED_BY_USER') {
+      if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
       } else if (e.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') {
         _showDuplicateAccountSignInError(context, e);
@@ -111,18 +111,18 @@ class _SignInMainScreenState extends State<SignInMainScreen>
     }
   }
 
-  Future<void> _signInWithFacebook(BuildContext context) async {
+  // Future<void> _signInWithFacebook(BuildContext context) async {
 
-    try {
-      await widget.bloc.signInWithFacebook();
-    } on PlatformException catch (e) {
-      if (e.code != 'ERROR_ABORTED_BY_USER') {
-        _showSignInError(context, e);
-      } 
+  //   try {
+  //     await widget.bloc.signInWithFacebook();
+  //   } on PlatformException catch (e) {
+  //     if (e.code != 'ERROR_ABORTED_BY_USER') {
+  //       _showSignInError(context, e);
+  //     } 
       
       
-      }
-  }
+  //     }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -191,14 +191,14 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    SocialSignInButton(
-                        assetName: 'images/facebook-logo.png',
-                        text: 'Sign in with Facebook',
-                        textcolor: Colors.white,
-                        color: Color(0xFF4267B2),
-                        onPressed: () => _signInWithFacebook(context)
-                        // : _showConnectionFailureDialog(context),
-                        ),
+                    // SocialSignInButton(
+                    //     assetName: 'images/facebook-logo.png',
+                    //     text: 'Sign in with Facebook',
+                    //     textcolor: Colors.white,
+                    //     color: Color(0xFF4267B2),
+                    //     onPressed: () => _signInWithFacebook(context)
+                    //     // : _showConnectionFailureDialog(context),
+                    //     ),
                     SocialSignInButton(
                         assetName: 'images/google-logo.png',
                         text: 'Sign in with Google',
@@ -231,7 +231,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                         'Already registered? Sign in here.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ),
                     RichText(
@@ -272,12 +272,9 @@ class _SignInMainScreenState extends State<SignInMainScreen>
       ]);
   }
 
-  // Future<void> _showConnectionFailureDialog(BuildContext context) async {
-  //   await PlatformAlertDialog(
-  //     title: 'No network connection',
-  //     content:
-  //         'Uh no! We can\'t seem to find an internet connection, please check your network and try again.',
-  //     defaultActionText: 'OK',
-  //   ).show(context);
-  // }
+@override
+  void dispose() {
+  animationController.dispose();
+    super.dispose();
+  }
 }
