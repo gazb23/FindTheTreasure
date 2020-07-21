@@ -43,7 +43,8 @@ class AuthWidgetBuilder extends StatelessWidget {
             ],
             child: Consumer<DatabaseService>(
               builder: (_, databaseService, __) => StreamProvider<UserData>(
-                initialData: UserData(                  
+                initialData: UserData(
+                    id: '',
                     displayName: '',
                     email: '',
                     isAdmin: false,

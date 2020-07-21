@@ -25,7 +25,6 @@ abstract class AuthBase {
   Future<void> validateCurrentPassword({@required String password});
   void updatePassword(String password);
   Future<void> updateEmail(String email);
-
 }
 
 class Auth implements AuthBase {
@@ -36,8 +35,12 @@ class Auth implements AuthBase {
   // final Firestore _firestore = Firestore.instance;
 
   User _userFromFirebase(FirebaseUser user) {
-    return user != null ? User(uid: user.uid, email: user.email, loginCredential: user?.providerData[1]?.providerId) : null;
-    
+    return user != null
+        ? User(
+            uid: user.uid,
+            email: user.email,
+            loginCredential: user.providerData[0].providerId)
+        : null;
   }
 
   // onAuthStateChanged receives a FirebaseUser each time the user signs in or signs out. To remove dependency for the FireBase package we return a User class instead by calling the userFromFirebase method.
@@ -93,7 +96,6 @@ class Auth implements AuthBase {
           code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
     }
   }
- 
 
   Future<void> signOut() async {
     await _googleSignIn.signOut();
@@ -124,17 +126,16 @@ class Auth implements AuthBase {
 
   Future<void> _createUserData(FirebaseUser user) {
     final UserData updateUserData = UserData(
-      displayName: user.displayName ?? 'Adventurer',
-      locationsExplored: [],
-      email: user.email,
-      photoURL: user.photoUrl,
-      uid: user.uid ?? '',
-      points: 0,
-      userDiamondCount: 50,
-      userKeyCount: 1,          
-      isAdmin: false,
-      seenIntro: false
-    );
+        displayName: user.displayName ?? 'Adventurer',
+        locationsExplored: [],
+        email: user.email,
+        photoURL: user.photoUrl,
+        uid: user.uid ?? '',
+        points: 0,
+        userDiamondCount: 50,
+        userKeyCount: 1,
+        isAdmin: false,
+        seenIntro: false);
     return DatabaseService(uid: user.uid)
         .updateUserData(userData: updateUserData);
   }
@@ -168,8 +169,4 @@ class Auth implements AuthBase {
 
     return await firebaseUser.updateEmail(email);
   }
-
-
-
-
 }

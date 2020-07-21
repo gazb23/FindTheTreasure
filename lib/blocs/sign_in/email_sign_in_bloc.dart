@@ -3,7 +3,6 @@ import 'package:find_the_treasure/models/email_sign_in_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:flutter/foundation.dart';
 
-
 class EmailSignInBloc {
   final AuthBase auth;
   final _modelController = StreamController<EmailSignInModel>();
@@ -13,8 +12,6 @@ class EmailSignInBloc {
   EmailSignInModel _model = EmailSignInModel();
 
   void dispose() => _modelController.close();
-
-
 
   Future<void> submit() async {
     updateWith(submitted: true, isLoading: true);

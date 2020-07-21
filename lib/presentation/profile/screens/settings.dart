@@ -332,9 +332,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       UserData _userData, BuildContext context, User userEmail) {
     User user = Provider.of<User>(context);
 
-    bool loginFacebook = user.loginCredential == 'facebook.com';
+    // bool loginFacebook = user.loginCredential == 'facebook.com';
     bool loginGoogle = user.loginCredential == 'google.com';
-    bool login = loginFacebook || loginGoogle;
+    bool login = loginGoogle;
     print(user.loginCredential);
     return Container(
       child: Column(
@@ -378,7 +378,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         });
                       },
                       leadingContainerColor: Colors.orange.shade100),
-          //EDIT PASSWORD
+          // EDIT PASSWORD
           login
               ? Container()
               : _updatePassword
@@ -498,7 +498,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     icon: _isLoading
                         ? CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
-                               MaterialTheme.orange),
+                                MaterialTheme.orange),
                           )
                         : Icon(
                             Icons.clear,

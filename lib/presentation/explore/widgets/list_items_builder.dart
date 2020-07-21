@@ -34,11 +34,11 @@ class ListItemsBuilder<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (snapshot.hasData) {
-      final List<T> items = snapshot.data;
+      final List<T> items = snapshot?.data;
 
       if (items.isNotEmpty) {
         return _buildList(items);
-      } else {    
+      } else {
         return EmptyContent(
           title: title,
           message: message,
@@ -75,7 +75,7 @@ class ListItemsBuilder<T> extends StatelessWidget {
           });
     }
     return ListView.builder(
-      itemCount: items.length,    
+      itemCount: items?.length,
       itemBuilder: (context, index) =>
           itemBuilder(context, items[index], index),
     );

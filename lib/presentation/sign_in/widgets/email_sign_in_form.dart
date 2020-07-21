@@ -50,7 +50,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final _newFocus = !model.emailIsEmptyValidator.isValid(model.email) && model.emailStringValidator.isValid(model.email)
+    final _newFocus = !model.emailIsEmptyValidator.isValid(model.email) &&
+            model.emailStringValidator.isValid(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(_newFocus);
@@ -91,28 +92,26 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   CustomTextField _buildEmailTextField(EmailSignInModel model) {
     return CustomTextField(
-      controller: _emailController,
-      focusNode: _emailFocusNode,
-      labelText: 'Email',
-      enabled: model.isLoading == false,
-      errorText: model.emailErrorText,
-      onEditingComplete: () => _emailEditingComplete(model),
-      onChanged: widget.bloc.updateEmail,
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
-       suffixIcon: IconButton(
-                          enableFeedback: true,
-                          icon: Icon(
-                            Icons.clear,
-                            color: MaterialTheme.orange,
-                          ),
-                          onPressed: () {
-                            Future.delayed(Duration(milliseconds: 50))
-                                .then((_) {
-                              _emailController.clear();
-                            });
-                          })
-    );
+        controller: _emailController,
+        focusNode: _emailFocusNode,
+        labelText: 'Email',
+        enabled: model.isLoading == false,
+        errorText: model.emailErrorText,
+        onEditingComplete: () => _emailEditingComplete(model),
+        onChanged: widget.bloc.updateEmail,
+        keyboardType: TextInputType.emailAddress,
+        textInputAction: TextInputAction.next,
+        suffixIcon: IconButton(
+            enableFeedback: true,
+            icon: Icon(
+              Icons.clear,
+              color: MaterialTheme.orange,
+            ),
+            onPressed: () {
+              Future.delayed(Duration(milliseconds: 50)).then((_) {
+                _emailController.clear();
+              });
+            }));
   }
 
   CustomTextField _buildPasswordTextField(EmailSignInModel model) {
@@ -126,17 +125,16 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       errorText: model.passwordErrorText,
       obscureText: _obscureText,
       suffixIcon: IconButton(
-                      icon: Icon(
-                        
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: MaterialTheme.orange,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
+        icon: Icon(
+          _obscureText ? Icons.visibility_off : Icons.visibility,
+          color: MaterialTheme.orange,
+        ),
+        onPressed: () {
+          setState(() {
+            _obscureText = !_obscureText;
+          });
+        },
+      ),
       textInputAction: TextInputAction.done,
     );
   }

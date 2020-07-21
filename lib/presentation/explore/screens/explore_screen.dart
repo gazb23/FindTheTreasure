@@ -91,7 +91,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: false),
         builder: (context, snapshot) {
-         
+          if (snapshot.hasData && snapshot.data != null) {
             return ListItemsBuilder<QuestModel>(
               snapshot: snapshot,
               message: 'No Test Events',
@@ -117,9 +117,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     );
                   }),
             );
+          } else {
+            return Container();
           }
-          
-        );
+        });
   }
 
   @override
@@ -155,32 +156,36 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: true),
         builder: (context, snapshot) {
-          return ListItemsBuilder<QuestModel>(
-            snapshot: snapshot,
-            title: 'No quests!',
-            message: 'Oh No!',
-            itemBuilder: (context, quest, index) => QuestListView(
-                numberOfDiamonds: quest.numberOfDiamonds,
-                difficulty: quest.difficulty,
-                numberOfKeys: quest.numberOfKeys,
-                title: quest.title,
-                image: quest.image,
-                numberOfLocations: quest.numberOfLocations,
-                location: quest.location,
-                questModel: quest,
-                onTap: () {
-                  Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => QuestDetailScreen(
-                        userData: _userData,
-                        questModel: quest,
-                        database: database,
+          if (snapshot.hasData && snapshot.data != null) {
+            return ListItemsBuilder<QuestModel>(
+              snapshot: snapshot,
+              title: 'No quests!',
+              message: 'Oh No!',
+              itemBuilder: (context, quest, index) => QuestListView(
+                  numberOfDiamonds: quest.numberOfDiamonds,
+                  difficulty: quest.difficulty,
+                  numberOfKeys: quest.numberOfKeys,
+                  title: quest.title,
+                  image: quest.image,
+                  numberOfLocations: quest.numberOfLocations,
+                  location: quest.location,
+                  questModel: quest,
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => QuestDetailScreen(
+                          userData: _userData,
+                          questModel: quest,
+                          database: database,
+                        ),
                       ),
-                    ),
-                  );
-                }),
-          );
+                    );
+                  }),
+            );
+          } else {
+            return Container();
+          }
         });
   }
 }
