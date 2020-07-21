@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:find_the_treasure/models/email_sign_in_model.dart';
 import 'package:find_the_treasure/services/auth.dart';
-import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+
 
 class EmailSignInBloc {
   final AuthBase auth;
@@ -15,18 +14,14 @@ class EmailSignInBloc {
 
   void dispose() => _modelController.close();
 
-  void _showSignInError(PlatformException exception) {
-    PlatformExceptionAlertDialog(
-      title: 'Sign in failed',
-      exception: exception,
-    ).show(context);
-  }
+
 
   Future<void> submit() async {
     updateWith(submitted: true, isLoading: true);
     try {
       await auth.signInWithEmailAndPassword(_model.email, _model.password);
     } catch (e) {
+      print(e.toString());
       updateWith(isLoading: false);
       rethrow;
     }

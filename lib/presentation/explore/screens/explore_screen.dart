@@ -25,89 +25,63 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
-    final database = context.watch<DatabaseService>();
     final _userData = Provider.of<UserData>(context);
 
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-    return StreamBuilder<List<QuestModel>>(
-        stream: database.questsStream(),
-        builder: (context, questModel) {
-          if (questModel.connectionState == ConnectionState.active &&
-              questModel.data != null) {
-            return Scaffold(
-                backgroundColor: Colors.white,
-                appBar: AppBar(
-                  backgroundColor: MaterialTheme.blue,
-                  iconTheme: const IconThemeData(
-                    color: Colors.black87,
-                  ),
-                  actions: <Widget>[
-                    DiamondAndKeyContainer(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      numberOfDiamonds: _userData?.userDiamondCount,
-                      numberOfKeys: _userData?.userKeyCount,
-                      diamondHeight: 20,
-                      skullKeyHeight: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    )
-                  ],
-                ),
-                body: _userData != null
-                    ? !_userData.isAdmin
-                        ? _buildLiveListView(context)
-                        : ListView(children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Text('Test Quests',
-                                    style: TextStyle(
-                                        fontSize: 26,
-                                        fontWeight: FontWeight.bold)),
-                                Container(
-                                    height: MediaQuery.of(context).size.height /
-                                        2.5,
-                                    child: _buildTestListView(context)),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Text('Live Quests',
-                                    style: TextStyle(
-                                        fontSize: 26,
-                                        fontWeight: FontWeight.bold)),
-                                Container(
-                                    height: MediaQuery.of(context).size.height /
-                                        2.5,
-                                    child: _buildLiveListView(context))
-                              ],
-                            ),
-                          ])
-                    : null);
-          } else if (questModel.connectionState == ConnectionState.waiting) {
-            return Container(
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                color: Colors.white,
-                child: Center(
-                    child: CustomCircularProgressIndicator(
-                  color: MaterialTheme.orange,
-                )));
-          }
-
-          return Container(
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
+    return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: MaterialTheme.blue,
+          iconTheme: const IconThemeData(
+            color: Colors.black87,
+          ),
+          actions: <Widget>[
+            DiamondAndKeyContainer(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              numberOfDiamonds: _userData?.userDiamondCount,
+              numberOfKeys: _userData?.userKeyCount,
+              diamondHeight: 20,
+              skullKeyHeight: 30,
               color: Colors.white,
-              child: Center(
-                  child: CustomCircularProgressIndicator(
-                color: MaterialTheme.orange,
+              fontWeight: FontWeight.bold,
+            ),
+            const SizedBox(
+              width: 20,
+            )
+          ],
+        ),
+        body: _userData != null
+            ? !_userData.isAdmin
+                ? _buildLiveListView(context)
+                : ListView(children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text('Test Quests',
+                            style: const TextStyle(
+                                fontSize: 26, fontWeight: FontWeight.bold)),
+                        Container(
+                            height: MediaQuery.of(context).size.height / 2.5,
+                            child: _buildTestListView(context)),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text('Live Quests',
+                            style: const TextStyle(
+                                fontSize: 26, fontWeight: FontWeight.bold)),
+                        Container(
+                            height: MediaQuery.of(context).size.height / 2.5,
+                            child: _buildLiveListView(context))
+                      ],
+                    ),
+                  ])
+            : Container(
+                child: Center(
+                child: CustomCircularProgressIndicator(
+                    color: MaterialTheme.orange),
               )));
-        });
   }
 
   Widget _buildTestListView(BuildContext context) {
@@ -117,7 +91,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: false),
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
+         
             return ListItemsBuilder<QuestModel>(
               snapshot: snapshot,
               message: 'No Test Events',
@@ -144,8 +118,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   }),
             );
           }
-          return Container();
-        });
+          
+        );
   }
 
   @override
