@@ -148,29 +148,27 @@ class _ExploreScreenState extends State<ExploreScreen> {
         });
   }
 
-@override
+  @override
   void didChangeDependencies() {
     final UserData userData = Provider.of<UserData>(context, listen: false);
-   if (mounted) _showIntroDialog(context, userData);
+    if (mounted) _showIntroDialog(context, userData);
     super.didChangeDependencies();
   }
 
   void _showIntroDialog(BuildContext context, UserData userData) async {
     print('dialog');
-  await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 5));
     try {
       if (!userData.seenIntro) {
-          SchedulerBinding.instance.scheduleFrameCallback((_) {
+        SchedulerBinding.instance.scheduleFrameCallback((_) {
           Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
             maintainState: true,
             builder: (context) => IntroScreen(),
           ));
         });
       } else {
-        
         print('seen');
       }
-        
     } catch (e) {
       print(e.toString());
     }
@@ -179,7 +177,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   Widget _buildLiveListView(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
-    
+
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: true),
         builder: (context, snapshot) {
