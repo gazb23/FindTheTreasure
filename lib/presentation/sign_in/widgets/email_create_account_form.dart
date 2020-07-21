@@ -40,7 +40,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   Future<void> _submit() async {
     try {
       await widget.bloc.submit();
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     } on PlatformException catch (e) {
       if (e.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL')
         _showDuplicateAccountSignInError(context, e);

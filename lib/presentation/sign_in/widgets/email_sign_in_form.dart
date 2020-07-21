@@ -40,7 +40,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   void _submit() async {
     try {
       await widget.bloc.submit();
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
         title: 'Sign in failed',

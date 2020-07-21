@@ -173,7 +173,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: StreamBuilder<AvatarReference>(
                     stream: _databaseService.avatarReferenceStream(),
                     builder: (context, snapshot) {
-                      final AvatarReference avatarReference = snapshot.data;
+                      if (snapshot.connectionState == ConnectionState.active) {
+                        final AvatarReference avatarReference = snapshot.data;
                       return Avatar(
                           photoURL:
                               avatarReference?.photoURL ?? user.photoURL,
@@ -182,6 +183,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderWidth: 5,
                           onPressed: () =>
                               _isLoading ? null : _chooseAvatar(context));
+                      } else return Container();
+                      
                     }),
               ),
             ),
@@ -198,7 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(30)),
           child: AutoSizeText(
-              user.displayName,
+              user?.displayName ?? '',
               textAlign: TextAlign.center,
               maxLines: 1,
               minFontSize: 12,

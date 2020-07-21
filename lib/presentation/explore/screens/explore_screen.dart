@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+
 import 'package:find_the_treasure/presentation/explore/screens/intro_screen.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
@@ -24,7 +25,7 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<DatabaseService>(context);
+    final database = context.watch<DatabaseService>();
     final _userData = Provider.of<UserData>(context);
 
     // Lock this screen to portrait orientation
@@ -147,29 +148,38 @@ class _ExploreScreenState extends State<ExploreScreen> {
         });
   }
 
-  void _showIntroDialog(BuildContext context) {
+@override
+  void didChangeDependencies() {
+    final UserData userData = Provider.of<UserData>(context, listen: false);
+   if (mounted) _showIntroDialog(context, userData);
+    super.didChangeDependencies();
+  }
+
+  void _showIntroDialog(BuildContext context, UserData userData) async {
     print('dialog');
-    SchedulerBinding.instance.scheduleFrameCallback((_)  {
-      try {
-        // await Future.delayed(Duration(seconds: 8));
-        {
-         
-          Navigator.of(context).push(MaterialPageRoute(
+  await Future.delayed(Duration(seconds: 3));
+    try {
+      if (!userData.seenIntro) {
+          SchedulerBinding.instance.scheduleFrameCallback((_) {
+          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+            maintainState: true,
             builder: (context) => IntroScreen(),
           ));
-        }
-      } catch (e) {
-        print(e.toString());
+        });
+      } else {
+        
+        print('seen');
       }
-    });
+        
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Widget _buildLiveListView(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
-    _userData != null
-        ? _userData.seenIntro ? SizedBox() : _showIntroDialog(context)
-        : SizedBox();
+    
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: true),
         builder: (context, snapshot) {

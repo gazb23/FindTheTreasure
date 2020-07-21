@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
   
     return MultiProvider(
       providers: [
+       
         Provider<AuthBase>(
           create: (context) => Auth(),
         ),

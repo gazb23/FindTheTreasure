@@ -28,32 +28,38 @@ class AuthWidgetBuilder extends StatelessWidget {
           InAppPurchaseConnection.enablePendingPurchases();
           return MultiProvider(
             providers: [
-            
-              Provider<User>.value(
-                
-                value: user),
+              Provider<User>.value(value: user),
               Provider<DatabaseService>(
                 create: (_) => DatabaseService(uid: user.uid),
               ),
               Provider<ImagePickerService>(
                 create: (_) => ImagePickerService(),
               ),
-               Provider<FirebaseStorageService>(
+              Provider<FirebaseStorageService>(
                 create: (_) => FirebaseStorageService(uid: user.uid),
               ),
-              ChangeNotifierProvider<LocationViewModel>(create: (_) => LocationViewModel())
+              ChangeNotifierProvider<LocationViewModel>(
+                  create: (_) => LocationViewModel())
             ],
             child: Consumer<DatabaseService>(
-              builder: (_, databaseService, __) =>
-                  StreamProvider<UserData>.value(
-                value: databaseService.userStream(),                   
+              builder: (_, databaseService, __) => StreamProvider<UserData>(
+                initialData: UserData(
+                    displayName: '',
+                    email: '',
+                    isAdmin: false,
+                    locationsExplored: [],
+                    photoURL: '',
+                    points: 0,
+                    seenIntro: true,
+                    userKeyCount: 0,
+                    userDiamondCount: 0,
+                    uid: user.uid),
+                create: (_) => databaseService.userStream(),
                 child: builder(context, snapshot),
-                
               ),
             ),
           );
         }
-        
         return builder(context, snapshot);
       },
     );

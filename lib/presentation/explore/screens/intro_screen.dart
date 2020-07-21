@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,6 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/generic_scroll.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
-
 
 bool _isLoading = false;
 bool _isFinished = false;
@@ -37,11 +37,31 @@ class _IntroScreenState extends State<IntroScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+                _isLoading ? Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      height: 20,
+                      width: 20,
+                      child: CustomCircularProgressIndicator(color: Colors.white.withOpacity(0.5),))),
+                ) : GestureDetector(
+                  onTap: () => _submit(_userData, _database),
+                                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10),
+                        child: Text(
+                          'SKIP',
+                          style: TextStyle(color: Colors.white.withOpacity(0.5)),
+                        ),
+                      )),
+                ),
                 Image.asset(
                   'images/3.0x/ic_avatar_pirate.png',
-                  height: MediaQuery.of(context).size.height/8,
+                  height: MediaQuery.of(context).size.height / 7,
                 ),
-                
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -66,6 +86,7 @@ class _IntroScreenState extends State<IntroScreen> {
                               speed: Duration(milliseconds: 90),
                               textAlign: TextAlign.center,
                               alignment: AlignmentDirectional.center,
+
                               onNextBeforePause: (index, isLast) {
                                 switch (index) {
                                   case 4:
@@ -106,46 +127,46 @@ class _IntroScreenState extends State<IntroScreen> {
                   child: FractionallySizedBox(
                     widthFactor: 0.9,
                     child: SignInButton(
-                      text: 'Adventure Time!',
-                      isLoading: _isLoading,
-                      padding: 15,
-                      onPressed: _isLoading || _isFinished == false
-                          ? null
-                          : () {
-                              _isLoading = !_isLoading;
-                              final UserData updatedUserData = UserData(
-                                  displayName: _userData.displayName,
-                                  email: _userData.email,
-                                  id: _userData.id,
-                                  isAdmin: _userData.isAdmin,
-                                  locationsExplored:
-                                      _userData.locationsExplored,
-                                  photoURL: _userData.photoURL,
-                                  points: _userData.points,
-                                  userDiamondCount: _userData.userDiamondCount,
-                                  userKeyCount: _userData.userKeyCount,
-                                  uid: _userData.uid,
-                                  seenIntro: true);
-                              try {
-                                _database.updateUserData(
-                                    userData: updatedUserData);
-                                Navigator.pop(context);
-              
-                              } catch (e) {
-                                print(e.toString());
-                              } finally {
-                                _isLoading = false;
-                                _isFinished = false;
-                                _showTreasure = false;
-                                _startAnimation = false;
-                              }
-                            },
-                    ),
+                        text: 'Adventure Time!',
+                        isLoading: _isLoading,
+                        padding: 15,
+                        onPressed: _isLoading || _isFinished == false
+                            ? null
+                            : () {
+                                _submit(_userData, _database);
+                              }),
                   ),
                 )
               ],
             )),
       ),
     );
+  }
+
+  void _submit(UserData _userData, DatabaseService _database) async {
+    _isLoading = !_isLoading;
+    final UserData updatedUserData = UserData(
+        displayName: _userData.displayName,
+        email: _userData.email,
+        id: _userData.id,
+        isAdmin: _userData.isAdmin,
+        locationsExplored: _userData.locationsExplored,
+        photoURL: _userData.photoURL,
+        points: _userData.points,
+        userDiamondCount: _userData.userDiamondCount,
+        userKeyCount: _userData.userKeyCount,
+        uid: _userData.uid,
+        seenIntro: true);
+    try {
+      await _database.updateUserData(userData: updatedUserData);
+      Navigator.pop(context);
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      _isLoading = false;
+      _isFinished = false;
+      _showTreasure = false;
+      _startAnimation = false;
+    }
   }
 }
