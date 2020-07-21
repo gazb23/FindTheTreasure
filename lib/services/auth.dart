@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'dart:io';
 
 class User {
   final String uid;
@@ -33,13 +34,19 @@ class Auth implements AuthBase {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookLogin _facebookLogin = FacebookLogin();
   // final Firestore _firestore = Firestore.instance;
+  bool _isIOS = Platform.isIOS;
 
   User _userFromFirebase(FirebaseUser user) {
+    
     return user != null
         ? User(
             uid: user.uid,
             email: user.email,
-            loginCredential: user.providerData[0].providerId)
+            loginCredential: _isIOS
+                ? user.providerData[0].providerId
+                : user.providerData[1].providerId,
+          )
+          
         : null;
   }
 
