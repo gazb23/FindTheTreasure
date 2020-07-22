@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/active_quest/find_treasure_screen.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -23,12 +24,28 @@ class ActiveQuestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final DatabaseService databaseService =
         Provider.of<DatabaseService>(context);
+    bool treasureDiscoveredBy =
+        questModel.treasureDiscoveredBy.contains(databaseService.uid);
     bool _isLoading = false;
     return ChangeNotifierProvider<LocationViewModel>(
       create: (context) => LocationViewModel(),
       child: Consumer<LocationViewModel>(
         builder: (context, locationViewModel, _) => SafeArea(
           child: Scaffold(
+            floatingActionButton: !treasureDiscoveredBy
+                ? FloatingActionButton.extended(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FindTreasureScreen(
+                                  questModel: questModel,
+                                  databaseService: databaseService)));
+                    },
+                    label: Text('Dig for your treasure'),
+                    backgroundColor: Colors.brown,
+                  )
+                : Container(),
             appBar: AppBar(
               title: AutoSizeText(
                 questModel.title,
@@ -57,7 +74,6 @@ class ActiveQuestScreen extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      
                         image: AssetImage("images/bckgrnd_balon.png"),
                         fit: BoxFit.fill),
                   ),

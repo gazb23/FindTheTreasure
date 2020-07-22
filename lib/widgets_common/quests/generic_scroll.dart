@@ -1,11 +1,15 @@
 
 import 'package:flutter/material.dart';
 
-
 class CustomScroll extends StatelessWidget {
   final Widget question;
-
-  const CustomScroll({Key key, this.question}) : super(key: key);
+  final double minHeight;
+  final double maxHeight;
+  const CustomScroll({
+    Key key,
+    @required this.question,
+    this.minHeight = 250, this.maxHeight = 500
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,8 +21,8 @@ class CustomScroll extends StatelessWidget {
           color: Colors.brown.shade50,
           width: MediaQuery.of(context).size.width,
           constraints: BoxConstraints(
-            minHeight: 250,
-              maxHeight: MediaQuery.of(context).size.height / 2),
+            minHeight: minHeight,
+              maxHeight: maxHeight ?? MediaQuery.of(context).size.height/2),
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 5),

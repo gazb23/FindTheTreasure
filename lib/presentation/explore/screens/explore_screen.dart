@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/presentation/active_quest/find_treasure_screen.dart';
 
 import 'package:find_the_treasure/presentation/explore/screens/intro_screen.dart';
 import 'package:find_the_treasure/theme.dart';

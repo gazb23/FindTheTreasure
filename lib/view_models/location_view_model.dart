@@ -2,10 +2,11 @@ import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
+import 'package:find_the_treasure/presentation/active_quest/find_treasure_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
-import 'package:find_the_treasure/widgets_common/confetti.dart';
+import 'package:find_the_treasure/presentation/active_quest/quest_completed_screen.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,23 +24,7 @@ class LocationViewModel extends ChangeNotifier {
     final UserData userData = Provider.of<UserData>(context, listen: false);
     if (!questModel.questCompletedBy.contains(userData.uid) &&
         lastLocationCompleted) {
-      final int updatedDiamondCount =
-          userData.userDiamondCount + questModel.bountyDiamonds;
-      final int updatedKeyCount = userData.userKeyCount + questModel.bountyKeys;
-
-      final UserData _userData = UserData(
-          userDiamondCount: updatedDiamondCount,
-          locationsExplored: userData.locationsExplored,
-          userKeyCount: updatedKeyCount,
-          points: LeaderboardViewModel.questComplete(
-            userData: userData,
-            questModel: questModel,
-          ),
-          displayName: userData.displayName,
-          email: userData.email,
-          photoURL: userData.photoURL,
-          uid: userData.uid,
-          isAdmin: userData.isAdmin);
+      
       try {
         // Add UID to quest completed by
         final questCompleted = _databaseService.arrayUnionField(
@@ -52,14 +37,13 @@ class LocationViewModel extends ChangeNotifier {
             documentId: questModel.id,
             field: 'questStartedBy',
             collectionRef: APIPath.quests());
-        // Update User Data
-        final updateUserData =
-            _databaseService.updateUserData(userData: _userData);
-        List<Future> futures = [questCompleted, questStartedBy, updateUserData];
+       
+        List<Future> futures = [questCompleted, questStartedBy];
         await Future.wait(futures);
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => Confetti(
+              builder: (context) => FindTreasureScreen(
+                databaseService: _databaseService,
                     questModel: questModel,
                   )),
         );

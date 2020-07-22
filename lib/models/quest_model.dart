@@ -8,6 +8,7 @@ class QuestModel {
   final String difficulty;
   final String location;
   final String image;
+  final String treasureDirections;
   final int numberOfLocations;
   final int numberOfDiamonds;
   final int numberOfKeys;
@@ -21,6 +22,8 @@ class QuestModel {
   final List likedBy;
   final List questStartedBy;
   final List questCompletedBy;
+  final List treasureDiscoveredBy;
+  final Map<String, dynamic> treasureCoordinates;
 
   QuestModel({
     this.id,
@@ -41,10 +44,13 @@ class QuestModel {
     this.hikeDifficulty,
     this.bountyDiamonds,
     this.bountyKeys,
-    this.questPoints, 
-    this.isLive, 
+    this.questPoints,
+    this.isLive,
     this.hintCost,
-    this.skipCost
+    this.skipCost,
+    this.treasureDirections,
+    this.treasureCoordinates,
+    this.treasureDiscoveredBy
   });
 
   factory QuestModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -77,6 +83,9 @@ class QuestModel {
       isLive: data['isLive'],
       hintCost: data['hintCost'],
       skipCost: data['skipCost'],
+      treasureCoordinates: data['treasureCoordinates'],
+      treasureDirections: data['treasureDirections'],
+      treasureDiscoveredBy: data['treasureDiscoveredBy']
     );
   }
 
@@ -99,7 +108,7 @@ class QuestModel {
       'hikeDifficulty': hikeDifficulty,
       'bountyKeys': bountyKeys,
       'bountyDiamonds': bountyDiamonds,
-      'questPoints' : questPoints,
+      'questPoints': questPoints,
     };
   }
 
