@@ -5,7 +5,6 @@ import 'package:find_the_treasure/services/permission_service.dart';
 import 'package:find_the_treasure/services/treasure_location_service.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/quests/generic_scroll.dart';
-import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scratcher/scratcher.dart';

@@ -5,8 +5,6 @@ import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/presentation/active_quest/find_treasure_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
-import 'package:find_the_treasure/presentation/active_quest/quest_completed_screen.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

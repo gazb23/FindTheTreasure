@@ -102,9 +102,9 @@ class _IntroScreenState extends State<IntroScreen> {
                               textStyle: TextStyle(
                                   color: Colors.black87, fontSize: 22),
                               isRepeatingAnimation: false,
-                              speed: Duration(milliseconds: 90),
+                              speed: Duration(milliseconds: 50),
                               textAlign: TextAlign.center,
-                              alignment: AlignmentDirectional.center,
+                              alignment: AlignmentDirectional.topStart,
                               onNextBeforePause: (index, isLast) {
                                 switch (index) {
                                   case 4:
