@@ -99,6 +99,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
           database.updateUserData(userData: _userData);
         }
       } else if (_isStartedBy || _isCompletedBy) {
+      
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => ActiveQuestScreen(
