@@ -11,8 +11,7 @@ class PrivacyPolicy extends StatelessWidget {
     DatabaseService databaseService = Provider.of<DatabaseService>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Privacy Policy'),
-        centerTitle: true,
+        title: Text('Privacy Policy'),     
         backgroundColor: MaterialTheme.blue,
       ),
       body: StreamBuilder<LegalModel>(
@@ -31,7 +30,7 @@ class PrivacyPolicy extends StatelessWidget {
             } else
               return Container(
                   height: MediaQuery.of(context).size.height,
-                  child: Center(child: CustomCircularProgressIndicator()));
+                  child: Center(child: CustomCircularProgressIndicator(color: Colors.orange,)));
           }),
     );
   }

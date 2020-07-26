@@ -230,7 +230,8 @@ class QuestionViewModel {
     @required bool isFinalChallenge,
   }) async {
     final UserData _userData = Provider.of<UserData>(context, listen: false);
-    final DatabaseService _databaseService = Provider.of<DatabaseService>(context, listen: false);
+    final DatabaseService _databaseService =
+        Provider.of<DatabaseService>(context, listen: false);
     // Cost of a skip
     final int _skipCost = questModel.skipCost;
 
@@ -249,16 +250,18 @@ class QuestionViewModel {
       ).show(context);
       if (didRequestSkip) {
         try {
-           final UserData _updateUserData = UserData(
-              userDiamondCount: _userData.userDiamondCount - _skipCost,
-              userKeyCount: _userData.userKeyCount,
-              points: _userData.points,
-              displayName: _userData.displayName,
-              email: _userData.email,
-              photoURL: _userData.photoURL,
-              uid: _userData.uid,
-              isAdmin: _userData.isAdmin,
-              locationsExplored: _userData.locationsExplored);
+          final UserData _updateUserData = UserData(
+            userDiamondCount: _userData.userDiamondCount - _skipCost,
+            userKeyCount: _userData.userKeyCount,
+            points: _userData.points,
+            displayName: _userData.displayName,
+            email: _userData.email,
+            photoURL: _userData.photoURL,
+            uid: _userData.uid,
+            isAdmin: _userData.isAdmin,
+            locationsExplored: _userData.locationsExplored,
+            seenIntro: _userData.seenIntro
+          );
 
           _databaseService.updateUserData(userData: _updateUserData);
           QuestionViewModel.submit(

@@ -28,31 +28,30 @@ class MyQuestsScreen extends StatelessWidget {
             bottom: TabBar(
               indicatorColor: MaterialTheme.orange,
               labelColor: Colors.white,
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                   fontFamily: 'quicksand', fontWeight: FontWeight.bold),
               tabs: <Widget>[
-                Tab(
+                const Tab(
                   text: 'Current',
                 ),
-                Tab(
+                const Tab(
                   text: 'Liked',
                 ),
-                Tab(
+                const Tab(
                   text: 'Conquered',
                 ),
               ],
             ),
-            title: Text(
+            title: const Text(
               'Your Quests',
-              style:
-                  TextStyle(fontFamily: 'JosefinSans', color: Colors.white),
+              style: const TextStyle(fontFamily: 'JosefinSans', color: Colors.white),
             ),
           ),
           body: TabBarView(
             children: <Widget>[
-              _buildCurrentQuestListView(context, database, user),
-              _buildLikedQuestListView(context, database, user),
-              _buildConqueredQuestListView(context, database, user),
+              CurrentQuestListView(databaseSerive: database, userData: user),
+              LikedQuestListView(databaseSerive: database, userData: user),
+              ConqueredQuestListView(databaseSerive: database, userData: user),
             ],
           ),
         ),
@@ -60,17 +59,28 @@ class MyQuestsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLikedQuestListView(
-      BuildContext context, DatabaseService database, UserData user) {
-    print('liked');
+  
+}
 
+class CurrentQuestListView extends StatelessWidget {
+  final DatabaseService databaseSerive;
+  final UserData userData;
+
+  const CurrentQuestListView({
+    Key key,
+    @required this.databaseSerive,
+    @required this.userData,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    print('current');
     return StreamBuilder<List<QuestModel>>(
-        stream: database.questFieldContainsUID(field: 'likedBy'),
+        stream: databaseSerive.questFieldContainsUID(field: 'likedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             title: 'Time to add some favourites!',
             message:
-                'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',            
+                'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',
             buttonEnabled: false,
             image: Image.asset('images/owl_thumbs.png'),
             snapshot: snapshot,
@@ -87,8 +97,8 @@ class MyQuestsScreen extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) => QuestDetailScreen(
-                      database: database,
-                      userData: user,
+                      database: databaseSerive,
+                      userData: userData,
                       questModel: quest,
                     ),
                   ),
@@ -98,56 +108,28 @@ class MyQuestsScreen extends StatelessWidget {
           );
         });
   }
+}
 
-  Widget _buildCurrentQuestListView(
-      BuildContext context, DatabaseService database, UserData user) {  
+class LikedQuestListView extends StatelessWidget {
+  final DatabaseService databaseSerive;
+  final UserData userData;
 
+  const LikedQuestListView({
+    Key key,
+    @required this.databaseSerive,
+    @required this.userData,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
     return StreamBuilder<List<QuestModel>>(
-        stream: database.questFieldContainsUID(field: 'questStartedBy'),
+        stream: databaseSerive.questFieldContainsUID(field: 'likedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
-            title: 'Ready for Adventure?',
-            message: 'Head to the explore page, choose a quest to start your journey!',
-            
-            buttonEnabled: false,            
-            snapshot: snapshot,
-            itemBuilder: (context, quest, index) => QuestListView(
-              numberOfDiamonds: quest.numberOfDiamonds,
-              difficulty: quest.difficulty,
-              numberOfKeys: quest.numberOfKeys,
-              title: quest.title,
-              image: quest.image,
-              numberOfLocations: quest.numberOfLocations,
-              location: quest.location,
-              questModel: quest,
-             onTap: () {
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) => QuestDetailScreen(
-                      database: database,
-                      userData: user,
-                      questModel: quest,
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        });
-  }
-
-   Widget _buildConqueredQuestListView(
-      BuildContext context, DatabaseService database, UserData user) {
-    print('current');
-
-    return StreamBuilder<List<QuestModel>>(
-        stream: database.questFieldContainsUID(field: 'questCompletedBy'),
-        builder: (context, snapshot) {
-          return ListItemsBuilder<QuestModel>(
-            title: 'No Quests Conquered!',
-            message: 'Head to the explore page, choose a quest and start your journey!',
-            buttonEnabled: false,            
-             image: Image.asset('images/ic_owl_wrong_dialog.png'),
+            title: 'Time to add some favourites!',
+            message:
+                'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',
+            buttonEnabled: false,
+            image: Image.asset('images/owl_thumbs.png'),
             snapshot: snapshot,
             itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
@@ -159,31 +141,78 @@ class MyQuestsScreen extends StatelessWidget {
               location: quest.location,
               questModel: quest,
               onTap: () {
-                final _questCompletedBy = quest.questCompletedBy.contains(user.uid);
-                
-                if (!_questCompletedBy) {
-                    Navigator.of(context, rootNavigator: true).push(
+                Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) => QuestDetailScreen(
-                      userData: user,
+                      database: databaseSerive,
+                      userData: userData,
                       questModel: quest,
-                      database: database,
                     ),
                   ),
                 );
+              },
+            ),
+          );
+        });
+  }
+}
+
+class ConqueredQuestListView extends StatelessWidget {
+  final DatabaseService databaseSerive;
+  final UserData userData;
+
+  const ConqueredQuestListView({
+    Key key,
+    @required this.databaseSerive,
+    @required this.userData,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<QuestModel>>(
+        stream: databaseSerive.questFieldContainsUID(field: 'questCompletedBy'),
+        builder: (context, snapshot) {
+          return ListItemsBuilder<QuestModel>(
+            title: 'No Quests Conquered!',
+            message:
+                'Head to the explore page, choose a quest and start your journey!',
+            buttonEnabled: false,
+            image: Image.asset('images/ic_owl_wrong_dialog.png'),
+            snapshot: snapshot,
+            itemBuilder: (context, quest, index) => QuestListView(
+              numberOfDiamonds: quest.numberOfDiamonds,
+              difficulty: quest.difficulty,
+              numberOfKeys: quest.numberOfKeys,
+              title: quest.title,
+              image: quest.image,
+              numberOfLocations: quest.numberOfLocations,
+              location: quest.location,
+              questModel: quest,
+              onTap: () {
+                final _questCompletedBy =
+                    quest.questCompletedBy.contains(userData.uid);
+
+                if (!_questCompletedBy) {
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (context) => QuestDetailScreen(
+                        userData: userData,
+                        questModel: quest,
+                        database: databaseSerive,
+                      ),
+                    ),
+                  );
                 } else {
                   Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) => ActiveQuestScreen(
-                      questModel: quest,
+                    MaterialPageRoute(
+                      builder: (context) => ActiveQuestScreen(
+                        questModel: quest,
+                      ),
                     ),
-                  ),
-                );
+                  );
                 }
               },
             ),
           );
         });
   }
-  
 }

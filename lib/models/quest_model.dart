@@ -8,6 +8,7 @@ class QuestModel {
   final String difficulty;
   final String location;
   final String image;
+  final String treasureImage;
   final String treasureDirections;
   final int numberOfLocations;
   final int numberOfDiamonds;
@@ -50,7 +51,8 @@ class QuestModel {
     this.skipCost,
     this.treasureDirections,
     this.treasureCoordinates,
-    this.treasureDiscoveredBy
+    this.treasureDiscoveredBy,
+    this.treasureImage
   });
 
   factory QuestModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -85,7 +87,8 @@ class QuestModel {
       skipCost: data['skipCost'],
       treasureCoordinates: data['treasureCoordinates'],
       treasureDirections: data['treasureDirections'],
-      treasureDiscoveredBy: data['treasureDiscoveredBy']
+      treasureDiscoveredBy: data['treasureDiscoveredBy'],
+      treasureImage: data['treasureImage'],
     );
   }
 

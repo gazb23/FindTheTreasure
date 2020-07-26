@@ -36,18 +36,61 @@ class QuestViewModel {
           photoURL: userData.photoURL,
           uid: userData.uid,
           isAdmin: userData.isAdmin,
-          seenIntro: true
-          );
+          seenIntro: true);
       try {
-           // Update User Data
+        // Update User Data
         final updateUserData =
             databaseService.updateUserData(userData: _userData);
-       final treasureDiscovereBy = databaseService.arrayUnionField(
+        final treasureDiscovereBy = databaseService.arrayUnionField(
             documentId: questModel.id,
             field: 'treasureDiscoveredBy',
             collectionRef: APIPath.quests());
-            List<Future> futures = [updateUserData, treasureDiscovereBy];
+        List<Future> futures = [updateUserData, treasureDiscovereBy];
+        Future.wait(futures);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    QuestCompletedScreen(questModel: questModel)));
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+  }
+
+// If user cannot find the treasure and wishes to skip
+  static void submitTreasureSkipped({
+    @required BuildContext context,
+    @required DatabaseService databaseService,
+    @required QuestModel questModel,
+  }) async {
+    if (!questModel.treasureDiscoveredBy.contains(databaseService.uid)) {
+      final UserData userData = Provider.of<UserData>(context, listen: false);
+      final UserData _userData = UserData(
+        userDiamondCount: userData.userDiamondCount,
+        locationsExplored: userData.locationsExplored,
+        userKeyCount: userData.userKeyCount,
+        points: LeaderboardViewModel.questComplete(
+          userData: userData,
+          questModel: questModel,
+        ),
+        displayName: userData.displayName,
+        email: userData.email,
+        photoURL: userData.photoURL,
+        uid: userData.uid,
+        isAdmin: userData.isAdmin,
+        seenIntro: true,
+      );
+      try {
+        final updateUserData =
+            databaseService.updateUserData(userData: _userData);
+        final treasureDiscovereBy = databaseService.arrayUnionField(
+            documentId: questModel.id,
+            field: 'treasureDiscoveredBy',
+            collectionRef: APIPath.quests());
+        List<Future> futures = [updateUserData, treasureDiscovereBy];
         await Future.wait(futures);
+
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -61,7 +104,7 @@ class QuestViewModel {
 
   // Logic for when a location is not discovered
   static Future<void> submitTreasureNotDiscovered({
-    @required BuildContext context,   
+    @required BuildContext context,
     @required DatabaseService databaseService,
     @required QuestModel questModel,
   }) async {
@@ -69,7 +112,8 @@ class QuestViewModel {
       final didNotDiscoverLocation = await PlatformAlertDialog(
         backgroundColor: Colors.white,
         title: 'Close, but no cigar!',
-        content: 'Follow the map to unearth the burried treasure and tap the button when you have found the correct location...',
+        content:
+            'To unearth the treasure find the location depicted in the image. Tap the button when you have arrived.',
         defaultActionText: 'OK',
         image: Image.asset(
           'images/ic_owl_wrong_dialog.png',

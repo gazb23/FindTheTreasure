@@ -120,7 +120,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             uid: _userData.uid,
             userDiamondCount: _userData.userDiamondCount,
             userKeyCount: _userData.userKeyCount,
-            isAdmin: _userData.isAdmin);
+            isAdmin: _userData.isAdmin,
+            seenIntro: _userData.seenIntro,
+            
+            );
         await _databaseService.updateUserData(userData: _updatedUserData);
         _isLoading = false;
         final snackBar = SnackBar(
@@ -167,7 +170,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               uid: _userData.uid,
               userDiamondCount: _userData.userDiamondCount,
               userKeyCount: _userData.userKeyCount,
-              isAdmin: _userData.isAdmin);
+              isAdmin: _userData.isAdmin,
+              seenIntro: _userData.seenIntro,
+              );
 
           _emailUpdated = await updateUserEmail(_email);
 

@@ -20,7 +20,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
-
+bool _isLoading = false;
 class ProfileScreen extends StatefulWidget {
   static const String id = 'account_page';
 
@@ -29,7 +29,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  bool _isLoading = false;
+  
   File _selectedFile;
   String _version = 'Unknown';
   static const String _facebookPrimaryUrl = 'https://www.facebook.com/FindtheTreasureAus/';
@@ -131,6 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Stack(
         
         children: <Widget>[
+          
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -144,6 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: ListView(
               children: <Widget>[
+                
                 SizedBox(height: 50,),
                 _buildUserInfo(context, user),
                 SizedBox(height: 50,),
@@ -151,6 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
+         
         ],
       ),
     );
@@ -165,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: <Widget>[
         Row(
           children: <Widget>[
-           
+            
             Expanded(child: Image.asset('images/cloud_1.png')),
             Expanded(
               flex: 3,
@@ -381,3 +384,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
+

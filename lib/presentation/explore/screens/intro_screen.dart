@@ -33,50 +33,51 @@ class _IntroScreenState extends State<IntroScreen> {
       child: Scaffold(
         backgroundColor: Colors.brown,
         body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                  colors: [Colors.brown, Colors.brown.shade800],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  )),
-          
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              colors: [Colors.brown, Colors.brown.shade800],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )),
             height: MediaQuery.of(context).size.height,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-               !_isFinished ? _isLoading
-                    ? Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                                height: 20,
-                                width: 20,
-                                child: CustomCircularProgressIndicator(
-                                  color: Colors.white.withOpacity(0.5),
-                                ))),
-                      )
-                    : GestureDetector(
-                        onTap: () => _submit(_userData, _database),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 10),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white),
-                                child: Text(
-                                  'SKIP',
-                                  style: TextStyle(
-                                      color: MaterialTheme.orange),
-                                ),
-                              ),
-                            )),
-                      ): Container(),
+                !_isFinished
+                    ? _isLoading
+                        ? Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Container(
+                                    height: 20,
+                                    width: 20,
+                                    child: CustomCircularProgressIndicator(
+                                      color: Colors.white.withOpacity(0.5),
+                                    ))),
+                          )
+                        : GestureDetector(
+                            onTap: () => _submit(_userData, _database),
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 10),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white),
+                                    child: Text(
+                                      'SKIP',
+                                      style: TextStyle(
+                                          color: MaterialTheme.orange),
+                                    ),
+                                  ),
+                                )),
+                          )
+                    : Container(),
                 Image.asset(
                   'images/3.0x/ic_avatar_pirate.png',
                   height: MediaQuery.of(context).size.height / 7,
@@ -92,19 +93,19 @@ class _IntroScreenState extends State<IntroScreen> {
                           ? TyperAnimatedTextKit(
                               pause: Duration(milliseconds: 1250),
                               text: [
-                                'Hello, ${_userData.displayName} and welcome to Find The Treasure.',
-                                'I have burried treasure all over this great land for you to discover.',
-                                'But finding these burried bounties won\'t be easy...',
-                                'You\'ll explore new lands, conquer quests and solve challenging puzzles.',
-                                'To help you along your way I\'ve given you 50 diamonds and 1 key.',
+                                'Ahoy ${_userData.displayName} and welcome to Find The Treasure.',
+                                'I\'ve buried treasure all over this great land for you to discover.',
+                                'But finding these buried bounties won\'t be easy...',
+                                'You\'ll explore new lands, conquer epic quests and solve challenging puzzles.',
+                                'To help you along your way I\'ve gifted you 50 diamonds and 1 key.',
                                 'Are you ready for adventure?'
                               ],
                               textStyle: TextStyle(
                                   color: Colors.black87, fontSize: 22),
                               isRepeatingAnimation: false,
-                              speed: Duration(milliseconds: 50),
+                              speed: Duration(milliseconds: 60),
                               textAlign: TextAlign.center,
-                              alignment: AlignmentDirectional.topStart,
+                              alignment: AlignmentDirectional.center,
                               onNextBeforePause: (index, isLast) {
                                 switch (index) {
                                   case 4:
@@ -164,17 +165,18 @@ class _IntroScreenState extends State<IntroScreen> {
   void _submit(UserData _userData, DatabaseService _database) async {
     _isLoading = !_isLoading;
     final UserData updatedUserData = UserData(
-        displayName: _userData.displayName,
-        email: _userData.email,
-        id: _userData.id,
-        isAdmin: _userData.isAdmin,
-        locationsExplored: _userData.locationsExplored,
-        photoURL: _userData.photoURL,
-        points: _userData.points,
-        userDiamondCount: _userData.userDiamondCount,
-        userKeyCount: _userData.userKeyCount,
-        uid: _userData.uid,
-        seenIntro: true);
+      displayName: _userData.displayName,
+      email: _userData.email,
+      id: _userData.id,
+      isAdmin: _userData.isAdmin,
+      locationsExplored: _userData.locationsExplored,
+      photoURL: _userData.photoURL,
+      points: _userData.points,
+      userDiamondCount: _userData.userDiamondCount,
+      userKeyCount: _userData.userKeyCount,
+      uid: _userData.uid,
+      seenIntro: true,      
+    );
     try {
       await _database.updateUserData(userData: updatedUserData);
       Navigator.pop(context);

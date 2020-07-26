@@ -168,6 +168,7 @@ class LocationViewModel extends ChangeNotifier {
             isAdmin: _userData.isAdmin,
             locationsExplored: _userData.locationsExplored,
             uid: _userData.uid,
+            seenIntro: _userData.seenIntro            
           );
 
           _databaseService.updateUserData(userData: _updateUserData);

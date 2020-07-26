@@ -11,8 +11,7 @@ class TermsAndConditions extends StatelessWidget {
     DatabaseService databaseService = Provider.of<DatabaseService>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Terms and Conditions'),
-        centerTitle: true,
+        title: const Text('Terms and Conditions'),   
         backgroundColor: MaterialTheme.blue,
       ),
       body: StreamBuilder<LegalModel>(
@@ -31,7 +30,7 @@ class TermsAndConditions extends StatelessWidget {
             } else
               return Container(
                   height: MediaQuery.of(context).size.height,
-                  child: Center(child: CustomCircularProgressIndicator()));
+                  child: Center(child: CustomCircularProgressIndicator(color: MaterialTheme.orange,)));
           }),
     );
   }

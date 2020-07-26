@@ -65,7 +65,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
         final didRequestQuest = await PlatformAlertDialog(
           title: '${userData.displayName}',
           content:
-              'It seems ya have enough treasure for the ${questModelStream.title} quest. Do you want to start your adventure?',
+              'It seems ye have enough treasure for the ${questModelStream.title} quest. Do you want to start your adventure?',
           cancelActionText: 'Cancel',
           defaultActionText: 'Confirm',
           image: Image.asset('images/ic_excalibur_owl.png'),
@@ -89,7 +89,8 @@ class QuestDiamondCalulationButton extends StatelessWidget {
             email: userData.email,
             photoURL: userData.photoURL,
              isAdmin: userData.isAdmin,
-            uid: userData.uid,            
+            uid: userData.uid,     
+            seenIntro: userData.seenIntro,       
           );
           await database.arrayUnionField(
               collectionRef: APIPath.quests(),
@@ -117,7 +118,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
     final didRequestQuest = await PlatformAlertDialog(
       title: '${userData.displayName}',
       content:
-          'It seems you need ${questModelStream.numberOfKeys - userData.userKeyCount} ${keyPluralCount(_keyCalc)} to complete the ${questModelStream.title} quest. Head to the shop to buy some more or head off on an adventure that requires less keys.',
+          'It seems ye need ${questModelStream.numberOfKeys - userData.userKeyCount} ${keyPluralCount(_keyCalc)} to complete the ${questModelStream.title} quest. Head to the shop to buy some more or head off on an adventure that requires less keys.',
       cancelActionText: 'Cancel',
       defaultActionText: 'Shop',
       image: Image.asset('images/ic_owl_wrong_dialog.png'),
@@ -136,7 +137,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
     final didRequestQuest = await PlatformAlertDialog(
       title: '${userData.displayName}',
       content:
-          'It seems you need ${questModelStream.numberOfDiamonds - userData.userDiamondCount} ${diamondPluralCount(_diamondCalc)} to complete the ${questModelStream.title} quest. Head to the shop to buy some more.',
+          'It seems ye need ${questModelStream.numberOfDiamonds - userData.userDiamondCount} ${diamondPluralCount(_diamondCalc)} to complete the ${questModelStream.title} quest. Head to the shop to buy some more.',
       cancelActionText: 'Cancel',
       defaultActionText: 'Shop',
       image: Image.asset('images/ic_owl_wrong_dialog.png'),

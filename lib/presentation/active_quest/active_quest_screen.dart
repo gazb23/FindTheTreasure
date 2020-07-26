@@ -26,13 +26,14 @@ class ActiveQuestScreen extends StatelessWidget {
         Provider.of<DatabaseService>(context);
     bool treasureDiscoveredBy =
         questModel.treasureDiscoveredBy.contains(databaseService.uid);
+        bool questCompletedBy = questModel.questCompletedBy.contains(databaseService.uid);
     bool _isLoading = false;
     return ChangeNotifierProvider<LocationViewModel>(
       create: (context) => LocationViewModel(),
       child: Consumer<LocationViewModel>(
         builder: (context, locationViewModel, _) => SafeArea(
           child: Scaffold(
-            floatingActionButton: !treasureDiscoveredBy
+            floatingActionButton: !treasureDiscoveredBy && questCompletedBy
                 ? FloatingActionButton.extended(
                     onPressed: () {
                       Navigator.push(

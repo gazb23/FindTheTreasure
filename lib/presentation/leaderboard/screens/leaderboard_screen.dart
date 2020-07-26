@@ -38,9 +38,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 155.0),
-            child: _buildListTile(_database),
+            child: LeaderboardListTile(databaseService: _database),
           ),
-          _buildLeaderBoardTitle(),
+          LeaderboardTitle(),
           Align(
               alignment: Alignment.topCenter,
               child: Padding(
@@ -55,7 +55,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
     );
   }
 
-  Container _buildLeaderBoardTitle() {
+  
+ 
+}
+
+class LeaderboardTitle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin:  EdgeInsets.only(left: 10, right: 10, top: 55 + MediaQuery.of(context).padding.top),
       height: 100,
@@ -82,11 +88,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   width: 20,
                 ),
                 Expanded(
-                    child: Text(
+                    child: const Text(
                   'Player name',
                   textAlign: TextAlign.center,
                 )),
-                Text('Points')
+                const Text('Points')
               ],
             ),
           )
@@ -94,10 +100,16 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       ),
     );
   }
+}
 
-  Widget _buildListTile(DatabaseService _database) {
+class LeaderboardListTile extends StatelessWidget {
+  final DatabaseService databaseService;
+
+  const LeaderboardListTile({Key key, @required this.databaseService}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
     return StreamBuilder<List<UserData>>(
-        stream: _database.usersStream(),
+        stream: databaseService.usersStream(),
         builder: (context, snapshot) {
           return ListItemsBuilder<UserData>(
               title: 'Error',

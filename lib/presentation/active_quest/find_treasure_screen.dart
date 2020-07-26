@@ -1,10 +1,12 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/permission_service.dart';
 import 'package:find_the_treasure/services/treasure_location_service.dart';
 import 'package:find_the_treasure/theme.dart';
-import 'package:find_the_treasure/widgets_common/quests/generic_scroll.dart';
+import 'package:find_the_treasure/view_models/quest_view_model.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scratcher/scratcher.dart';
@@ -15,6 +17,7 @@ bool _mapRevealed = false;
 class FindTreasureScreen extends StatefulWidget {
   final QuestModel questModel;
   final DatabaseService databaseService;
+
   const FindTreasureScreen({
     Key key,
     @required this.questModel,
@@ -30,7 +33,39 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
     double phoneHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () async => false,
-          child: Scaffold(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.brown,
+          leading: InkWell(
+            onTap: () async {
+              final didTapSkip = await PlatformAlertDialog(
+                title: 'Can\'t Find the Treasure?',
+                content: 'By skipping you will forfeit your treasure',
+                image: Image.asset('images/ic_owl_wrong_dialog.png'),
+                defaultActionText: 'Skip',
+                cancelActionText: 'Cancel',
+              ).show(context);
+
+              if (didTapSkip) {
+                QuestViewModel.submitTreasureSkipped(
+                  context: context,
+                  databaseService: widget.databaseService,
+                  questModel: widget.questModel,
+                );
+              } else {}
+            },
+            child: Container(
+                width: 150,
+                height: 50,
+                child: Center(
+                  child: Text(
+                    'SKIP',
+                    style: TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                )),
+          ),
+        ),
         body: Container(
             height: phoneHeight,
             color: Colors.brown,
@@ -56,7 +91,6 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                                     'Well done, you\'ve conquered all the quests!',
                                     'I didn\'t think you had it in you.',
                                     'But now it\'s time to Find The Treasure...',
-                                    
                                     'Good luck!'
                                   ],
                                   textStyle: TextStyle(
@@ -79,7 +113,6 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                                           color: Colors.white, fontSize: 22),
                                       textAlign: TextAlign.center,
                                     ),
-                                    
                                   ],
                                 ),
                         ),
@@ -102,8 +135,9 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                         
-                          Scratcher(
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Scratcher(
                               brushSize: 70,
                               color: Colors.brown.withOpacity(0.85),
                               image: Image.asset('images/digging.png'),
@@ -113,16 +147,19 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                                   _mapRevealed = !_mapRevealed;
                                 });
                               },
-                              child: CustomScroll(
-                                minHeight: phoneHeight / 5,
-                                maxHeight: phoneHeight / 3,
-                                question: Text(
-                                  widget.questModel.treasureDirections ??
-                                      'No location available',
-                                  textAlign: TextAlign.center,
+                              child: CachedNetworkImage(
+                                imageUrl: widget.questModel.treasureImage,
+                                placeholder: (context, url) => Container(
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
                                 ),
-                              )),
-                            
+                                fadeInDuration: Duration(milliseconds: 1000),
+                                fadeOutDuration: Duration(milliseconds: 500),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ),
+                            ),
+                          ),
                           MultiProvider(providers: [
                             ChangeNotifierProvider<TreasureLocationService>(
                                 create: (context) => TreasureLocationService(
@@ -133,7 +170,6 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                               create: (context) =>
                                   PermissionService(context: context),
                             ),
-                           
                           ], child: TreasureButton())
                         ],
                       ),
@@ -183,12 +219,15 @@ class TreasureButton extends StatelessWidget {
           child: RaisedButton(
             padding: EdgeInsets.symmetric(vertical: 10),
             shape: StadiumBorder(),
-            color: MaterialTheme.orange,
+            color: Colors.white,
             child: locationService.isLoading || !permissionService.isLoading
                 ? CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(MaterialTheme.orange),
                   )
-                : Image.asset('images/logo_white_no_text.png', height: 35,),
+                : Image.asset(
+                    'images/ic_logo.png',
+                    height: 35,
+                  ),
             onPressed:
                 !locationService.isLoading || !permissionService.isLoading
                     ? _submit

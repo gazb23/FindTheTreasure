@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
-import 'package:find_the_treasure/presentation/active_quest/find_treasure_screen.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
@@ -13,6 +12,7 @@ import 'package:find_the_treasure/widgets_common/quests/quest_tags.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+
 class QuestDetailScreen extends StatelessWidget {
   final QuestModel questModel;
   final UserData userData;
@@ -57,11 +57,16 @@ class QuestDetailScreen extends StatelessWidget {
               ),
             );
           }
-          return Container(
-              width: 50,
-              height: 50,
-              color: Colors.black.withOpacity(0.2),
-              child: Center(child: CustomCircularProgressIndicator()));
+          return SafeArea(
+            child: Scaffold(
+              body: Container(
+                  color: Colors.white,
+                  child: Center(
+                      child: CustomCircularProgressIndicator(
+                    color: MaterialTheme.orange,
+                  ))),
+            ),
+          );
         });
   }
 
@@ -88,18 +93,6 @@ class QuestDetailScreen extends StatelessWidget {
           AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            actions: <Widget>[
-              IconButton(icon: Icon(Icons.email, color: Colors.white,), onPressed: () {
-                  Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    FindTreasureScreen(
-                      databaseService: database,
-                      questModel: questModel)));
-
-              })
-            ],
           ),
           Align(
               alignment: Alignment.bottomCenter,
@@ -111,6 +104,7 @@ class QuestDetailScreen extends StatelessWidget {
 
   Container _buildQuestTags(List tags) {
     return Container(
+      
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Wrap(
@@ -311,10 +305,10 @@ class QuestDetailScreen extends StatelessWidget {
             title: DiamondAndKeyContainer(
               numberOfDiamonds: questModelStream.bountyDiamonds,
               numberOfKeys: questModelStream.bountyKeys,
-              diamondHeight: 15,
-              skullKeyHeight: 20,
-              fontSize: 16,
-              
+              diamondHeight: 25,
+              skullKeyHeight: 30,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
               mainAxisAlignment: MainAxisAlignment.center,
               spaceBetween: 0,
             ),
@@ -326,14 +320,11 @@ class QuestDetailScreen extends StatelessWidget {
                 border: Border.all(width: 1, color: Colors.amberAccent),
               ),
               child: AutoSizeText(
-                
-                '${questModel.questPoints.toString()} points', style: TextStyle(
-                color: Colors.amberAccent,
-                fontWeight: FontWeight.bold
-              ),
-              maxLines: 1,
-              minFontSize: 15,
-              
+                '${questModel.questPoints.toString()} points',
+                style: TextStyle(
+                    color: Colors.amberAccent, fontWeight: FontWeight.bold),
+                maxLines: 1,
+                minFontSize: 15,
               ),
             ),
           ),

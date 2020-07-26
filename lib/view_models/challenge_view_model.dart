@@ -35,7 +35,11 @@ class ChallengeViewModel {
         photoURL: _userData.photoURL,
         uid: _userData.uid,
         isAdmin: _userData.isAdmin,
-        locationsExplored: _userData.locationsExplored);
+        locationsExplored: _userData.locationsExplored,
+        seenIntro: _userData.seenIntro,
+
+        
+        );
 
     await _databaseService.updateUserData(userData: _updateUserData);
 
@@ -99,7 +103,10 @@ class ChallengeViewModel {
               photoURL: _userData.photoURL,
               uid: _userData.uid,
               isAdmin: _userData.isAdmin,
-              locationsExplored: _userData.locationsExplored);
+              locationsExplored: _userData.locationsExplored,
+              seenIntro: _userData.seenIntro,
+              
+              );
 
           _databaseService.updateUserData(userData: _updateUserData);
           _databaseService.arrayUnionField(

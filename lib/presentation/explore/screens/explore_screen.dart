@@ -52,73 +52,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ],
         ),
         body: _userData != null
-            ? !_userData.isAdmin
-                ? _buildLiveListView(context)
-                : ListView(children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Text('Test Quests',
-                            style: const TextStyle(
-                                fontSize: 26, fontWeight: FontWeight.bold)),
-                        Container(
-                            height: MediaQuery.of(context).size.height / 2.5,
-                            child: _buildTestListView(context)),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text('Live Quests',
-                            style: const TextStyle(
-                                fontSize: 26, fontWeight: FontWeight.bold)),
-                        Container(
-                            height: MediaQuery.of(context).size.height / 2.5,
-                            child: _buildLiveListView(context))
-                      ],
-                    ),
-                  ])
+            ? !_userData.isAdmin ? LiveListView() : AdminView()
             : Container(
                 child: Center(
                 child: CustomCircularProgressIndicator(
                     color: MaterialTheme.orange),
               )));
-  }
-
-  Widget _buildTestListView(BuildContext context) {
-    final _userData = Provider.of<UserData>(context);
-    final database = Provider.of<DatabaseService>(context);
-
-    return StreamBuilder<List<QuestModel>>(
-        stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: false),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return ListItemsBuilder<QuestModel>(
-              snapshot: snapshot,
-              message: 'No Test Events',
-              title: 'No test events',
-              itemBuilder: (context, quest, index) => QuestListView(
-                  numberOfDiamonds: quest.numberOfDiamonds,
-                  difficulty: quest.difficulty,
-                  numberOfKeys: quest.numberOfKeys,
-                  title: quest.title,
-                  image: quest.image,
-                  numberOfLocations: quest.numberOfLocations,
-                  location: quest.location,
-                  questModel: quest,
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                      MaterialPageRoute(
-                        builder: (context) => QuestDetailScreen(
-                          userData: _userData,
-                          questModel: quest,
-                          database: database,
-                        ),
-                      ),
-                    );
-                  }),
-            );
-          } else {
-            return Container();
-          }
-        });
   }
 
   @override
@@ -146,44 +85,104 @@ class _ExploreScreenState extends State<ExploreScreen> {
       print(e.toString());
     }
   }
+}
 
-  Widget _buildLiveListView(BuildContext context) {
+// Present UI containing both live and test events for admin users to test
+class AdminView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final _userData = Provider.of<UserData>(context);
+    final database = Provider.of<DatabaseService>(context);
+
+    return ListView(children: <Widget>[
+      Column(
+        children: <Widget>[
+          Text('Test Quests',
+              style:
+                  const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+          Container(
+              height: MediaQuery.of(context).size.height / 2.5,
+              child: StreamBuilder<List<QuestModel>>(
+                  stream: database.questFieldIsAdmin(
+                      field: 'isLive', isEqualTo: false),
+                  builder: (context, snapshot) {
+                    return ListItemsBuilder<QuestModel>(
+                      snapshot: snapshot,
+                      message: 'No Test Events',
+                      title: 'No test events',
+                      itemBuilder: (context, quest, index) => QuestListView(
+                          numberOfDiamonds: quest.numberOfDiamonds,
+                          difficulty: quest.difficulty,
+                          numberOfKeys: quest.numberOfKeys,
+                          title: quest.title,
+                          image: quest.image,
+                          numberOfLocations: quest.numberOfLocations,
+                          location: quest.location,
+                          questModel: quest,
+                          onTap: () {
+                            Navigator.of(context, rootNavigator: true).push(
+                              MaterialPageRoute(
+                                builder: (context) => QuestDetailScreen(
+                                  userData: _userData,
+                                  questModel: quest,
+                                  database: database,
+                                ),
+                              ),
+                            );
+                          }),
+                    );
+                  })),
+          const SizedBox(
+            height: 20,
+          ),
+          Text('Live Quests',
+              style:
+                  const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+          Container(
+              height: MediaQuery.of(context).size.height / 2.5,
+              child: LiveListView())
+        ],
+      ),
+    ]);
+  }
+}
+
+// Present only live events to non admin users
+class LiveListView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
 
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: true),
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return ListItemsBuilder<QuestModel>(
-              snapshot: snapshot,
-              title: 'No quests!',
-              message: 'Oh No!',
-              itemBuilder: (context, quest, index) => QuestListView(
-                  numberOfDiamonds: quest.numberOfDiamonds,
-                  difficulty: quest.difficulty,
-                  numberOfKeys: quest.numberOfKeys,
-                  title: quest.title,
-                  image: quest.image,
-                  numberOfLocations: quest.numberOfLocations,
-                  location: quest.location,
-                  questModel: quest,
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                      MaterialPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => QuestDetailScreen(
-                          userData: _userData,
-                          questModel: quest,
-                          database: database,
-                        ),
+          return ListItemsBuilder<QuestModel>(
+            snapshot: snapshot,
+            title: 'No quests!',
+            message: 'Oh No!',
+            itemBuilder: (context, quest, index) => QuestListView(
+                numberOfDiamonds: quest.numberOfDiamonds,
+                difficulty: quest.difficulty,
+                numberOfKeys: quest.numberOfKeys,
+                title: quest.title,
+                image: quest.image,
+                numberOfLocations: quest.numberOfLocations,
+                location: quest.location,
+                questModel: quest,
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => QuestDetailScreen(
+                        userData: _userData,
+                        questModel: quest,
+                        database: database,
                       ),
-                    );
-                  }),
-            );
-          } else {
-            return Container();
-          }
+                    ),
+                  );
+                }),
+          );
         });
   }
 }

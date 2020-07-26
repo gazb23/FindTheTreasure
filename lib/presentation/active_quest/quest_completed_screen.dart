@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:confetti/confetti.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
@@ -43,7 +44,19 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
     final UserData userData = Provider.of<UserData>(context);
     return WillPopScope(
       onWillPop: () async => false,
-          child: Scaffold(
+      child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.brown,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, HomePage.id);
+              },
+            )),
         body: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -53,7 +66,6 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
           )),
           child: Stack(
             children: <Widget>[
-              
               Padding(
                 padding: const EdgeInsets.all(0),
                 child: Column(
@@ -65,18 +77,20 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                'Congratulations ${userData.displayName}!',
+                              child: AutoSizeText(
+                                
+                                'Congratulations!',
+                                maxLines: 1,
                                 style: TextStyle(
-                                    color: Colors.grey.shade800,
+                                    color: Colors.white,
                                     fontSize: 26,
-                                    fontWeight: FontWeight.bold),
+                                    ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -85,7 +99,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
                                 borderColor: Colors.white,
                                 borderWidth: 3,
                                 photoURL: userData.photoURL,
-                                radius: 70,
+                                radius: 60,
                               ),
                             ),
                             Text(
@@ -104,8 +118,9 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
                                 baseColor: Colors.amberAccent,
                                 loop: 3,
                                 highlightColor: Colors.white,
-                                child: Text(
+                                child: AutoSizeText(
                                   '${widget.questModel.title} Quest',
+                                  maxLines: 1,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 35,
@@ -149,16 +164,6 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
                   ], // manually specify the colors to be used
                 ),
               ),
-              Positioned(
-                top: 30,
-                left: 0,
-                            child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.amberAccent, size: 40,),
-                      onPressed: () {
-                        Navigator.pushNamed(context, HomePage.id);
-                      },
-                ),
-              ),
             ],
           ),
         ),
@@ -180,19 +185,23 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
           ),
           Image.asset(
             'images/ic_treasure.png',
-            height: 125,
+            height: 100,
           ),
           const SizedBox(
             height: 10,
           ),
-          DiamondAndKeyContainer(
-            numberOfDiamonds: questModel.bountyDiamonds,
-            numberOfKeys: questModel.bountyKeys,
-            diamondHeight: 35,
-            skullKeyHeight: 50,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            spaceBetween: 5,
+          FractionallySizedBox(
+            widthFactor: 0.7,
+                      child: DiamondAndKeyContainer(
+              numberOfDiamonds: userData.userDiamondCount,
+              numberOfKeys: userData.userKeyCount,
+              diamondHeight: 35,
+              skullKeyHeight: 50,
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              mainAxisAlignment: MainAxisAlignment.center,
+              spaceBetween: 0,
+            ),
           ),
           SizedBox(height: 15),
           Text(

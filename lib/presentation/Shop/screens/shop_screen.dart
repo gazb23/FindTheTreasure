@@ -65,11 +65,10 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-    
+
     _isAvailable = await _iap.isAvailable();
     FlutterInappPurchase.instance.clearTransactionIOS();
     if (_isAvailable) {
-    
       List<Future> futures = [_getProducts(), _getPastPurchases()];
       await Future.wait(futures);
       _verifyPurchase();
@@ -79,7 +78,6 @@ class _ShopScreenState extends State<ShopScreen> {
         (purchaseDetails) {
           setState(
             () {
-              
               _purchases.addAll(purchaseDetails);
               _verifyPurchase();
             },
@@ -88,9 +86,7 @@ class _ShopScreenState extends State<ShopScreen> {
       );
     } else if (!_isAvailable) {
       print('not');
-   setState(() {
-     
-   });
+      setState(() {});
     }
   }
 
@@ -163,6 +159,8 @@ class _ShopScreenState extends State<ShopScreen> {
         isAdmin: _userData.isAdmin,
         userDiamondCount: _userData.userDiamondCount + _diamonds,
         userKeyCount: _userData.userKeyCount + _keys,
+        seenIntro: _userData.seenIntro,
+        
       );
       await _databaseService.updateUserData(userData: _updateUserData);
       final _didSelectOK = await PlatformAlertDialog(
@@ -179,7 +177,7 @@ class _ShopScreenState extends State<ShopScreen> {
         _iap.completePurchase(_purchase);
         setState(() {
           _isPurchasePending = false;
-          _purchases = [ ];
+          _purchases = [];
         });
       }
     } else if (_purchase != null &&
@@ -246,12 +244,13 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final UserData _userData = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: Colors.brown,
       appBar: AppBar(
-        title: _isAvailable && ConnectivityService.checkNetwork(context) ? null : Text('Shop Loading...'),
+        title: _isAvailable && ConnectivityService.checkNetwork(context)
+            ? null
+            : Text('Shop Loading...'),
         backgroundColor: Colors.brown,
         iconTheme: const IconThemeData(color: Colors.white),
         actions: <Widget>[
@@ -305,8 +304,7 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-          
-          if (_isAvailable && ConnectivityService.checkNetwork(context) ) 
+          if (_isAvailable && ConnectivityService.checkNetwork(context))
             // Display products from store
             for (var prod in _products)
               Padding(
@@ -321,15 +319,14 @@ class _ShopScreenState extends State<ShopScreen> {
                     _currentPurchase = prod.id;
                   },
                 ),
-              ) 
-        
+              )
           else
             Column(
               children: <Widget>[
-                storeLoading(),
-                storeLoading(),
-                storeLoading(),
-                storeLoading(),
+                StoreLoadingButton(),
+                StoreLoadingButton(),
+                StoreLoadingButton(),
+                StoreLoadingButton(),
               ],
             )
         ]),
@@ -378,8 +375,11 @@ class _ShopScreenState extends State<ShopScreen> {
     }
     return _numberOfKeys;
   }
+}
 
-  Widget storeLoading() {
+class StoreLoadingButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: FractionallySizedBox(
@@ -396,65 +396,6 @@ class _ShopScreenState extends State<ShopScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class BuyTreasureChest extends StatelessWidget {
-  const BuyTreasureChest({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      width: MediaQuery.of(context).size.width * 0.9,
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Column(
-          children: <Widget>[
-            Image.asset(
-              'images/chest.png',
-              height: 40,
-            ),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Text('? x', style: TextStyle(color: Colors.white, fontSize: 25)),
-            SizedBox(width: 8),
-            Image.asset(
-              'images/2.0x/ic_diamond.png',
-              height: 20,
-            ),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Text('? x', style: TextStyle(color: Colors.white, fontSize: 25)),
-            Image.asset(
-              'images/skull_key_outline.png',
-              height: 30,
-            ),
-          ],
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 24),
-          decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Colors.grey),
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.grey.shade800),
-          child: Text(
-            '\$9.99',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 15),
-          ),
-        ),
-      ]),
-      decoration: BoxDecoration(
-          color: Colors.grey.shade800,
-          border: Border.all(color: Colors.amberAccent, width: 2),
-          borderRadius: BorderRadius.circular(35)),
     );
   }
 }
