@@ -6,7 +6,6 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:flutter/material.dart';
 
-
 class LeaderboardProfileScreen extends StatefulWidget {
   final UserData userData;
 
@@ -16,53 +15,53 @@ class LeaderboardProfileScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _LeaderboardProfileScreenState createState() => _LeaderboardProfileScreenState();
+  _LeaderboardProfileScreenState createState() =>
+      _LeaderboardProfileScreenState();
 }
 
 class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
   @override
-  Widget build(BuildContext context,) {
- 
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
-      
       body: Stack(children: [
         Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            image: const DecorationImage(
-                image: AssetImage("images/background_team.png"),
-                fit: BoxFit.cover),
-          ),
-          
-          child: BackdropFilter(filter: ImageFilter.blur(
-                    sigmaX: 5, sigmaY: 5, 
-                  ),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.05),
-                  
-                      child: ListView(
-             
-              children: <Widget>[
-                AppBar(
-
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                ),
-                
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                  image: AssetImage("images/background_team.png"),
+                  fit: BoxFit.cover),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 5,
+                sigmaY: 5,
+              ),
+              child: Container(
+                color: Colors.black.withOpacity(0.05),
+                child: ListView(
                   children: <Widget>[
-                    _buildUserInfo(context, widget.userData),
-                    SizedBox(height: 50,),
-                    _buildTreasureTile(context, widget.userData),
-                    _buildLocationsExploredTile(context, widget.userData)
+                    AppBar(
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        _buildUserInfo(context, widget.userData),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        _buildTreasureTile(context, widget.userData),
+                        _buildLocationsExploredTile(context, widget.userData)
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-         ) ),
+              ),
+            )),
       ]),
     );
   }
@@ -83,8 +82,8 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
           height: 8,
         ),
         Container(
-          constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width / 1.5),
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.5),
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(30)),
@@ -210,26 +209,35 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
 
   Widget _buildLocations(List location, UserData userData) {
     if (location.length > 0)
-    return Column(
-        children: location
-            .map((location) => ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 30),
-                  leading: const Icon(
-                    Icons.done,
-                    color: Colors.amberAccent,
-                  ),
-                  title: AutoSizeText(
-                    location,
-                    maxLines: 2,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ))
-            .toList()); else return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                
-                Center(child: Image.asset('images/ic_owl_wrong_dialog.png', height: 75,))
-              ],
-            );
+      return Column(
+          children: location
+              .map((location) => ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+                    leading: const Icon(
+                      Icons.done,
+                      color: Colors.amberAccent,
+                    ),
+                    title: AutoSizeText(
+                      location,
+                      maxLines: 2,
+                      style: const TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  ))
+              .toList());
+    else
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+              child: Image.asset(
+            'images/ic_owl_wrong_dialog.png',
+            height: 75,
+          )),
+          const Text(
+            'It\'s OWL good!',
+            style: const TextStyle(color: Colors.white, fontSize: 20),
+          )
+        ],
+      );
   }
 }

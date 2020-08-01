@@ -25,7 +25,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           Container(
             decoration: BoxDecoration(
               image: const DecorationImage(
-                  image: AssetImage("images/background_games.png"),
+                  image: const AssetImage("images/background_games.png"),
                   fit: BoxFit.fill),
             ),
              child: BackdropFilter(filter: ImageFilter.blur(
@@ -67,8 +67,8 @@ class LeaderboardTitle extends StatelessWidget {
       height: 100,
       decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+          borderRadius: const BorderRadius.only(
+              topLeft: const Radius.circular(15), topRight: const Radius.circular(15))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[

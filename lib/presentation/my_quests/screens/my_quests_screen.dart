@@ -12,8 +12,6 @@ import 'package:provider/provider.dart';
 class MyQuestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<DatabaseService>(context, listen: false);
-    final user = Provider.of<UserData>(context, listen: false);
     return MaterialApp(
       theme: Theme.of(context).copyWith(
         appBarTheme: AppBarTheme(
@@ -26,7 +24,7 @@ class MyQuestsScreen extends StatelessWidget {
           backgroundColor: Colors.grey.shade400,
           appBar: AppBar(
             bottom: TabBar(
-              indicatorColor: MaterialTheme.orange,
+              indicatorColor: Colors.white,
               labelColor: Colors.white,
               labelStyle: const TextStyle(
                   fontFamily: 'quicksand', fontWeight: FontWeight.bold),
@@ -44,38 +42,34 @@ class MyQuestsScreen extends StatelessWidget {
             ),
             title: const Text(
               'Your Quests',
-              style: const TextStyle(fontFamily: 'JosefinSans', color: Colors.white),
+              style: const TextStyle(
+                  fontFamily: 'quicksand',
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           body: TabBarView(
             children: <Widget>[
-              CurrentQuestListView(databaseSerive: database, userData: user),
-              LikedQuestListView(databaseSerive: database, userData: user),
-              ConqueredQuestListView(databaseSerive: database, userData: user),
+              Current(),
+              Liked(),
+              Conquered(),
             ],
           ),
         ),
       ),
     );
   }
-
-  
 }
 
-class CurrentQuestListView extends StatelessWidget {
-  final DatabaseService databaseSerive;
-  final UserData userData;
-
-  const CurrentQuestListView({
-    Key key,
-    @required this.databaseSerive,
-    @required this.userData,
-  }) : super(key: key);
+class Current extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final databaseService =
+        Provider.of<DatabaseService>(context, listen: false);
+    final userData = Provider.of<UserData>(context, listen: false);
     print('current');
     return StreamBuilder<List<QuestModel>>(
-        stream: databaseSerive.questFieldContainsUID(field: 'likedBy'),
+        stream: databaseService.questFieldContainsUID(field: 'likedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             title: 'Time to add some favourites!',
@@ -97,7 +91,7 @@ class CurrentQuestListView extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) => QuestDetailScreen(
-                      database: databaseSerive,
+                      database: databaseService,
                       userData: userData,
                       questModel: quest,
                     ),
@@ -110,19 +104,15 @@ class CurrentQuestListView extends StatelessWidget {
   }
 }
 
-class LikedQuestListView extends StatelessWidget {
-  final DatabaseService databaseSerive;
-  final UserData userData;
-
-  const LikedQuestListView({
-    Key key,
-    @required this.databaseSerive,
-    @required this.userData,
-  }) : super(key: key);
+class Liked extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final databaseService =
+        Provider.of<DatabaseService>(context, listen: false);
+    final userData = Provider.of<UserData>(context, listen: false);
+    print('liked');
     return StreamBuilder<List<QuestModel>>(
-        stream: databaseSerive.questFieldContainsUID(field: 'likedBy'),
+        stream: databaseService.questFieldContainsUID(field: 'likedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             title: 'Time to add some favourites!',
@@ -144,7 +134,7 @@ class LikedQuestListView extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) => QuestDetailScreen(
-                      database: databaseSerive,
+                      database: databaseService,
                       userData: userData,
                       questModel: quest,
                     ),
@@ -157,19 +147,16 @@ class LikedQuestListView extends StatelessWidget {
   }
 }
 
-class ConqueredQuestListView extends StatelessWidget {
-  final DatabaseService databaseSerive;
-  final UserData userData;
-
-  const ConqueredQuestListView({
-    Key key,
-    @required this.databaseSerive,
-    @required this.userData,
-  }) : super(key: key);
+class Conquered extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final databaseService =
+        Provider.of<DatabaseService>(context, listen: false);
+    final userData = Provider.of<UserData>(context, listen: false);
+    print('conquewred');
     return StreamBuilder<List<QuestModel>>(
-        stream: databaseSerive.questFieldContainsUID(field: 'questCompletedBy'),
+        stream:
+            databaseService.questFieldContainsUID(field: 'questCompletedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             title: 'No Quests Conquered!',
@@ -197,7 +184,7 @@ class ConqueredQuestListView extends StatelessWidget {
                       builder: (context) => QuestDetailScreen(
                         userData: userData,
                         questModel: quest,
-                        database: databaseSerive,
+                        database: databaseService,
                       ),
                     ),
                   );

@@ -61,30 +61,26 @@ class QuestLocationCard extends StatelessWidget {
           header: MultiProvider(
             providers: [
               ChangeNotifierProvider<LocationService>(
-              create: (context) => LocationService(
-                questModel: questModel,
-                locationModel: locationModel,
-                databaseService: databaseService,
-              )),
+                  create: (context) => LocationService(
+                        questModel: questModel,
+                        locationModel: locationModel,
+                        databaseService: databaseService,
+                      )),
               ChangeNotifierProvider<PermissionService>(
-                create: (context) => PermissionService(
-                  context: context
-                ),
+                create: (context) => PermissionService(context: context),
               )
             ],
-                    
-              child: LocationHeader(
-                lastLocationCompleted: lastLocationCompleted,
-                questModel: questModel,
-                locationModel: locationModel,
-                isLoading: isLoading,
-              ),
+            child: LocationHeader(
+              lastLocationCompleted: lastLocationCompleted,
+              questModel: questModel,
+              locationModel: locationModel,
+              isLoading: isLoading,
             ),
-          
+          ),
           expanded:
               // Build challenges in Location Card
               SizedBox(
-            height: MediaQuery.of(context).size.height/2,
+            height: MediaQuery.of(context).size.height / 2,
             child: StreamBuilder<List<QuestionsModel>>(
               stream: databaseService.challengesStream(
                   questId: questModel.id, locationId: locationModel.id),
@@ -172,10 +168,9 @@ class _LocationHeaderState extends State<LocationHeader> {
         widget.locationModel.locationStartedBy.contains(_userData.uid);
     final DatabaseService databaseService =
         Provider.of<DatabaseService>(context);
-    final LocationService locationService = context.watch<LocationService>();
-    final PermissionService permissionService = context.watch<PermissionService>();
 
     void _submit() async {
+      final LocationService locationService = context.read<LocationService>();
       try {
         locationService.getCurrentLocation(context);
       } catch (e) {
@@ -202,16 +197,17 @@ class _LocationHeaderState extends State<LocationHeader> {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _locationCompletedBy ? Colors.white : Colors.black54,
-                  
                   fontSize: 22),
             ),
             subtitle: _locationCompletedBy ? Text('Conquered') : null,
             trailing: StreamBuilder<List<QuestionsModel>>(
                 stream: databaseService.challengesStream(
-                    questId: widget.questModel.id,
-                    locationId: widget.locationModel.id),
+                  questId: widget.questModel.id,
+                  locationId: widget.locationModel.id,
+                ),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.connectionState == ConnectionState.active &&
+                      snapshot.hasData) {
                     final _numberOfChallenges = snapshot.data.length;
                     final _numberofChallengesCompleted = snapshot.data
                         .where((questionsModel) => questionsModel
@@ -245,68 +241,74 @@ class _LocationHeaderState extends State<LocationHeader> {
               ? Container()
               : Container(
                   // margin: EdgeInsets.only(bottom: 0),
-                  
+
                   decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(
                     children: <Widget>[
                       Container(
-                    
                         padding: EdgeInsets.all(10),
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: Colors.grey,
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(5),
+                                topRight: Radius.circular(5))),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            
-                           
                             SizedBox(
                               height: 5,
                             ),
-                            Image.asset('images/pin.png', height: 40,),
-                            SizedBox(height: 10),
+                            Image.asset(
+                              'images/pin.png',
+                              height: 40,
+                            ),
+                            const SizedBox(height: 10),
                             Text(
                               widget.locationModel.locationDirections ?? '',
-                              style: TextStyle(
-                                
-                                  color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
- 
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.5,
-                        child: RaisedButton(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          shape: StadiumBorder(),
-                          color: MaterialTheme.orange,
-                          child: locationService.isLoading || 
-                          !permissionService.isLoading
-                              ? CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white),
-                                )
-                              : Icon(
-                                  Icons.vpn_lock,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                          onPressed:
-                              !locationService.isLoading || !permissionService.isLoading ? _submit : null,
+                      Consumer<PermissionService>(
+                        builder: (_, permissionService, __) =>
+                            Consumer<LocationService>(
+                          builder: (_, locationService, __) => Container(
+                            width: MediaQuery.of(context).size.width / 1.5,
+                            child: RaisedButton(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              shape: const StadiumBorder(),
+                              color: MaterialTheme.orange,
+                              child: locationService.isLoading ||
+                                      !permissionService.isLoading
+                                  ? CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    )
+                                  : const Icon(
+                                      Icons.vpn_lock,
+                                      color: Colors.white,
+                                      size: 30,
+                                    ),
+                              onPressed: !locationService.isLoading ||
+                                      !permissionService.isLoading
+                                  ? _submit
+                                  : null,
+                            ),
+                          ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       )
                     ],
@@ -343,24 +345,23 @@ class Challenges extends StatelessWidget {
       this.currentIndex,
       this.locationModel,
       this.numberOfChallengesCompleted,
-      this.databaseService, @required this.questModel})
+      this.databaseService,
+      @required this.questModel})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     bool _isCurrentChallenge = numberOfChallengesCompleted == currentIndex - 1;
     bool _challengeCompleted =
         questionsModel.challengeCompletedBy.contains(databaseService.uid);
-         final _locationCompletedBy =
+    final _locationCompletedBy =
         locationModel.locationCompletedBy.contains(databaseService.uid);
-final _questCompletedBy =
+    final _questCompletedBy =
         questModel.questCompletedBy.contains(databaseService.uid);
     return Container(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
-      color:  Colors.transparent,
-      
+      color: Colors.transparent,
       child: ListTile(
-        
         contentPadding: EdgeInsets.only(left: 15, right: 20),
         enabled: _isCurrentChallenge,
         leading: _challengeProgressImage(
@@ -370,15 +371,31 @@ final _questCompletedBy =
           questionsModel.challengeTitle,
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: _locationCompletedBy || _questCompletedBy ? Colors.white : _challengeCompleted ? Colors.grey.shade300 : Colors.black54,
+              color: _locationCompletedBy || _questCompletedBy
+                  ? Colors.white
+                  : _challengeCompleted ? Colors.grey.shade300 : Colors.black54,
               fontFamily: 'quicksand',
-              
               fontSize: 18),
         ),
-        subtitle: _challengeCompleted ? Text('Challenge Complete', style: TextStyle(color: _locationCompletedBy || _questCompletedBy ? Colors.black54 : _challengeCompleted ? Colors.grey.shade300 : Colors.black54, fontSize: 15)) : null,
-        trailing: Text(currentIndex.toString(), style: TextStyle(
-          color: _locationCompletedBy || _questCompletedBy ? Colors.white : _challengeCompleted ? Colors.grey.shade300 : Colors.black54
-        ),),
+        subtitle: _challengeCompleted
+            ? Text('Challenge Complete',
+                style: TextStyle(
+                    color: _locationCompletedBy || _questCompletedBy
+                        ? Colors.black54
+                        : _challengeCompleted
+                            ? Colors.grey.shade300
+                            : Colors.black54,
+                    fontSize: 15))
+            : null,
+        trailing: Text(
+          currentIndex.toString(),
+          style: TextStyle(
+              color: _locationCompletedBy || _questCompletedBy
+                  ? Colors.white
+                  : _challengeCompleted
+                      ? Colors.grey.shade300
+                      : Colors.black54),
+        ),
         onTap: onTap,
       ),
     );

@@ -20,7 +20,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
+
 bool _isLoading = false;
+
 class ProfileScreen extends StatefulWidget {
   static const String id = 'account_page';
 
@@ -29,12 +31,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  
   File _selectedFile;
   String _version = 'Unknown';
-  static const String _facebookPrimaryUrl = 'https://www.facebook.com/FindtheTreasureAus/';
-  static const String _facebookFallbackUrl =
-      'https://www.facebook.com/';
+  static const String _facebookPrimaryUrl =
+      'https://www.facebook.com/FindtheTreasureAus/';
+  static const String _facebookFallbackUrl = 'https://www.facebook.com/';
   static const String _instagramPrimaryUrl =
       'https://www.instagram.com/findthetreasureaus/';
   static const String _instagramFallbackUrl = 'https://www.instagram.com/';
@@ -45,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     initPlatformState();
   }
+
   // Get app version
   initPlatformState() async {
     String version;
@@ -129,9 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       body: Stack(
-        
         children: <Widget>[
-          
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -145,22 +145,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: ListView(
               children: <Widget>[
-                
-                SizedBox(height: 50,),
+                SizedBox(
+                  height: 50,
+                ),
                 _buildUserInfo(context, user),
-                SizedBox(height: 50,),
+                SizedBox(
+                  height: 50,
+                ),
                 _buildsettingsContainer(),
               ],
             ),
           ),
-         
         ],
       ),
     );
   }
 
   Widget _buildUserInfo(BuildContext context, UserData user) {
-
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context);
     return Column(
@@ -168,7 +169,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: <Widget>[
         Row(
           children: <Widget>[
-            
             Expanded(child: Image.asset('images/cloud_1.png')),
             Expanded(
               flex: 3,
@@ -176,19 +176,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: StreamBuilder<AvatarReference>(
                     stream: _databaseService.avatarReferenceStream(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
+                      if (snapshot.connectionState == ConnectionState.active &&
+                          !snapshot.hasError) {
                         final AvatarReference avatarReference = snapshot.data;
-                      return Avatar(
-                          photoURL:
-                              avatarReference?.photoURL ?? user.photoURL,
-                          radius: 70,
-
-                          borderColor: Colors.white,
-                          borderWidth: 5,
-                          onPressed: () =>
-                              _isLoading ? null : _chooseAvatar(context));
-                      } else return Container();
-                      
+                        return Avatar(
+                            photoURL:
+                                avatarReference?.photoURL ?? user.photoURL,
+                            radius: 70,
+                            borderColor: Colors.white,
+                            borderWidth: 5,
+                            onPressed: () =>
+                                _isLoading ? null : _chooseAvatar(context));
+                      } else
+                        return Container();
                     }),
               ),
             ),
@@ -199,33 +199,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
           height: 15,
         ),
         Container(
-          constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width / 1.5),
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.5),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(30)),
           child: AutoSizeText(
-              user?.displayName ?? '',
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              minFontSize: 12,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            user?.displayName ?? '',
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            minFontSize: 12,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
-        
       ],
     );
   }
 
   Widget _buildsettingsContainer() {
     return Container(
-      height: 450,
+        height: 450,
         width: double.infinity,
         decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(35), topRight: const Radius.circular(35))),
+                topLeft: const Radius.circular(35),
+                topRight: const Radius.circular(35))),
         child: _buildSettingsItems());
   }
 
@@ -234,7 +234,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-       SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         _buildListTile(
           title: 'My stats',
           leading: const Icon(
@@ -245,10 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (context) => 
-                  
-                  
-                  LeaderboardProfileScreen(
+                  builder: (context) => LeaderboardProfileScreen(
                         userData: _userData,
                       )),
             );
@@ -298,9 +297,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           leadingContainerColor: Colors.grey.shade300,
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => HelpScreen(
-                version: _version,
-              )),
+              MaterialPageRoute(
+                  builder: (context) => HelpScreen(
+                        version: _version,
+                      )),
             );
           },
         ),
@@ -349,7 +349,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'images/twitter.png',
                       height: 50,
                     )),
-                    SizedBox(height: 20)
+                SizedBox(height: 20)
               ],
             ),
           ),
@@ -385,5 +385,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-

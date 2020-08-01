@@ -250,7 +250,7 @@ class _ShopScreenState extends State<ShopScreen> {
       appBar: AppBar(
         title: _isAvailable && ConnectivityService.checkNetwork(context)
             ? null
-            : Text('Shop Loading...'),
+            : const Text('Shop Loading...',),
         backgroundColor: Colors.brown,
         iconTheme: const IconThemeData(color: Colors.white),
         actions: <Widget>[
@@ -270,7 +270,7 @@ class _ShopScreenState extends State<ShopScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             alignment: Alignment.bottomCenter,
-            image: AssetImage(
+            image: const AssetImage(
               "images/background_shop.png",
             ),
             fit: BoxFit.cover,
@@ -385,7 +385,7 @@ class StoreLoadingButton extends StatelessWidget {
       child: FractionallySizedBox(
         widthFactor: 0.9,
         child: Shimmer.fromColors(
-          period: Duration(milliseconds: 750),
+          period: const Duration(milliseconds: 750),
           baseColor: Colors.grey.shade300,
           // direction: ShimmerDirection.btt,
           highlightColor: Colors.white,
