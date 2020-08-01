@@ -64,7 +64,7 @@ class _QuestListViewState extends State<QuestListView> {
   Widget build(BuildContext context) {
     final DatabaseService database = Provider.of<DatabaseService>(context);
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       clipBehavior: Clip.antiAlias,
       elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -81,8 +81,8 @@ class _QuestListViewState extends State<QuestListView> {
                   placeholder: (context, url) => Container(
                         height: MediaQuery.of(context).size.height / 4.2,
                       ),
-                  fadeInDuration: Duration(milliseconds: 1000),
-                  fadeOutDuration: Duration(milliseconds: 500),
+                  fadeInDuration: const Duration(milliseconds: 1000),
+                  fadeOutDuration: const Duration(milliseconds: 500),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                   imageBuilder: (context, image) => Container(
                       width: MediaQuery.of(context).size.width,
@@ -109,10 +109,10 @@ class _QuestListViewState extends State<QuestListView> {
                             )
                           : buildQuestListTile(context, database))),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 decoration: BoxDecoration(
                     border:
-                        Border(top: BorderSide(color: Colors.white, width: 1)),
+                        Border(top: const BorderSide(color: Colors.white, width: 1)),
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -128,14 +128,14 @@ class _QuestListViewState extends State<QuestListView> {
                     ? Container(
                         width: double.infinity,
                         child: Shimmer.fromColors(
-                          period: Duration(milliseconds: 750),
+                          period: const Duration(milliseconds: 750),
                           baseColor: Colors.amberAccent,
                           loop: 3,
                           highlightColor: Colors.grey.shade100,
-                          child: Text(
+                          child: const Text(
                             'QUEST CONQUERED',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.amberAccent,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -148,8 +148,8 @@ class _QuestListViewState extends State<QuestListView> {
                           widget.questModel.questStartedBy
                                   .contains(database.uid)
                               ? Image.asset(
-                                  'images/unlock.png',
-                                  height: 25,
+                                  'images/ic_final_comleted.png',
+                                  height: 30,
                                 )
                               : DiamondAndKeyContainer(
                                   numberOfDiamonds: widget.numberOfDiamonds,
@@ -169,10 +169,10 @@ class _QuestListViewState extends State<QuestListView> {
     final questModel = widget.questModel;
     final isLikedByUser = questModel.likedBy.contains(database.uid);
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       title: Text(
         widget.title,
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.white,
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
@@ -180,7 +180,7 @@ class _QuestListViewState extends State<QuestListView> {
       ),
       subtitle: Row(
         children: <Widget>[
-          Icon(
+          const Icon(
             Icons.room,
             color: Colors.amberAccent,
             size: 18,
@@ -206,21 +206,21 @@ class _QuestListViewState extends State<QuestListView> {
     return Container(
       child: Text(
         '${widget.numberOfLocations} ${locationPluralCount(widget.numberOfLocations)}',
-        style: TextStyle(color: Colors.white, fontSize: 14),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
       ),
     );
   }
 
   Widget buildDifficultyIndicator() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         color: _questDifficulty(widget.difficulty),
       ),
       child: Text(
         widget.difficulty,
-        style: TextStyle(color: Colors.white, fontSize: 14),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
       ),
     );
   }

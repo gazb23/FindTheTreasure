@@ -176,12 +176,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: StreamBuilder<AvatarReference>(
                     stream: _databaseService.avatarReferenceStream(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active) {
+                      if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
                         final AvatarReference avatarReference = snapshot.data;
                       return Avatar(
                           photoURL:
                               avatarReference?.photoURL ?? user.photoURL,
                           radius: 70,
+
                           borderColor: Colors.white,
                           borderWidth: 5,
                           onPressed: () =>
@@ -320,7 +321,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                GestureDetector(
+                InkWell(
                     onTap: () => UrlLauncher.socialAppLauncher(
                         context: context,
                         primaryUrl: _facebookPrimaryUrl,
@@ -329,7 +330,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'images/facebook.png',
                       height: 50,
                     )),
-                GestureDetector(
+                InkWell(
                     onTap: () => UrlLauncher.socialAppLauncher(
                         context: context,
                         primaryUrl: _instagramPrimaryUrl,
@@ -338,7 +339,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'images/instagram.png',
                       height: 50,
                     )),
-                GestureDetector(
+                InkWell(
                     onTap: () => UrlLauncher.socialAppLauncher(
                           context: context,
                           primaryUrl: _twitterPrimaryUrl,

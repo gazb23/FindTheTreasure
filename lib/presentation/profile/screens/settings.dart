@@ -439,7 +439,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
-          GestureDetector(
+          InkWell(
             onTap: () => _confirmSignOut(context),
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),

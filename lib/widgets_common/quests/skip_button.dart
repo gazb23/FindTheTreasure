@@ -18,7 +18,7 @@ class SkipButton extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         // QuestionViewModel.showChallengeSkip(
         //             context: context,

@@ -17,7 +17,7 @@ class MyQuestsScreen extends StatelessWidget {
     return MaterialApp(
       theme: Theme.of(context).copyWith(
         appBarTheme: AppBarTheme(
-          color: Colors.grey.shade800,
+          color: MaterialTheme.red,
         ),
       ),
       home: DefaultTabController(

@@ -57,7 +57,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                       color: Colors.white.withOpacity(0.5),
                                     ))),
                           )
-                        : GestureDetector(
+                        : InkWell(
                             onTap: () => _submit(_userData, _database),
                             child: Align(
                                 alignment: Alignment.topLeft,
@@ -82,7 +82,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   'images/3.0x/ic_avatar_pirate.png',
                   height: MediaQuery.of(context).size.height / 7,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     setState(() {
                       _startAnimation = true;

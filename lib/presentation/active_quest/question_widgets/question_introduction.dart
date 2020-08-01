@@ -70,7 +70,7 @@ class QuestionIntroduction extends StatelessWidget {
                           fadeInDuration: Duration(milliseconds: 300),
                           placeholder: (context, url) =>
                               CustomCircularProgressIndicator(),
-                          imageBuilder: (context, image) => GestureDetector(
+                          imageBuilder: (context, image) => InkWell(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   fullscreenDialog: true,
