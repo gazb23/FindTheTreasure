@@ -256,9 +256,14 @@ class _ShopScreenState extends State<ShopScreen> {
         actions: <Widget>[
           DiamondAndKeyContainer(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            numberOfDiamonds: _userData.userDiamondCount,
-            numberOfKeys: _userData.userKeyCount,
-            color: Colors.white,
+              numberOfDiamonds: _userData?.userDiamondCount,
+              numberOfKeys: _userData?.userKeyCount,
+              diamondHeight: 30,
+              skullKeyHeight: 33,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              diamondSpinning: true,              
           ),
           const SizedBox(
             width: 20,

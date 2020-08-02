@@ -21,7 +21,7 @@ class MyQuestsScreen extends StatelessWidget {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          backgroundColor: Colors.grey.shade400,
+          backgroundColor: Colors.grey.shade300,
           appBar: AppBar(
             bottom: TabBar(
               indicatorColor: Colors.white,
@@ -41,7 +41,7 @@ class MyQuestsScreen extends StatelessWidget {
               ],
             ),
             title: const Text(
-              'Your Quests',
+              'My Quests',
               style: const TextStyle(
                   fontFamily: 'quicksand',
                   color: Colors.white,
@@ -75,7 +75,7 @@ class Current extends StatelessWidget {
             title: 'Time to add some favourites!',
             message:
                 'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',
-            buttonEnabled: false,
+            buttonEnabled: false,            
             image: Image.asset('images/owl_thumbs.png'),
             snapshot: snapshot,
             itemBuilder: (context, quest, index) => QuestListView(

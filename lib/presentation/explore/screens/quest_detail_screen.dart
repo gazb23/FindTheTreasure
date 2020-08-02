@@ -356,7 +356,8 @@ class QuestDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 spaceBetween: 10,
                 fontSize: 14,
-                diamondHeight: 20,
+                fontWeight: FontWeight.bold,
+                diamondHeight: 25,
                 skullKeyHeight: 30,
               ),
             ),
@@ -368,6 +369,7 @@ class QuestDetailScreen extends StatelessWidget {
                     questModelStream: questModelStream,
                     userData: userData,
                     databaseService: database,
+
                   ),
                 ))
           ],

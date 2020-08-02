@@ -37,7 +37,7 @@ class PermissionService extends ChangeNotifier {
           await Permission.locationWhenInUse.serviceStatus.isEnabled) {
         isLoading = false;
         notifyListeners();
-        permissionDenied(context);
+        locationPermissionDenied(context);
       }
       isLoading = false;
       notifyListeners();
@@ -45,7 +45,28 @@ class PermissionService extends ChangeNotifier {
     }
   }
 
-  void permissionDenied(BuildContext context) async {
+  /// Requests the users permission to read their location when the app is in use
+  Future<bool> requestCameraPermission() async {
+    var permissionStatus = await Permission.storage.isGranted;
+
+    if (permissionStatus) {
+      isLoading = false;
+      notifyListeners();
+      return true;
+    } else {
+      var granted = await _requestPermission(Permission.storage);
+      if (!granted) {
+        isLoading = false;
+        notifyListeners();
+        cameraPermissionDenied(context);
+      }
+      isLoading = false;
+      notifyListeners();
+      return granted;
+    }
+  }
+
+  void locationPermissionDenied(BuildContext context) async {
     final permission = await PlatformAlertDialog(
             title: 'Location Permission Required',
             content:
@@ -56,6 +77,23 @@ class PermissionService extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       await openAppSettings();
+    }
+  }
+
+  void cameraPermissionDenied(BuildContext context) async {
+    final permission = await PlatformAlertDialog(
+      title: 'Storage Access Required',
+      content:
+          'We take your privacy seriously. Access to your camera OR gallery is required to display your chosen avatar image. All data is stored securely and is not shared with any third-parties.  ',
+      defaultActionText: 'ENABLE',
+      cancelActionText: 'Deny',
+    ).show(context);
+    if (permission) {
+      isLoading = false;
+      notifyListeners();
+      await openAppSettings();
+    } else {
+
     }
   }
 }

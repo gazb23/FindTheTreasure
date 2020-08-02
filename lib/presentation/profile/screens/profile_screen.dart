@@ -9,6 +9,7 @@ import 'package:find_the_treasure/presentation/profile/screens/settings.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/firebase_storage_service.dart';
 import 'package:find_the_treasure/services/image_picker_service.dart';
+import 'package:find_the_treasure/services/permission_service.dart';
 import 'package:find_the_treasure/services/url_launcher.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
@@ -41,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static const String _instagramFallbackUrl = 'https://www.instagram.com/';
   static const String _twitterPrimaryUrl = 'https://twitter.com/FTTreasure';
   static const String _twitterFallbackUrl = 'https://www.twitter.com/';
+
   @override
   void initState() {
     super.initState();
@@ -63,7 +65,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // User can select their avatar from gallery or camera
   Future<void> _chooseAvatar(BuildContext context) async {
-    PickedFile file;
+    bool permissionGranted = await PermissionService(context: context).requestCameraPermission();
+    if (permissionGranted) {
+      PickedFile file;
     try {
       this.setState(() {
         _isLoading = true;
@@ -114,21 +118,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         // 4. (optional) delete local file as no longer needed
         await _selectedFile.delete();
       } else {
-        this.setState(() {
-          _isLoading = false;
-        });
+        print("error");
       }
     } catch (e) {
-      setState(() {});
-
-      print(e);
+      
+this.setState(() {
+          _isLoading = false;
+        });
+      print(e.toString());
+    } 
     }
+    
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserData>(context, listen: false);
-
+    
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -162,58 +168,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildUserInfo(BuildContext context, UserData user) {
+    
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(child: Image.asset('images/cloud_1.png')),
-            Expanded(
-              flex: 3,
-              child: Center(
-                child: StreamBuilder<AvatarReference>(
-                    stream: _databaseService.avatarReferenceStream(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active &&
-                          !snapshot.hasError) {
-                        final AvatarReference avatarReference = snapshot.data;
-                        return Avatar(
-                            photoURL:
-                                avatarReference?.photoURL ?? user.photoURL,
-                            radius: 70,
-                            borderColor: Colors.white,
-                            borderWidth: 5,
-                            onPressed: () =>
-                                _isLoading ? null : _chooseAvatar(context));
-                      } else
-                        return Container();
-                    }),
+    return ChangeNotifierProvider<PermissionService>(
+      create: (context) => PermissionService(context: context),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(child: Image.asset('images/cloud_1.png')),
+              Expanded(
+                flex: 3,
+                child: Center(
+                  child: StreamBuilder<AvatarReference>(
+                      stream: _databaseService.avatarReferenceStream(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.active &&
+                            !snapshot.hasError) {
+                          final AvatarReference avatarReference = snapshot.data;
+                          return Consumer<PermissionService>(
+                            builder: (_, permissionService, __) => Avatar(
+                                photoURL:
+                                    avatarReference?.photoURL ?? user.photoURL,
+                                radius: 70,
+                                borderColor: Colors.white,
+                                borderWidth: 5,
+                                onPressed: () =>
+                                    _isLoading || !permissionService.isLoading ? null : _chooseAvatar(context)),
+                                   
+                          );
+                        } else
+                          return Container();
+                      }),
+                ),
               ),
-            ),
-            Expanded(child: Image.asset('images/cloud_2.png')),
-          ],
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-        Container(
-          constraints:
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.5),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(30)),
-          child: AutoSizeText(
-            user?.displayName ?? '',
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            minFontSize: 12,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.bold),
+              Expanded(child: Image.asset('images/cloud_2.png')),
+            ],
           ),
-        ),
-      ],
+          const SizedBox(
+            height: 15,
+          ),
+          Container(
+            constraints:
+                BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.5),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(30)),
+            child: AutoSizeText(
+              user?.displayName ?? '',
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              minFontSize: 12,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+         
+        ],
+      ),
     );
   }
 
@@ -237,13 +251,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SizedBox(
           height: 10,
         ),
-        _buildListTile(
+        ProfileTile(
           title: 'My stats',
           leading: const Icon(
             Icons.equalizer,
             color: Colors.redAccent,
           ),
-          leadingContainerColor: Colors.red.shade100,
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -252,8 +265,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       )),
             );
           },
+          leadingContainerColor: Colors.red.shade100,
         ),
-        _buildListTile(
+        ProfileTile(
           title: 'Settings',
           leading: const Icon(
             Icons.settings,
@@ -269,26 +283,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           },
         ),
-        Divider(
-          height: 25,
-          thickness: 1,
-          indent: 30,
-          endIndent: 35,
-        ),
-        _buildListTile(
+
+      
+        ProfileTile(
             title: 'Invite a friend',
             leading: const Icon(
               Icons.person_add,
-              color: Colors.black87,
+              color: MaterialTheme.blue,
             ),
-            leadingContainerColor: Colors.grey.shade300,
+            leadingContainerColor: MaterialTheme.blue.withOpacity(0.3),
             onTap: () {
               Share.share(
                   'Check out Find the Treasure https://play.google.com/store/apps/details?id=com.findthetreasure.find_the_treasure',
                   subject:
                       'It\'s an awesome adventure app the helps you to explore places!');
             }),
-        _buildListTile(
+        ProfileTile(
           title: 'Help',
           leading: const Icon(
             Icons.live_help,
@@ -304,6 +314,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           },
         ),
+       
         const SizedBox(height: 10),
         Divider(
           height: 25,
@@ -313,7 +324,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         // Build social Icons
         Container(
-          color: Colors.white,
           margin: EdgeInsets.zero,
           padding: const EdgeInsets.all(10),
           child: FractionallySizedBox(
@@ -357,13 +367,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
+}
 
-  ListTile _buildListTile({
-    @required String title,
-    @required Icon leading,
-    @required Function onTap,
-    @required Color leadingContainerColor,
-  }) {
+class ProfileTile extends StatelessWidget {
+  final String title;
+  final Icon leading;
+  final Function onTap;
+  final Color leadingContainerColor;
+
+  const ProfileTile({
+    Key key,
+    @required this.title,
+    @required this.leading,
+    @required this.onTap,
+    @required this.leadingContainerColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       title: Text(

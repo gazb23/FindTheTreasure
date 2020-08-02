@@ -47,7 +47,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     Image.asset(
-                      'images/2.0x/ic_diamond.png',
+                      'images/diamond2.png',
                       height: 30,
                     ),
                     SizedBox(

@@ -32,6 +32,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          
           backgroundColor: MaterialTheme.blue,
           iconTheme: const IconThemeData(
             color: Colors.black87,
@@ -41,10 +42,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               numberOfDiamonds: _userData?.userDiamondCount,
               numberOfKeys: _userData?.userKeyCount,
-              diamondHeight: 20,
-              skullKeyHeight: 30,
+              diamondHeight: 30,
+              skullKeyHeight: 33,
               color: Colors.white,
               fontWeight: FontWeight.bold,
+              fontSize: 18,
+              diamondSpinning: true,
+
             ),
             const SizedBox(
               width: 20,

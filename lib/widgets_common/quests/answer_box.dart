@@ -45,11 +45,12 @@ class _AnswerBoxState extends State<AnswerBox> {
   }
 
   void _submit() async {
+    setState(() =>_isLoading = true);
     if (_validateAndSaveForm()) {
       try {
         if (checkAnswer(_answer)) {
-          _isLoading = true;
-          setState(() {});
+          
+          
 
           QuestionViewModel.submit(context,
               documentId: widget.arrayUnionDocumentId,
@@ -62,6 +63,9 @@ class _AnswerBoxState extends State<AnswerBox> {
         }
       } catch (e) {
         print(e.toString());
+        
+      } finally {
+        
         _isLoading = false;
       }
     }
@@ -124,20 +128,8 @@ class _AnswerBoxState extends State<AnswerBox> {
       ),
     );
   }
-  //   bool checkAnswer(String answer) {
-  //   List _answers = widget.answers;
 
-  //   for (var i = 0; i < _answers.length; ++i) {
-  //     // This
-  //     _correctAnswer = RegExp("?!(the)|(an)?${widget.answers[i]}s?").hasMatch(answer);
-  //   if (_correctAnswer) {
-  //     return _correctAnswer;
-  //   }
-
-  //   }
-  //   return false;
-  // }
-
+// REGEXP that will omit 'the, an OR a from start of sentence || s, es from the end of sentence
   bool checkAnswer(String answer) {
     List _answers = widget.answers;
     for (var i = 0; i < _answers.length; i++) {
