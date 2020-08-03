@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/theme.dart';
@@ -45,13 +47,15 @@ class _AnswerBoxState extends State<AnswerBox> {
   }
 
   void _submit() async {
-    setState(() =>_isLoading = true);
+    final _random = Random();
+    // Generate random number between min and max
+    int next(int min, int max) => min + _random.nextInt(max - min);
     if (_validateAndSaveForm()) {
       try {
+        _isLoading = true;
+        setState(() {});
+        await Future.delayed(Duration(milliseconds: next(500, 1800)));
         if (checkAnswer(_answer)) {
-          
-          
-
           QuestionViewModel.submit(context,
               documentId: widget.arrayUnionDocumentId,
               challengeCompletedMessage:
@@ -60,12 +64,17 @@ class _AnswerBoxState extends State<AnswerBox> {
               isLocation: widget.islocationQuestion,
               locationTitle: widget.locationTitle,
               isFinalChallenge: widget.isFinalChallenge);
+        } else {
+          ChallengeViewModel().answerIncorrect(
+                    context: context,
+                    questModel: widget.questModel,
+                  );
         }
+        setState(() => _isLoading = false);
       } catch (e) {
         print(e.toString());
-        
+        _isLoading = false;
       } finally {
-        
         _isLoading = false;
       }
     }
@@ -88,15 +97,12 @@ class _AnswerBoxState extends State<AnswerBox> {
             key: _formKey,
             child: TextFormField(
               validator: (value) {
-                if (!checkAnswer(value.toUpperCase().trim()) &&
-                    value.isNotEmpty) {
-                  ChallengeViewModel().answerIncorrect(
-                    context: context,
-                    questModel: widget.questModel,
-                  );
+                // if (!checkAnswer(value.toUpperCase().trim()) &&
+                //     value.isNotEmpty) {
+                  
 
-                  return 'Answer incorrect';
-                }
+                //   return 'Answer incorrect';
+                // }
                 if (checkAnswer(value.toUpperCase().trim()) &&
                     value.isNotEmpty) {
                   return null;

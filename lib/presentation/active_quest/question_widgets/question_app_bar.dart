@@ -43,6 +43,7 @@ class QuestionAppBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               numberOfDiamonds: userData.userDiamondCount,
               numberOfKeys: userData.userKeyCount,
+              diamondHeight: 25,
               color: Colors.black87,
             ),
             const SizedBox(

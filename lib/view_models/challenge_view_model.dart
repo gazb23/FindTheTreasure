@@ -6,6 +6,7 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,7 +46,7 @@ class ChallengeViewModel {
 
     final snackBar = SnackBar(
       duration: duration ?? Duration(seconds: 4),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: MaterialTheme.red,
       content: AutoSizeText(
         'Answer incorrect. You lost: ${LeaderboardViewModel.showPointsLost(userData: _userData, questModel: questModel)} points ',
         maxLines: 1,

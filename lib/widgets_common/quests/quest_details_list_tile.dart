@@ -56,7 +56,7 @@ class QuestDetailsListTile extends StatelessWidget {
           width: width,
           lineHeight: 15,
           percent: 1,
-          progressColor: Colors.redAccent,
+          progressColor: MaterialTheme.red,
           backgroundColor: color,
         );
       default:

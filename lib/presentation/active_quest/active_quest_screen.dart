@@ -63,6 +63,7 @@ class ActiveQuestScreen extends StatelessWidget {
                     numberOfDiamonds: _userData.userDiamondCount,
                     numberOfKeys: _userData.userKeyCount,
                     color: Colors.black87,
+                    diamondHeight: 25,
                   ),
                 ),
                 const SizedBox(

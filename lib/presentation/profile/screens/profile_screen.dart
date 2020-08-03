@@ -255,7 +255,7 @@ this.setState(() {
           title: 'My stats',
           leading: const Icon(
             Icons.equalizer,
-            color: Colors.redAccent,
+            color: MaterialTheme.red,
           ),
           onTap: () {
             Navigator.of(context).push(

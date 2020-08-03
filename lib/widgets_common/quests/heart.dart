@@ -2,7 +2,7 @@ import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:find_the_treasure/theme.dart';
 
 class Heart extends StatefulWidget {
   final DatabaseService database;
@@ -43,7 +43,7 @@ class _HeartState extends State<Heart> with TickerProviderStateMixin {
       child: IconButton(
           icon: Icon(
             widget.isLikedByUser ? Icons.favorite : Icons.favorite_border,
-            color: widget.isLikedByUser ? Colors.redAccent : Colors.white,
+            color: widget.isLikedByUser ? MaterialTheme.red : Colors.white,
             size: 35,
           ),
           onPressed: () async {

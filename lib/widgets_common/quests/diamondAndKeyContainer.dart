@@ -41,14 +41,20 @@ class DiamondAndKeyContainer extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       diamondSpinning
-                          ? Image.asset(
-                              'images/spinning_diamond.gif',
-                              height: diamondHeight ?? 20,
-                            )
-                          : Image.asset('images/diamond2.png',
-                              height: diamondHeight ?? 30),
+                          ? Opacity(
+                            opacity: 0.7,
+                                                      child: Image.asset(
+                                'images/spinning_diamond.gif',
+                                height: diamondHeight ?? 20,
+                              ),
+                          )
+                          : Opacity(
+                            opacity: 0.7,
+                                                      child: Image.asset('images/diamond2.png',
+                                height: diamondHeight ?? 30),
+                          ),
                       SizedBox(
-                        width: 10,
+                        width: 5,
                       ),
                       numberOfDiamonds != null
                           ? Text(

@@ -106,6 +106,7 @@ class QuestionMultipleChoiceWithPicture extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               numberOfDiamonds: userData.userDiamondCount,
               numberOfKeys: userData.userKeyCount,
+              diamondHeight: 25,
               color: Colors.black87,
             ),
             const SizedBox(

@@ -160,7 +160,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
                     Colors.green,
                     Colors.amberAccent,
                     MaterialTheme.orange,
-                    Colors.redAccent
+                    MaterialTheme.red
                   ], // manually specify the colors to be used
                 ),
               ),

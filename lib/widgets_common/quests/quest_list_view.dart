@@ -50,7 +50,7 @@ class _QuestListViewState extends State<QuestListView> {
         return MaterialTheme.orange;
         break;
       case 'Hard':
-        return Colors.redAccent;
+        return MaterialTheme.red;
       default:
         return Colors.green;
     }

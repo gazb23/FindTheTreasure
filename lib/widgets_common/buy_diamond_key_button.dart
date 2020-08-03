@@ -37,7 +37,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
         
         onPressed: isPurchasePending ? null : onPressed,
         child: FractionallySizedBox(
-          widthFactor: 0.9,
+          widthFactor: 0.92,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -46,12 +46,15 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
                 flex: 4,
                 child: Row(
                   children: <Widget>[
-                    Image.asset(
-                      'images/diamond2.png',
-                      height: 30,
+                    Opacity(
+                      opacity: 0.8,
+                                          child: Image.asset(
+                        'images/diamond2.png',
+                        height: 25,
+                      ),
                     ),
                     SizedBox(
-                      width: 5,
+                      width: 8,
                     ),
                     Expanded(
                       child: AutoSizeText(

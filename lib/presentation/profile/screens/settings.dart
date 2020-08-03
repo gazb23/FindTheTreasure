@@ -392,7 +392,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: 'Password',
                       leading: Icon(
                         Icons.edit,
-                        color: Colors.redAccent,
+                        color: MaterialTheme.red,
                       ),
                       onTap: () {
                         setState(() {
