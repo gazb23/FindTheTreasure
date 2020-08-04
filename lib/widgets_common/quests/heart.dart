@@ -1,8 +1,10 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:find_the_treasure/theme.dart';
+import 'package:flutter/services.dart';
 
 class Heart extends StatefulWidget {
   final DatabaseService database;
@@ -47,12 +49,22 @@ class _HeartState extends State<Heart> with TickerProviderStateMixin {
             size: 35,
           ),
           onPressed: () async {
-             controller.forward();
+            controller.forward();
             await Future.delayed(Duration(milliseconds: 200));
             if (mounted) controller.reverse();
+            try {             
+            
             widget.isLikedByUser
-                ? widget.database.arrayRemove(widget.questModel.id)
-                : widget.database.arrayUnion(widget.questModel.id);
+                ? await widget.database.arrayRemove(widget.questModel.id)
+                : await widget.database.arrayUnion(widget.questModel.id);
+            } on PlatformException {
+              PlatformAlertDialog(title: 'Permission Denied', content: 'Unable to update data', defaultActionText: 'OK').show(context);
+            } 
+            
+            catch(e) {
+              print(e.toString());
+            }
+             
             
           
             

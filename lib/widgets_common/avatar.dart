@@ -30,7 +30,9 @@ class Avatar extends StatelessWidget {
           Icons.error,
           size: radius * 2,
         ),
-        
+        placeholderFadeInDuration: Duration(seconds: 1),
+        fadeInDuration: Duration(seconds: 1),
+        fadeOutDuration: Duration(seconds: 1),
         placeholder: (context, url) => Container(
           height: radius * 2,
           child: Center(child: CustomCircularProgressIndicator())),

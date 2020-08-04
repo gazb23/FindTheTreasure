@@ -65,76 +65,76 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // User can select their avatar from gallery or camera
   Future<void> _chooseAvatar(BuildContext context) async {
-    bool permissionGranted = await PermissionService(context: context).requestCameraPermission();
+    print('rebuild');
+          _isLoading = true;
+       
+    bool permissionGranted =
+        await PermissionService(context: context).requestCameraPermission();
     if (permissionGranted) {
       PickedFile file;
-    try {
-      this.setState(() {
-        _isLoading = true;
-      });
-      // 1. Get image from picker
-      final imagePicker =
-          Provider.of<ImagePickerService>(context, listen: false);
-      final _chooseImage = await PlatformAlertDialog(
-        title: 'Image Source',
-        content: 'Please select the image source for your Avatar',
-        defaultActionText: 'Gallery',
-        cancelActionText: 'Camera',
-        image: Image.asset('images/2.0x/ic_single.png'),
-      ).show(context);
-      if (_chooseImage) {
-        file = await imagePicker.pickImage(
-          source: ImageSource.gallery,
-        );
-      } else {
-        file = await imagePicker.pickImage(
-          source: ImageSource.camera,
-        );
-      }
+      try {
+        
+        // 1. Get image from picker
+        final imagePicker =
+            Provider.of<ImagePickerService>(context, listen: false);
+        final _chooseImage = await PlatformAlertDialog(
+          title: 'Image Source',
+          content: 'Please select the image source for your Avatar',
+          defaultActionText: 'Gallery',
+          cancelActionText: 'Camera',
+          image: Image.asset('images/2.0x/ic_single.png'),
+        ).show(context);
+        if (_chooseImage) {
+          file = await imagePicker.pickImage(
+            source: ImageSource.gallery,
+          );
+        } else {
+          file = await imagePicker.pickImage(
+            source: ImageSource.camera,
+          );
+        }
 
-      if (file != null) {
-        File cropped = await ImageCropper.cropImage(
-            sourcePath: file.path,
-            compressQuality: 50,
-            maxHeight: 512,
-            maxWidth: 512,
-            compressFormat: ImageCompressFormat.jpg,
-            androidUiSettings: AndroidUiSettings(
-                toolbarTitle: 'Crop image',
-                toolbarColor: MaterialTheme.orange,
-                toolbarWidgetColor: Colors.white));
-        this.setState(() {
-          _selectedFile = cropped;
-          _isLoading = false;
-        });
+        if (file != null) {
+          File cropped = await ImageCropper.cropImage(
+              sourcePath: file.path,
+              compressQuality: 50,
+              maxHeight: 512,
+              maxWidth: 512,
+              compressFormat: ImageCompressFormat.jpg,
+              androidUiSettings: AndroidUiSettings(
+                  toolbarTitle: 'Crop image',
+                  toolbarColor: MaterialTheme.orange,
+                  toolbarWidgetColor: Colors.white));
+          this.setState(() {
+            _selectedFile = cropped;
+          });
 
-        // 2. Upload to storage
-        final storage =
-            Provider.of<FirebaseStorageService>(context, listen: false);
-        final downloadUrl = await storage.uploadAvatar(file: _selectedFile);
-        // 3. Save url to Firestore
-        final database = Provider.of<DatabaseService>(context, listen: false);
-        await database.setAvatarReference(AvatarReference(downloadUrl));
-        // 4. (optional) delete local file as no longer needed
-        await _selectedFile.delete();
-      } else {
-        print("error");
-      }
-    } catch (e) {
-      
-this.setState(() {
+          // 2. Upload to storage
+          final storage =
+              Provider.of<FirebaseStorageService>(context, listen: false);
+          final downloadUrl = await storage.uploadAvatar(file: _selectedFile);
+          // 3. Save url to Firestore
+          final database = Provider.of<DatabaseService>(context, listen: false);
+          await database.setAvatarReference(AvatarReference(downloadUrl));
+          // 4. (optional) delete local file as no longer needed
+          await _selectedFile.delete();
+        } else {
+          print("error");
+        }
+      } catch (e) {
+        print(e.toString());
+      } finally {
+        
           _isLoading = false;
-        });
-      print(e.toString());
-    } 
+        
+      }
     }
-    
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserData>(context, listen: false);
-    
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -173,7 +173,7 @@ this.setState(() {
         Provider.of<DatabaseService>(context);
     return ChangeNotifierProvider<PermissionService>(
       create: (context) => PermissionService(context: context),
-          child: Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Row(
@@ -185,20 +185,24 @@ this.setState(() {
                   child: StreamBuilder<AvatarReference>(
                       stream: _databaseService.avatarReferenceStream(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.active &&
+                        if (snapshot.connectionState ==
+                                ConnectionState.active &&
                             !snapshot.hasError) {
+                              final PermissionService permissionService =
+        Provider.of<PermissionService>(context, listen: false);
                           final AvatarReference avatarReference = snapshot.data;
-                          return Consumer<PermissionService>(
-                            builder: (_, permissionService, __) => Avatar(
+                          return Avatar(
                                 photoURL:
-                                    avatarReference?.photoURL ?? user.photoURL,
+                                   avatarReference?.photoURL ?? user.photoURL,
                                 radius: 70,
                                 borderColor: Colors.white,
                                 borderWidth: 5,
                                 onPressed: () =>
-                                    _isLoading || !permissionService.isLoading ? null : _chooseAvatar(context)),
-                                   
-                          );
+                                    _isLoading || !permissionService.isLoading
+                                        ? null
+                                        : _chooseAvatar(context));
+                                       
+                          
                         } else
                           return Container();
                       }),
@@ -211,8 +215,8 @@ this.setState(() {
             height: 15,
           ),
           Container(
-            constraints:
-                BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.5),
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width / 1.5),
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
@@ -225,7 +229,6 @@ this.setState(() {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-         
         ],
       ),
     );
@@ -284,7 +287,6 @@ this.setState(() {
           },
         ),
 
-      
         ProfileTile(
             title: 'Invite a friend',
             leading: const Icon(
@@ -314,7 +316,7 @@ this.setState(() {
             );
           },
         ),
-       
+
         const SizedBox(height: 10),
         Divider(
           height: 25,

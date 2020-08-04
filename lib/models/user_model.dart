@@ -61,4 +61,11 @@ class UserData {
       seenIntro: data['seenIntro'],
     );
   }
+
+  Map<String, dynamic> privateDataToMap() {
+    return {
+      'uid': uid,
+      'email': email,
+    };
+  }
 }
