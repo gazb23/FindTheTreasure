@@ -153,8 +153,6 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                                   child: Center(
                                       child: CircularProgressIndicator()),
                                 ),
-                                fadeInDuration: Duration(milliseconds: 1000),
-                                fadeOutDuration: Duration(milliseconds: 500),
                                 errorWidget: (context, url, error) =>
                                     Icon(Icons.error),
                               ),
@@ -222,7 +220,8 @@ class TreasureButton extends StatelessWidget {
             color: Colors.white,
             child: locationService.isLoading || !permissionService.isLoading
                 ? CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(MaterialTheme.orange),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(MaterialTheme.orange),
                   )
                 : Image.asset(
                     'images/ic_logo.png',

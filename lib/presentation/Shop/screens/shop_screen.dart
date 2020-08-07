@@ -263,7 +263,8 @@ class _ShopScreenState extends State<ShopScreen> {
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 18,
-              diamondSpinning: true,              
+              diamondSpinning: true, 
+              showShop: false,             
           ),
           const SizedBox(
             width: 20,
@@ -309,7 +310,7 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-          if (_isAvailable && ConnectivityService.checkNetwork(context))
+          if (_isAvailable  && ConnectivityService.checkNetwork(context))
             // Display products from store
             
             for (var prod in _products) 

@@ -98,14 +98,14 @@ class _EmailSignInFormState extends State<PasswordResetForm> {
     );
   }
 
-  SignInButton _buildSignInButton(PasswordResetModel model) {
+  Widget _buildSignInButton(PasswordResetModel model) {
     return SignInButton(
-      isLoading: model.isLoading,
-      text: 'Reset Password',
-      textcolor: Colors.white,
-      color: MaterialTheme.orange,
-      onPressed: model.canSubmit ? _submit : null,
-    );
+        isLoading: model.isLoading,
+        text: 'Reset Password',
+        textcolor: Colors.white,
+        color: MaterialTheme.orange,
+        onPressed: model.canSubmit ? _submit : null,
+      );
   }
 
   @override

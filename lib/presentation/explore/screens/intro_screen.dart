@@ -138,6 +138,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     diamondHeight: 50,
                     skullKeyHeight: 60,
                     fontSize: 20,
+                    showShop: false,
                   ),
                 ),
                 AnimatedOpacity(

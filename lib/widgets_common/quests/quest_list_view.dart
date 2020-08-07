@@ -155,6 +155,7 @@ class _QuestListViewState extends State<QuestListView> {
                                   numberOfDiamonds: widget.numberOfDiamonds,
                                   numberOfKeys: widget.numberOfKeys,
                                   diamondHeight: 25,
+                                  showShop: false,
                                 ),
                         ],
                       ),

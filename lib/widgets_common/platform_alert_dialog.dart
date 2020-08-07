@@ -45,35 +45,35 @@ class PlatformAlertDialog extends PlatformWidget {
       onWillPop: () async => false,
       child: CupertinoAlertDialog(
 
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'quicksand',
-              fontWeight: FontWeight.w600,
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: Text(
+      title,
+      style: TextStyle(
+        fontFamily: 'quicksand',
+        fontWeight: FontWeight.w600,
+      ),
             ),
           ),
+          content: SingleChildScrollView(
+            child: Column(
+      children: <Widget>[
+        image ?? Container(),
+        SizedBox(
+          height: 20,
         ),
-        content: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              image ?? Container(),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                content,
-                style: TextStyle(
-                  fontFamily: 'quicksand',
-                  fontSize: 18,
-                ),
-              ),
-            ],
+        Text(
+          content,
+          style: TextStyle(
+            fontFamily: 'quicksand',
+            fontSize: 18,
           ),
         ),
-        actions: _buildActions(context),
-      ),
+      ],
+            ),
+          ),
+          actions: _buildActions(context),
+        ),
     );
   }
 
@@ -82,43 +82,43 @@ class PlatformAlertDialog extends PlatformWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
-        scrollable: true,        
-        backgroundColor: backgroundColor ?? Colors.white,
-        title: Center(
-          child: Center(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: 'quicksand',
-                  fontWeight: FontWeight.w600,
-                  color: titleTextColor ?? Colors.black87),
+          scrollable: true,        
+          backgroundColor: backgroundColor ?? Colors.white,
+          title: Center(
+            child: Center(
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontFamily: 'quicksand',
+            fontWeight: FontWeight.w600,
+            color: titleTextColor ?? Colors.black87),
+      ),
             ),
           ),
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              image ?? Container(),
-              SizedBox(
-                  height:
-                      20), //If no image is displayed an empty container will take it's place.
+          content: SingleChildScrollView(
+            child: Column(
+      children: <Widget>[
+        image ?? Container(),
+        SizedBox(
+            height:
+                20), //If no image is displayed an empty container will take it's place.
 
-              Text(
-                content,
-                style: TextStyle(
-                    fontFamily: 'quicksand',
-                    color: contentTextColor ?? Colors.grey),
-                textAlign: TextAlign.center,
-              ),
-            ],
+        Text(
+          content,
+          style: TextStyle(
+              fontFamily: 'quicksand',
+              color: contentTextColor ?? Colors.grey),
+          textAlign: TextAlign.center,
+        ),
+      ],
+            ),
+          ),
+          actions: _buildActions(context),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        actions: _buildActions(context),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
     );
   }
 

@@ -236,7 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildsettingsContainer() {
     return Container(
-        height: 450,
+        height: MediaQuery.of(context).size.height/1.6,
         width: double.infinity,
         decoration: const BoxDecoration(
             color: Colors.white,
@@ -249,10 +249,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildSettingsItems() {
     UserData _userData = Provider.of<UserData>(context);
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         SizedBox(
-          height: 10,
+          height: 20,
         ),
         ProfileTile(
           title: 'My stats',

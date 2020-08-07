@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       ],
       child: AuthWidgetBuilder(builder: (context, userSnapshot) {
         return MaterialApp(
-          debugShowCheckedModeBanner: true,
+          debugShowCheckedModeBanner: false,
           locale: DevicePreview.of(context).locale, // <--- Add the locale
       builder: DevicePreview.appBuilder, // <--- Add the builder
           title: 'Find The Treasure',

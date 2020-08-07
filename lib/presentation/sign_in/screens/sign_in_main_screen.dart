@@ -94,7 +94,6 @@ class _SignInMainScreenState extends State<SignInMainScreen>
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
-    
     try {
       await widget.bloc.signInWithGoogle();
     } on PlatformException catch (e) {
@@ -106,7 +105,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
       } else if (e.code == 'network_error') {
         _showNetworkError(context, e);
       } else {
-          _showSignInError(context, e);
+        _showSignInError(context, e);
       }
     }
   }
@@ -118,15 +117,13 @@ class _SignInMainScreenState extends State<SignInMainScreen>
   //   } on PlatformException catch (e) {
   //     if (e.code != 'ERROR_ABORTED_BY_USER') {
   //       _showSignInError(context, e);
-  //     } 
-      
-      
+  //     }
+
   //     }
   // }
 
   @override
   Widget build(BuildContext context) {
- 
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -138,6 +135,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                 child: Image.asset(
                   'images/compass.gif',
                   height: 200,
+                  semanticLabel: 'Screen loading',
                 ),
               )
             : Stack(children: <Widget>[
@@ -165,6 +163,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
         child: Image.asset(
           'images/compass.gif',
           height: 200,
+          semanticLabel: 'Screen loading',
         ),
       );
     } else
@@ -172,11 +171,16 @@ class _SignInMainScreenState extends State<SignInMainScreen>
         Expanded(
           flex: 4,
           child: AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) => Container(
-                  width: animation.value.width,
-                  height: animation.value.height,
-                  child: Image.asset('images/3.0x/ic_excalibur_owl.png'))),
+            animation: animation,
+            builder: (context, child) => Container(
+              width: animation.value.width,
+              height: animation.value.height,
+              child: Image.asset(
+                'images/3.0x/ic_excalibur_owl.png',
+                semanticLabel: 'Owl with sword.',
+              ),
+            ),
+          ),
         ),
         Expanded(
           flex: 5,
@@ -200,11 +204,12 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                     //     // : _showConnectionFailureDialog(context),
                     //     ),
                     SocialSignInButton(
-                        assetName: 'images/google-logo.png',
-                        text: 'Sign in with Google',
-                        textcolor: Colors.black87,
-                        color: Colors.grey[100],
-                        onPressed: () => _signInWithGoogle(context)),
+                      
+                          assetName: 'images/google-logo.png',
+                          text: 'Sign in with Google',
+                          textcolor: Colors.black87,
+                          color: Colors.grey[100],
+                          onPressed: () => _signInWithGoogle(context)),
                     Center(
                       child: Text(
                         'OR',
@@ -213,27 +218,29 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                       ),
                     ),
                     SignInButton(
-                      text: 'Create Account',
-                      textcolor: Colors.white,
-                      padding: 12,
-                      color: MaterialTheme.orange,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, EmailCreateAccountScreen.id);
-                      },
-                    ),
-                    FlatButton(
-                      shape: StadiumBorder(),
-                      onPressed: () {
-                        Navigator.pushNamed(context, EmailSignInScreen.id);
-                      },
-                      child: Text(
-                        'Already registered? Sign in here.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                        text: 'Create Account',
+                        textcolor: Colors.white,
+                        padding: 12,
+                        color: MaterialTheme.orange,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, EmailCreateAccountScreen.id);
+                        },
                       ),
-                    ),
+                    FlatButton(
+                        shape: StadiumBorder(),
+                        onPressed: () {
+                          Navigator.pushNamed(context, EmailSignInScreen.id);
+                        },
+                        child: Text(
+                          'Already registered? Sign in here.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ),
                     RichText(
                       textAlign: TextAlign.center,
                       maxLines: 2,
@@ -272,9 +279,9 @@ class _SignInMainScreenState extends State<SignInMainScreen>
       ]);
   }
 
-@override
+  @override
   void dispose() {
-  animationController.dispose();
+    animationController.dispose();
     super.dispose();
   }
 }

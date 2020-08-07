@@ -28,8 +28,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
+ SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+// SystemChrome.setEnabledSystemUIOverlays ([]);
     return Scaffold(
+
         backgroundColor: Colors.white,
         appBar: AppBar(
           
