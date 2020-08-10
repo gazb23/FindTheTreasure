@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AnswerBox extends StatefulWidget {
   final QuestModel questModel;
@@ -35,7 +34,6 @@ class AnswerBox extends StatefulWidget {
 class _AnswerBoxState extends State<AnswerBox> {
   final _formKey = GlobalKey<FormState>();
   String _answer;
-  bool _isLoading = false;
   bool _validateAndSaveForm() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -47,16 +45,16 @@ class _AnswerBoxState extends State<AnswerBox> {
   }
 
   void _submit() async {
-    final _random = Random();
-    // Generate random number between min and max
-    int next(int min, int max) => min + _random.nextInt(max - min);
+    FocusScope.of(context).unfocus();
+    final questionViewModel =
+        Provider.of<QuestionViewModel>(context, listen: false);
+    final challengeViewModel =
+        Provider.of<ChallengeViewModel>(context, listen: false);
+
     if (_validateAndSaveForm()) {
       try {
-        _isLoading = true;
-        setState(() {});
-        await Future.delayed(Duration(milliseconds: next(500, 1800)));
         if (checkAnswer(_answer)) {
-          QuestionViewModel.submit(context,
+          await questionViewModel.submit(context,
               documentId: widget.arrayUnionDocumentId,
               challengeCompletedMessage:
                   widget.questionsModel?.challengeCompletedMessage,
@@ -65,23 +63,23 @@ class _AnswerBoxState extends State<AnswerBox> {
               locationTitle: widget.locationTitle,
               isFinalChallenge: widget.isFinalChallenge);
         } else {
-          ChallengeViewModel().answerIncorrect(
-                    context: context,
-                    questModel: widget.questModel,
-                  );
+          await challengeViewModel.answerIncorrect(
+            context: context,
+            questModel: widget.questModel,
+          );
         }
-        setState(() => _isLoading = false);
       } catch (e) {
         print(e.toString());
-        _isLoading = false;
-      } finally {
-        _isLoading = false;
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final QuestionViewModel questionViewModel =
+        Provider.of<QuestionViewModel>(context);
+    final ChallengeViewModel challengeViewModel =
+        Provider.of<ChallengeViewModel>(context);
     return Opacity(
       opacity: .9,
       child: Card(
@@ -99,7 +97,6 @@ class _AnswerBoxState extends State<AnswerBox> {
               validator: (value) {
                 // if (!checkAnswer(value.toUpperCase().trim()) &&
                 //     value.isNotEmpty) {
-                  
 
                 //   return 'Answer incorrect';
                 // }
@@ -114,10 +111,12 @@ class _AnswerBoxState extends State<AnswerBox> {
               textCapitalization: TextCapitalization.characters,
               decoration: InputDecoration(
                 labelText: 'Enter your answer',
-                enabled: !_isLoading,
+                enabled: !questionViewModel.isLoading ||
+                    !challengeViewModel.isLoading,
                 suffixIcon: IconButton(
                     enableFeedback: true,
-                    icon: _isLoading
+                    icon: questionViewModel.isLoading ||
+                            challengeViewModel.isLoading
                         ? CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
                                 MaterialTheme.orange),
@@ -126,7 +125,10 @@ class _AnswerBoxState extends State<AnswerBox> {
                             Icons.send,
                             color: MaterialTheme.orange,
                           ),
-                    onPressed: !_isLoading ? _submit : null),
+                    onPressed: !questionViewModel.isLoading ||
+                            !challengeViewModel.isLoading
+                        ? _submit
+                        : null),
               ),
             ),
           ),

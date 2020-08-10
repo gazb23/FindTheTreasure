@@ -7,6 +7,7 @@ import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MultipleChoice extends StatefulWidget {
   final QuestModel questModel;
@@ -178,6 +179,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitA() async {
+    final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context, listen: false);
     bool _isCorrect = widget.questionsModel.answerA.containsValue(true);
     if (_isCorrect) {
       setState(() {
@@ -186,7 +188,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         _submitted = true;
       });
 
-      QuestionViewModel.submit(
+      await questionViewModel.submit(
         context,
         isLocation: false,
         challengeCompletedMessage:
@@ -203,7 +205,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         _neutralOwl = _wrongOwl;
         _submitted = true;
       });
-      ChallengeViewModel().answerIncorrect(
+     await ChallengeViewModel().answerIncorrect(
         context: context,
         questModel: widget.questModel,      
         duration: Duration(milliseconds: 1800),
@@ -218,6 +220,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitB() async {
+    final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context, listen: false);
     if (widget.questionsModel.answerB.containsValue(true)) {
       setState(() {
         _imageB = 'images/4.0x/ic_b_correct.png';
@@ -225,7 +228,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         _submitted = true;
       });
 
-      QuestionViewModel.submit(
+      questionViewModel.submit(
         context,
         isLocation: false,
         challengeCompletedMessage:
@@ -242,7 +245,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         _neutralOwl = _wrongOwl;
         _submitted = true;
       });
-      ChallengeViewModel().answerIncorrect(
+      await ChallengeViewModel().answerIncorrect(
           context: context,
           questModel: widget.questModel,
        
@@ -257,6 +260,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitC() async {
+    final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context, listen: false);
     if (widget.questionsModel.answerC.containsValue(true)) {
       setState(() {
         _imageC = 'images/4.0x/ic_c_correct.png';
@@ -264,7 +268,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         _submitted = true;
       });
 
-      QuestionViewModel.submit(
+      questionViewModel.submit(
         context,
         isLocation: false,
         challengeCompletedMessage:
@@ -281,7 +285,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         _neutralOwl = _wrongOwl;
         _submitted = true;
       });
-      ChallengeViewModel().answerIncorrect(
+      await ChallengeViewModel().answerIncorrect(
           context: context,
           questModel: widget.questModel,
   
@@ -296,6 +300,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitD() async {
+    final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context, listen: false);
     if (widget.questionsModel.answerD.containsValue(true)) {
       setState(() {
         _imageD = 'images/4.0x/ic_d_correct.png';
@@ -303,7 +308,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         _submitted = true;
       });
 
-      QuestionViewModel.submit(
+      questionViewModel.submit(
         context,
         isLocation: false,
         challengeCompletedMessage:
@@ -320,7 +325,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
         _neutralOwl = _wrongOwl;
         _submitted = true;
       });
-      ChallengeViewModel().answerIncorrect(
+      await ChallengeViewModel().answerIncorrect(
           context: context,
           questModel: widget.questModel,
         

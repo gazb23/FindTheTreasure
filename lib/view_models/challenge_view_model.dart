@@ -14,47 +14,52 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChallengeViewModel {
+class ChallengeViewModel extends ChangeNotifier {
+  bool isLoading = false;
   // Challenge incorrect logic - if a question is answered incorrectly a pre-calculated amount of points will be subtracted from the users total amount.
 
-  void answerIncorrect({
+  Future<void> answerIncorrect({
     @required BuildContext context,
     @required QuestModel questModel,
     Duration duration,
   }) async {
+    isLoading = true;
+    notifyListeners();
     final UserData _userData = Provider.of<UserData>(context, listen: false);
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
 
     final UserData _updateUserData = UserData(
-        userDiamondCount: _userData.userDiamondCount,
-        userKeyCount: _userData.userKeyCount,
-        points: LeaderboardViewModel.questionIncorrect(
-            questModel: questModel, userData: _userData),
-        displayName: _userData.displayName,
-        email: _userData.email,
-        photoURL: _userData.photoURL,
-        uid: _userData.uid,
-        isAdmin: _userData.isAdmin,
-        locationsExplored: _userData.locationsExplored,
-        seenIntro: _userData.seenIntro,
-
-        
-        );
-
-    await _databaseService.updateUserData(userData: _updateUserData);
-
-    final snackBar = SnackBar(
-      duration: duration ?? Duration(seconds: 4),
-      backgroundColor: MaterialTheme.red,
-      content: AutoSizeText(
-        'Answer incorrect. You lost: ${LeaderboardViewModel.showPointsLost(userData: _userData, questModel: questModel)} points ',
-        maxLines: 1,
-        style: TextStyle(
-            fontSize: 18, fontFamily: 'Quicksand', color: Colors.white),
-      ),
+      userDiamondCount: _userData.userDiamondCount,
+      userKeyCount: _userData.userKeyCount,
+      points: LeaderboardViewModel.questionIncorrect(
+          questModel: questModel, userData: _userData),
+      displayName: _userData.displayName,
+      email: _userData.email,
+      photoURL: _userData.photoURL,
+      uid: _userData.uid,
+      isAdmin: _userData.isAdmin,
+      locationsExplored: _userData.locationsExplored,
+      seenIntro: _userData.seenIntro,
     );
-    Scaffold.of(context).showSnackBar(snackBar);
+    try {
+      await _databaseService.updateUserData(userData: _updateUserData);
+
+      final snackBar = SnackBar(
+        duration: duration ?? Duration(seconds: 4),
+        backgroundColor: MaterialTheme.red,
+        content: AutoSizeText(
+          'Answer incorrect. You lost: ${LeaderboardViewModel.showPointsLost(userData: _userData, questModel: questModel)} points ',
+          maxLines: 1,
+          style: TextStyle(
+              fontSize: 18, fontFamily: 'Quicksand', color: Colors.white),
+        ),
+      );
+      Scaffold.of(context).showSnackBar(snackBar);
+    } catch (e) {} finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 
 // Logic to show hint for a challenge question
@@ -96,18 +101,17 @@ class ChallengeViewModel {
       if (didRequestHint) {
         try {
           final UserData _updateUserData = UserData(
-              userDiamondCount: _userData.userDiamondCount - _hintCost,
-              userKeyCount: _userData.userKeyCount,
-              points: _userData.points,
-              displayName: _userData.displayName,
-              email: _userData.email,
-              photoURL: _userData.photoURL,
-              uid: _userData.uid,
-              isAdmin: _userData.isAdmin,
-              locationsExplored: _userData.locationsExplored,
-              seenIntro: _userData.seenIntro,
-              
-              );
+            userDiamondCount: _userData.userDiamondCount - _hintCost,
+            userKeyCount: _userData.userKeyCount,
+            points: _userData.points,
+            displayName: _userData.displayName,
+            email: _userData.email,
+            photoURL: _userData.photoURL,
+            uid: _userData.uid,
+            isAdmin: _userData.isAdmin,
+            locationsExplored: _userData.locationsExplored,
+            seenIntro: _userData.seenIntro,
+          );
 
           _databaseService.updateUserData(userData: _updateUserData);
           _databaseService.arrayUnionField(
@@ -141,6 +145,4 @@ class ChallengeViewModel {
       }
     }
   }
-
-  
 }

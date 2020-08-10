@@ -14,9 +14,10 @@ import 'package:find_the_treasure/view_models/location_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class QuestionViewModel {
+class QuestionViewModel extends ChangeNotifier {
+  bool isLoading = false;
   // Logic for when an answer is submitted. If correct, will add UID to Firestore Database and display the correct PlatformAlertDialog.
-  static void submit(
+  Future<void> submit(
     BuildContext context, {
     @required bool isLocation,
     @required bool isFinalChallenge,
@@ -25,16 +26,20 @@ class QuestionViewModel {
     @required String locationTitle,
     @required String challengeCompletedMessage,
   }) async {
+    isLoading = true;
+    notifyListeners();
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     // If Challenge Question
     if (!isLocation) {
       try {
-        _databaseService.arrayUnionField(
+        await _databaseService.arrayUnionField(
           documentId: documentId,
           field: 'challengeCompletedBy',
           collectionRef: collectionRef,
         );
+        isLoading = false;
+        notifyListeners();
         if (!isFinalChallenge) {
           final _didRequestNext = await PlatformAlertDialog(
             title: 'Congratulations!',
@@ -58,15 +63,20 @@ class QuestionViewModel {
         }
       } catch (e) {
         print(e.toString());
+      } finally {
+        isLoading = false;
+        notifyListeners();
       }
     } else if (isLocation)
       // If Location Question
       try {
-        _databaseService.arrayUnionField(
+       await _databaseService.arrayUnionField(
           documentId: documentId,
           field: 'locationStartedBy',
           collectionRef: collectionRef,
         );
+        isLoading = false;
+        notifyListeners();
         final _didCompleteChallenge = await PlatformAlertDialog(
           title: 'Location Unlocked!',
           content:
@@ -82,6 +92,9 @@ class QuestionViewModel {
         }
       } catch (e) {
         print(e.toString());
+      } finally {
+        isLoading = false;
+        notifyListeners();
       }
   }
 
@@ -249,6 +262,7 @@ class QuestionViewModel {
         image: Image.asset('images/ic_out_of_gems.png'),
       ).show(context);
       if (didRequestSkip) {
+        final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context);
         try {
           final UserData _updateUserData = UserData(
             userDiamondCount: _userData.userDiamondCount - _skipCost,
@@ -264,7 +278,7 @@ class QuestionViewModel {
           );
 
           _databaseService.updateUserData(userData: _updateUserData);
-          QuestionViewModel.submit(
+          questionViewModel.submit(
             context,
             isLocation: false,
             challengeCompletedMessage: questionsModel.challengeCompletedMessage,
