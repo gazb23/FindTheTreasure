@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
@@ -12,7 +11,7 @@ import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.d
 import 'package:find_the_treasure/widgets_common/quests/quest_location_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:find_the_treasure/view_models/location_view_model.dart';
+
 
 class ActiveQuestScreen extends StatelessWidget {
   static const String id = 'active_quest_page';
@@ -28,124 +27,122 @@ class ActiveQuestScreen extends StatelessWidget {
         questModel.treasureDiscoveredBy.contains(databaseService.uid);
         bool questCompletedBy = questModel.questCompletedBy.contains(databaseService.uid);
     bool _isLoading = false;
-    return ChangeNotifierProvider<LocationViewModel>(
-      create: (context) => LocationViewModel(),
-      child: Consumer<LocationViewModel>(
-        builder: (context, locationViewModel, _) => SafeArea(
-          child: Scaffold(
-            floatingActionButton: !treasureDiscoveredBy && questCompletedBy
-                ? FloatingActionButton.extended(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FindTreasureScreen(
-                                  questModel: questModel,
-                                  databaseService: databaseService)));
-                    },
-                    label: Text('Dig for your treasure'),
-                    backgroundColor: Colors.brown,
-                  )
-                : Container(),
-            appBar: AppBar(
-              title: AutoSizeText(
-                questModel.title,
-                maxLines: 1,
-                style: const TextStyle(color: Colors.black87),
-              ),
-              iconTheme: const IconThemeData(
-                color: Colors.black87,
-              ),
-              actions: <Widget>[
-                Consumer<UserData>(
-                  builder: (_, _userData, __) => DiamondAndKeyContainer(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    numberOfDiamonds: _userData.userDiamondCount,
-                    numberOfKeys: _userData.userKeyCount,
-                    color: Colors.black87,
-                    diamondHeight: 25,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
+    return SafeArea(
+        child: Scaffold(
+          floatingActionButton: !treasureDiscoveredBy && questCompletedBy
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FindTreasureScreen(
+                                questModel: questModel,
+                                databaseService: databaseService)));
+                  },
+                  label: Text('Dig for your treasure'),
+                  backgroundColor: Colors.brown,
                 )
-              ],
+              : Container(),
+          appBar: AppBar(
+            title: AutoSizeText(
+              questModel.title,
+              maxLines: 1,
+              style: const TextStyle(color: Colors.black87),
             ),
-            body: Stack(
-              children: <Widget>[
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("images/bckgrnd_balon.png"),
-                        fit: BoxFit.fill),
-                  ),
-                  child: Container(
-                    color: Colors.black.withOpacity(0),
-                  ),
+            iconTheme: const IconThemeData(
+              color: Colors.black87,
+            ),
+            actions: <Widget>[
+              Consumer<UserData>(
+                builder: (_, _userData, __) => DiamondAndKeyContainer(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  numberOfDiamonds: _userData.userDiamondCount,
+                  numberOfKeys: _userData.userKeyCount,
+                  color: Colors.black87,
+                  diamondHeight: 25,
                 ),
-                Consumer<DatabaseService>(
-                  builder: (_, _databaseService, __) => StreamBuilder<
-                          List<LocationModel>>(
-                      stream: _databaseService.locationsStream(
-                          questId: questModel.id),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.active) {
-                          final _numberOfLocations = snapshot.data.length;
-                          final _locationsCompleted = snapshot.data
-                              .where((locationModel) => locationModel
-                                  .locationCompletedBy
-                                  .contains(databaseService.uid))
-                              .length;
+                
+              ),
+              const SizedBox(
+                width: 20,
+              )
 
-                          return ListItemsBuilder<LocationModel>(
-                            title: 'Say whhhaaat!',
-                            message:
-                                'No locations to explore! The Find The Treasure team needs to pick up their act!',
-                            snapshot: snapshot,
-                            itemBuilder: (context, locationModel, _) =>
-                                QuestLocationCard(
-                              lastLocationCompleted:
-                                  _numberOfLocations == _locationsCompleted + 1,
-                              locationModel: locationModel,
-                              questModel: questModel,
-                              databaseService: _databaseService,
-                              isLoading: _isLoading,
-                              onTap: () async {
-                                try {
-                                  _isLoading = true;
-                                  // To discover the location, the user must first answer a location question
-                                  if (locationModel.locationStartedBy
-                                      .contains(_databaseService.uid)) {
-                                    return null;
-                                  } else
-                                    Navigator.of(context, rootNavigator: true)
-                                        .push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            QuestionScrollSingleAnswer(
-                                          isFinalChallenge: true,
-                                          locationQuestion: true,
-                                          locationModel: locationModel,
-                                          questModel: questModel,
-                                        ),
-                                      ),
-                                    );
-                                } catch (e) {
-                                  _isLoading = false;
-                                }
-                              },
-                            ),
-                          );
-                        }
-                        return Container();
-                      }),
+            ],
+          ),
+          body: Stack(
+            children: <Widget>[
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("images/bckgrnd_balon.png"),
+                      fit: BoxFit.fill),
                 ),
-              ],
-            ),
+                child: Container(
+                  color: Colors.black.withOpacity(0),
+                ),
+              ),
+              Consumer<DatabaseService>(
+                builder: (_, _databaseService, __) => StreamBuilder<
+                        List<LocationModel>>(
+                    stream: _databaseService.locationsStream(
+                        questId: questModel.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.active) {
+                        final _numberOfLocations = snapshot.data.length;
+                        final _locationsCompleted = snapshot.data
+                            .where((locationModel) => locationModel
+                                .locationCompletedBy
+                                .contains(databaseService.uid))
+                            .length;
+
+                        return ListItemsBuilder<LocationModel>(
+                          title: 'Say whhhaaat!',
+                          message:
+                              'No locations to explore! The Find The Treasure team needs to pick up their act!',
+                          snapshot: snapshot,
+                          itemBuilder: (context, locationModel, _) =>
+                              QuestLocationCard(
+                            lastLocationCompleted:
+                                _numberOfLocations == _locationsCompleted + 1,
+                            locationModel: locationModel,
+                            questModel: questModel,
+                            databaseService: _databaseService,
+                            isLoading: _isLoading,
+                            onTap: () async {
+                              try {
+                                _isLoading = true;
+                                // To discover the location, the user must first answer a location question
+                                if (locationModel.locationStartedBy
+                                    .contains(_databaseService.uid)) {
+                                  return null;
+                                } else
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          QuestionScrollSingleAnswer(
+                                        isFinalChallenge: true,
+                                        locationQuestion: true,
+                                        locationModel: locationModel,
+                                        questModel: questModel,
+                                      ),
+                                    ),
+                                  );
+                              } catch (e) {
+                                _isLoading = false;
+                              }
+                            },
+                          ),
+                        );
+                      }
+                      return Container();
+                    }),
+              ),
+            ],
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }
