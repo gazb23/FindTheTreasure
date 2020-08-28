@@ -38,7 +38,6 @@ class ConnectivityService {
   }
 
   static bool checkNetwork(BuildContext context) {
-    print('ioS');
     final isConnected =
         Provider.of<DataConnectionStatus>(context, listen: true);
     final connectionStatus =

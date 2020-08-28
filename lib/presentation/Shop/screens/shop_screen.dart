@@ -148,7 +148,7 @@ class _ShopScreenState extends State<ShopScreen> {
       _displayDiamondAndKeys(_purchase);
 
       _isPurchasePending = true;
-      
+
       final _updateUserData = UserData(
         displayName: _userData.displayName,
         email: _userData.email,
@@ -160,9 +160,8 @@ class _ShopScreenState extends State<ShopScreen> {
         userDiamondCount: _userData.userDiamondCount + _diamonds,
         userKeyCount: _userData.userKeyCount + _keys,
         seenIntro: _userData.seenIntro,
-        
       );
-       _databaseService.updateUserData(userData: _updateUserData);
+      _databaseService.updateUserData(userData: _updateUserData);
       final _didSelectOK = await PlatformAlertDialog(
               backgroundColor: Colors.brown,
               titleTextColor: Colors.white,
@@ -225,9 +224,9 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _buyProduct(ProductDetails productDetails) async {
     _isPurchasePending = true;
-//TODO: change to sandboxTesting: false on final release
+
     final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetails, sandboxTesting: true);
+        PurchaseParam(productDetails: productDetails);
 
     // await FlutterInappPurchase.instance.clearTransactionIOS();
 
@@ -250,21 +249,23 @@ class _ShopScreenState extends State<ShopScreen> {
       appBar: AppBar(
         title: _isAvailable && ConnectivityService.checkNetwork(context)
             ? null
-            : const Text('Shop Loading...',),
+            : const Text(
+                'Shop Loading...',
+              ),
         backgroundColor: Colors.brown,
         iconTheme: const IconThemeData(color: Colors.white),
         actions: <Widget>[
           DiamondAndKeyContainer(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: _userData?.userDiamondCount,
-              numberOfKeys: _userData?.userKeyCount,
-              diamondHeight: 30,
-              skullKeyHeight: 33,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              diamondSpinning: true, 
-              showShop: false,             
+            numberOfDiamonds: _userData?.userDiamondCount,
+            numberOfKeys: _userData?.userKeyCount,
+            diamondHeight: 30,
+            skullKeyHeight: 33,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            diamondSpinning: true,
+            showShop: false,
           ),
           const SizedBox(
             width: 20,
@@ -310,11 +311,10 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-          if (_isAvailable  && ConnectivityService.checkNetwork(context))
+          if (_isAvailable && ConnectivityService.checkNetwork(context))
             // Display products from store
-            
-            for (var prod in _products) 
-            
+
+            for (var prod in _products)
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: BuyDiamondOrKeyButton(
@@ -328,19 +328,21 @@ class _ShopScreenState extends State<ShopScreen> {
                   },
                 ),
               )
-          
-            
-         
-            else !_isPurchasePending ? Column(
-              children: <Widget>[
-                StoreLoadingButton(),
-                StoreLoadingButton(),
-                StoreLoadingButton(),
-                StoreLoadingButton(),
-              ],
-            ) : Container(height: MediaQuery.of(context).size.height,
-            color: Colors.black,
-            child: CircularProgressIndicator(),)
+          else
+            !_isPurchasePending
+                ? Column(
+                    children: <Widget>[
+                      StoreLoadingButton(),
+                      StoreLoadingButton(),
+                      StoreLoadingButton(),
+                      StoreLoadingButton(),
+                    ],
+                  )
+                : Container(
+                    height: MediaQuery.of(context).size.height,
+                    color: Colors.black,
+                    child: CircularProgressIndicator(),
+                  )
         ]),
       ),
     );
@@ -392,8 +394,7 @@ class _ShopScreenState extends State<ShopScreen> {
 class StoreLoadingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: FractionallySizedBox(
         widthFactor: 0.9,

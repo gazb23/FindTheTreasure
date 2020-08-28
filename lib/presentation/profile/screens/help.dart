@@ -130,7 +130,6 @@ class HelpScreen extends StatelessWidget {
               );
             },
           ),
-         
           CustomListTile(
             title: 'About',
             leadingIcon: Icons.help,
@@ -143,7 +142,8 @@ class HelpScreen extends StatelessWidget {
                   height: 30,
                 ),
                 applicationName: 'Find The Treasure',
-                applicationVersion: 'version:' + version,
+                applicationLegalese: 'Copyright 2020 Find The Treasure',
+                applicationVersion: 'version: ' + version,
               );
             },
           ),

@@ -55,7 +55,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       version = packageInfo.version;
-    } on PlatformException {
+    } catch (e) {
+      print(e.toString());
       version = 'Failed to get app version';
     }
     setState(() {
@@ -66,14 +67,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // User can select their avatar from gallery or camera
   Future<void> _chooseAvatar(BuildContext context) async {
     print('rebuild');
-          _isLoading = true;
-       
+    _isLoading = true;
+
     bool permissionGranted =
         await PermissionService(context: context).requestCameraPermission();
     if (permissionGranted) {
       PickedFile file;
       try {
-        
         // 1. Get image from picker
         final imagePicker =
             Provider.of<ImagePickerService>(context, listen: false);
@@ -124,9 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } catch (e) {
         print(e.toString());
       } finally {
-        
-          _isLoading = false;
-        
+        _isLoading = false;
       }
     }
   }
@@ -168,7 +166,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildUserInfo(BuildContext context, UserData user) {
-    
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context);
     return ChangeNotifierProvider<PermissionService>(
@@ -188,21 +185,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         if (snapshot.connectionState ==
                                 ConnectionState.active &&
                             !snapshot.hasError) {
-                              final PermissionService permissionService =
-        Provider.of<PermissionService>(context, listen: false);
+                          final PermissionService permissionService =
+                              Provider.of<PermissionService>(context,
+                                  listen: false);
                           final AvatarReference avatarReference = snapshot.data;
                           return Avatar(
-                                photoURL:
-                                   avatarReference?.photoURL ?? user.photoURL,
-                                radius: 70,
-                                borderColor: Colors.white,
-                                borderWidth: 5,
-                                onPressed: () =>
-                                    _isLoading || !permissionService.isLoading
-                                        ? null
-                                        : _chooseAvatar(context));
-                                       
-                          
+                              photoURL:
+                                  avatarReference?.photoURL ?? user.photoURL,
+                              radius: 70,
+                              borderColor: Colors.white,
+                              borderWidth: 5,
+                              onPressed: () =>
+                                  _isLoading || !permissionService.isLoading
+                                      ? null
+                                      : _chooseAvatar(context));
                         } else
                           return Container();
                       }),
@@ -236,7 +232,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildsettingsContainer() {
     return Container(
-        height: MediaQuery.of(context).size.height/1.6,
+        height: MediaQuery.of(context).size.height / 1.6,
         width: double.infinity,
         decoration: const BoxDecoration(
             color: Colors.white,

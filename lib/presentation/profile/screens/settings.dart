@@ -112,18 +112,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _editName = false;
         setState(() {});
         final UserData _updatedUserData = UserData(
-            displayName: _userName,
-            email: _userData.email,
-            locationsExplored: _userData.locationsExplored,
-            photoURL: _userData.photoURL,
-            points: _userData.points,
-            uid: _userData.uid,
-            userDiamondCount: _userData.userDiamondCount,
-            userKeyCount: _userData.userKeyCount,
-            isAdmin: _userData.isAdmin,
-            seenIntro: _userData.seenIntro,
-            
-            );
+          displayName: _userName,
+          email: _userData.email,
+          locationsExplored: _userData.locationsExplored,
+          photoURL: _userData.photoURL,
+          points: _userData.points,
+          uid: _userData.uid,
+          userDiamondCount: _userData.userDiamondCount,
+          userKeyCount: _userData.userKeyCount,
+          isAdmin: _userData.isAdmin,
+          seenIntro: _userData.seenIntro,
+        );
         await _databaseService.updateUserData(userData: _updatedUserData);
         _isLoading = false;
         final snackBar = SnackBar(
@@ -162,17 +161,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         setState(() {});
         if (_checkCurrentPasswordValid) {
           final UserData _updatedUserData = UserData(
-              displayName: _userData.displayName,
-              email: _email,
-              locationsExplored: _userData.locationsExplored,
-              photoURL: _userData.photoURL,
-              points: _userData.points,
-              uid: _userData.uid,
-              userDiamondCount: _userData.userDiamondCount,
-              userKeyCount: _userData.userKeyCount,
-              isAdmin: _userData.isAdmin,
-              seenIntro: _userData.seenIntro,
-              );
+            displayName: _userData.displayName,
+            email: _email,
+            locationsExplored: _userData.locationsExplored,
+            photoURL: _userData.photoURL,
+            points: _userData.points,
+            uid: _userData.uid,
+            userDiamondCount: _userData.userDiamondCount,
+            userKeyCount: _userData.userKeyCount,
+            isAdmin: _userData.isAdmin,
+            seenIntro: _userData.seenIntro,
+          );
 
           _emailUpdated = await updateUserEmail(_email);
 

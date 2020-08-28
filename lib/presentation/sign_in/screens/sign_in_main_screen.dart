@@ -1,8 +1,11 @@
 import 'dart:ui';
+import 'package:apple_sign_in/apple_sign_in_button.dart';
+import 'package:apple_sign_in/scope.dart';
 import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/theme.dart';
+import 'package:find_the_treasure/widgets_common/authentication/apple_sign_in_available.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:find_the_treasure/widgets_common/social_sign_in_button.dart';
@@ -110,6 +113,17 @@ class _SignInMainScreenState extends State<SignInMainScreen>
     }
   }
 
+  Future<void> _signInWithApple(BuildContext context) async {
+    try {
+      final authService = Provider.of<AuthBase>(context, listen: false);
+      final user = await authService
+          .signInWithApple(scopes: [Scope.email, Scope.fullName]);
+      print('uid: ${user.uid}');
+    } catch (e) {
+      print(e);
+    }
+  }
+
   // Future<void> _signInWithFacebook(BuildContext context) async {
 
   //   try {
@@ -158,6 +172,8 @@ class _SignInMainScreenState extends State<SignInMainScreen>
 
   Widget _buildContent(BuildContext context) {
     // final deviceSize = MediaQuery.of(context).size;
+    final appleSignInAvailable =
+        Provider.of<AppleSignInAvailable>(context, listen: false);
     if (widget.isLoading) {
       return Center(
         child: Image.asset(
@@ -195,6 +211,13 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+                    if (appleSignInAvailable.isAvailable)
+                      AppleSignInButton(
+                        style: ButtonStyle.white,
+                        cornerRadius: 35, // style as needed
+                        type: ButtonType.signIn, // style as needed
+                        onPressed: () => _signInWithApple(context),
+                      ),
                     // SocialSignInButton(
                     //     assetName: 'images/facebook-logo.png',
                     //     text: 'Sign in with Facebook',
@@ -204,12 +227,11 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                     //     // : _showConnectionFailureDialog(context),
                     //     ),
                     SocialSignInButton(
-                      
-                          assetName: 'images/google-logo.png',
-                          text: 'Sign in with Google',
-                          textcolor: Colors.black87,
-                          color: Colors.grey[100],
-                          onPressed: () => _signInWithGoogle(context)),
+                        assetName: 'images/google-logo.png',
+                        text: 'Sign in with Google',
+                        textcolor: Colors.black87,
+                        color: Colors.grey[100],
+                        onPressed: () => _signInWithGoogle(context)),
                     Center(
                       child: Text(
                         'OR',
@@ -218,29 +240,29 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                       ),
                     ),
                     SignInButton(
-                        text: 'Create Account',
-                        textcolor: Colors.white,
-                        padding: 12,
-                        color: MaterialTheme.orange,
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, EmailCreateAccountScreen.id);
-                        },
-                      ),
+                      text: 'Create Account',
+                      textcolor: Colors.white,
+                      padding: 12,
+                      color: MaterialTheme.orange,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, EmailCreateAccountScreen.id);
+                      },
+                    ),
                     FlatButton(
-                        shape: StadiumBorder(),
-                        onPressed: () {
-                          Navigator.pushNamed(context, EmailSignInScreen.id);
-                        },
-                        child: Text(
-                          'Already registered? Sign in here.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
+                      shape: StadiumBorder(),
+                      onPressed: () {
+                        Navigator.pushNamed(context, EmailSignInScreen.id);
+                      },
+                      child: Text(
+                        'Already registered? Sign in here.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
                       ),
+                    ),
                     RichText(
                       textAlign: TextAlign.center,
                       maxLines: 2,
