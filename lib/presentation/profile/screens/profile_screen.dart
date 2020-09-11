@@ -15,7 +15,6 @@ import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';

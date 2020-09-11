@@ -1,5 +1,4 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:find_the_treasure/presentation/active_quest/active_quest_screen.dart';
 import 'package:find_the_treasure/presentation/explore/screens/intro_screen.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';

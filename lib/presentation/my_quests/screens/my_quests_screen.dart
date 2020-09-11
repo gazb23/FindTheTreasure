@@ -5,7 +5,7 @@ import 'package:find_the_treasure/presentation/explore/screens/quest_detail_scre
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/theme.dart';
-import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
+
 import 'package:find_the_treasure/widgets_common/quests/quest_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class MyQuestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UserData _userData = Provider.of<UserData>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
@@ -26,23 +26,7 @@ class MyQuestsScreen extends StatelessWidget {
         child: Scaffold(
           backgroundColor: Colors.grey.shade300,
           appBar: AppBar(
-            actions: <Widget>[
-            DiamondAndKeyContainer(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: _userData?.userDiamondCount,
-              numberOfKeys: _userData?.userKeyCount,
-              diamondHeight: 30,
-              skullKeyHeight: 33,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              diamondSpinning: true,
-
-            ),
-            const SizedBox(
-              width: 20,
-            )
-          ],
+            
             bottom: TabBar(
               indicatorColor: Colors.white,
               labelColor: Colors.white,

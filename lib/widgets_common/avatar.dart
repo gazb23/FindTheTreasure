@@ -9,7 +9,8 @@ class Avatar extends StatelessWidget {
   final double borderWidth;
   final Color borderColor;
   final VoidCallback onPressed;
-  static const String _noImage = 'https://firebasestorage.googleapis.com/v0/b/find-the-treasure-8d58f.appspot.com/o/ic_single.png?alt=media&token=3f9e2e42-8400-4f33-b483-9dfb0d9f72e7';
+  static const String _noImage =
+      'https://firebasestorage.googleapis.com/v0/b/find-the-treasure-8d58f.appspot.com/o/ic_single.png?alt=media&token=3f9e2e42-8400-4f33-b483-9dfb0d9f72e7';
   const Avatar({
     Key key,
     @required this.photoURL,
@@ -23,9 +24,8 @@ class Avatar extends StatelessWidget {
     return Container(
       decoration: _borderDecoration(),
       child: CachedNetworkImage(
-        imageUrl: photoURL == null || photoURL == '' ?  
-            _noImage
-            : photoURL,
+       
+        imageUrl: photoURL == null || photoURL == '' ? _noImage : photoURL,
         errorWidget: (context, url, error) => Icon(
           Icons.error,
           size: radius * 2,
@@ -34,21 +34,23 @@ class Avatar extends StatelessWidget {
         fadeInDuration: Duration(seconds: 1),
         fadeOutDuration: Duration(seconds: 1),
         placeholder: (context, url) => Container(
-          height: radius * 2,
-          child: Center(child: CustomCircularProgressIndicator())),
+            height: radius * 2,
+            child: Center(child: CustomCircularProgressIndicator())),
         imageBuilder: (context, photoURL) => InkWell(
           onTap: onPressed,
-                  child: CircleAvatar(
+          child: CircleAvatar(
             radius: radius,
             backgroundColor: Colors.black12,
             backgroundImage: photoURL,
-            child: photoURL == null ? Icon(Icons.camera_alt, size: radius) : null,
+            child:
+                photoURL == null ? Icon(Icons.camera_alt, size: radius) : null,
           ),
         ),
       ),
     );
   }
-    Decoration _borderDecoration() {
+
+  Decoration _borderDecoration() {
     if (borderColor != null && borderWidth != null) {
       return BoxDecoration(
         shape: BoxShape.circle,

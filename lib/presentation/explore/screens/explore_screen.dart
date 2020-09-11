@@ -36,22 +36,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
           iconTheme: const IconThemeData(
             color: Colors.black87,
           ),
-          actions: <Widget>[
-            DiamondAndKeyContainer(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              numberOfDiamonds: _userData?.userDiamondCount,
-              numberOfKeys: _userData?.userKeyCount,
-              diamondHeight: 30,
-              skullKeyHeight: 33,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              diamondSpinning: true,
-            ),
-            const SizedBox(
-              width: 20,
-            )
-          ],
+          title: DiamondAndKeyContainer(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            numberOfDiamonds: _userData.userDiamondCount,
+            numberOfKeys: _userData.userKeyCount,
+            diamondHeight: 30,
+            skullKeyHeight: 33,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            diamondSpinning: true,
+          ),
         ),
         body: _userData != null
             ? !_userData.isAdmin ? LiveListView() : AdminView()

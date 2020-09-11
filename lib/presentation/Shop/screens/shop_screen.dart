@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
@@ -161,6 +162,7 @@ class _ShopScreenState extends State<ShopScreen> {
         userKeyCount: _userData.userKeyCount + _keys,
         seenIntro: _userData.seenIntro,
       );
+
       _databaseService.updateUserData(userData: _updateUserData);
       final _didSelectOK = await PlatformAlertDialog(
               backgroundColor: Colors.brown,
@@ -247,30 +249,20 @@ class _ShopScreenState extends State<ShopScreen> {
     return Scaffold(
       backgroundColor: Colors.brown,
       appBar: AppBar(
-        title: _isAvailable && ConnectivityService.checkNetwork(context)
-            ? null
-            : const Text(
-                'Shop Loading...',
-              ),
         backgroundColor: Colors.brown,
         iconTheme: const IconThemeData(color: Colors.white),
-        actions: <Widget>[
-          DiamondAndKeyContainer(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            numberOfDiamonds: _userData?.userDiamondCount,
-            numberOfKeys: _userData?.userKeyCount,
-            diamondHeight: 30,
-            skullKeyHeight: 33,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            diamondSpinning: true,
-            showShop: false,
-          ),
-          const SizedBox(
-            width: 20,
-          )
-        ],
+        title: DiamondAndKeyContainer(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          numberOfDiamonds: _userData?.userDiamondCount,
+          numberOfKeys: _userData?.userKeyCount,
+          diamondHeight: 30,
+          skullKeyHeight: 33,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+          diamondSpinning: true,
+          showShop: false,
+        ),
       ),
       body: Container(
         width: double.infinity,

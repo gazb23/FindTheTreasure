@@ -1,11 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:find_the_treasure/services/global_functions.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:find_the_treasure/models/user_model.dart';
-
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/generic_scroll.dart';
@@ -164,7 +163,10 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   void _submit(UserData _userData, DatabaseService _database) async {
-    _isLoading = !_isLoading;
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+
     final UserData updatedUserData = UserData(
       displayName: _userData.displayName,
       email: _userData.email,
@@ -176,10 +178,12 @@ class _IntroScreenState extends State<IntroScreen> {
       userDiamondCount: _userData.userDiamondCount,
       userKeyCount: _userData.userKeyCount,
       uid: _userData.uid,
-      seenIntro: true,      
+      seenIntro: true,
     );
     try {
-      await _database.updateUserData(userData: updatedUserData);
+    await GlobalFunction.delayBy(minTime: 100, maxTime: 500);
+
+      _database.updateUserData(userData: updatedUserData);
       Navigator.pop(context);
     } catch (e) {
       print(e.toString());

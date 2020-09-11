@@ -44,7 +44,7 @@ class _AnswerBoxState extends State<AnswerBox> {
     return false;
   }
 
-  void _submit() async {
+  void _submit()   {
     FocusScope.of(context).unfocus();
     final questionViewModel =
         Provider.of<QuestionViewModel>(context, listen: false);
@@ -54,7 +54,8 @@ class _AnswerBoxState extends State<AnswerBox> {
     if (_validateAndSaveForm()) {
       try {
         if (checkAnswer(_answer)) {
-          await questionViewModel.submit(context,
+          
+           questionViewModel.submit(context,
               documentId: widget.arrayUnionDocumentId,
               challengeCompletedMessage:
                   widget.questionsModel?.challengeCompletedMessage,
@@ -63,7 +64,7 @@ class _AnswerBoxState extends State<AnswerBox> {
               locationTitle: widget.locationTitle,
               isFinalChallenge: widget.isFinalChallenge);
         } else {
-          await challengeViewModel.answerIncorrect(
+           challengeViewModel.answerIncorrect(
             context: context,
             questModel: widget.questModel,
           );

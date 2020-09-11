@@ -3,8 +3,8 @@ import 'package:find_the_treasure/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class LeaderboardViewModel {
-  
+class LeaderboardViewModel{
+
 
   static int questComplete({@required UserData userData, @required QuestModel questModel}) {
     int userPointsCalc = userData.points + questModel.questPoints;
@@ -13,9 +13,9 @@ class LeaderboardViewModel {
  
 
   }
-
+  // The amount of points subtracted for an incorrect question
   static int questionIncorrect({@required UserData userData, @required QuestModel questModel}) {
-    // The amount of points subtracted for an incorrect question
+    
      int incorrectQuestion = (questModel.questPoints * 0.05).truncate();
      int userPointsCalc = userData.points - incorrectQuestion;
 
@@ -27,4 +27,6 @@ class LeaderboardViewModel {
      int incorrectQuestion = (questModel.questPoints * 0.05).truncate();
      return incorrectQuestion;
   }
+
+  
 }

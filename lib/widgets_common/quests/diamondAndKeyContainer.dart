@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/theme.dart';
+import 'package:find_the_treasure/widgets_common/animated_counter.dart';
 import 'package:flutter/material.dart';
 
 class DiamondAndKeyContainer extends StatelessWidget {
@@ -42,8 +43,9 @@ class DiamondAndKeyContainer extends StatelessWidget {
             ));
       } : null,
       child: Container(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Flex(
+          direction: Axis.horizontal,
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.end,
           children: <Widget>[
             showDiamond
@@ -63,17 +65,17 @@ class DiamondAndKeyContainer extends StatelessWidget {
                                 child: Image.asset('images/diamond2.png',
                                     height: diamondHeight ?? 30),
                               ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        numberOfDiamonds != null
-                            ? Text(
-                                numberOfDiamonds.toString(),
-                                style: TextStyle(
+                        numberOfDiamonds != null ?
+                          AnimatedCount(count: numberOfDiamonds, duration: Duration(seconds: 2), textStyle: TextStyle(
                                     color: color ?? Colors.white,
                                     fontSize: fontSize ?? 13,
-                                    fontWeight: fontWeight),
-                              )
+                                    fontWeight: fontWeight),)
+
+
+                          
                             : CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                     MaterialTheme.blue.withOpacity(0.5)),

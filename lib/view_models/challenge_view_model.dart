@@ -43,7 +43,7 @@ class ChallengeViewModel extends ChangeNotifier {
       seenIntro: _userData.seenIntro,
     );
     try {
-      await _databaseService.updateUserData(userData: _updateUserData);
+       _databaseService.updateUserData(userData: _updateUserData);
 
       final snackBar = SnackBar(
         duration: duration ?? Duration(seconds: 4),

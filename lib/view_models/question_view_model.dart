@@ -9,6 +9,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_types/quest
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/services/global_functions.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/view_models/location_view_model.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +29,15 @@ class QuestionViewModel extends ChangeNotifier {
   }) async {
     isLoading = true;
     notifyListeners();
+    // Not using await on async functions as this will stop Firebase offline mode from working. Instead, I have created a simulated network delay to improve feedback for the user. 
+    await GlobalFunction.delayBy(minTime: 100, maxTime: 500);
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     // If Challenge Question
     if (!isLocation) {
       try {
-        await _databaseService.arrayUnionField(
+
+         _databaseService.arrayUnionField(
           documentId: documentId,
           field: 'challengeCompletedBy',
           collectionRef: collectionRef,
@@ -70,7 +74,7 @@ class QuestionViewModel extends ChangeNotifier {
     } else if (isLocation)
       // If Location Question
       try {
-       await _databaseService.arrayUnionField(
+        _databaseService.arrayUnionField(
           documentId: documentId,
           field: 'locationStartedBy',
           collectionRef: collectionRef,
