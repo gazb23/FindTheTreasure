@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FirestoreService {
   FirestoreService._();
@@ -95,6 +97,15 @@ class FirestoreService {
     print('delete: $path');
     await reference.delete();
   }
+  // CRUD operations for local storage
+  Future<String> get localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
 
+  Future<File> get localFile async {
+    final path = await localPath;
+    return File('$path/image.png');
+  }
 
 }

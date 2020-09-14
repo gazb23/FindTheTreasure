@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:find_the_treasure/models/user_model.dart';
+import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
@@ -138,6 +137,7 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _verifyPurchase() async {
+    
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
@@ -147,7 +147,7 @@ class _ShopScreenState extends State<ShopScreen> {
     print(_purchases);
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
       _displayDiamondAndKeys(_purchase);
-
+        AudioPlayer().playSound(path: 'diamondsIncrease.mp3');
       _isPurchasePending = true;
 
       final _updateUserData = UserData(

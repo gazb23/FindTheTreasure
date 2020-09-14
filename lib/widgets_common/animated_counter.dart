@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class AnimatedCount extends ImplicitlyAnimatedWidget {
@@ -8,7 +9,7 @@ class AnimatedCount extends ImplicitlyAnimatedWidget {
     @required this.count,
     @required Duration duration,
     this.textStyle, 
-    Curve curve = Curves.easeOut
+    Curve curve = Curves.decelerate
   }) : super(duration: duration, curve: curve, key: key);
 
   @override
@@ -17,14 +18,17 @@ class AnimatedCount extends ImplicitlyAnimatedWidget {
 
 class _AnimatedCountState extends AnimatedWidgetBaseState<AnimatedCount> {
   IntTween _count;
-
+  
+  
   @override
   Widget build(BuildContext context) {
+ 
     return new Text(_count.evaluate(animation).toString(), style: widget.textStyle,);
   }
 
   @override
   void forEachTween(TweenVisitor visitor) {
+    
     _count = visitor(_count, widget.count, (dynamic value) => new IntTween(begin: value));
   }
 }

@@ -7,6 +7,8 @@ import 'package:find_the_treasure/presentation/active_quest/find_treasure_screen
 import 'package:find_the_treasure/presentation/active_quest/question_types/question_scroll_single_answer.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/list_items_builder.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/theme.dart';
+import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/quest_location_card.dart';
 import 'package:flutter/material.dart';
@@ -135,8 +137,20 @@ class ActiveQuestScreen extends StatelessWidget {
                             },
                           ),
                         );
+                      } else if (snapshot.connectionState == ConnectionState.waiting) {
+                        Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.height,
+                          color: Colors.white.withOpacity(0.5),
+                          child: Center(child: CustomCircularProgressIndicator(color: MaterialTheme.orange,)),
+                        );
                       }
-                      return Container();
+                      return Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.height,
+                          color: Colors.white.withOpacity(0.5),
+                          child: Center(child: CustomCircularProgressIndicator(color: MaterialTheme.orange,)),
+                        );
                     }),
               ),
             ],

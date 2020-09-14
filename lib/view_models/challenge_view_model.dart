@@ -5,7 +5,9 @@ import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/Shop/screens/shop_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
+import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/database.dart';
+import 'package:find_the_treasure/services/global_functions.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
@@ -23,12 +25,14 @@ class ChallengeViewModel extends ChangeNotifier {
     @required QuestModel questModel,
     Duration duration,
   }) async {
+    
     isLoading = true;
     notifyListeners();
     final UserData _userData = Provider.of<UserData>(context, listen: false);
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
-
+    await GlobalFunction.delayBy(minTime: 200, maxTime: 800);
+    AudioPlayer().playSound(path: 'answerIncorrect.mp3');
     final UserData _updateUserData = UserData(
       userDiamondCount: _userData.userDiamondCount,
       userKeyCount: _userData.userKeyCount,

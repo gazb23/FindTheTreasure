@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:find_the_treasure/theme.dart';
+
 import 'package:find_the_treasure/widgets_common/platform_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,8 +14,9 @@ class PlatformAlertDialog extends PlatformWidget {
   final Color backgroundColor;
   final Color titleTextColor;
   final Color contentTextColor;
-
+  
   PlatformAlertDialog({
+   
     this.cancelActionText,
     @required this.title,
     @required this.content,

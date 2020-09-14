@@ -32,13 +32,12 @@ class QuestDiamondCalulationButton extends StatelessWidget {
 
     return SignInButton(
         padding: 15,
-
-        text: 
-        _isStartedBy || _isCompletedBy ? 'Continue Quest' : 'Start Quest',
+        text: _isStartedBy || _isCompletedBy ? 'Continue Quest' : 'Start Quest',
         onPressed: () {
           if (userData.userDiamondCount >= questModelStream.numberOfDiamonds &&
                   userData.userKeyCount >= questModelStream.numberOfKeys ||
-              _isStartedBy || _isCompletedBy) {
+              _isStartedBy ||
+              _isCompletedBy) {
             return _confirmQuest(
                 context, questModelStream, userData, databaseService);
           } else if (userData.userDiamondCount <
@@ -51,14 +50,13 @@ class QuestDiamondCalulationButton extends StatelessWidget {
           } else
             return _confirmStoreKey(context, questModelStream, _keyCalc);
         });
-        
   }
 
   Future<void> _confirmQuest(BuildContext context, QuestModel questModelStream,
       UserData userData, DatabaseService database) async {
     final bool _isStartedBy =
         questModelStream.questStartedBy.contains(userData.uid);
-         final bool _isCompletedBy =
+    final bool _isCompletedBy =
         questModelStream.questCompletedBy.contains(userData.uid);
     try {
       if (!_isStartedBy && !_isCompletedBy) {
@@ -71,6 +69,27 @@ class QuestDiamondCalulationButton extends StatelessWidget {
           image: Image.asset('images/ic_excalibur_owl.png'),
         ).show(context);
         if (didRequestQuest) {
+          final UserData _userData = UserData(
+            userDiamondCount:
+                userData.userDiamondCount - questModelStream.numberOfDiamonds,
+            userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
+            points: userData.points,
+            displayName: userData.displayName,
+            locationsExplored: userData.locationsExplored,
+            email: userData.email,
+            photoURL: userData.photoURL,
+            isAdmin: userData.isAdmin,
+            uid: userData.uid,
+            seenIntro: userData.seenIntro,
+          );
+
+          await database.arrayUnionField(
+              collectionRef: APIPath.quests(),
+              documentId: questModelStream.id,
+              field: 'questStartedBy');
+
+          database.updateUserData(userData: _userData);
+
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(
               builder: (context) => ActiveQuestScreen(
@@ -78,28 +97,8 @@ class QuestDiamondCalulationButton extends StatelessWidget {
               ),
             ),
           );
-         
-          final UserData _userData = UserData(
-            userDiamondCount:
-              userData.userDiamondCount - questModelStream.numberOfDiamonds,
-            userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
-            points: userData.points,
-            displayName: userData.displayName,
-            locationsExplored: userData.locationsExplored, 
-            email: userData.email,
-            photoURL: userData.photoURL,
-             isAdmin: userData.isAdmin,
-            uid: userData.uid,     
-            seenIntro: userData.seenIntro,       
-          );
-          await database.arrayUnionField(
-              collectionRef: APIPath.quests(),
-              documentId: questModelStream.id,             
-              field: 'questStartedBy');
-          database.updateUserData(userData: _userData);
         }
       } else if (_isStartedBy || _isCompletedBy) {
-      
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => ActiveQuestScreen(
