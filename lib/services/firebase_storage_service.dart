@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
+import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -63,31 +66,38 @@ class FirebaseStorageService extends ChangeNotifier {
     );
 
     try {
-      directory = await getApplicationDocumentsDirectory();
-
       for (String imageURL in questModel.imageURL) {
-        Dio dio = Dio();
-        if (File('${directory.path}/${questModel.title}') != null) {
-          return;
-        } else
-          await progressDialog.show();
-        await dio.download('$imageURL', '${directory.path}/${questModel.title}',
         
-            onReceiveProgress: (received, total) {
-          downloadProgress = downloadProgress + received;
-          totalProgress = downloadProgress + total;
-        });
-        progressDialog.update(
-            progress:
-                (downloadProgress / totalProgress * 100).floor().toDouble() +
-                    1);
-        if ((downloadProgress / totalProgress * 100).floor().toDouble() + 1 ==
-            100) {
-          progressDialog.hide();
+        Dio dio = Dio();
+        if (await File('$localPath/$imageURL.jpg').exists() == false &&
+            ConnectivityService.checkNetwork(context)) {
+          await progressDialog.show();
+          await dio.download('$imageURL', '$localPath/$imageURL.jpg ',
+              onReceiveProgress: (received, total) {
+            downloadProgress = downloadProgress + received;
+            totalProgress = downloadProgress + total;
+          });
+          print('$localPath/$imageURL.jpg ');
+          progressDialog.update(
+              progress:
+                  (downloadProgress / totalProgress * 100).floor().toDouble() +
+                      1);
+          if ((downloadProgress / totalProgress * 100).floor().toDouble() + 1 ==
+              100) {
+            progressDialog.hide();
+          }
+        } else {
+          return;
         }
       }
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  static Future<String> get localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
   }
 }

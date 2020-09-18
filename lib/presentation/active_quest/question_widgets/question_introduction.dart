@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/image_zoom.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
+import 'package:find_the_treasure/services/firebase_storage_service.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class QuestionIntroduction extends StatelessWidget {
   final BuildContext context;
@@ -20,11 +25,14 @@ class QuestionIntroduction extends StatelessWidget {
     @required this.locationModel,
     @required this.questionsModel,
     @required this.locationQuestion,
-    this.showImage = false, this.largerImage = false,
+    this.showImage = false,
+    this.largerImage = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    
+    
     return Column(
       children: <Widget>[
         ConstrainedBox(
@@ -35,7 +43,6 @@ class QuestionIntroduction extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             padding:
                 const EdgeInsets.only(top: 10, left: 5, right: 10, bottom: 10),
-      
             decoration: BoxDecoration(
                 boxShadow: [
                   const BoxShadow(
@@ -65,9 +72,8 @@ class QuestionIntroduction extends StatelessWidget {
                     height: 10,
                   ),
                   showImage
-                      ? 
-                      
-                      CachedNetworkImage(
+                      ? ConnectivityService.checkNetwork(context) ? CachedNetworkImage(
+
                           imageUrl: questionsModel.image,
                           fadeInDuration: Duration(milliseconds: 300),
                           placeholder: (context, url) =>
@@ -80,20 +86,25 @@ class QuestionIntroduction extends StatelessWidget {
                                       ImageZoom(image: image)));
                             },
                             child: Container(
-                                height: 
-                                largerImage ?  MediaQuery.of(context).size.width / 1.8 :
-                                MediaQuery.of(context).size.width / 2,
+                                height: largerImage
+                                    ? MediaQuery.of(context).size.width / 1.8
+                                    : MediaQuery.of(context).size.width / 2,
                                 decoration: BoxDecoration(
                                   color: Colors.black,
                                   borderRadius: BorderRadius.only(
                                       bottomRight: Radius.circular(40)),
                                   image: DecorationImage(
                                       image: image,
+                                          
                                       fit: BoxFit.fill,
                                       alignment: Alignment.center),
-                                )),
+                                )) ,
                           ),
-                        )
+                        ) : Image.file(File(
+                                              (
+                                                '/data/user/0/com.findthetreasure.find_the_treasure/app_flutter' + questionsModel.image + '.jpg'
+
+                                              )))
                       : Container()
                 ],
               ),
@@ -103,4 +114,5 @@ class QuestionIntroduction extends StatelessWidget {
       ],
     );
   }
+  
 }

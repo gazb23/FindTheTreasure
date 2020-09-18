@@ -39,9 +39,9 @@ class ConnectivityService {
 
   static bool checkNetwork(BuildContext context) {
     final isConnected =
-        Provider.of<DataConnectionStatus>(context, listen: true);
+        Provider.of<DataConnectionStatus>(context, listen: false);
     final connectionStatus =
-        Provider.of<ConnectivityStatus>(context, listen: true);
+        Provider.of<ConnectivityStatus>(context, listen: false);
 
     if (Platform.isAndroid) {
       if (connectionStatus == ConnectivityStatus.Online) {
