@@ -1,15 +1,16 @@
 import 'dart:io';
-import 'package:archive/archive.dart';
 import 'package:dio/dio.dart';
+import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class FirebaseStorageService extends ChangeNotifier {
-  String downloadMessage = 'Downloading...';
-  bool isDownloading = false;
-  FirebaseStorageService({@required this.uid}) : assert(uid != null);
+  Directory directory;
+  FirebaseStorageService({this.uid});
   final String uid;
 
   /// Upload an avatar from file
@@ -43,41 +44,50 @@ class FirebaseStorageService extends ChangeNotifier {
     return downloadUrl;
   }
 
-  download({@required String path}) async {
-    isDownloading = true;
-    notifyListeners();
+  void download({
+    @required QuestModel questModel,
+    @required BuildContext context,
+  }) async {
+    double downloadProgress = 0;
+    double totalProgress = 0;
+    ProgressDialog progressDialog = ProgressDialog(context);
+    progressDialog = ProgressDialog(context,
+        type: ProgressDialogType.Download,
+        isDismissible: false,
+        showLogs: true);
+
+    progressDialog.style(
+      progress: totalProgress,
+      maxProgress: 100,
+      message: 'Downloading Quest Data',
+    );
+
     try {
-      final directory = await getApplicationDocumentsDirectory();
-      final storageReference = FirebaseStorage.instance.ref().child(path);
-      final fileName = storageReference.getName();
-      final Future<dynamic> downloadURL =
-          await storageReference.getDownloadURL();
-      Dio dio = Dio();      
-      dio.download('$downloadURL', '${directory.path}/$fileName',
-          onReceiveProgress: (actualBytes, totalBytes) {
-            String percentage = (actualBytes / totalBytes * 100).floor().toString();
-            downloadMessage = 'Downloading + $percentage';
+      directory = await getApplicationDocumentsDirectory();
 
-          });
-
-      unarchiveAndSave(zippedFile);
+      for (String imageURL in questModel.imageURL) {
+        Dio dio = Dio();
+        if (File('${directory.path}/${questModel.title}') != null) {
+          return;
+        } else
+          await progressDialog.show();
+        await dio.download('$imageURL', '${directory.path}/${questModel.title}',
+        
+            onReceiveProgress: (received, total) {
+          downloadProgress = downloadProgress + received;
+          totalProgress = downloadProgress + total;
+        });
+        progressDialog.update(
+            progress:
+                (downloadProgress / totalProgress * 100).floor().toDouble() +
+                    1);
+        if ((downloadProgress / totalProgress * 100).floor().toDouble() + 1 ==
+            100) {
+          progressDialog.hide();
+        }
+      }
     } catch (e) {
       print(e.toString());
     }
   }
-
-   // Unarchive and save the file in Documents directory and save the paths in the array
-  unarchiveAndSave(var zippedFile) async {
-    var bytes = zippedFile.readAsBytesSync();
-    var archive = ZipDecoder().decodeBytes(bytes);
-    for (var file in archive) {
-      var fileName = '$_dir/${file.name}';
-      if (file.isFile) {
-        var outFile = File(fileName);
-        //print('File:: ' + outFile.path);
-        _tempImages.add(outFile.path);
-        outFile = await outFile.create(recursive: true);
-        await outFile.writeAsBytes(file.content);
-      }
-    }
 }

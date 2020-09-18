@@ -24,9 +24,10 @@ class QuestModel {
   final List questStartedBy;
   final List questCompletedBy;
   final List treasureDiscoveredBy;
+  final List imageURL;
   final Map<String, dynamic> treasureCoordinates;
 
-  QuestModel({
+  QuestModel( {
     this.id,
     this.likedBy,
     this.questStartedBy,
@@ -52,7 +53,8 @@ class QuestModel {
     this.treasureDirections,
     this.treasureCoordinates,
     this.treasureDiscoveredBy,
-    this.treasureImage
+    this.treasureImage,
+    this.imageURL,
   });
 
   factory QuestModel.fromMap(Map<String, dynamic> data, String documentId) {
@@ -89,6 +91,7 @@ class QuestModel {
       treasureDirections: data['treasureDirections'],
       treasureDiscoveredBy: data['treasureDiscoveredBy'],
       treasureImage: data['treasureImage'],
+      imageURL: data['imageURL']
     );
   }
 
@@ -112,6 +115,7 @@ class QuestModel {
       'bountyKeys': bountyKeys,
       'bountyDiamonds': bountyDiamonds,
       'questPoints': questPoints,
+      'imageURL': imageURL
     };
   }
 

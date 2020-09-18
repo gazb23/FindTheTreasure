@@ -14,9 +14,11 @@ import 'package:find_the_treasure/services/url_launcher.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
@@ -129,7 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
+    
     final user = Provider.of<UserData>(context, listen: false);
 
     return Scaffold(
@@ -229,7 +232,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildsettingsContainer() {
+  Widget _buildsettingsContainer()  {
+    
+    
+      
+    
     return Container(
         height: MediaQuery.of(context).size.height / 1.6,
         width: double.infinity,
@@ -246,6 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
+       
         SizedBox(
           height: 20,
         ),

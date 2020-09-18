@@ -65,7 +65,9 @@ class QuestionIntroduction extends StatelessWidget {
                     height: 10,
                   ),
                   showImage
-                      ? CachedNetworkImage(
+                      ? 
+                      
+                      CachedNetworkImage(
                           imageUrl: questionsModel.image,
                           fadeInDuration: Duration(milliseconds: 300),
                           placeholder: (context, url) =>
