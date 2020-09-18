@@ -64,40 +64,39 @@ class FirebaseStorageService extends ChangeNotifier {
       maxProgress: 100,
       message: 'Downloading Quest Data',
     );
+    if (ConnectivityService.checkNetwork(context, listen: false)) {
+      try {
+        final directory = await getApplicationDocumentsDirectory();
+        for (String imageURL in questModel.imageURL) {
+          Dio dio = Dio();
+          if (!(File('${directory.path}/$imageURL.jpg').existsSync())) {
+            print('downloading');
+            await progressDialog.show();
+            await dio.download('$imageURL', '/${directory.path}/$imageURL.jpg',
+                onReceiveProgress: (received, total) {
+              downloadProgress = downloadProgress + received;
+              totalProgress = downloadProgress + total;
+            });
 
-    try {
-      for (String imageURL in questModel.imageURL) {
-        
-        Dio dio = Dio();
-        if (await File('$localPath/$imageURL.jpg').exists() == false &&
-            ConnectivityService.checkNetwork(context)) {
-          await progressDialog.show();
-          await dio.download('$imageURL', '$localPath/$imageURL.jpg ',
-              onReceiveProgress: (received, total) {
-            downloadProgress = downloadProgress + received;
-            totalProgress = downloadProgress + total;
-          });
-          print('$localPath/$imageURL.jpg ');
-          progressDialog.update(
-              progress:
-                  (downloadProgress / totalProgress * 100).floor().toDouble() +
-                      1);
-          if ((downloadProgress / totalProgress * 100).floor().toDouble() + 1 ==
-              100) {
-            progressDialog.hide();
+            progressDialog.update(
+                progress: (downloadProgress / totalProgress * 100)
+                        .floor()
+                        .toDouble() +
+                    1);
+            if ((downloadProgress / totalProgress * 100).floor().toDouble() +
+                    1 ==
+                100) {
+              progressDialog.hide();
+            }
+          } else {
+            print('Files already exist');
           }
-        } else {
-          return;
         }
+      } catch (e) {
+        print(e.toString());
       }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  static Future<String> get localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
+    } else
+    print('not connected');
+      return;
   }
 }

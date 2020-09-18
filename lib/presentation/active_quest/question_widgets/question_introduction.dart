@@ -6,7 +6,7 @@ import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/question_widgets/image_zoom.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
-import 'package:find_the_treasure/services/firebase_storage_service.dart';
+
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -31,8 +31,6 @@ class QuestionIntroduction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    
     return Column(
       children: <Widget>[
         ConstrainedBox(
@@ -72,39 +70,54 @@ class QuestionIntroduction extends StatelessWidget {
                     height: 10,
                   ),
                   showImage
-                      ? ConnectivityService.checkNetwork(context) ? CachedNetworkImage(
-
-                          imageUrl: questionsModel.image,
-                          fadeInDuration: Duration(milliseconds: 300),
-                          placeholder: (context, url) =>
-                              CustomCircularProgressIndicator(),
-                          imageBuilder: (context, image) => InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  fullscreenDialog: true,
-                                  builder: (context) =>
-                                      ImageZoom(image: image)));
-                            },
-                            child: Container(
-                                height: largerImage
-                                    ? MediaQuery.of(context).size.width / 1.8
-                                    : MediaQuery.of(context).size.width / 2,
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(40)),
-                                  image: DecorationImage(
-                                      image: image,
-                                          
-                                      fit: BoxFit.fill,
-                                      alignment: Alignment.center),
-                                )) ,
-                          ),
-                        ) : Image.file(File(
-                                              (
-                                                '/data/user/0/com.findthetreasure.find_the_treasure/app_flutter' + questionsModel.image + '.jpg'
-
-                                              )))
+                      ? ConnectivityService.checkNetwork(context, listen: false)
+                          ? CachedNetworkImage(
+                              imageUrl: questionsModel.image,
+                              fadeInDuration: Duration(milliseconds: 300),
+                              placeholder: (context, url) =>
+                                  CustomCircularProgressIndicator(),
+                              imageBuilder: (context, image) => InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          ImageZoom(image: image)));
+                                },
+                                child: Container(
+                                    height: largerImage
+                                        ? MediaQuery.of(context).size.width /
+                                            1.8
+                                        : MediaQuery.of(context).size.width / 2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(40)),
+                                      image: DecorationImage(
+                                          image: image,
+                                          fit: BoxFit.fill,
+                                          alignment: Alignment.center),
+                                    )),
+                              ),
+                            )
+                          : FutureBuilder(
+                              future: _getLocalFile("${questionsModel.image}.jpg"),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<File> snapshot) {
+                                return snapshot.data != null
+                                    ? InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          ImageZoom(image: FileImage(snapshot.data))));
+                                      },
+                                                                          child: ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                            bottomRight: Radius.circular(40)),
+                                        child: Image.file(snapshot.data, )),
+                                    )
+                                    : Container();
+                              })
                       : Container()
                 ],
               ),
@@ -114,5 +127,10 @@ class QuestionIntroduction extends StatelessWidget {
       ],
     );
   }
-  
+
+  Future<File> _getLocalFile(String filename) async {
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    File f = new File('$dir/$filename');
+    return f;
+  }
 }

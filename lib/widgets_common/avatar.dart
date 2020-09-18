@@ -24,7 +24,6 @@ class Avatar extends StatelessWidget {
     return Container(
       decoration: _borderDecoration(),
       child: CachedNetworkImage(
-       
         imageUrl: photoURL == null || photoURL == '' ? _noImage : photoURL,
         errorWidget: (context, url, error) => Icon(
           Icons.error,

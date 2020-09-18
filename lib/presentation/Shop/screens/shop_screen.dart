@@ -303,7 +303,7 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-          if (_isAvailable && ConnectivityService.checkNetwork(context))
+          if (_isAvailable && ConnectivityService.checkNetwork(context, listen: true))
             // Display products from store
 
             for (var prod in _products)
