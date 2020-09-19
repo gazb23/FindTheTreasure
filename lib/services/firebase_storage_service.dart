@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
-import 'package:find_the_treasure/models/questions_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
-import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,56 +44,52 @@ class FirebaseStorageService extends ChangeNotifier {
     return downloadUrl;
   }
 
-  void download({
+  static void download({
     @required QuestModel questModel,
     @required BuildContext context,
   }) async {
     double downloadProgress = 0;
     double totalProgress = 0;
     ProgressDialog progressDialog = ProgressDialog(context);
-    progressDialog = ProgressDialog(context,
-        type: ProgressDialogType.Download,
-        isDismissible: false,
-        showLogs: true);
+    progressDialog = ProgressDialog(
+      context,
+      type: ProgressDialogType.Download,
+      isDismissible: false,
+      showLogs: true,      
+    );
 
     progressDialog.style(
       progress: totalProgress,
       maxProgress: 100,
-      message: 'Downloading Quest Data',
+      message: 'Downloading Quest Data...',
     );
-    if (ConnectivityService.checkNetwork(context, listen: false)) {
-      try {
-        final directory = await getApplicationDocumentsDirectory();
-        for (String imageURL in questModel.imageURL) {
-          Dio dio = Dio();
-          if (!(File('${directory.path}/$imageURL.jpg').existsSync())) {
-            print('downloading');
-            await progressDialog.show();
-            await dio.download('$imageURL', '/${directory.path}/$imageURL.jpg',
-                onReceiveProgress: (received, total) {
-              downloadProgress = downloadProgress + received;
-              totalProgress = downloadProgress + total;
-            });
 
-            progressDialog.update(
-                progress: (downloadProgress / totalProgress * 100)
-                        .floor()
-                        .toDouble() +
-                    1);
-            if ((downloadProgress / totalProgress * 100).floor().toDouble() +
-                    1 ==
-                100) {
-              progressDialog.hide();
-            }
-          } else {
-            print('Files already exist');
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      for (String imageURL in questModel.imageURL) {
+        Dio dio = Dio();
+        if (!(File('${directory.path}/$imageURL.jpg').existsSync())) {          
+          await progressDialog.show();
+          await dio.download('$imageURL', '/${directory.path}/$imageURL.jpg',
+              onReceiveProgress: (received, total) {
+            downloadProgress = downloadProgress + received;
+            totalProgress = downloadProgress + total;
+          });
+
+          progressDialog.update(
+              progress:
+                  (downloadProgress / totalProgress * 100).floor().toDouble() +
+                      1);
+          if ((downloadProgress / totalProgress * 100).floor().toDouble() + 1 ==
+              100) {
+            progressDialog.hide();
           }
+        } else {
+          print('Files already exist');
         }
-      } catch (e) {
-        print(e.toString());
       }
-    } else
-    print('not connected');
-      return;
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

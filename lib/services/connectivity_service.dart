@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +30,7 @@ class ConnectivityService {
         return ConnectivityStatus.Online;
 
       default:
-        return ConnectivityStatus.Offline;
+        return ConnectivityStatus.Online;
     }
   }
 
@@ -52,8 +49,9 @@ class ConnectivityService {
       }
     
      else {
-      if (isConnected == DataConnectionStatus.disconnected ||
-          connectionStatus == ConnectivityStatus.Offline) {
+      if (isConnected == DataConnectionStatus.disconnected
+          // connectionStatus == ConnectivityStatus.Offline
+          ) {
           print('connection Lost');
         // Fluttertoast.showToast(
         //     msg: "Check your internet connection",

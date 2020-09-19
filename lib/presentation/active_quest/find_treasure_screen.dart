@@ -68,7 +68,11 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
         ),
         body: Container(
             height: phoneHeight,
-            color: Colors.brown,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              colors: [Colors.brown, Colors.brown.shade800],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,16 +221,13 @@ class TreasureButton extends StatelessWidget {
           child: RaisedButton(
             padding: EdgeInsets.symmetric(vertical: 10),
             shape: StadiumBorder(),
-            color: Colors.white,
+            color: MaterialTheme.orange,
             child: locationService.isLoading || !permissionService.isLoading
                 ? CircularProgressIndicator(
                     valueColor:
                         AlwaysStoppedAnimation<Color>(MaterialTheme.orange),
                   )
-                : Image.asset(
-                    'images/ic_logo.png',
-                    height: 35,
-                  ),
+                : Text('Dig!', style: TextStyle(fontSize: 20, color: Colors.white),),
             onPressed:
                 !locationService.isLoading || !permissionService.isLoading
                     ? _submit

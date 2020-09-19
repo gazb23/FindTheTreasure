@@ -91,7 +91,7 @@ class QuestViewModel  {
             field: 'treasureDiscoveredBy',
             collectionRef: APIPath.quests());
         List<Future> futures = [updateUserData, treasureDiscovereBy];
-        await Future.wait(futures);
+         Future.wait(futures);
 
         Navigator.pushReplacement(
             context,

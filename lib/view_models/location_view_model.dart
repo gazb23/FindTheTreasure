@@ -37,7 +37,7 @@ class LocationViewModel extends ChangeNotifier {
             collectionRef: APIPath.quests());
        
         List<Future> futures = [questCompleted, questStartedBy];
-        await Future.wait(futures);
+         Future.wait(futures);
         Navigator.of(context).push(
           MaterialPageRoute(
               builder: (context) => FindTreasureScreen(

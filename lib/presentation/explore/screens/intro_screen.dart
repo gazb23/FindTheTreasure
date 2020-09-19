@@ -131,11 +131,12 @@ class _IntroScreenState extends State<IntroScreen> {
                   opacity: _showTreasure ? 1 : 0,
                   duration: Duration(seconds: 1),
                   child: DiamondAndKeyContainer(
+                    diamondSpinning: true,
                     numberOfDiamonds: 50,
                     numberOfKeys: 1,
                     mainAxisAlignment: MainAxisAlignment.center,
                     diamondHeight: 50,
-                    skullKeyHeight: 60,
+                    skullKeyHeight: 50,
                     fontSize: 20,
                     showShop: false,
                   ),

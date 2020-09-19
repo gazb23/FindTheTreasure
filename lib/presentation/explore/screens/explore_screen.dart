@@ -3,6 +3,7 @@ import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/screens/intro_screen.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -25,6 +26,7 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
+    
     AudioPlayer().loadAllSounds();
     super.initState();
   }
@@ -32,7 +34,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
-
+  ConnectivityService.checkNetwork(context, listen: true);
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -74,7 +76,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   void _showIntroDialog(BuildContext context, UserData userData) async {
     print('dialog');
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 3));
     try {
       if (!userData.seenIntro) {
         SchedulerBinding.instance.scheduleFrameCallback((_) {
