@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/global_functions.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
@@ -23,6 +24,11 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  @override
+  void initState() {
+    AudioPlayer().playSound(path: 'intro.mp3', loop: false);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     UserData _userData = Provider.of<UserData>(context);
@@ -195,4 +201,5 @@ class _IntroScreenState extends State<IntroScreen> {
       _startAnimation = false;
     }
   }
+
 }

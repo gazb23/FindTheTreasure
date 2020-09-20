@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
+import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/permission_service.dart';
 import 'package:find_the_treasure/services/treasure_location_service.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:scratcher/scratcher.dart';
 
 bool _isFinished = false;
+bool _startAnimation = false;
 bool _mapRevealed = false;
 
 class FindTreasureScreen extends StatefulWidget {
@@ -36,43 +38,50 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.brown,
-          leading: InkWell(
-            onTap: () async {
-              final didTapSkip = await PlatformAlertDialog(
-                title: 'Can\'t Find the Treasure?',
-                content: 'By skipping you will forfeit your treasure',
-                image: Image.asset('images/ic_owl_wrong_dialog.png'),
-                defaultActionText: 'Skip',
-                cancelActionText: 'Cancel',
-              ).show(context);
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.popAndPushNamed(context, HomePage.id);
+              }),
+          actions: [
+            InkWell(
+              onTap: () async {
+                final didTapSkip = await PlatformAlertDialog(
+                  title: 'Can\'t Find the Treasure?',
+                  content: 'By skipping you will forfeit your treasure',
+                  image: Image.asset('images/ic_owl_wrong_dialog.png'),
+                  defaultActionText: 'Skip',
+                  cancelActionText: 'Cancel',
+                ).show(context);
 
-              if (didTapSkip) {
-                QuestViewModel.submitTreasureSkipped(
-                  context: context,
-                  databaseService: widget.databaseService,
-                  questModel: widget.questModel,
-                );
-              } else {}
-            },
-            child: Container(
-                width: 150,
-                height: 50,
-                child: Center(
-                  child: Text(
-                    'SKIP',
-                    style: TextStyle(fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-          ),
+                if (didTapSkip) {
+                  QuestViewModel.submitTreasureSkipped(
+                    context: context,
+                    databaseService: widget.databaseService,
+                    questModel: widget.questModel,
+                  );
+                } else {}
+              },
+              child: Container(
+                  width: 150,
+                  height: 50,
+                  child: Center(
+                    child: Text(
+                      'SKIP',
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+            )
+          ],
         ),
         body: Container(
             height: phoneHeight,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-              colors: [Colors.brown, Colors.brown.shade800],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter)),
+                    colors: [Colors.brown, Colors.brown.shade800],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,39 +96,46 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                             padding: EdgeInsets.only(top: 30),
                             child: Image.asset('images/pirate.png')),
                         Container(
-                          padding: EdgeInsets.all(20),
-                          child: !_isFinished
-                              ? TyperAnimatedTextKit(
-                                  pause: Duration(milliseconds: 1250),
-                                  text: [
-                                    'Well done, you\'ve conquered all the quests!',
-                                    'I didn\'t think you had it in you.',
-                                    'But now it\'s time to Find The Treasure...',
-                                    'Good luck!'
-                                  ],
-                                  textStyle: TextStyle(
-                                      color: Colors.white, fontSize: 22),
-                                  isRepeatingAnimation: false,
-                                  speed: Duration(milliseconds: 50),
-                                  textAlign: TextAlign.center,
-                                  alignment: AlignmentDirectional.topStart,
-                                  onNextBeforePause: (index, isLast) {},
-                                  onFinished: () {
-                                    setState(() {
-                                      _isFinished = !_isFinished;
-                                    });
-                                  })
-                              : Column(
-                                  children: <Widget>[
-                                    Text(
-                                      'Swipe away the dirt to reveal the location of the treasure.',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                        ),
+                            padding: EdgeInsets.all(20),
+                            child: _startAnimation
+                                ? TyperAnimatedTextKit(
+                                    pause: Duration(milliseconds: 1250),
+                                    text: [
+                                      'Well done, you\'ve conquered all the quests!',
+                                      'I didn\'t think you had it in you.',
+                                      'But now it\'s time to Find The Treasure...',
+                                      'Good luck!',
+                                      'Swipe away the dirt to reveal the location of the treasure.'
+                                    ],
+                                    textStyle: TextStyle(
+                                        color: Colors.white, fontSize: 22),
+                                    isRepeatingAnimation: false,
+                                    speed: Duration(milliseconds: 50),
+                                    textAlign: TextAlign.center,
+                                    alignment: AlignmentDirectional.topStart,
+                                    onNextBeforePause: (index, isLast) {},
+                                    onFinished: () {
+                                      setState(() {
+                                        _isFinished = !_isFinished;
+                                      });
+                                    })
+                                : Column(
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            _startAnimation = true;
+                                          });
+                                        },
+                                                                              child: Text(
+                                          'Tap here to start.',
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 22),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
                       ],
                     ),
                   ),
@@ -142,6 +158,7 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Scratcher(
+
                               brushSize: 70,
                               color: Colors.brown.withOpacity(0.85),
                               image: Image.asset('images/digging.png'),
@@ -227,7 +244,10 @@ class TreasureButton extends StatelessWidget {
                     valueColor:
                         AlwaysStoppedAnimation<Color>(MaterialTheme.orange),
                   )
-                : Text('Dig!', style: TextStyle(fontSize: 20, color: Colors.white),),
+                : Text(
+                    'Dig!',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
             onPressed:
                 !locationService.isLoading || !permissionService.isLoading
                     ? _submit

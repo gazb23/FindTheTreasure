@@ -30,16 +30,15 @@ class QuestionViewModel extends ChangeNotifier {
   }) async {
     isLoading = true;
     notifyListeners();
-    // Not using await on async functions as this will stop Firebase offline mode from working. Instead, I have created a simulated network delay to improve feedback for the user. 
-    await GlobalFunction.delayBy(minTime: 100, maxTime: 1500);
+    // Not using await on async functions as this will stop Firebase offline mode from working. Instead, I have created a simulated network delay to improve feedback for the user.
+    await GlobalFunction.delayBy(minTime: 300, maxTime: 1500);
     AudioPlayer().playSound(path: 'purchaseQuest.mp3');
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     // If Challenge Question
     if (!isLocation) {
       try {
-
-         _databaseService.arrayUnionField(
+        _databaseService.arrayUnionField(
           documentId: documentId,
           field: 'challengeCompletedBy',
           collectionRef: collectionRef,
@@ -124,25 +123,21 @@ class QuestionViewModel extends ChangeNotifier {
     if (!locationModel.locationCompletedBy.contains(_databaseService.uid) &&
         lastChallengeCompleted) {
       try {
-        final Future<void> locationCompleteBy =
-            _databaseService.arrayUnionField(
-                documentId: locationModel.id,
-                field: 'locationCompletedBy',
-                collectionRef: APIPath.locations(questId: questModel.id));
-
-        //Add the title of the location to the users locationsExplored field
-        final Future<void> locationsExplored =
-            _databaseService.arrayUnionFieldData(
-                documentId: _userData.uid,
-                data: locationModel.title,
-                field: 'locationsExplored',
-                collectionRef: APIPath.users());
-
         if (!_userData.locationsExplored.contains(locationModel.title)) {
-          await locationsExplored;
+          //Add the title of the location to the users locationsExplored field
+          _databaseService.arrayUnionFieldData(
+              documentId: _userData.uid,
+              data: locationModel.title,
+              field: 'locationsExplored',
+              collectionRef: APIPath.users());
+          // await locationsExplored;
         }
+        _databaseService.arrayUnionField(
+            documentId: locationModel.id,
+            field: 'locationCompletedBy',
+            collectionRef: APIPath.locations(questId: questModel.id));
 
-        await locationCompleteBy;
+        // await locationCompleteBy;
 
         // If the user has completed all the locations for a quest
         if (lastLocationCompleted) {
@@ -268,20 +263,20 @@ class QuestionViewModel extends ChangeNotifier {
         image: Image.asset('images/ic_out_of_gems.png'),
       ).show(context);
       if (didRequestSkip) {
-        final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context);
+        final QuestionViewModel questionViewModel =
+            Provider.of<QuestionViewModel>(context);
         try {
           final UserData _updateUserData = UserData(
-            userDiamondCount: _userData.userDiamondCount - _skipCost,
-            userKeyCount: _userData.userKeyCount,
-            points: _userData.points,
-            displayName: _userData.displayName,
-            email: _userData.email,
-            photoURL: _userData.photoURL,
-            uid: _userData.uid,
-            isAdmin: _userData.isAdmin,
-            locationsExplored: _userData.locationsExplored,
-            seenIntro: _userData.seenIntro
-          );
+              userDiamondCount: _userData.userDiamondCount - _skipCost,
+              userKeyCount: _userData.userKeyCount,
+              points: _userData.points,
+              displayName: _userData.displayName,
+              email: _userData.email,
+              photoURL: _userData.photoURL,
+              uid: _userData.uid,
+              isAdmin: _userData.isAdmin,
+              locationsExplored: _userData.locationsExplored,
+              seenIntro: _userData.seenIntro);
 
           _databaseService.updateUserData(userData: _updateUserData);
           questionViewModel.submit(

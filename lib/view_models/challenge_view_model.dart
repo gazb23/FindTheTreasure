@@ -31,7 +31,7 @@ class ChallengeViewModel extends ChangeNotifier {
     final UserData _userData = Provider.of<UserData>(context, listen: false);
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
-    await GlobalFunction.delayBy(minTime: 200, maxTime: 1500);
+    await GlobalFunction.delayBy(minTime: 300, maxTime: 1500);
     AudioPlayer().playSound(path: 'answerIncorrect.mp3');
     final UserData _updateUserData = UserData(
       userDiamondCount: _userData.userDiamondCount,

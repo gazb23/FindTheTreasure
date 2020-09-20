@@ -124,7 +124,7 @@ class _QuestListViewState extends State<QuestListView> {
                           Colors.grey.shade800,
                           Colors.grey.shade700
                         ])),
-                child: widget.questModel.questCompletedBy.contains(database.uid)
+                child: widget.questModel.questCompletedBy.contains(database.uid) && widget.questModel.treasureDiscoveredBy.contains(database.uid)
                     ? Container(
                         width: double.infinity,
                         child: Shimmer.fromColors(

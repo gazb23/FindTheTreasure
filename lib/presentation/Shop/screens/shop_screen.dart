@@ -5,6 +5,7 @@ import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/buy_diamond_key_button.dart';
+import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -137,7 +138,6 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _verifyPurchase() async {
-    
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
@@ -147,7 +147,7 @@ class _ShopScreenState extends State<ShopScreen> {
     print(_purchases);
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
       _displayDiamondAndKeys(_purchase);
-        AudioPlayer().playSound(path: 'diamondsIncrease.mp3');
+      AudioPlayer().playSound(path: 'diamondsIncrease.mp3');
       _isPurchasePending = true;
 
       final _updateUserData = UserData(
@@ -303,7 +303,8 @@ class _ShopScreenState extends State<ShopScreen> {
           const SizedBox(
             height: 10,
           ),
-          if (_isAvailable && ConnectivityService.checkNetwork(context, listen: true))
+          if (_isAvailable &&
+              ConnectivityService.checkNetwork(context, listen: true))
             // Display products from store
 
             for (var prod in _products)
@@ -331,9 +332,13 @@ class _ShopScreenState extends State<ShopScreen> {
                     ],
                   )
                 : Container(
-                    height: MediaQuery.of(context).size.height,
-                    color: Colors.black,
-                    child: CircularProgressIndicator(),
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black.withOpacity(0.5),
+                    child: Center(
+                        child: CustomCircularProgressIndicator(
+                      color: Colors.white,
+                    )),
                   )
         ]),
       ),

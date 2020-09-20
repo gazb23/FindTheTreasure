@@ -38,55 +38,47 @@ class LocationService extends ChangeNotifier {
     double long = locationModel.location['longitude'];
 
     await _checkGps(context);
-    
-  
-    bool permissionGranted = await PermissionService(context: context).requestLocationPermission
-    ();
+
+    bool permissionGranted =
+        await PermissionService(context: context).requestLocationPermission();
     if (permissionGranted) {
+      geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .then((Position position) {
+        currentPosition = position;
 
-    //       isLoading = false;
-    // notifyListeners();
-
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      currentPosition = position;
-
-      if ((lat * 100).truncateToDouble() / 100 ==
-              (currentPosition.latitude * 100).truncateToDouble() / 100 &&
-          (long * 100).truncateToDouble() / 100 ==
-              (currentPosition.longitude * 100).truncateToDouble() / 100) {
-        LocationViewModel.submitLocationDiscovered(
-            context: context,
-            databaseService: databaseService,
-            locationModel: locationModel,
-            questModel: questModel);
+        if ((lat * 100).truncateToDouble() / 100 ==
+                (currentPosition.latitude * 100).truncateToDouble() / 100 &&
+            (long * 100).truncateToDouble() / 100 ==
+                (currentPosition.longitude * 100).truncateToDouble() / 100) {
+          LocationViewModel.submitLocationDiscovered(
+              context: context,
+              databaseService: databaseService,
+              locationModel: locationModel,
+              questModel: questModel);
+          isLoading = false;
+          notifyListeners();
+        } else {
+          isLoading = false;
+          notifyListeners();
+          LocationViewModel.submitLocationNotDiscovered(
+              context: context,
+              locationModel: locationModel,
+              databaseService: databaseService,
+              questModel: questModel);
+        }
+      }).catchError((e) {
+        PlatformExceptionAlertDialog(title: 'Error', exception: e);
         isLoading = false;
         notifyListeners();
-      } else {
-        isLoading = false;
-        notifyListeners();
-        LocationViewModel.submitLocationNotDiscovered(
-            context: context,
-            locationModel: locationModel,
-            databaseService: databaseService,
-            questModel: questModel);
-      }
-    }).catchError((e) {
-      PlatformExceptionAlertDialog(title: 'Error', exception: e);
+      });
+    } else {
+      print('denied');
       isLoading = false;
       notifyListeners();
-    });
-  } else {
-    print('denied');
-     isLoading = false;
-      notifyListeners();
-    return null;
-  }
-
-
-
+      return null;
     }
+  }
 
   Future _checkGps(BuildContext context) async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
@@ -98,12 +90,12 @@ class LocationService extends ChangeNotifier {
         defaultActionText: 'ENABLE',
       ).show(context);
       if (didRequest) {
-               isLoading = false;
-    notifyListeners();
+        isLoading = false;
+        notifyListeners();
         AppSettings.openLocationSettings();
       } else {
         isLoading = false;
-    notifyListeners();
+        notifyListeners();
         return null;
       }
     }

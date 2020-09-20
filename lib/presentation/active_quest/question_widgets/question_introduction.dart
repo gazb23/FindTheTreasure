@@ -70,7 +70,7 @@ class QuestionIntroduction extends StatelessWidget {
                     height: 10,
                   ),
                   showImage
-                      ? ConnectivityService.checkNetwork(context, listen: false)
+                      ? ConnectivityService.checkNetwork(context, listen: true)
                           ? CachedNetworkImage(
                               imageUrl: questionsModel.image,
                               fadeInDuration: Duration(milliseconds: 300),
@@ -99,25 +99,9 @@ class QuestionIntroduction extends StatelessWidget {
                                     )),
                               ),
                             )
-                          : FutureBuilder(
-                              future: _getLocalFile("${questionsModel.image}.jpg"),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<File> snapshot) {
-                                return snapshot.data != null
-                                    ? InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                      fullscreenDialog: true,
-                                      builder: (context) =>
-                                          ImageZoom(image: FileImage(snapshot.data))));
-                                      },
-                                                                          child: ClipRRect(
-                                        borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(40)),
-                                        child: Image.file(snapshot.data, )),
-                                    )
-                                    : Container();
-                              })
+                          : Container(
+                           
+                              child: _offlineImage())
                       : Container()
                 ],
               ),
@@ -126,6 +110,32 @@ class QuestionIntroduction extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  FutureBuilder<File> _offlineImage() {
+    return FutureBuilder(
+        future: _getLocalFile("${questionsModel.image}.jpg"),
+        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+          return snapshot.data != null
+              ? InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) =>
+                            ImageZoom(image: FileImage(snapshot.data))));
+                  },
+                  child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.only(bottomRight: Radius.circular(40)),
+                      child: Image.file(
+                        snapshot.data,
+                        fit: BoxFit.fill,
+                        alignment: Alignment.center,
+                        
+                      )),
+                )
+              : Container();
+        });
   }
 
   Future<File> _getLocalFile(String filename) async {

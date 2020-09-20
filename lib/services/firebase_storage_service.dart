@@ -54,7 +54,7 @@ class FirebaseStorageService extends ChangeNotifier {
     progressDialog = ProgressDialog(
       context,
       type: ProgressDialogType.Download,
-      isDismissible: false,
+      isDismissible: true,
       showLogs: true,      
     );
 

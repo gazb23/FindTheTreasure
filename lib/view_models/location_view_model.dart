@@ -7,6 +7,7 @@ import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,6 @@ class LocationViewModel extends ChangeNotifier {
     final UserData userData = Provider.of<UserData>(context, listen: false);
     if (!questModel.questCompletedBy.contains(userData.uid) &&
         lastLocationCompleted) {
-      
       try {
         // Add UID to quest completed by
         final questCompleted = _databaseService.arrayUnionField(
@@ -35,16 +35,18 @@ class LocationViewModel extends ChangeNotifier {
             documentId: questModel.id,
             field: 'questStartedBy',
             collectionRef: APIPath.quests());
-       
+
         List<Future> futures = [questCompleted, questStartedBy];
-         Future.wait(futures);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => FindTreasureScreen(
-                databaseService: _databaseService,
-                    questModel: questModel,
-                  )),
-        );
+        Future.wait(futures);
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => FindTreasureScreen(
+                      databaseService: _databaseService,
+                      questModel: questModel,
+                    )),
+          );
+        });
 
         // final didCompleteQuest = await PlatformAlertDialog(
         //   backgroundColor: Colors.amberAccent,
@@ -80,7 +82,6 @@ class LocationViewModel extends ChangeNotifier {
             collectionRef: APIPath.locations(questId: questModel.id));
 
         final didDiscoverLocation = await PlatformAlertDialog(
-       
           title: 'Location Discovered!',
           content:
               'Well done, you\'ve found ${locationModel.title} and unlocked the challenges! ',
@@ -159,17 +160,16 @@ class LocationViewModel extends ChangeNotifier {
       if (didRequestHint) {
         try {
           final UserData _updateUserData = UserData(
-            userDiamondCount: _userData.userDiamondCount - _hintCost,
-            userKeyCount: _userData.userKeyCount,
-            points: _userData.points,
-            displayName: _userData.displayName,
-            email: _userData.email,
-            photoURL: _userData.photoURL,
-            isAdmin: _userData.isAdmin,
-            locationsExplored: _userData.locationsExplored,
-            uid: _userData.uid,
-            seenIntro: _userData.seenIntro            
-          );
+              userDiamondCount: _userData.userDiamondCount - _hintCost,
+              userKeyCount: _userData.userKeyCount,
+              points: _userData.points,
+              displayName: _userData.displayName,
+              email: _userData.email,
+              photoURL: _userData.photoURL,
+              isAdmin: _userData.isAdmin,
+              locationsExplored: _userData.locationsExplored,
+              uid: _userData.uid,
+              seenIntro: _userData.seenIntro);
 
           _databaseService.updateUserData(userData: _updateUserData);
           _databaseService.arrayUnionField(
