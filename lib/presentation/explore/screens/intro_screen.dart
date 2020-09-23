@@ -1,4 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/global_functions.dart';
 import 'package:find_the_treasure/theme.dart';
@@ -24,11 +26,14 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  AudioPlayerService player = AudioPlayerService();
+
   @override
   void initState() {
-    AudioPlayer().playSound(path: 'intro.mp3', loop: false);
+    player.playSound(path: 'intro.mp3', loop: true);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     UserData _userData = Provider.of<UserData>(context);
@@ -74,9 +79,9 @@ class _IntroScreenState extends State<IntroScreen> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color: Colors.white),
-                                    child: Text(
+                                    child: const Text(
                                       'SKIP',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: MaterialTheme.orange),
                                     ),
                                   ),
@@ -170,6 +175,7 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   void _submit(UserData _userData, DatabaseService _database) async {
+    player.stopSound();
     setState(() {
       _isLoading = !_isLoading;
     });
@@ -188,7 +194,7 @@ class _IntroScreenState extends State<IntroScreen> {
       seenIntro: true,
     );
     try {
-    await GlobalFunction.delayBy(minTime: 100, maxTime: 500);
+      await GlobalFunction.delayBy(minTime: 100, maxTime: 500);
 
       _database.updateUserData(userData: updatedUserData);
       Navigator.pop(context);
@@ -202,4 +208,10 @@ class _IntroScreenState extends State<IntroScreen> {
     }
   }
 
+  @override
+  void dispose() {
+    player.stopSound();
+    player.disposePlayer();
+    super.dispose();
+  }
 }

@@ -32,7 +32,7 @@ class QuestionViewModel extends ChangeNotifier {
     notifyListeners();
     // Not using await on async functions as this will stop Firebase offline mode from working. Instead, I have created a simulated network delay to improve feedback for the user.
     await GlobalFunction.delayBy(minTime: 300, maxTime: 1500);
-    AudioPlayer().playSound(path: 'purchaseQuest.mp3');
+    AudioPlayerService().playSound(path: 'purchaseQuest.mp3');
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     // If Challenge Question
@@ -264,21 +264,23 @@ class QuestionViewModel extends ChangeNotifier {
       ).show(context);
       if (didRequestSkip) {
         final QuestionViewModel questionViewModel =
-            Provider.of<QuestionViewModel>(context);
+            Provider.of<QuestionViewModel>(context, listen: false);
         try {
           final UserData _updateUserData = UserData(
-              userDiamondCount: _userData.userDiamondCount - _skipCost,
-              userKeyCount: _userData.userKeyCount,
-              points: _userData.points,
-              displayName: _userData.displayName,
-              email: _userData.email,
-              photoURL: _userData.photoURL,
-              uid: _userData.uid,
-              isAdmin: _userData.isAdmin,
-              locationsExplored: _userData.locationsExplored,
-              seenIntro: _userData.seenIntro);
+            userDiamondCount: _userData.userDiamondCount - _skipCost,
+            userKeyCount: _userData.userKeyCount,
+            points: _userData.points,
+            displayName: _userData.displayName,
+            email: _userData.email,
+            photoURL: _userData.photoURL,
+            uid: _userData.uid,
+            isAdmin: _userData.isAdmin,
+            locationsExplored: _userData.locationsExplored,
+            seenIntro: _userData.seenIntro,            
+          );
 
           _databaseService.updateUserData(userData: _updateUserData);
+
           questionViewModel.submit(
             context,
             isLocation: false,

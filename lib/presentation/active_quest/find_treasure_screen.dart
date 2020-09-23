@@ -66,9 +66,9 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                   width: 150,
                   height: 50,
                   child: Center(
-                    child: Text(
+                    child: const Text(
                       'SKIP',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
                   )),

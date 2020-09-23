@@ -32,7 +32,7 @@ class SkipButton extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
            ),
-        child: Text('SKIP?', style: TextStyle(color: Colors.black, fontSize: 18),),
+        child: const Text('SKIP?', style: const TextStyle(color: Colors.black, fontSize: 18),),
       ),
     );
   }

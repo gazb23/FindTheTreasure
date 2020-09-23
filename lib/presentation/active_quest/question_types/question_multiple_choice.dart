@@ -40,9 +40,9 @@ class QuestionMultipleChoice extends StatelessWidget {
         floatingActionButton: locationQuestion || keyboardIsOpened
             ? Container()
             : FloatingActionButton.extended(
-                label: Text(
+                label: const Text(
                   'SKIP?',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     color: MaterialTheme.orange,
                   ),
@@ -87,7 +87,7 @@ class QuestionMultipleChoice extends StatelessWidget {
                                   .contains(databaseService.uid)
                               ? 'HINT?'
                               : 'SHOW HINT',
-                          style: TextStyle(color: MaterialTheme.orange),
+                          style: const TextStyle(color: MaterialTheme.orange),
                         ),
                       ),
                     );

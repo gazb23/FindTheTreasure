@@ -38,9 +38,9 @@ class QuestionScrollSingleAnswer extends StatelessWidget {
         floatingActionButton: locationQuestion || keyboardIsOpened
             ? Container()
             : FloatingActionButton.extended(
-                label: Text(
+                label: const Text(
                   'SKIP?',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     color: MaterialTheme.orange,
                   ),

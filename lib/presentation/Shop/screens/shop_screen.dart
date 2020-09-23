@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
@@ -29,6 +30,7 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
+  AudioPlayerService audioPlayer = AudioPlayerService();
   // IAP Plugin Interface
   final InAppPurchaseConnection _iap = InAppPurchaseConnection.instance;
   // Updates to purchases
@@ -61,6 +63,7 @@ class _ShopScreenState extends State<ShopScreen> {
     }
 
     _isPurchasePending = false;
+    audioPlayer.disposePlayer();
     super.dispose();
   }
 
@@ -69,6 +72,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
     _isAvailable = await _iap.isAvailable();
     FlutterInappPurchase.instance.clearTransactionIOS();
+    
     if (_isAvailable) {
       List<Future> futures = [_getProducts(), _getPastPurchases()];
       await Future.wait(futures);
@@ -138,6 +142,7 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _verifyPurchase() async {
+    AudioPlayerService audioPlayer = AudioPlayerService();
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
@@ -147,7 +152,7 @@ class _ShopScreenState extends State<ShopScreen> {
     print(_purchases);
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
       _displayDiamondAndKeys(_purchase);
-      AudioPlayer().playSound(path: 'diamondsIncrease.mp3');
+      audioPlayer.playSound(path: 'diamondsIncrease.mp3');
       _isPurchasePending = true;
 
       final _updateUserData = UserData(

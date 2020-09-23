@@ -49,18 +49,18 @@ class FirebaseStorageService extends ChangeNotifier {
     @required BuildContext context,
   }) async {
     double downloadProgress = 0;
-    double totalProgress = 0;
+    double totalFiles = questModel.imageURL.length.toDouble();
     ProgressDialog progressDialog = ProgressDialog(context);
     progressDialog = ProgressDialog(
       context,
       type: ProgressDialogType.Download,
       isDismissible: true,
-      showLogs: true,      
+      showLogs: true,
     );
 
     progressDialog.style(
-      progress: totalProgress,
-      maxProgress: 100,
+      progress: downloadProgress,
+      maxProgress: totalFiles,
       message: 'Downloading Quest Data...',
     );
 
@@ -68,20 +68,12 @@ class FirebaseStorageService extends ChangeNotifier {
       final directory = await getApplicationDocumentsDirectory();
       for (String imageURL in questModel.imageURL) {
         Dio dio = Dio();
-        if (!(File('${directory.path}/$imageURL.jpg').existsSync())) {          
+        if (!(File('${directory.path}/$imageURL.jpg').existsSync())) {
           await progressDialog.show();
-          await dio.download('$imageURL', '/${directory.path}/$imageURL.jpg',
-              onReceiveProgress: (received, total) {
-            downloadProgress = downloadProgress + received;
-            totalProgress = downloadProgress + total;
-          });
-
-          progressDialog.update(
-              progress:
-                  (downloadProgress / totalProgress * 100).floor().toDouble() +
-                      1);
-          if ((downloadProgress / totalProgress * 100).floor().toDouble() + 1 ==
-              100) {
+          await dio.download('$imageURL', '/${directory.path}/$imageURL.jpg');
+          downloadProgress = downloadProgress + 1;
+          progressDialog.update(progress: downloadProgress);
+          if (downloadProgress == totalFiles) {
             progressDialog.hide();
           }
         } else {

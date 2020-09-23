@@ -76,7 +76,7 @@ class QuestionAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     .contains(databaseService.uid)
                                 ? 'HINT?'
                                 : 'SHOW HINT',
-                            style: TextStyle(color: MaterialTheme.orange),
+                            style: const TextStyle(color: MaterialTheme.orange),
                           )),
                     );
                   }

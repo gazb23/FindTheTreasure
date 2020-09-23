@@ -27,12 +27,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     
-    AudioPlayer().loadAllSounds();
+    AudioPlayerService().loadAllSounds();
     super.initState();
   }
   
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     final _userData = Provider.of<UserData>(context);
   ConnectivityService.checkNetwork(context, listen: true);
     // Lock this screen to portrait orientation
