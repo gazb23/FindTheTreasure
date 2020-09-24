@@ -28,7 +28,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
   @override
   void initState() {
     player = AudioPlayerService();
-    player.playSound(path: 'intro.ogg', loop: true);
+    player.playSound(path: 'intro.mp3', loop: true);
     _controllerCenter =
         ConfettiController(duration: const Duration(seconds: 10));
     _controllerCenter.play();
@@ -58,6 +58,8 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
                 size: 30,
               ),
               onPressed: () {
+                player.stopSound();
+                player.disposePlayer();
                 Navigator.pushNamed(context, HomePage.id);
               },
             )),
@@ -88,13 +90,12 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20.0),
                               child: AutoSizeText(
-                                
                                 'Congratulations!',
                                 maxLines: 1,
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 26,
-                                    ),
+                                  color: Colors.white,
+                                  fontSize: 26,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -196,7 +197,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
           ),
           FractionallySizedBox(
             widthFactor: 0.7,
-                      child: DiamondAndKeyContainer(
+            child: DiamondAndKeyContainer(
               numberOfDiamonds: userData.userDiamondCount,
               numberOfKeys: userData.userKeyCount,
               diamondHeight: 35,

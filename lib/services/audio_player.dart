@@ -13,7 +13,7 @@ class AudioPlayerService {
         'location_discovered.mp3',
         'location_not_discovered.mp3',
         'answer_correct.mp3',
-        'intro.ogg',
+        'intro.mp3',
         'quest_purchased.mp3'
       ]);
     } catch (e) {

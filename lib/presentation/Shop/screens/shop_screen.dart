@@ -52,8 +52,8 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   void initState() {
-    audioPlayer = AudioPlayerService();
     _initialise();
+
     super.initState();
   }
 
@@ -71,10 +71,10 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _initialise() async {
     // Check availilbility of In App Purchases
-
+    audioPlayer = AudioPlayerService();
     _isAvailable = await _iap.isAvailable();
     FlutterInappPurchase.instance.clearTransactionIOS();
-    
+
     if (_isAvailable) {
       List<Future> futures = [_getProducts(), _getPastPurchases()];
       await Future.wait(futures);
@@ -144,7 +144,6 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _verifyPurchase() async {
-    
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
@@ -154,7 +153,7 @@ class _ShopScreenState extends State<ShopScreen> {
     print(_purchases);
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
       _displayDiamondAndKeys(_purchase);
-      
+
       _isPurchasePending = true;
 
       final _updateUserData = UserData(

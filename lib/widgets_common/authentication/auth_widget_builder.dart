@@ -45,11 +45,13 @@ class AuthWidgetBuilder extends StatelessWidget {
               ChangeNotifierProvider<QuestionViewModel>(
                   create: (_) => QuestionViewModel()),
               ChangeNotifierProvider<ChallengeViewModel>(
-                  create: (_) => ChallengeViewModel()),    
+                  create: (_) => ChallengeViewModel()),
             ],
             child: Consumer<DatabaseService>(
               builder: (_, databaseService, __) => StreamProvider<UserData>(
                 initialData: UserData(
+                    userDiamondCount: 0,
+                    userKeyCount: 0,
                     id: '',
                     displayName: '',
                     email: '',

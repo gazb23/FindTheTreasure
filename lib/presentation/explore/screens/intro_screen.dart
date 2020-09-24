@@ -24,12 +24,11 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  
-AudioPlayerService player;
+  AudioPlayerService player;
   @override
   void initState() {
     player = AudioPlayerService();
-    player.playSound(path: 'intro.ogg', loop: true);
+    player.playSound(path: 'intro.mp3', loop: true);
     super.initState();
   }
 
