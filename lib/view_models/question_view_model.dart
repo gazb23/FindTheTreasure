@@ -32,7 +32,7 @@ class QuestionViewModel extends ChangeNotifier {
     notifyListeners();
     // Not using await on async functions as this will stop Firebase offline mode from working. Instead, I have created a simulated network delay to improve feedback for the user.
     await GlobalFunction.delayBy(minTime: 300, maxTime: 1500);
-    AudioPlayerService().playSound(path: 'purchaseQuest.mp3');
+    AudioPlayerService().playSound(path: 'answer_correct.mp3');
     final DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     // If Challenge Question

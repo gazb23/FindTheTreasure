@@ -1,6 +1,4 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/global_functions.dart';
 import 'package:find_the_treasure/theme.dart';
@@ -26,11 +24,12 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  AudioPlayerService player = AudioPlayerService();
-
+  
+AudioPlayerService player;
   @override
   void initState() {
-    player.playSound(path: 'intro.mp3', loop: true);
+    player = AudioPlayerService();
+    player.playSound(path: 'intro.ogg', loop: true);
     super.initState();
   }
 

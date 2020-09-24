@@ -2,6 +2,7 @@ import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/active_quest/quest_completed_screen.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
+import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +111,9 @@ class QuestViewModel  {
     @required DatabaseService databaseService,
     @required QuestModel questModel,
   }) async {
+    AudioPlayerService player = AudioPlayerService();
     if (!questModel.treasureDiscoveredBy.contains(databaseService.uid)) {
+      player.playSound(path: 'location_not_discovered.mp3');
       final didNotDiscoverLocation = await PlatformAlertDialog(
         backgroundColor: Colors.white,
         title: 'Close, but no cigar!',

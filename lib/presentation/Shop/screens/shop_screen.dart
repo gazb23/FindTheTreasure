@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/connectivity_service.dart';
@@ -49,8 +48,11 @@ class _ShopScreenState extends State<ShopScreen> {
   int _diamonds = 0;
   int _keys = 0;
 
+  AudioPlayerService audioplayer;
+
   @override
   void initState() {
+    audioPlayer = AudioPlayerService();
     _initialise();
     super.initState();
   }
@@ -142,7 +144,7 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _verifyPurchase() async {
-    AudioPlayerService audioPlayer = AudioPlayerService();
+    
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
@@ -152,7 +154,7 @@ class _ShopScreenState extends State<ShopScreen> {
     print(_purchases);
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
       _displayDiamondAndKeys(_purchase);
-      audioPlayer.playSound(path: 'diamondsIncrease.mp3');
+      
       _isPurchasePending = true;
 
       final _updateUserData = UserData(
@@ -180,6 +182,7 @@ class _ShopScreenState extends State<ShopScreen> {
               defaultActionText: 'Sweet')
           .show(context);
       if (_didSelectOK) {
+        audioPlayer.playSound(path: 'location_discovered.mp3');
         _iap.completePurchase(_purchase);
         setState(() {
           _isPurchasePending = false;

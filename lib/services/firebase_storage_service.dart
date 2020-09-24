@@ -82,6 +82,8 @@ class FirebaseStorageService extends ChangeNotifier {
       }
     } catch (e) {
       print(e.toString());
+    } finally {
+      progressDialog.hide();
     }
   }
 }

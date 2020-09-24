@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:find_the_treasure/services/audio_player.dart';
 
 class LocationViewModel extends ChangeNotifier {
   // When all LOCATIONS for a given QUEST have been completed, add the user UID to questCompletedBy. Also provide some visual feedback for the user.
@@ -75,7 +76,9 @@ class LocationViewModel extends ChangeNotifier {
     @required QuestModel questModel,
   }) async {
     if (!locationModel.locationDiscoveredBy.contains(databaseService.uid)) {
+      AudioPlayerService player = AudioPlayerService();
       try {
+        player.playSound(path: 'location_discovered.mp3');
         databaseService.arrayUnionField(
             documentId: locationModel.id,
             field: 'locationDiscoveredBy',
@@ -110,6 +113,8 @@ class LocationViewModel extends ChangeNotifier {
     @required DatabaseService databaseService,
     @required QuestModel questModel,
   }) async {
+    AudioPlayerService player = AudioPlayerService();
+    player.playSound(path: 'location_not_discovered.mp3');
     if (!locationModel.locationDiscoveredBy.contains(databaseService.uid)) {
       final didNotDiscoverLocation = await PlatformAlertDialog(
         backgroundColor: Colors.white,

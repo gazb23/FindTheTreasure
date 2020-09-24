@@ -3,6 +3,7 @@ import 'package:confetti/confetti.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
+import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
@@ -23,9 +24,11 @@ class QuestCompletedScreen extends StatefulWidget {
 
 class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
   ConfettiController _controllerCenter;
-
+  AudioPlayerService player;
   @override
   void initState() {
+    player = AudioPlayerService();
+    player.playSound(path: 'intro.ogg', loop: true);
     _controllerCenter =
         ConfettiController(duration: const Duration(seconds: 10));
     _controllerCenter.play();
@@ -35,7 +38,8 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
   @override
   void dispose() {
     _controllerCenter.dispose();
-
+    player.stopSound();
+    player.disposePlayer();
     super.dispose();
   }
 

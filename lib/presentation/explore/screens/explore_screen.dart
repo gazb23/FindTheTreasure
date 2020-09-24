@@ -76,7 +76,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   void _showIntroDialog(BuildContext context, UserData userData) async {
     print('dialog');
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 4));
     try {
       if (!userData.seenIntro) {
         SchedulerBinding.instance.scheduleFrameCallback((_) {
