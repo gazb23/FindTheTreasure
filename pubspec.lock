@@ -30,7 +30,7 @@ packages:
     source: hosted
     version: "0.1.0"
   archive:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: archive
       url: "https://pub.dartlang.org"
