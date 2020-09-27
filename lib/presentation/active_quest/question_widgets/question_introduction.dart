@@ -85,9 +85,10 @@ class QuestionIntroduction extends StatelessWidget {
                                 },
                                 child: Container(
                                     height: largerImage
-                                        ? MediaQuery.of(context).size.width /
-                                            1.8
-                                        : MediaQuery.of(context).size.width / 2,
+                                        ? MediaQuery.of(context).size.height /
+                                            2.5
+                                        : MediaQuery.of(context).size.height /
+                                            2.8,
                                     decoration: BoxDecoration(
                                       color: Colors.black,
                                       borderRadius: BorderRadius.only(
@@ -99,9 +100,7 @@ class QuestionIntroduction extends StatelessWidget {
                                     )),
                               ),
                             )
-                          : Container(
-                           
-                              child: _offlineImage())
+                          : Container(child: _offlineImage())
                       : Container()
                 ],
               ),
@@ -116,25 +115,45 @@ class QuestionIntroduction extends StatelessWidget {
     return FutureBuilder(
         future: _getLocalFile("${questionsModel.image}.jpg"),
         builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-          return snapshot.data != null
-              ? InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) =>
-                            ImageZoom(image: FileImage(snapshot.data))));
-                  },
-                  child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.only(bottomRight: Radius.circular(40)),
-                      child: Image.file(
-                        snapshot.data,
-                        fit: BoxFit.fill,
-                        alignment: Alignment.center,
-                        
-                      )),
-                )
-              : Container();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(
+              child: Center(
+                child: CustomCircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
+            );
+          } else
+            return snapshot.data != null
+                ? InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) =>
+                              ImageZoom(image: FileImage(snapshot.data))));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: largerImage
+                          ? MediaQuery.of(context).size.height / 2.5
+                          : MediaQuery.of(context).size.height / 2.8,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(40)),
+                          child: Image.file(
+                            snapshot.data,
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                          )),
+                    ),
+                  )
+                : Container(
+                    child: Center(
+                      child: CustomCircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
         });
   }
 

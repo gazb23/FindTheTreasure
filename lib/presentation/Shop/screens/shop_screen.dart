@@ -106,7 +106,8 @@ class _ShopScreenState extends State<ShopScreen> {
       if (response.notFoundIDs.isEmpty)
         setState(() {
           _products = response.productDetails;
-          _products.sort((a, b) => a.title.length.compareTo(b.title.length));
+
+          _products?.sort((a, b) => a.title.length.compareTo(b.title.length));
         });
     } catch (e) {
       PlatformAlertDialog(
@@ -234,8 +235,10 @@ class _ShopScreenState extends State<ShopScreen> {
   void _buyProduct(ProductDetails productDetails) async {
     _isPurchasePending = true;
 
-    final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetails);
+    final PurchaseParam purchaseParam = PurchaseParam(
+      productDetails: productDetails,
+      sandboxTesting: false,
+    );
 
     // await FlutterInappPurchase.instance.clearTransactionIOS();
 
@@ -318,9 +321,9 @@ class _ShopScreenState extends State<ShopScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: BuyDiamondOrKeyButton(
-                  numberOfDiamonds: numberOfDiamonds(prod.price),
+                  numberOfDiamonds: numberOfDiamonds(prod.id),
                   diamondCost: prod.price,
-                  bonusKey: numberOfKeys(prod.price),
+                  bonusKey: numberOfKeys(prod.id),
                   isPurchasePending: _isPurchasePending,
                   onPressed: () {
                     _buyProduct(prod);
@@ -352,19 +355,19 @@ class _ShopScreenState extends State<ShopScreen> {
     );
   }
 
-  String numberOfDiamonds(String productPrice) {
+  String numberOfDiamonds(String productId) {
     String _numberOfDiamonds;
-    switch (productPrice) {
-      case '\$4.99':
+    switch (productId) {
+      case _diamond50:
         _numberOfDiamonds = '50';
         break;
-      case '\$9.99':
+      case _diamond150:
         _numberOfDiamonds = '150';
         break;
-      case '\$19.99':
+      case _diamond300:
         _numberOfDiamonds = '300';
         break;
-      case '\$39.99':
+      case _diamond500:
         _numberOfDiamonds = '500';
         break;
       default:
@@ -373,23 +376,23 @@ class _ShopScreenState extends State<ShopScreen> {
     return _numberOfDiamonds;
   }
 
-  String numberOfKeys(String productPrice) {
+  String numberOfKeys(String productId) {
     String _numberOfKeys;
-    switch (productPrice) {
-      case '\$4.99':
+    switch (productId) {
+      case '_diamond50':
         _numberOfKeys = '0';
         break;
-      case '\$9.99':
+      case '_diamond150':
         _numberOfKeys = '1';
         break;
-      case '\$19.99':
+      case '_diamond300':
         _numberOfKeys = '3';
         break;
-      case '\$39.99':
+      case '_diamond500':
         _numberOfKeys = '5';
         break;
       default:
-        _numberOfKeys = 'err';
+        _numberOfKeys = '0';
     }
     return _numberOfKeys;
   }

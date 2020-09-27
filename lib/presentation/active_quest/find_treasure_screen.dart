@@ -1,14 +1,19 @@
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
+import 'package:find_the_treasure/services/connectivity_service.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/permission_service.dart';
 import 'package:find_the_treasure/services/treasure_location_service.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/quest_view_model.dart';
+import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:scratcher/scratcher.dart';
 
@@ -127,10 +132,11 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                                             _startAnimation = true;
                                           });
                                         },
-                                                                              child: Text(
+                                        child: Text(
                                           'Tap here to start.',
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 22),
+                                              color: Colors.white,
+                                              fontSize: 22),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -158,7 +164,6 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Scratcher(
-
                               brushSize: 70,
                               color: Colors.brown.withOpacity(0.85),
                               image: Image.asset('images/digging.png'),
@@ -168,15 +173,21 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                                   _mapRevealed = !_mapRevealed;
                                 });
                               },
-                              child: CachedNetworkImage(
-                                imageUrl: widget.questModel.treasureImage,
-                                placeholder: (context, url) => Container(
-                                  child: Center(
-                                      child: CircularProgressIndicator()),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              ),
+                              child: ConnectivityService.checkNetwork(context,
+                                      listen: true)
+                                  ? CachedNetworkImage(
+                                      imageUrl: widget.questModel.treasureImage,
+                                      placeholder: (context, url) => Container(
+                                        child: Center(
+                                            child:
+                                                CustomCircularProgressIndicator(
+                                          color: Colors.white,
+                                        )),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    )
+                                  : _offlineImage(),
                             ),
                           ),
                           MultiProvider(providers: [
@@ -206,6 +217,28 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
     _isFinished = false;
     _mapRevealed = false;
     super.dispose();
+  }
+
+  FutureBuilder<File> _offlineImage() {
+    return FutureBuilder(
+        future: _getLocalFile("${widget.questModel.treasureImage}.jpg"),
+        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+          return snapshot.data != null
+              ? Image.file(
+                  snapshot.data,
+                  fit: BoxFit.fill,
+                  alignment: Alignment.center,
+                )
+              : Container(
+                  child: Text('Error: Please check you internet connection.'),
+                );
+        });
+  }
+
+  Future<File> _getLocalFile(String filename) async {
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    File f = new File('$dir/$filename');
+    return f;
   }
 }
 
