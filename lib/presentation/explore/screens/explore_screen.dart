@@ -1,4 +1,3 @@
-
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/explore/screens/intro_screen.dart';
@@ -26,15 +25,14 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
-    
     AudioPlayerService().loadAllSounds();
     super.initState();
   }
-  
+
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
-  ConnectivityService.checkNetwork(context, listen: true);
+    ConnectivityService.checkNetwork(context, listen: true);
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -101,7 +99,6 @@ class AdminView extends StatelessWidget {
     final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
 
-
     return ListView(children: <Widget>[
       Column(
         children: <Widget>[
@@ -128,7 +125,6 @@ class AdminView extends StatelessWidget {
                           location: quest.location,
                           questModel: quest,
                           onTap: () {
-                        
                             Navigator.of(context, rootNavigator: true).push(
                               MaterialPageRoute(
                                 builder: (context) => QuestDetailScreen(
@@ -158,13 +154,11 @@ class AdminView extends StatelessWidget {
 
 // Present only live events to non admin users
 class LiveListView extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     final _userData = Provider.of<UserData>(context);
     final database = Provider.of<DatabaseService>(context);
 
-  
     return StreamBuilder<List<QuestModel>>(
         stream: database.questFieldIsAdmin(field: 'isLive', isEqualTo: true),
         builder: (context, snapshot) {
@@ -181,8 +175,7 @@ class LiveListView extends StatelessWidget {
                 numberOfLocations: quest.numberOfLocations,
                 location: quest.location,
                 questModel: quest,
-                onTap: ()  {
-                
+                onTap: () {
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
                       fullscreenDialog: true,

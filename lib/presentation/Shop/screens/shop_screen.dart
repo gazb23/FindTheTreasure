@@ -379,16 +379,16 @@ class _ShopScreenState extends State<ShopScreen> {
   String numberOfKeys(String productId) {
     String _numberOfKeys;
     switch (productId) {
-      case '_diamond50':
+      case _diamond50:
         _numberOfKeys = '0';
         break;
-      case '_diamond150':
+      case _diamond150:
         _numberOfKeys = '1';
         break;
-      case '_diamond300':
+      case _diamond300:
         _numberOfKeys = '3';
         break;
-      case '_diamond500':
+      case _diamond500:
         _numberOfKeys = '5';
         break;
       default:
