@@ -77,7 +77,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         final imagePicker =
             Provider.of<ImagePickerService>(context, listen: false);
         final _chooseImage = await PlatformAlertDialog(
-          canPop: true,
           title: 'Image Source',
           content: 'Please select the image source for your Avatar',
           defaultActionText: 'Gallery',

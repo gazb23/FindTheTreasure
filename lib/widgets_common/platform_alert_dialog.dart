@@ -14,14 +14,12 @@ class PlatformAlertDialog extends PlatformWidget {
   final Color backgroundColor;
   final Color titleTextColor;
   final Color contentTextColor;
-  final bool canPop;
 
   PlatformAlertDialog({
     this.cancelActionText,
     @required this.title,
     @required this.content,
     @required this.defaultActionText,
-    this.canPop = false,
     this.image,
     this.backgroundColor,
     this.titleTextColor,
