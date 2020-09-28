@@ -77,6 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         final imagePicker =
             Provider.of<ImagePickerService>(context, listen: false);
         final _chooseImage = await PlatformAlertDialog(
+          canPop: true,
           title: 'Image Source',
           content: 'Please select the image source for your Avatar',
           defaultActionText: 'Gallery',
@@ -129,8 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context)  {
-    
+  Widget build(BuildContext context) {
     final user = Provider.of<UserData>(context, listen: false);
 
     return Scaffold(
@@ -230,11 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildsettingsContainer()  {
-    
-    
-      
-    
+  Widget _buildsettingsContainer() {
     return Container(
         height: MediaQuery.of(context).size.height / 1.6,
         width: double.infinity,
@@ -251,7 +247,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-       
         SizedBox(
           height: 20,
         ),

@@ -14,13 +14,14 @@ class PlatformAlertDialog extends PlatformWidget {
   final Color backgroundColor;
   final Color titleTextColor;
   final Color contentTextColor;
-  
+  final bool canPop;
+
   PlatformAlertDialog({
-   
     this.cancelActionText,
     @required this.title,
     @required this.content,
     @required this.defaultActionText,
+    this.canPop = false,
     this.image,
     this.backgroundColor,
     this.titleTextColor,
@@ -35,7 +36,7 @@ class PlatformAlertDialog extends PlatformWidget {
             context: context,
             builder: (context) => this,
           )
-        : await showDialog<bool>(          
+        : await showDialog<bool>(
             context: context,
             builder: (context) => this,
             barrierDismissible: false);
@@ -46,36 +47,35 @@ class PlatformAlertDialog extends PlatformWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: CupertinoAlertDialog(
-
-          title: Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: Text(
-      title,
-      style: TextStyle(
-        fontFamily: 'quicksand',
-        fontWeight: FontWeight.w600,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 20.0),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'quicksand',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              image ?? Container(),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                content,
+                style: TextStyle(
+                  fontFamily: 'quicksand',
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: _buildActions(context),
       ),
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-      children: <Widget>[
-        image ?? Container(),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          content,
-          style: TextStyle(
-            fontFamily: 'quicksand',
-            fontSize: 18,
-          ),
-        ),
-      ],
-            ),
-          ),
-          actions: _buildActions(context),
-        ),
     );
   }
 
@@ -84,43 +84,43 @@ class PlatformAlertDialog extends PlatformWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
-          scrollable: true,        
-          backgroundColor: backgroundColor ?? Colors.white,
-          title: Center(
-            child: Center(
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontFamily: 'quicksand',
-            fontWeight: FontWeight.w600,
-            color: titleTextColor ?? Colors.black87),
-      ),
+        scrollable: true,
+        backgroundColor: backgroundColor ?? Colors.white,
+        title: Center(
+          child: Center(
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'quicksand',
+                  fontWeight: FontWeight.w600,
+                  color: titleTextColor ?? Colors.black87),
             ),
           ),
-          content: SingleChildScrollView(
-            child: Column(
-      children: <Widget>[
-        image ?? Container(),
-        SizedBox(
-            height:
-                20), //If no image is displayed an empty container will take it's place.
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              image ?? Container(),
+              SizedBox(
+                  height:
+                      20), //If no image is displayed an empty container will take it's place.
 
-        Text(
-          content,
-          style: TextStyle(
-              fontFamily: 'quicksand',
-              color: contentTextColor ?? Colors.grey),
-          textAlign: TextAlign.center,
-        ),
-      ],
-            ),
-          ),
-          actions: _buildActions(context),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+              Text(
+                content,
+                style: TextStyle(
+                    fontFamily: 'quicksand',
+                    color: contentTextColor ?? Colors.grey),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
+        actions: _buildActions(context),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
     );
   }
 

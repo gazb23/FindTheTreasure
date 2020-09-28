@@ -24,9 +24,11 @@ class HelpScreen extends StatelessWidget {
 
   static const String _googlePrimaryUrl =
       'https://play.google.com/store/apps/details?id=com.findthetreasure.find_the_treasure';
-  //TODO: Add apple and google rate app URL when availalbe
+  static const String _googleFallbackUrl = 'https://play.google.com/';
+
   static const String _applePrimaryUrl =
-      'https://www.apple.com/au/ios/app-store/';
+      'https://apps.apple.com/us/app/id1516617779';
+  static const String _appleFallBackUrl = 'https://apps.apple.com/';
 
   const HelpScreen({Key key, @required this.version}) : super(key: key);
 
@@ -64,13 +66,13 @@ class HelpScreen extends StatelessWidget {
                 UrlLauncher.socialAppLauncher(
                   context: context,
                   primaryUrl: _googlePrimaryUrl,
-                  fallBackUrll: _googlePrimaryUrl,
+                  fallBackUrll: _googleFallbackUrl,
                 );
               } else {
                 UrlLauncher.socialAppLauncher(
                   context: context,
                   primaryUrl: _applePrimaryUrl,
-                  fallBackUrll: _applePrimaryUrl,
+                  fallBackUrll: _appleFallBackUrl,
                 );
               }
             },
