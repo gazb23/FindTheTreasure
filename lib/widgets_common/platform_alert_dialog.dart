@@ -14,8 +14,10 @@ class PlatformAlertDialog extends PlatformWidget {
   final Color backgroundColor;
   final Color titleTextColor;
   final Color contentTextColor;
+  final bool canPop;
 
   PlatformAlertDialog({
+    this.canPop = false,
     this.cancelActionText,
     @required this.title,
     @required this.content,
@@ -31,19 +33,21 @@ class PlatformAlertDialog extends PlatformWidget {
   Future<bool> show(BuildContext context) async {
     return Platform.isIOS
         ? await showCupertinoDialog<bool>(
+            barrierDismissible: canPop,
             context: context,
             builder: (context) => this,
           )
         : await showDialog<bool>(
             context: context,
             builder: (context) => this,
-            barrierDismissible: false);
+            barrierDismissible: canPop,
+          );
   }
 
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => canPop,
       child: CupertinoAlertDialog(
         title: Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
@@ -80,7 +84,7 @@ class PlatformAlertDialog extends PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => canPop,
       child: AlertDialog(
         scrollable: true,
         backgroundColor: backgroundColor ?? Colors.white,
