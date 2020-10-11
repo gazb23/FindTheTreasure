@@ -469,8 +469,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: <Widget>[
-          Form(
-            autovalidate: true,
+          Form(            
             key: _nameFormKey,
             child: TextFormField(
               autofocus: true,

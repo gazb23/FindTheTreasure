@@ -89,7 +89,7 @@ class QuestModel {
       skipCost: data['skipCost'],
       treasureCoordinates: data['treasureCoordinates'],
       treasureDirections: data['treasureDirections'],
-      treasureDiscoveredBy: data['treasureDiscoveredBy'],
+      treasureDiscoveredBy: data['treasureDiscoveredBy'] != null ? data['treasureDiscoveredBy'] : [],
       treasureImage: data['treasureImage'],
       imageURL: data['imageURL']
     );

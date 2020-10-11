@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:apple_sign_in/apple_sign_in_button.dart';
+import 'package:apple_sign_in/apple_sign_in_button.dart' as apple;
 import 'package:apple_sign_in/scope.dart';
 import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
@@ -212,10 +212,10 @@ class _SignInMainScreenState extends State<SignInMainScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     if (appleSignInAvailable.isAvailable)
-                      AppleSignInButton(
-                        style: ButtonStyle.white,
+                      apple.AppleSignInButton(
+                        style: apple.ButtonStyle.white,
                         cornerRadius: 35, // style as needed
-                        type: ButtonType.signIn, // style as needed
+                        type: apple.ButtonType.signIn, // style as needed
                         onPressed: () => _signInWithApple(context),
                       ),
                     // SocialSignInButton(
