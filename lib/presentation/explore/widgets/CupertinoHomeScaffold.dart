@@ -17,13 +17,12 @@ class CupertinoHomeScaffold extends StatelessWidget {
       @required this.navigatorKeys})
       : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
-      
       tabBar: CupertinoTabBar(
+        inactiveColor: Colors.white,
+        activeColor: MaterialTheme.orange,
         currentIndex: 2,
         backgroundColor: Colors.grey.shade800,
         items: [
@@ -38,7 +37,6 @@ class CupertinoHomeScaffold extends StatelessWidget {
       tabBuilder: (context, index) {
         final item = TabItem.values[index];
         return CupertinoTabView(
-          
           navigatorKey: navigatorKeys[item],
           builder: (context) => widgetBuilders[item](context),
         );
@@ -49,18 +47,12 @@ class CupertinoHomeScaffold extends StatelessWidget {
   BottomNavigationBarItem _buildItem(TabItem tabItem) {
     final itemData = TabItemData.allTabs[tabItem];
     final color = currentTab == tabItem ? MaterialTheme.orange : Colors.grey;
-    final textColor = Colors.white;
-    return BottomNavigationBarItem(      
+    return BottomNavigationBarItem(
       icon: Icon(
         itemData.icon,
         color: color,
       ),
-      
-
-      title: Text(
-        itemData.title,
-        style: TextStyle(color: textColor, fontFamily: 'quicksand', fontSize: 10.0, fontWeight: FontWeight.w600),
-      ),
+      label: itemData.title,
     );
   }
 }

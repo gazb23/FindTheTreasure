@@ -15,6 +15,14 @@ class MyQuestsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
+        builder: (context, child) {
+        final mediaQueryData = MediaQuery.of(context);
+        final scale = mediaQueryData.textScaleFactor.clamp(0.8, 1.35);
+        return MediaQuery(
+          child: child,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+        );
+      },
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
         appBarTheme: AppBarTheme(

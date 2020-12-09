@@ -133,7 +133,9 @@ class _QuestListViewState extends State<QuestListView> {
                           loop: 3,
                           highlightColor: Colors.grey.shade100,
                           child: const Text(
+                          
                             'QUEST CONQUERED',
+                          
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.amberAccent,
@@ -174,6 +176,7 @@ class _QuestListViewState extends State<QuestListView> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       title: Text(
         widget.title,
+       
         style: const TextStyle(
             color: Colors.white,
             fontSize: 30.0,
@@ -188,8 +191,11 @@ class _QuestListViewState extends State<QuestListView> {
             size: 18,
           ),
           Text(
+            
             widget.location,
+           
             style: TextStyle(
+
                 color: Colors.grey.shade100,
                 fontWeight: FontWeight.w600,
                 fontFamily: 'JosefinSans'),

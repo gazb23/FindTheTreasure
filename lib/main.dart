@@ -46,6 +46,15 @@ class MyApp extends StatelessWidget {
       ],
       child: AuthWidgetBuilder(builder: (context, userSnapshot) {
         return MaterialApp(
+          // Keep text scaling correct when user changes text scale on phone
+            builder: (context, child) {
+        final mediaQueryData = MediaQuery.of(context);
+        final scale = mediaQueryData.textScaleFactor.clamp(0.8, 1.35);
+        return MediaQuery(
+          child: child,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+        );
+      },
           debugShowCheckedModeBanner: false,
           title: 'Find The Treasure',
           theme: MaterialTheme.buildThemeData(),
