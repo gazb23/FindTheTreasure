@@ -140,25 +140,25 @@ class _LeaderboardProfileScreenState extends State<LeaderboardProfileScreen> {
                           color: Colors.amberAccent),
                     ),
                   ),
-                  ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 30),
-                    leading: Image.asset(
-                      'images/explore/skull_key.png',
-                      height: 30,
-                    ),
-                    title: AutoSizeText(
-                      'Keys',
-                      style: const TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    trailing: AutoSizeText(
-                      userData.userKeyCount.toString(),
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.amberAccent),
-                    ),
-                  ),
-                  const SizedBox(height: 20)
+                  // ListTile(
+                  //   contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+                  //   leading: Image.asset(
+                  //     'images/explore/skull_key.png',
+                  //     height: 30,
+                  //   ),
+                  //   title: AutoSizeText(
+                  //     'Keys',
+                  //     style: const TextStyle(fontSize: 20, color: Colors.white),
+                  //   ),
+                  //   trailing: AutoSizeText(
+                  //     userData.userKeyCount.toString(),
+                  //     style: const TextStyle(
+                  //         fontSize: 20,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: Colors.amberAccent),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 20)
                 ],
               ),
             )),

@@ -24,12 +24,12 @@ class QuestViewModel  {
       final UserData userData = Provider.of<UserData>(context, listen: false);
       final int updatedDiamondCount =
           userData.userDiamondCount + questModel.bountyDiamonds;
-      final int updatedKeyCount = userData.userKeyCount + questModel.bountyKeys;
+      // final int updatedKeyCount = userData.userKeyCount + questModel.bountyKeys;
 
       final UserData _userData = UserData(
           userDiamondCount: updatedDiamondCount,
           locationsExplored: userData.locationsExplored,
-          userKeyCount: updatedKeyCount,
+          // userKeyCount: updatedKeyCount,
           points: LeaderboardViewModel.questComplete(
             userData: userData,
             questModel: questModel,
@@ -72,7 +72,7 @@ class QuestViewModel  {
       final UserData _userData = UserData(
         userDiamondCount: userData.userDiamondCount,
         locationsExplored: userData.locationsExplored,
-        userKeyCount: userData.userKeyCount,
+        // userKeyCount: userData.userKeyCount,
         points: LeaderboardViewModel.questComplete(
           userData: userData,
           questModel: questModel,

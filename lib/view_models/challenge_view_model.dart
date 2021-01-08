@@ -35,7 +35,7 @@ class ChallengeViewModel extends ChangeNotifier {
     AudioPlayerService().playSound(path: 'answer_incorrect.mp3');
     final UserData _updateUserData = UserData(
       userDiamondCount: _userData.userDiamondCount,
-      userKeyCount: _userData.userKeyCount,
+      // userKeyCount: _userData.userKeyCount,
       points: LeaderboardViewModel.questionIncorrect(
           questModel: questModel, userData: _userData),
       displayName: _userData.displayName,
@@ -106,7 +106,7 @@ class ChallengeViewModel extends ChangeNotifier {
         try {
           final UserData _updateUserData = UserData(
             userDiamondCount: _userData.userDiamondCount - _hintCost,
-            userKeyCount: _userData.userKeyCount,
+            // userKeyCount: _userData.userKeyCount,
             points: _userData.points,
             displayName: _userData.displayName,
             email: _userData.email,

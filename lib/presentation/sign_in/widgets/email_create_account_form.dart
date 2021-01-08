@@ -4,12 +4,14 @@ import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/theme.dart';
 
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
 import 'package:find_the_treasure/widgets_common/custom_text_field.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 
 class EmailCreateAccountForm extends StatefulWidget {
   EmailCreateAccountForm({@required this.bloc});
@@ -41,10 +43,10 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
     try {
       await widget.bloc.submit();
       // Navigator.of(context).pop();
-    } on PlatformException catch (e) {
-      if (e.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL')
-        _showDuplicateAccountSignInError(context, e);
-      else 
+    } on FirebaseAuthException catch (e) {
+      // if (e.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL')
+      //   _showDuplicateAccountSignInError(context, e);
+      // else 
          PlatformExceptionAlertDialog(
           title: 'Sign up failed',
           exception: e,
@@ -59,13 +61,13 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
     
   }
 
-  void _showDuplicateAccountSignInError(
-      BuildContext context, PlatformException exception) {
-    PlatformExceptionAlertDialog(
-      title: 'Sign in failed',
-      exception: exception,
-    ).show(context);
-  }
+  // void _showDuplicateAccountSignInError(
+  //     BuildContext context, Exception exception) {
+  //   PlatformExceptionAlertDialog(
+  //     title: 'Sign in failed',
+  //     exception: exception,
+  //   ).show(context);
+  // }
 
   void _emailEditingComplete(EmailSignInModel model) {
     final _newFocus = !model.emailIsEmptyValidator.isValid(model.email) &&

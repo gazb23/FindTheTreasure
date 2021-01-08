@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:apple_sign_in/apple_sign_in_button.dart' as apple;
 import 'package:apple_sign_in/scope.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_treasure/blocs/sign_in/sign_in_bloc.dart';
 import 'package:find_the_treasure/presentation/sign_in/screens/email_create_account_screen.dart';
 import 'package:find_the_treasure/services/auth.dart';
@@ -74,42 +75,35 @@ class _SignInMainScreenState extends State<SignInMainScreen>
     animationController.forward();
   }
 
-  void _showSignInError(BuildContext context, PlatformException exception) {
+  void _showSignInError(BuildContext context, Exception exception) {
+    if (exception is FirebaseException &&
+        exception.code == 'ERROR_ABORTED_BY_USER') return;
     PlatformExceptionAlertDialog(
       title: 'Sign in failed',
       exception: exception,
     ).show(context);
   }
 
-  void _showDuplicateAccountSignInError(
-      BuildContext context, PlatformException exception) {
-    PlatformExceptionAlertDialog(
-      title: 'Sign in failed',
-      exception: exception,
-    ).show(context);
-  }
+  // void _showDuplicateAccountSignInError(
+  //     BuildContext context, PlatformException exception) {
+  //   PlatformExceptionAlertDialog(
+  //     title: 'Sign in failed',
+  //     exception: exception,
+  //   ).show(context);
+  // }
 
-  void _showNetworkError(BuildContext context, PlatformException exception) {
-    PlatformExceptionAlertDialog(
-      title: 'Network Error',
-      exception: exception,
-    ).show(context);
-  }
+  // void _showNetworkError(BuildContext context, PlatformException exception) {
+  //   PlatformExceptionAlertDialog(
+  //     title: 'Network Error',
+  //     exception: exception,
+  //   ).show(context);
+  // }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
       await widget.bloc.signInWithGoogle();
-    } on PlatformException catch (e) {
-      print('ERROR:' + e.toString());
-      if (e.code != 'ERROR_ABORTED_BY_USER') {
-        _showSignInError(context, e);
-      } else if (e.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') {
-        _showDuplicateAccountSignInError(context, e);
-      } else if (e.code == 'network_error') {
-        _showNetworkError(context, e);
-      } else {
-        _showSignInError(context, e);
-      }
+    } on Exception catch (e) {
+      _showSignInError(context, e);
     }
   }
 

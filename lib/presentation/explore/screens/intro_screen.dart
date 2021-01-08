@@ -141,11 +141,9 @@ class _IntroScreenState extends State<IntroScreen> {
                   duration: Duration(seconds: 1),
                   child: DiamondAndKeyContainer(
                     diamondSpinning: true,
-                    numberOfDiamonds: 50,
-                    numberOfKeys: 1,
+                    numberOfDiamonds: 50,                    
                     mainAxisAlignment: MainAxisAlignment.center,
-                    diamondHeight: 50,
-                    skullKeyHeight: 50,
+                    diamondHeight: 50,                    
                     fontSize: 20,
                     showShop: false,
                   ),
@@ -186,8 +184,7 @@ class _IntroScreenState extends State<IntroScreen> {
       locationsExplored: _userData.locationsExplored,
       photoURL: _userData.photoURL,
       points: _userData.points,
-      userDiamondCount: _userData.userDiamondCount,
-      userKeyCount: _userData.userKeyCount,
+      userDiamondCount: _userData.userDiamondCount,      
       uid: _userData.uid,
       seenIntro: true,
     );

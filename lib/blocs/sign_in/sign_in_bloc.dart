@@ -1,6 +1,7 @@
 
 
 import 'package:find_the_treasure/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -25,5 +26,5 @@ class SocialSignInBloc {
 
 
   Future<User> signInWithGoogle() async => await _signIn(auth.signInWithGoogle);
-  Future<User> signInWithFacebook() async => await _signIn(auth.signInWithFacebook);
+  // Future<User> signInWithFacebook() async => await _signIn(auth.signInWithFacebook);
 } 

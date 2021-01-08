@@ -303,10 +303,8 @@ class QuestDetailScreen extends StatelessWidget {
               height: 35,
             ),
             title: DiamondAndKeyContainer(
-              numberOfDiamonds: questModelStream.bountyDiamonds,
-              numberOfKeys: questModelStream.bountyKeys,
-              diamondHeight: 25,
-              skullKeyHeight: 30,
+              numberOfDiamonds: questModelStream.bountyDiamonds,              
+              diamondHeight: 25,              
               fontSize: 18,
               fontWeight: FontWeight.bold,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -351,14 +349,13 @@ class QuestDetailScreen extends StatelessWidget {
             Expanded(
               flex: 3,
               child: DiamondAndKeyContainer(
-                numberOfDiamonds: questModelStream.numberOfDiamonds,
-                numberOfKeys: questModelStream.numberOfKeys,
+                numberOfDiamonds: questModelStream.numberOfDiamonds,               
                 mainAxisAlignment: MainAxisAlignment.start,
                 spaceBetween: 10,
-                fontSize: 14,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
-                diamondHeight: 25,
-                skullKeyHeight: 30,
+                diamondHeight: 35,      
+                showShop: false,        
               ),
             ),
             Expanded(

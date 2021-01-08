@@ -93,7 +93,7 @@ class Current extends StatelessWidget {
             itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
-              numberOfKeys: quest.numberOfKeys,
+              // numberOfKeys: quest.numberOfKeys,
               title: quest.title,
               image: quest.image,
               numberOfLocations: quest.numberOfLocations,
@@ -136,7 +136,7 @@ class Liked extends StatelessWidget {
             itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
-              numberOfKeys: quest.numberOfKeys,
+              // numberOfKeys: quest.numberOfKeys,
               title: quest.title,
               image: quest.image,
               numberOfLocations: quest.numberOfLocations,
@@ -180,7 +180,7 @@ class Conquered extends StatelessWidget {
             itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
-              numberOfKeys: quest.numberOfKeys,
+              // numberOfKeys: quest.numberOfKeys,
               title: quest.title,
               image: quest.image,
               numberOfLocations: quest.numberOfLocations,

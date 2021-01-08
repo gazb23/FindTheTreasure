@@ -12,9 +12,9 @@ class QuestModel {
   final String treasureDirections;
   final int numberOfLocations;
   final int numberOfDiamonds;
-  final int numberOfKeys;
+  // final int numberOfKeys;
   final int bountyDiamonds;
-  final int bountyKeys;
+  // final int bountyKeys;
   final int questPoints;
   final int hintCost;
   final int skipCost;
@@ -39,13 +39,13 @@ class QuestModel {
     this.title,
     this.difficulty,
     this.numberOfDiamonds,
-    this.numberOfKeys,
+    // this.numberOfKeys,
     this.tags,
     this.timeDifficulty,
     this.brainDifficulty,
     this.hikeDifficulty,
     this.bountyDiamonds,
-    this.bountyKeys,
+    // this.bountyKeys,
     this.questPoints,
     this.isLive,
     this.hintCost,
@@ -76,13 +76,13 @@ class QuestModel {
       location: data['location'],
       image: data['image'],
       numberOfDiamonds: data['numberOfDiamonds'],
-      numberOfKeys: data['numberOfKeys'] != null ? data['numberOfKeys'] : 0,
+      // numberOfKeys: data['numberOfKeys'] != null ? data['numberOfKeys'] : 0,
       tags: data['tags'],
       timeDifficulty: data['timeDifficulty'],
       brainDifficulty: data['brainDifficulty'],
       hikeDifficulty: data['hikeDifficulty'],
       bountyDiamonds: data['bountyDiamonds'],
-      bountyKeys: data['bountyKeys'],
+      // bountyKeys: data['bountyKeys'],
       questPoints: data['questPoints'],
       isLive: data['isLive'],
       hintCost: data['hintCost'],
@@ -107,12 +107,12 @@ class QuestModel {
       'location': location,
       'image': image,
       'numberOfDiamonds': numberOfDiamonds,
-      'numberOfKeys': numberOfKeys,
+      // 'numberOfKeys': numberOfKeys,
       'tags': tags,
       'timeDifficulty': timeDifficulty,
       'brainDifficulty': brainDifficulty,
       'hikeDifficulty': hikeDifficulty,
-      'bountyKeys': bountyKeys,
+      // 'bountyKeys': bountyKeys,
       'bountyDiamonds': bountyDiamonds,
       'questPoints': questPoints,
       'imageURL': imageURL

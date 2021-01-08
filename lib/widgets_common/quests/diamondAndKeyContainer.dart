@@ -5,30 +5,30 @@ import 'package:flutter/material.dart';
 
 class DiamondAndKeyContainer extends StatelessWidget {
   final double diamondHeight;
-  final double skullKeyHeight;
+  // final double skullKeyHeight;
   final double spaceBetween;
   final double fontSize;
   final FontWeight fontWeight;
   final int numberOfDiamonds;
-  final int numberOfKeys;
+  // final int numberOfKeys;
   final MainAxisAlignment mainAxisAlignment;
   final Color color;
   final bool showDiamond;
-  final bool showKey;
+  // final bool showKey;
   final bool diamondSpinning;
   final bool showShop;
   DiamondAndKeyContainer({
     this.diamondHeight,
-    this.skullKeyHeight,
+    // this.skullKeyHeight,
     this.spaceBetween = 5,
     this.numberOfDiamonds,
-    this.numberOfKeys,
+    // this.numberOfKeys,
     this.mainAxisAlignment,
     this.fontSize,
     this.fontWeight,
     this.color,
     this.showDiamond = true,
-    this.showKey = true,
+    // this.showKey = true,
     this.diamondSpinning = false, this.showShop = true,
   });
   @override
@@ -87,29 +87,7 @@ class DiamondAndKeyContainer extends StatelessWidget {
             SizedBox(
               width: spaceBetween,
             ),
-            showKey
-                ? Container(
-                    child: Row(
-                      children: <Widget>[
-                        Image.asset(
-                          'images/skull_key_outline.png',
-                          height: skullKeyHeight ?? 30.0,
-                        ),
-                        numberOfKeys != null
-                            ? Text(
-                                numberOfKeys.toString(),
-                                style: TextStyle(
-                                    color: color ?? Colors.white,
-                                    fontSize: fontSize ?? 13,
-                                    fontWeight: fontWeight),
-                              )
-                            : CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    MaterialTheme.blue.withOpacity(0.5)))
-                      ],
-                    ),
-                  )
-                : Container(),
+           
           ],
         ),
       ),

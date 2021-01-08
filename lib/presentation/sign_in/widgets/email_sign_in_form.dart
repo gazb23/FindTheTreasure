@@ -4,6 +4,7 @@ import 'package:find_the_treasure/presentation/sign_in/screens/password_reset_sc
 import 'package:find_the_treasure/services/auth.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:find_the_treasure/widgets_common/custom_list_view.dart';
 import 'package:find_the_treasure/widgets_common/custom_text_field.dart';
@@ -41,7 +42,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     try {
       await widget.bloc.submit();
       // Navigator.of(context).pop();
-    } on PlatformException catch (e) {
+    } on FirebaseAuthException catch (e) {
       PlatformExceptionAlertDialog(
         title: 'Sign in failed',
         exception: e,

@@ -5,7 +5,7 @@ class UserData {
   final String displayName;
   final String photoURL;
   final int userDiamondCount;
-  final int userKeyCount;
+  // final int userKeyCount;
   final int points;
   final bool isAdmin;
   final bool seenIntro;
@@ -18,7 +18,7 @@ class UserData {
       this.displayName,
       this.photoURL,
       this.userDiamondCount,
-      this.userKeyCount,
+      // this.userKeyCount,
       this.points,
       this.locationsExplored,
       this.isAdmin,
@@ -32,7 +32,7 @@ class UserData {
       'displayName': displayName,
       'photoURL': photoURL,
       'userDiamondCount': userDiamondCount,
-      'userKeyCount': userKeyCount,
+      // 'userKeyCount': userKeyCount,
       'points': points,
       'locationsExplored': locationsExplored,
       'isAdmin': isAdmin,
@@ -53,7 +53,7 @@ class UserData {
       displayName: data['displayName'],
       photoURL: data['photoURL'],
       userDiamondCount: data['userDiamondCount'],
-      userKeyCount: data['userKeyCount'],
+      // userKeyCount: data['userKeyCount'],
       points: data['points'],
       locationsExplored:
           data['locationsExplored'] != null ? data['locationsExplored'] : [],

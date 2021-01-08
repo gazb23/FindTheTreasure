@@ -44,20 +44,23 @@ class _ExploreScreenState extends State<ExploreScreen> {
           iconTheme: const IconThemeData(
             color: Colors.black87,
           ),
-          title: DiamondAndKeyContainer(
+          actions: [ DiamondAndKeyContainer(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             numberOfDiamonds: _userData.userDiamondCount,
-            numberOfKeys: _userData.userKeyCount,
             diamondHeight: 30,
-            skullKeyHeight: 33,
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
             diamondSpinning: true,
           ),
+          SizedBox(width: 10,)
+          ]
+
         ),
         body: _userData != null
-            ? !_userData.isAdmin ? LiveListView() : AdminView()
+            ? !_userData.isAdmin
+                ? LiveListView()
+                : AdminView()
             : Container(
                 child: Center(
                 child: CustomCircularProgressIndicator(
@@ -117,8 +120,7 @@ class AdminView extends StatelessWidget {
                       title: 'No test events',
                       itemBuilder: (context, quest, index) => QuestListView(
                           numberOfDiamonds: quest.numberOfDiamonds,
-                          difficulty: quest.difficulty,
-                          numberOfKeys: quest.numberOfKeys,
+                          difficulty: quest.difficulty,                          
                           title: quest.title,
                           image: quest.image,
                           numberOfLocations: quest.numberOfLocations,
@@ -168,8 +170,7 @@ class LiveListView extends StatelessWidget {
             message: 'Oh No!',
             itemBuilder: (context, quest, index) => QuestListView(
                 numberOfDiamonds: quest.numberOfDiamonds,
-                difficulty: quest.difficulty,
-                numberOfKeys: quest.numberOfKeys,
+                difficulty: quest.difficulty,               
                 title: quest.title,
                 image: quest.image,
                 numberOfLocations: quest.numberOfLocations,

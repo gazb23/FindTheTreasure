@@ -11,6 +11,7 @@ import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/authentication/apple_sign_in_available.dart';
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget.dart';
 import 'package:find_the_treasure/widgets_common/authentication/auth_widget_builder.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'presentation/sign_in/screens/email_sign_in_screen.dart';
 import 'presentation/sign_in/screens/password_reset_screen.dart';
@@ -21,6 +22,7 @@ void main() async {
   // Fix for: Unhandled Exception: ServicesBinding.defaultBinaryMessenger was accessed before the binding was initialized.
   WidgetsFlutterBinding.ensureInitialized();
   final appleSignInAvailable = await AppleSignInAvailable.check();
+  await Firebase.initializeApp();
   runApp(Provider<AppleSignInAvailable>.value(
     value: appleSignInAvailable,
     child: MyApp(),

@@ -268,7 +268,7 @@ class QuestionViewModel extends ChangeNotifier {
         try {
           final UserData _updateUserData = UserData(
             userDiamondCount: _userData.userDiamondCount - _skipCost,
-            userKeyCount: _userData.userKeyCount,
+            // userKeyCount: _userData.userKeyCount,
             points: _userData.points,
             displayName: _userData.displayName,
             email: _userData.email,

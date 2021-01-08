@@ -20,7 +20,7 @@ class QuestListView extends StatefulWidget {
   final String location;
   final int numberOfLocations;
   final int numberOfDiamonds;
-  final int numberOfKeys;
+  // final int numberOfKeys;
   final VoidCallback onTap;
 
   const QuestListView({
@@ -28,7 +28,7 @@ class QuestListView extends StatefulWidget {
     @required this.title,
     @required this.difficulty,
     @required this.numberOfDiamonds,
-    @required this.numberOfKeys,
+    // @required this.numberOfKeys,
     @required this.image,
     this.onTap,
     this.location,
@@ -154,8 +154,7 @@ class _QuestListViewState extends State<QuestListView> {
                                   height: 30,
                                 )
                               : DiamondAndKeyContainer(
-                                  numberOfDiamonds: widget.numberOfDiamonds,
-                                  numberOfKeys: widget.numberOfKeys,
+                                  numberOfDiamonds: widget.numberOfDiamonds,                                  
                                   diamondHeight: 25,
                                   showShop: false,
                                 ),

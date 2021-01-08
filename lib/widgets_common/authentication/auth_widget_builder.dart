@@ -6,6 +6,7 @@ import 'package:find_the_treasure/services/image_picker_service.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/location_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
@@ -22,10 +23,11 @@ class AuthWidgetBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthBase>(context, listen: false);
     return StreamBuilder<User>(
-      stream: authService.onAuthStateChanged,
+      stream: authService.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         final User user = snapshot.data;
         if (user != null) {
+          
           //  This method is required to be called when initialize the application. It is to acknowledge your application has been updated to support pending purchases.
           InAppPurchaseConnection.enablePendingPurchases();
           return MultiProvider(
@@ -50,19 +52,18 @@ class AuthWidgetBuilder extends StatelessWidget {
             child: Consumer<DatabaseService>(
               builder: (_, databaseService, __) => StreamProvider<UserData>(
                 initialData: UserData(
-                    userDiamondCount: 0,
-                    userKeyCount: 0,
-                    id: '',
-                    displayName: '',
-                    email: '',
-                    isAdmin: false,
-                    locationsExplored: [],
-                    photoURL: '',
-                    points: 0,
-                    seenIntro: true,
-                    // userKeyCount: 0,
-                    // userDiamondCount: 0,
-                    uid: user.uid),
+                  userDiamondCount: 0,
+                  // userKeyCount: 0,
+                  id: '',
+                  displayName: '',
+                  email: '',
+                  isAdmin: false,
+                  locationsExplored: [],
+                  photoURL: '',
+                  points: 0,
+                  seenIntro: true,
+                  uid: user.uid,
+                ),
                 create: (_) => databaseService.userStream(),
                 child: builder(context, snapshot),
               ),

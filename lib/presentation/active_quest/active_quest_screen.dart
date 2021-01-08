@@ -75,8 +75,7 @@ class _ActiveQuestScreenState extends State<ActiveQuestScreen> {
             Consumer<UserData>(
               builder: (_, _userData, __) => DiamondAndKeyContainer(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                numberOfDiamonds: _userData.userDiamondCount,
-                numberOfKeys: _userData.userKeyCount,
+                numberOfDiamonds: _userData.userDiamondCount,                
                 color: Colors.black87,
                 diamondHeight: 25,
               ),

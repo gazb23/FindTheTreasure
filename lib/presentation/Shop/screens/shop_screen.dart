@@ -46,7 +46,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   // Consumable credits the user can buy
   int _diamonds = 0;
-  int _keys = 0;
+  // int _keys = 0;
 
   AudioPlayerService audioplayer;
 
@@ -166,7 +166,7 @@ class _ShopScreenState extends State<ShopScreen> {
         points: _userData.points,
         isAdmin: _userData.isAdmin,
         userDiamondCount: _userData.userDiamondCount + _diamonds,
-        userKeyCount: _userData.userKeyCount + _keys,
+        // userKeyCount: _userData.userKeyCount + _keys,
         seenIntro: _userData.seenIntro,
       );
 
@@ -215,19 +215,19 @@ class _ShopScreenState extends State<ShopScreen> {
     switch (purchase.productID) {
       case _diamond50:
         _diamonds = 50;
-        _keys = 0;
+        // _keys = 0;
         break;
       case _diamond150:
         _diamonds = 150;
-        _keys = 1;
+        // _keys = 1;
         break;
       case _diamond300:
         _diamonds = 300;
-        _keys = 3;
+        // _keys = 3;
         break;
       case _diamond500:
         _diamonds = 500;
-        _keys = 5;
+        // _keys = 5;
         break;
     }
   }
@@ -261,18 +261,20 @@ class _ShopScreenState extends State<ShopScreen> {
       appBar: AppBar(
         backgroundColor: Colors.brown,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: DiamondAndKeyContainer(
+        actions: [DiamondAndKeyContainer(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           numberOfDiamonds: _userData?.userDiamondCount,
-          numberOfKeys: _userData?.userKeyCount,
+          // numberOfKeys: _userData?.userKeyCount,
           diamondHeight: 30,
-          skullKeyHeight: 33,
+          // skullKeyHeight: 33,
           color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 18,
           diamondSpinning: true,
           showShop: false,
         ),
+        SizedBox(width: 10)
+        ]
       ),
       body: Container(
         width: double.infinity,
@@ -323,7 +325,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 child: BuyDiamondOrKeyButton(
                   numberOfDiamonds: numberOfDiamonds(prod.id),
                   diamondCost: prod.price,
-                  bonusKey: numberOfKeys(prod.id),
+                  // bonusKey: numberOfKeys(prod.id),
                   isPurchasePending: _isPurchasePending,
                   onPressed: () {
                     _buyProduct(prod);
@@ -376,26 +378,26 @@ class _ShopScreenState extends State<ShopScreen> {
     return _numberOfDiamonds;
   }
 
-  String numberOfKeys(String productId) {
-    String _numberOfKeys;
-    switch (productId) {
-      case _diamond50:
-        _numberOfKeys = '0';
-        break;
-      case _diamond150:
-        _numberOfKeys = '1';
-        break;
-      case _diamond300:
-        _numberOfKeys = '3';
-        break;
-      case _diamond500:
-        _numberOfKeys = '5';
-        break;
-      default:
-        _numberOfKeys = '0';
-    }
-    return _numberOfKeys;
-  }
+  // String numberOfKeys(String productId) {
+  //   String _numberOfKeys;
+  //   switch (productId) {
+  //     case _diamond50:
+  //       _numberOfKeys = '0';
+  //       break;
+  //     case _diamond150:
+  //       _numberOfKeys = '1';
+  //       break;
+  //     case _diamond300:
+  //       _numberOfKeys = '3';
+  //       break;
+  //     case _diamond500:
+  //       _numberOfKeys = '5';
+  //       break;
+  //     default:
+  //       _numberOfKeys = '0';
+  //   }
+  //   return _numberOfKeys;
+  // }
 }
 
 class StoreLoadingButton extends StatelessWidget {

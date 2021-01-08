@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class BuyDiamondOrKeyButton extends StatelessWidget {
   final String numberOfDiamonds;
   final String diamondCost;
-  final String bonusKey;
+  // final String bonusKey;
   final Color textColor;
   final double diamondTextSize;
   final double costTextSize;
@@ -19,7 +19,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
     @required this.diamondCost,
     @required this.onPressed,
     this.textColor,
-    this.bonusKey,
+    // this.bonusKey,
     this.diamondTextSize = 30,
     this.costTextSize = 15, this.isPurchasePending,
     
@@ -29,7 +29,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return     
     Container(
-      width: MediaQuery.of(context).size.width * 0.9,
+      width: MediaQuery.of(context).size.width * 0.94,
       height: MediaQuery.of(context).size.height/14,
       child: CustomRaisedButton(
         color: MaterialTheme.orange,
@@ -69,28 +69,28 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
                   ],
                 ),
               ),
-              Expanded(
-                flex: 3,
+              // Expanded(
+              //   flex: 3,
                 
-                child: 
-                bonusKey == '0' ? Container() : 
-                Row(
-                  children: <Widget>[
-                    Text(
-                      '+$bonusKey',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Image.asset(
-                      'images/skull_key_outline.png',
-                      height: 30,
-                    ),
-                  ],
-                ),
-              ),
+              //   child: 
+              //   bonusKey == '0' ? Container() : 
+              //   Row(
+              //     children: <Widget>[
+              //       Text(
+              //         '+$bonusKey',
+              //         style: TextStyle(
+              //           fontWeight: FontWeight.bold,
+              //           color: Colors.white70,
+              //           fontSize: 15,
+              //         ),
+              //       ),
+              //       Image.asset(
+              //         'images/skull_key_outline.png',
+              //         height: 30,
+              //       ),
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 width: 30,
               ),

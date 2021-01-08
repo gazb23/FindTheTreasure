@@ -199,9 +199,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
             widthFactor: 0.7,
             child: DiamondAndKeyContainer(
               numberOfDiamonds: userData.userDiamondCount,
-              numberOfKeys: userData.userKeyCount,
               diamondHeight: 35,
-              skullKeyHeight: 50,
               fontSize: 26,
               fontWeight: FontWeight.bold,
               mainAxisAlignment: MainAxisAlignment.center,

@@ -172,7 +172,7 @@ class _LocationHeaderState extends State<LocationHeader> {
     void _submit() async {
       final LocationService locationService = context.read<LocationService>();
       try {
-        locationService.getCurrentLocation(context);
+         locationService.getCurrentLocation(context);
       } catch (e) {
         print(e.toString());
       }

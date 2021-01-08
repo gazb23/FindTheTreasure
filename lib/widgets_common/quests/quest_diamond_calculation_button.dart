@@ -29,27 +29,29 @@ class QuestDiamondCalulationButton extends StatelessWidget {
         questModelStream.questCompletedBy.contains(userData.uid);
     int _diamondCalc =
         (questModelStream.numberOfDiamonds - userData.userDiamondCount);
-    int _keyCalc = (questModelStream.numberOfKeys - userData.userKeyCount);
+    // int _keyCalc = (questModelStream.numberOfKeys - userData.userKeyCount);
 
     return SignInButton(
         padding: 15,
         text: _isStartedBy || _isCompletedBy ? 'Continue Quest' : 'Start Quest',
         onPressed: () {
-          if (userData.userDiamondCount >= questModelStream.numberOfDiamonds &&
-                  userData.userKeyCount >= questModelStream.numberOfKeys ||
+          if (userData.userDiamondCount >= questModelStream.numberOfDiamonds
+              // userData.userKeyCount >= questModelStream.numberOfKeys
+              ||
               _isStartedBy ||
               _isCompletedBy) {
             return _confirmQuest(
-                context, questModelStream, userData, databaseService);
-          } else if (userData.userDiamondCount <
-              questModelStream.numberOfDiamonds) {
+              context,
+              questModelStream,
+              userData,
+              databaseService,
+            );
+          } else
             return _confirmStoreDiamond(
               context,
               questModelStream,
               _diamondCalc,
             );
-          } else
-            return _confirmStoreKey(context, questModelStream, _keyCalc);
         });
   }
 
@@ -75,7 +77,7 @@ class QuestDiamondCalulationButton extends StatelessWidget {
           final UserData _userData = UserData(
             userDiamondCount:
                 userData.userDiamondCount - questModelStream.numberOfDiamonds,
-            userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
+            // userKeyCount: userData.userKeyCount - questModelStream.numberOfKeys,
             points: userData.points,
             displayName: userData.displayName,
             locationsExplored: userData.locationsExplored,
@@ -115,25 +117,25 @@ class QuestDiamondCalulationButton extends StatelessWidget {
     }
   }
 
-// Show the correct PlatformAlert dialog and navigate the user to the store if requ
-  Future<void> _confirmStoreKey(
-      BuildContext context, QuestModel questModelStream, _keyCalc) async {
-    final didRequestQuest = await PlatformAlertDialog(
-      title: '${userData.displayName}',
-      content:
-          'It seems ye need ${questModelStream.numberOfKeys - userData.userKeyCount} ${keyPluralCount(_keyCalc)} to complete the ${questModelStream.title} quest. Head to the shop to buy some more or head off on an adventure that requires less keys.',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Shop',
-      image: Image.asset('images/ic_owl_wrong_dialog.png'),
-    ).show(context);
-    if (didRequestQuest) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ShopScreen(),
-        ),
-      );
-    }
-  }
+// Show the correct PlatformAlert dialog and navigate the user to the store if required
+  // Future<void> _confirmStoreKey(
+  //     BuildContext context, QuestModel questModelStream, _keyCalc) async {
+  //   final didRequestQuest = await PlatformAlertDialog(
+  //     title: '${userData.displayName}',
+  //     content:
+  //         'It seems ye need ${questModelStream.numberOfKeys - userData.userKeyCount} ${keyPluralCount(_keyCalc)} to complete the ${questModelStream.title} quest. Head to the shop to buy some more or head off on an adventure that requires less keys.',
+  //     cancelActionText: 'Cancel',
+  //     defaultActionText: 'Shop',
+  //     image: Image.asset('images/ic_owl_wrong_dialog.png'),
+  //   ).show(context);
+  //   if (didRequestQuest) {
+  //     Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //         builder: (context) => ShopScreen(),
+  //       ),
+  //     );
+  //   }
+  // }
 
   Future<void> _confirmStoreDiamond(
       BuildContext context, QuestModel questModelStream, _diamondCalc) async {

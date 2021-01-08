@@ -8,6 +8,7 @@ import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/platform_exception_alert_dialog.dart';
 import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
@@ -119,7 +120,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           points: _userData.points,
           uid: _userData.uid,
           userDiamondCount: _userData.userDiamondCount,
-          userKeyCount: _userData.userKeyCount,
+          // userKeyCount: _userData.userKeyCount,
           isAdmin: _userData.isAdmin,
           seenIntro: _userData.seenIntro,
         );
@@ -168,7 +169,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             points: _userData.points,
             uid: _userData.uid,
             userDiamondCount: _userData.userDiamondCount,
-            userKeyCount: _userData.userKeyCount,
+            // userKeyCount: _userData.userKeyCount,
             isAdmin: _userData.isAdmin,
             seenIntro: _userData.seenIntro,
           );
@@ -335,11 +336,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Container _buildSettings(
       UserData _userData, BuildContext context, User userEmail) {
     User user = Provider.of<User>(context);
-
+ 
     // bool loginFacebook = user.loginCredential == 'facebook.com';
-    bool loginGoogle = user.loginCredential == 'google.com';
+    bool loginGoogle = user.providerData[0].providerId == 'google.com';
     bool login = loginGoogle;
-    print(user.loginCredential);
+    
     return Container(
       child: Column(
         children: <Widget>[
@@ -481,7 +482,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(fontSize: 20),
               textCapitalization: TextCapitalization.words,
               validator: (value) {
-                if (ProfanityFilter().checkStringForProfanity(value)) {
+                if (ProfanityFilter().hasProfanity(value)) {
                   return 'Oh my! Please avoid language like that';
                 }
                 if (value.isEmpty || value == null) {
