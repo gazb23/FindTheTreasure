@@ -78,6 +78,7 @@ class _ActiveQuestScreenState extends State<ActiveQuestScreen> {
                 numberOfDiamonds: _userData.userDiamondCount,                
                 color: Colors.black87,
                 diamondHeight: 25,
+                fontSize: 16,
               ),
             ),
             const SizedBox(

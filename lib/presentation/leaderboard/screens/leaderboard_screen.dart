@@ -17,7 +17,6 @@ class LeaderboardScreen extends StatefulWidget {
 class _LeaderboardScreenState extends State<LeaderboardScreen> {
   @override
   Widget build(BuildContext context) {
-
     final _database = Provider.of<DatabaseService>(context);
     return Scaffold(
       body: Stack(
@@ -28,13 +27,15 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   image: const AssetImage("images/background_games.png"),
                   fit: BoxFit.fill),
             ),
-             child: BackdropFilter(filter: ImageFilter.blur(
-                    sigmaX: 5, sigmaY: 5, 
-                  ),
-                  child: Container(
-                    color: Colors.grey.withOpacity(0.3),
-                  ),),
-                
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 5,
+                sigmaY: 5,
+              ),
+              child: Container(
+                color: Colors.grey.withOpacity(0.3),
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 155.0),
@@ -44,7 +45,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 10),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 10),
                 child: Image.asset(
                   'images/2.0x/ic_trophy.png',
                   height: 90,
@@ -54,21 +56,20 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       ),
     );
   }
-
-  
- 
 }
 
 class LeaderboardTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:  EdgeInsets.only(left: 10, right: 10, top: 55 + MediaQuery.of(context).padding.top),
+      margin: EdgeInsets.only(
+          left: 10, right: 10, top: 55 + MediaQuery.of(context).padding.top),
       height: 100,
       decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.only(
-              topLeft: const Radius.circular(15), topRight: const Radius.circular(15))),
+              topLeft: const Radius.circular(15),
+              topRight: const Radius.circular(15))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -82,17 +83,21 @@ class LeaderboardTitle extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'No.',
-                  style: const TextStyle(),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-               const SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 Expanded(
                     child: const Text(
                   'Player name',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 )),
-                const Text('Points')
+                const Text(
+                  'Points',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                )
               ],
             ),
           )
@@ -105,7 +110,8 @@ class LeaderboardTitle extends StatelessWidget {
 class LeaderboardListTile extends StatelessWidget {
   final DatabaseService databaseService;
 
-  const LeaderboardListTile({Key key, @required this.databaseService}) : super(key: key);
+  const LeaderboardListTile({Key key, @required this.databaseService})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<UserData>>(

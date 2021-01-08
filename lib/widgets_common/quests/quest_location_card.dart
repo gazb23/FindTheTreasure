@@ -12,6 +12,7 @@ import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:find_the_treasure/services/permission_service.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuestLocationCard extends StatelessWidget {
   final LocationModel locationModel;
@@ -199,7 +200,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                   color: _locationCompletedBy ? Colors.white : Colors.black54,
                   fontSize: 22),
             ),
-            subtitle: _locationCompletedBy ? Text('Conquered') : null,
+            subtitle: _locationCompletedBy ? Text('Conquered') : !_locationStartedBy ? Text('Tap to start') : null,
             trailing: StreamBuilder<List<QuestionsModel>>(
                 stream: databaseService.challengesStream(
                   questId: widget.questModel.id,
@@ -261,9 +262,12 @@ class _LocationHeaderState extends State<LocationHeader> {
                             SizedBox(
                               height: 5,
                             ),
-                            Image.asset(
-                              'images/pin.png',
-                              height: 40,
+                            InkWell(
+                              onTap: () => googleMaps(widget.locationModel),
+                              child: Image.asset(
+                                'images/pin.png',
+                                height: 40,
+                              ),
                             ),
                             const SizedBox(height: 10),
                             Text(
@@ -291,10 +295,21 @@ class _LocationHeaderState extends State<LocationHeader> {
                               color: MaterialTheme.orange,
                               child: locationService.isLoading ||
                                       !permissionService.isLoading
-                                  ? CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.white),
-                                    )
+                                  ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Text('Finding Location', style:  TextStyle(color: Colors.amberAccent, fontWeight: FontWeight.bold),),
+                                      SizedBox(
+                                        height: 15,
+                                        width: 15,
+                                        child: CircularProgressIndicator(
+                                          
+                                            valueColor: AlwaysStoppedAnimation<Color>(
+                                                Colors.white.withOpacity(0.5)),
+                                          ),
+                                      ),
+                                    ],
+                                  )
                                   : const Icon(
                                       Icons.vpn_lock,
                                       color: Colors.white,
@@ -317,6 +332,14 @@ class _LocationHeaderState extends State<LocationHeader> {
         ],
       ),
     );
+  }
+
+  void googleMaps(LocationModel locationModel) async {
+    String googleURL = 'https://www.google.com/maps/search/?api=1&query=${locationModel.location['latitude']},${locationModel.location['longitude']}';
+
+    if (await canLaunch(googleURL)) {
+      await launch(googleURL);
+    } else throw('Couldn\'t open Google Maps');
   }
 
   Image _locationProgressImage({bool locationCompleted, bool locationStarted}) {

@@ -38,9 +38,20 @@ class _ExploreScreenState extends State<ExploreScreen> {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
-          backgroundColor: MaterialTheme.blue,
+          flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+              
+              Colors.greenAccent[400],
+              MaterialTheme.blue,
+            ]) )) ,        
+             
+          
           iconTheme: const IconThemeData(
             color: Colors.black87,
           ),
