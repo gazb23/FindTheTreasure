@@ -10,11 +10,12 @@ class EmptyContent extends StatelessWidget {
   final String buttonText;
   final VoidCallback onPressed;
   final bool buttonEnabled;
+  final Color fontColor;
 
   const EmptyContent(
       {Key key,
       this.title = 'No Quests Currently Available',
-      this.message = 'New Quests coming soon!', this.image, this.buttonText = 'OK', this.onPressed, this.buttonEnabled = false})
+      this.message = 'New Quests coming soon!', this.image, this.buttonText = 'OK', this.onPressed, this.buttonEnabled = false, this.fontColor})
       : super(key: key);
 
   @override
@@ -41,7 +42,7 @@ class EmptyContent extends StatelessWidget {
               message,
               maxLines: 3,
               style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    color: Colors.white,
+                    color: fontColor ?? Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
               textAlign: TextAlign.center,

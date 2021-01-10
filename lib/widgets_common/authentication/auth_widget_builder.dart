@@ -39,7 +39,7 @@ class AuthWidgetBuilder extends StatelessWidget {
               Provider<ImagePickerService>(
                 create: (_) => ImagePickerService(),
               ),
-              Provider<FirebaseStorageService>(
+              ListenableProvider<FirebaseStorageService>(
                 create: (_) => FirebaseStorageService(uid: user.uid),
               ),
               ChangeNotifierProvider<LocationViewModel>(

@@ -204,7 +204,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
               fontWeight: FontWeight.bold,
               mainAxisAlignment: MainAxisAlignment.center,
               spaceBetween: 0,
-              showShop: false,
+              showShop: false,              
             ),
           ),
           SizedBox(height: 15),

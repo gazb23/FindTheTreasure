@@ -1,7 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/global_functions.dart';
-import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -76,16 +75,16 @@ class _IntroScreenState extends State<IntroScreen> {
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        color: Colors.white),
+                                        color: Colors.white.withOpacity(0.3)),
                                     child: const Text(
                                       'SKIP',
                                       style: const TextStyle(
-                                          color: MaterialTheme.orange),
+                                          color: Colors.white30,
                                     ),
                                   ),
                                 )),
                           )
-                    : Container(),
+                        ): Container(),
                 Image.asset(
                   'images/3.0x/ic_avatar_pirate.png',
                   height: MediaQuery.of(context).size.height / 7,
@@ -105,7 +104,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                 'I\'ve buried treasure all over this great land for you to discover.',
                                 'But finding these buried bounties won\'t be easy...',
                                 'You\'ll explore new lands, conquer epic quests and solve challenging puzzles.',
-                                'To help you along your way I\'ve gifted you 50 diamonds and 1 key.',
+                                'To help you along your way I\'ve gifted you 50 diamonds.',
                                 'Are you ready for adventure?'
                               ],
                               textStyle: TextStyle(
@@ -146,6 +145,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     diamondHeight: 50,                    
                     fontSize: 20,
                     showShop: false,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 AnimatedOpacity(

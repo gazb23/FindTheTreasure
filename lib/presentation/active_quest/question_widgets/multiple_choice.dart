@@ -73,7 +73,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                 height: 40,
               ),
               title: AutoSizeText(
-                widget.questionsModel.answerA.values.first,
+                widget.questionsModel.answerA['answer'],
                 maxLines: 2,
                 style: const TextStyle(
                     fontSize: 18,
@@ -103,7 +103,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                 height: 40,
               ),
               title: AutoSizeText(
-                widget.questionsModel.answerB.values.first,
+                widget.questionsModel.answerB['answer'],
                 maxLines: 2,
                 style: const TextStyle(
                     fontSize: 18,
@@ -133,7 +133,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                 height: 40,
               ),
               title: AutoSizeText(
-                widget.questionsModel.answerC.values.first,
+                widget.questionsModel.answerC['answer'],
                 maxLines: 2,
                 style: const TextStyle(
                     fontSize: 18,
@@ -163,7 +163,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
                 height: 40,
               ),
               title: AutoSizeText(
-                widget.questionsModel.answerD.values.first,
+                widget.questionsModel.answerD['answer'],
                 maxLines: 2,
                 style: const TextStyle(
                     fontSize: 18,

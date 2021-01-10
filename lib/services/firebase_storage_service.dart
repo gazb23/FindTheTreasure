@@ -32,13 +32,18 @@ class FirebaseStorageService extends ChangeNotifier {
     print('uploading to: $path');
     final storageReference = FirebaseStorage.instance.ref().child(path);
     final uploadTask = storageReference.putFile(
-        file);
+        file, SettableMetadata(contentType: contentType));
     final snapshot = await uploadTask;
-    
-    // Url used to download file/image
+    if (snapshot.state == TaskState.error) {
+      print('upload error code: ${snapshot.state}');
+      throw snapshot.state;
+    } else if (snapshot.state == TaskState.success) {
+      // Url used to download file/image
     final downloadUrl = await snapshot.ref.getDownloadURL();
     print('downloadUrl: $downloadUrl');
     return downloadUrl;
+    } else throw snapshot.state.toString;
+    
   }
 
   static void download({

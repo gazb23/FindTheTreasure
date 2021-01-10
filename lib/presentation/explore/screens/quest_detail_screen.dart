@@ -34,7 +34,7 @@ class QuestDetailScreen extends StatelessWidget {
             final QuestModel questModelStream = snapshot.data;
             return SafeArea(
               child: Scaffold(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.grey.shade100,
                 body: Container(
                   width: double.infinity,
                   child: Stack(
@@ -177,7 +177,7 @@ class QuestDetailScreen extends StatelessWidget {
   Widget _buildQuestDescriptionCard(
       BuildContext context, QuestModel questModelStream) {
     return Card(
-      elevation: 5,
+      elevation: 3,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: EdgeInsets.all(10),
@@ -265,7 +265,7 @@ class QuestDetailScreen extends StatelessWidget {
 
   Widget _buildBountyCard(BuildContext context, QuestModel questModelStream) {
     return Card(
-      elevation: 5,
+      elevation: 3,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Container(
         padding: const EdgeInsets.all(10),

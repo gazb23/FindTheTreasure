@@ -26,15 +26,25 @@ class MyQuestsScreen extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
         appBarTheme: AppBarTheme(
+          
           color: MaterialTheme.red,
         ),
       ),
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          backgroundColor: Colors.grey.shade300,
+          backgroundColor: Colors.grey.shade100,
           appBar: AppBar(
-            
+            flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+              
+              Colors.greenAccent[400],
+              MaterialTheme.blue,
+            ]) )) ,        
             bottom: TabBar(
               indicatorColor: Colors.white,
               labelColor: Colors.white,
@@ -52,12 +62,14 @@ class MyQuestsScreen extends StatelessWidget {
                 ),
               ],
             ),
+            centerTitle: true,
             title: const Text(
               'My Quests',
               style: const TextStyle(
                   fontFamily: 'quicksand',
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
+
             ),
           ),
           body: TabBarView(
@@ -85,6 +97,7 @@ class Current extends StatelessWidget {
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
             title: 'No Current Quests!',
+            fontColor: Colors.grey,
             message:
                 'Head to the explore page to start your adventure.',
             buttonEnabled: false,            
@@ -127,6 +140,7 @@ class Liked extends StatelessWidget {
         stream: databaseService.questFieldContainsUID(field: 'likedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
+            fontColor: Colors.grey,
             title: 'Time to add some favourites!',
             message:
                 'Head to the explore page, and when you find a quest you like tap on the heart icon to save it.',
@@ -171,6 +185,7 @@ class Conquered extends StatelessWidget {
             databaseService.questFieldContainsUID(field: 'questCompletedBy'),
         builder: (context, snapshot) {
           return ListItemsBuilder<QuestModel>(
+            fontColor: Colors.grey,
             title: 'No Quests Conquered!',
             message:
                 'Head to the explore page, choose a quest and start your journey!',

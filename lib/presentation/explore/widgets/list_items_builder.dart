@@ -2,6 +2,7 @@ import 'package:find_the_treasure/presentation/explore/screens/empty_content.dar
 import 'package:find_the_treasure/widgets_common/custom_circular_progress_indicator_button.dart';
 import 'package:flutter/material.dart';
 import 'package:find_the_treasure/theme.dart';
+
 typedef ItemWidgetBuilder<T> = Widget Function(
     BuildContext context, T item, int index);
 
@@ -16,6 +17,7 @@ class ListItemsBuilder<T> extends StatelessWidget {
   final VoidCallback onPressed;
   final bool buttonEnabled;
   final bool isSeperated;
+  final Color fontColor;
 
   const ListItemsBuilder({
     Key key,
@@ -29,6 +31,7 @@ class ListItemsBuilder<T> extends StatelessWidget {
     this.onPressed,
     this.buttonEnabled = false,
     this.isSeperated = false,
+    this.fontColor,
   }) : super(key: key);
 
   @override
@@ -42,6 +45,7 @@ class ListItemsBuilder<T> extends StatelessWidget {
         return EmptyContent(
           title: title,
           message: message,
+          fontColor: fontColor,
           buttonText: buttonText,
           image: image,
           onPressed: onPressed,
@@ -55,7 +59,9 @@ class ListItemsBuilder<T> extends StatelessWidget {
       );
     }
     return Center(
-      child: CustomCircularProgressIndicator(color: MaterialTheme.orange,),
+      child: CustomCircularProgressIndicator(
+        color: MaterialTheme.orange,
+      ),
     );
   }
 

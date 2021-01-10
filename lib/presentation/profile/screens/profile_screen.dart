@@ -327,7 +327,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: FractionallySizedBox(
             widthFactor: 0.6,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 InkWell(
                     onTap: () => UrlLauncher.socialAppLauncher(
@@ -338,6 +338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'images/facebook.png',
                       height: 50,
                     )),
+                    SizedBox(width: 10,),
                 InkWell(
                     onTap: () => UrlLauncher.socialAppLauncher(
                         context: context,
@@ -347,6 +348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'images/instagram.png',
                       height: 50,
                     )),
+                    SizedBox(width: 10,),
                 InkWell(
                     onTap: () => UrlLauncher.socialAppLauncher(
                           context: context,
