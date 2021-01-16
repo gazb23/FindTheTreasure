@@ -23,8 +23,10 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
+  
   @override
   void initState() {
+   
     AudioPlayerService().loadAllSounds();
     super.initState();
   }
@@ -64,7 +66,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             fontSize: 18,
             diamondSpinning: true,
           ),
-          SizedBox(width: 10,)
+          SizedBox(width: 15,)
           ]
 
         ),
@@ -79,23 +81,32 @@ class _ExploreScreenState extends State<ExploreScreen> {
               )));
   }
 
+
+
   @override
-  void didChangeDependencies() {
-    final UserData userData = Provider.of<UserData>(context, listen: false);
-    if (mounted) _showIntroDialog(context, userData);
+  void didChangeDependencies() async {
+    final UserData userData = Provider.of<UserData>(context, listen: true);
+    if (mounted) {
+      _showIntroDialog(context, userData);
+    } else {
+      await Future.delayed(Duration(seconds: 3));
+      _showIntroDialog(context, userData);
+    }
     super.didChangeDependencies();
   }
 
   void _showIntroDialog(BuildContext context, UserData userData) async {
-    print('dialog');
-    await Future.delayed(Duration(seconds: 4));
+    // print('dialog');
+    
     try {
       if (!userData.seenIntro) {
         SchedulerBinding.instance.scheduleFrameCallback((_) {
           Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
             maintainState: true,
             builder: (context) => IntroScreen(),
-          ));
+          )
+          
+          );
         });
       } else {
         print('seen');

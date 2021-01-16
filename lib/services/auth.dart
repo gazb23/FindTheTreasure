@@ -8,8 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
-
 // class User {
 //   final String uid;
 //   final String email;
@@ -23,7 +21,8 @@ abstract class AuthBase {
   Future<User> signInWithGoogle();
   Future<User> signInWithApple({List<Scope> scopes});
   Future<User> signInWithEmailAndPassword(String email, String password);
-  Future<User> createUserWithEmailAndPassword(String email, String password);
+  Future<User> createUserWithEmailAndPassword(
+      String name, String email, String password);
   Future<void> signOut();
   Future<void> resetPassword(String email);
   Future<void> validateCurrentPassword({@required String password});
@@ -116,7 +115,6 @@ class Auth implements AuthBase {
         return firebaseUser;
 
       case AuthorizationStatus.error:
-      
         throw PlatformException(
           code: 'ERROR_AUTHORIZATION_DENIED',
           message: result.error.toString(),
@@ -127,9 +125,9 @@ class Auth implements AuthBase {
           code: 'ERROR_ABORTED_BY_USER',
           message: 'Sign in aborted by user',
         );
-        default: throw UnimplementedError();
+      default:
+        throw UnimplementedError();
     }
-    
   }
 
   // Future<User> signInWithFacebook() async {
@@ -166,10 +164,14 @@ class Auth implements AuthBase {
   }
 
   Future<User> createUserWithEmailAndPassword(
-      String email, String password) async {
+    String name,
+    String email,
+    String password,
+  ) async {
     final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    await _createUserData(authResult.user);
+
+    await _createUserData(authResult.user, name);
 
     return authResult.user;
   }
@@ -179,9 +181,9 @@ class Auth implements AuthBase {
     return null;
   }
 
-  Future<void> _createUserData(User user) {
+  Future<void> _createUserData(User user, [String userName]) {
     final UserData updateUserData = UserData(
-        displayName: user.displayName ?? 'Adventurer',
+        displayName: user.displayName ?? userName ?? 'Adventurer',
         locationsExplored: [],
         email: user.email,
         photoURL: user.photoURL,

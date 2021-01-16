@@ -82,7 +82,7 @@ class _ActiveQuestScreenState extends State<ActiveQuestScreen> {
               ),
             ),
             const SizedBox(
-              width: 20,
+              width: 15,
             )
           ],
         ),

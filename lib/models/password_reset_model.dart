@@ -27,13 +27,13 @@ class PasswordResetModel with EmailAndPasswordValidators {
   // Email and Password validators
 
   bool get canSubmit {
-    return !emailIsEmptyValidator.isValid(email) &&
+    return !emailIsEmpty.isValid(email) &&
         emailStringValidator.isValid(email) &&
         !isLoading;
   }
 
   String get emailErrorText {
-    bool showErrorText = !emailIsEmptyValidator.isValid(email) &&
+    bool showErrorText = !emailIsEmpty.isValid(email) &&
         !emailStringValidator.isValid(email);
     return showErrorText ? invalidEmailErrorText : null;
   }

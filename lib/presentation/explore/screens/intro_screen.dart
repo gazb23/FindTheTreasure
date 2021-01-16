@@ -111,8 +111,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                   color: Colors.black87, fontSize: 22),
                               isRepeatingAnimation: false,
                               speed: Duration(milliseconds: 60),
-                              textAlign: TextAlign.center,
-                              alignment: AlignmentDirectional.center,
+                              textAlign: TextAlign.center,                              
                               onNextBeforePause: (index, isLast) {
                                 switch (index) {
                                   case 4:

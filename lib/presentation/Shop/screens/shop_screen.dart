@@ -273,7 +273,7 @@ class _ShopScreenState extends State<ShopScreen> {
           diamondSpinning: true,
           showShop: false,
         ),
-        SizedBox(width: 10)
+        SizedBox(width: 15)
         ]
       ),
       body: Container(
@@ -409,7 +409,7 @@ class StoreLoadingButton extends StatelessWidget {
         widthFactor: 0.9,
         child: Shimmer.fromColors(
           period: const Duration(milliseconds: 750),
-          baseColor: Colors.grey.shade300,
+          baseColor: Colors.grey.shade300.withOpacity(0.5),
           // direction: ShimmerDirection.btt,
           highlightColor: Colors.white,
           child: CustomRaisedButton(

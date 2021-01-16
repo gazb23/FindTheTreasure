@@ -101,7 +101,7 @@ class Current extends StatelessWidget {
             message:
                 'Head to the explore page to start your adventure.',
             buttonEnabled: false,            
-            image: Image.asset('images/owl_thumbs.png'),
+            image: Image.asset('images/event.png'),
             snapshot: snapshot,
             itemBuilder: (context, quest, index) => QuestListView(
               numberOfDiamonds: quest.numberOfDiamonds,

@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/avatar_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/presentation/leaderboard/screens/leaderboard_user_profile.dart';
+import 'package:find_the_treasure/presentation/leaderboard/widgets/leaderboard_scroll.dart';
 import 'package:find_the_treasure/presentation/profile/screens/help.dart';
 import 'package:find_the_treasure/presentation/profile/screens/settings.dart';
 import 'package:find_the_treasure/services/database.dart';
@@ -157,6 +158,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 50,
                 ),
                 _buildsettingsContainer(),
+                // Build social Icons
+                SocialButtons(
+                  context: context,
+                  facebookPrimaryUrl: _facebookPrimaryUrl,
+                  facebookFallbackUrl: _facebookFallbackUrl,
+                  instagramPrimaryUrl: _instagramPrimaryUrl,
+                  instagramFallbackUrl: _instagramFallbackUrl,
+                  twitterPrimaryUrl: _twitterPrimaryUrl,
+                  twitterFallbackUrl: _twitterFallbackUrl,
+                )
               ],
             ),
           ),
@@ -190,6 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   listen: false);
                           final AvatarReference avatarReference = snapshot.data;
                           return Avatar(
+                              showCamera: true,
                               photoURL:
                                   avatarReference?.photoURL ?? user.photoURL,
                               radius: 70,
@@ -200,7 +212,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ? null
                                       : _chooseAvatar(context));
                         } else
-                          return Container();
+                          return Avatar(
+                            showCamera: true,
+                            photoURL: user.photoURL,
+                            radius: 70,
+                            borderColor: Colors.white,
+                            borderWidth: 5,
+                          );
                       }),
                 ),
               ),
@@ -231,14 +249,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildsettingsContainer() {
-    return Container(
-        height: MediaQuery.of(context).size.height / 1.6,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(35),
-                topRight: const Radius.circular(35))),
+    return LeaderboardScroll(
+        // height: MediaQuery.of(context).size.height / 1.6,
+        // width: double.infinity,
+        // decoration: const BoxDecoration(
+        //     color: Colors.white,
+        //     borderRadius: BorderRadius.only(
+        //         topLeft: const Radius.circular(35),
+        //         topRight: const Radius.circular(35))),
         child: _buildSettingsItems());
   }
 
@@ -247,11 +265,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        SizedBox(
-          height: 20,
-        ),
+        // SizedBox(
+        //   height: 20,
+        // ),
         ProfileTile(
-          title: 'My stats',
+          title: 'Quest stats',
           leading: const Icon(
             Icons.equalizer,
             color: MaterialTheme.red,
@@ -320,51 +338,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
           indent: 30,
           endIndent: 35,
         ),
-        // Build social Icons
-        Container(
-          margin: EdgeInsets.zero,
-          padding: const EdgeInsets.all(10),
-          child: FractionallySizedBox(
-            widthFactor: 0.6,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                InkWell(
-                    onTap: () => UrlLauncher.socialAppLauncher(
-                        context: context,
-                        primaryUrl: _facebookPrimaryUrl,
-                        fallBackUrll: _facebookFallbackUrl),
-                    child: Image.asset(
-                      'images/facebook.png',
-                      height: 50,
-                    )),
-                    SizedBox(width: 10,),
-                InkWell(
-                    onTap: () => UrlLauncher.socialAppLauncher(
-                        context: context,
-                        primaryUrl: _instagramPrimaryUrl,
-                        fallBackUrll: _instagramFallbackUrl),
-                    child: Image.asset(
-                      'images/instagram.png',
-                      height: 50,
-                    )),
-                    SizedBox(width: 10,),
-                InkWell(
-                    onTap: () => UrlLauncher.socialAppLauncher(
-                          context: context,
-                          primaryUrl: _twitterPrimaryUrl,
-                          fallBackUrll: _twitterFallbackUrl,
-                        ),
-                    child: Image.asset(
-                      'images/twitter.png',
-                      height: 50,
-                    )),
-                SizedBox(height: 20)
-              ],
-            ),
-          ),
-        )
       ],
+    );
+  }
+}
+
+class SocialButtons extends StatelessWidget {
+  const SocialButtons({
+    Key key,
+    @required this.context,
+    @required String facebookPrimaryUrl,
+    @required String facebookFallbackUrl,
+    @required String instagramPrimaryUrl,
+    @required String instagramFallbackUrl,
+    @required String twitterPrimaryUrl,
+    @required String twitterFallbackUrl,
+  })  : _facebookPrimaryUrl = facebookPrimaryUrl,
+        _facebookFallbackUrl = facebookFallbackUrl,
+        _instagramPrimaryUrl = instagramPrimaryUrl,
+        _instagramFallbackUrl = instagramFallbackUrl,
+        _twitterPrimaryUrl = twitterPrimaryUrl,
+        _twitterFallbackUrl = twitterFallbackUrl,
+        super(key: key);
+
+  final BuildContext context;
+  final String _facebookPrimaryUrl;
+  final String _facebookFallbackUrl;
+  final String _instagramPrimaryUrl;
+  final String _instagramFallbackUrl;
+  final String _twitterPrimaryUrl;
+  final String _twitterFallbackUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.zero,
+      padding: const EdgeInsets.all(10),
+      child: FractionallySizedBox(
+        widthFactor: 0.6,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Opacity(
+              opacity: 0.8,
+              child: InkWell(
+                  onTap: () => UrlLauncher.socialAppLauncher(
+                      context: context,
+                      primaryUrl: _facebookPrimaryUrl,
+                      fallBackUrll: _facebookFallbackUrl),
+                  child: Image.asset(
+                    'images/facebook.png',
+                    height: 50,
+                  )),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Opacity(
+              opacity: 0.8,
+              child: InkWell(
+                  onTap: () => UrlLauncher.socialAppLauncher(
+                      context: context,
+                      primaryUrl: _instagramPrimaryUrl,
+                      fallBackUrll: _instagramFallbackUrl),
+                  child: Image.asset(
+                    'images/instagram.png',
+                    height: 50,
+                  )),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            InkWell(
+                onTap: () => UrlLauncher.socialAppLauncher(
+                      context: context,
+                      primaryUrl: _twitterPrimaryUrl,
+                      fallBackUrll: _twitterFallbackUrl,
+                    ),
+                child: Opacity(
+                  opacity: 0.8,
+                  child: Image.asset(
+                    'images/twitter.png',
+                    height: 50,
+                  ),
+                )),
+            SizedBox(height: 20)
+          ],
+        ),
+      ),
     );
   }
 }
@@ -385,24 +446,27 @@ class ProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      title: Text(
-        title,
-        style: const TextStyle(
-            color: Colors.black54, fontSize: 20, fontWeight: FontWeight.bold),
+    return Material(
+      color: Colors.brown.shade50,
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+        title: Text(
+          title,
+          style: const TextStyle(
+              color: Colors.black54, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        trailing: const Icon(
+          Icons.keyboard_arrow_right,
+          size: 30,
+        ),
+        leading: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: leadingContainerColor),
+            padding: const EdgeInsets.all(10),
+            child: leading),
+        onTap: onTap,
       ),
-      trailing: const Icon(
-        Icons.keyboard_arrow_right,
-        size: 30,
-      ),
-      leading: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: leadingContainerColor),
-          padding: const EdgeInsets.all(10),
-          child: leading),
-      onTap: onTap,
     );
   }
 }

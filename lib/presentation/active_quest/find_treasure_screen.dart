@@ -116,8 +116,7 @@ class _FindTreasureScreenState extends State<FindTreasureScreen> {
                                         color: Colors.white, fontSize: 22),
                                     isRepeatingAnimation: false,
                                     speed: Duration(milliseconds: 50),
-                                    textAlign: TextAlign.center,
-                                    alignment: AlignmentDirectional.topStart,
+                                    textAlign: TextAlign.center,                                    
                                     onNextBeforePause: (index, isLast) {},
                                     onFinished: () {
                                       setState(() {

@@ -17,7 +17,7 @@ class EmailCreateAccountBloc {
   Future<void> submit() async {    
     try {
       updateWith(submitted: true, isLoading: true);
-      await auth.createUserWithEmailAndPassword(_model.email, _model.password);
+      await auth.createUserWithEmailAndPassword(_model.name, _model.email, _model.password);
     } catch (e) {
       updateWith(isLoading: false);
       rethrow;
@@ -25,12 +25,14 @@ class EmailCreateAccountBloc {
   }
 
   void updateWith({
+    String name,
     String email,
     String password,
     bool isLoading,
     bool submitted,
   }) {
     _model = _model.copyWith(
+      name: name,
       email: email,
       password: password,
       isLoading: isLoading,

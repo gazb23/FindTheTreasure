@@ -182,6 +182,7 @@ class QuestDetailScreen extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(10),
         child: ExpandablePanel(
+          
           header: Column(
             children: <Widget>[
               Text(
@@ -236,7 +237,7 @@ class QuestDetailScreen extends StatelessWidget {
               hasIcon: true,
               iconColor: MaterialTheme.orange,
               headerAlignment: ExpandablePanelHeaderAlignment.center,
-              iconSize: 40),
+              iconSize: 40,),
         ),
       ),
     );

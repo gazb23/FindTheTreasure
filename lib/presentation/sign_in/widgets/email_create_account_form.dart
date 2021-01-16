@@ -12,7 +12,6 @@ import 'package:find_the_treasure/widgets_common/sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class EmailCreateAccountForm extends StatefulWidget {
   EmailCreateAccountForm({@required this.bloc});
   final EmailCreateAccountBloc bloc;
@@ -33,8 +32,10 @@ class EmailCreateAccountForm extends StatefulWidget {
 }
 
 class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   bool _obscureText = true;
@@ -46,19 +47,12 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
     } on FirebaseAuthException catch (e) {
       // if (e.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL')
       //   _showDuplicateAccountSignInError(context, e);
-      // else 
-         PlatformExceptionAlertDialog(
-          title: 'Sign up failed',
-          exception: e,
-        ).show(context);
-      
-       
-    } 
-    
-    
-      
-     
-    
+      // else
+      PlatformExceptionAlertDialog(
+        title: 'Sign up failed',
+        exception: e,
+      ).show(context);
+    }
   }
 
   // void _showDuplicateAccountSignInError(
@@ -69,8 +63,16 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
   //   ).show(context);
   // }
 
+    void _nameEditingComplete(EmailSignInModel model) {
+    final _newFocus = !model.nameIsEmpty.isValid(model.name) &&
+            model.nameStringValidator.isValid(model.name)
+        ? _emailFocusNode
+        : _nameFocusNode;
+    FocusScope.of(context).requestFocus(_newFocus);
+  }
+  
   void _emailEditingComplete(EmailSignInModel model) {
-    final _newFocus = !model.emailIsEmptyValidator.isValid(model.email) &&
+    final _newFocus = !model.emailIsEmpty.isValid(model.email) &&
             model.emailStringValidator.isValid(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
@@ -86,6 +88,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
           final EmailSignInModel model = snapshot.data;
           return CustomListView(
             children: <Widget>[
+              _buildNameTextField(model),
               _buildEmailTextField(model),
               _buildPasswordTextField(model),
               SizedBox(
@@ -95,6 +98,32 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
             ],
           );
         });
+  }
+
+  CustomTextField _buildNameTextField(EmailSignInModel model) {
+    return CustomTextField(
+        controller: _nameController,
+        focusNode: _nameFocusNode,
+        labelText: 'Name',
+        enabled: model.isLoading == false,
+        errorText: model.nameErrorText,
+        onEditingComplete: () => _nameEditingComplete(model),
+        onChanged: (name) => widget.bloc.updateWith(name: name),
+        keyboardType: TextInputType.name,
+
+        textInputAction: TextInputAction.next,
+
+        suffixIcon: IconButton(
+            enableFeedback: true,
+            icon: Icon(
+              Icons.clear,
+              color: MaterialTheme.orange,
+            ),
+            onPressed: () {
+              Future.delayed(Duration(milliseconds: 50)).then((_) {
+                _nameController.clear();
+              });
+            }));
   }
 
   CustomTextField _buildEmailTextField(EmailSignInModel model) {
@@ -127,7 +156,7 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
       focusNode: _passwordFocusNode,
       labelText: 'Password (6+ characters)',
       enabled: model.isLoading == false,
-      onEditingComplete: model.canSubmit ? _submit : null,
+      onEditingComplete: model.canSubmitCreateAccount ? _submit : null,
       onChanged: (password) => widget.bloc.updateWith(password: password),
       errorText: model.passwordErrorText,
       obscureText: _obscureText,
@@ -152,12 +181,14 @@ class _EmailCreateAccountFormState extends State<EmailCreateAccountForm> {
         text: 'Sign up',
         textcolor: Colors.white,
         color: MaterialTheme.orange,
-        onPressed: model.canSubmit ? _submit : null);
+        onPressed: model.canSubmitCreateAccount ? _submit : null);
   }
 
   @override
   void dispose() {
     super.dispose();
+    _nameController.dispose();
+    _nameFocusNode.dispose();
     _passwordController.dispose();
     _emailController.dispose();
     _passwordFocusNode.dispose();
