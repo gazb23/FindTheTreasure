@@ -318,29 +318,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
         centerTitle: true,
         backgroundColor: MaterialTheme.orange,
       ),
-      body: ListView(children: <Widget>[
-        Container(
-          height: _size.height - kToolbarHeight - 75,
+      body: SingleChildScrollView(
+        child: Container(
+          height: _size.height - kToolbarHeight,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _buildSettings(_userData, context, _userEmail),
-              _buildLogOut(_userData, context, _userEmail),
+              Expanded(
+                  flex: 2,
+                  child: _buildSettings(_userData, context, _userEmail)),
+              Expanded(
+                  flex: 1, child: _buildLogOut(_userData, context, _userEmail)),
             ],
           ),
         ),
-      ]),
+      ),
     );
   }
 
   Container _buildSettings(
       UserData _userData, BuildContext context, User userEmail) {
     User user = Provider.of<User>(context);
- 
+
     // bool loginFacebook = user.loginCredential == 'facebook.com';
     bool loginGoogle = user.providerData[0].providerId == 'google.com';
     bool login = loginGoogle;
-    
+
     return Container(
       child: Column(
         children: <Widget>[
@@ -348,24 +351,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
             height: 30,
           ),
           // EDIT USERNAME
-          _editName
-              ? _buildUserNameTextField(_userData)
-              : _buildListTile(
-                  title: _userData.displayName,
-                  leading: Icon(
-                    Icons.edit,
-                    color: Colors.blueAccent,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _editName = true;
-                      _editEmail = false;
-                      _updatePassword = false;
-                    });
-                  },
-                  leadingContainerColor: Colors.blue.shade100),
+          _editEmail || _updatePassword
+              ? Container()
+              : _editName
+                  ? _buildUserNameTextField(_userData)
+                  : _buildListTile(
+                      title: _userData.displayName,
+                      leading: Icon(
+                        Icons.edit,
+                        color: Colors.blueAccent,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _editName = true;
+                          _editEmail = false;
+                          _updatePassword = false;
+                        });
+                      },
+                      leadingContainerColor: Colors.blue.shade100),
           // EDIT EMAIL
-          login
+          login || _editName || _updatePassword
               ? Container()
               : _editEmail
                   ? _buildEmailTextField(_userData, userEmail)
@@ -384,7 +389,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       },
                       leadingContainerColor: Colors.orange.shade100),
           // EDIT PASSWORD
-          login
+          login || _editEmail || _editName
               ? Container()
               : _updatePassword
                   ? _buildPasswordTextFields()
@@ -407,61 +412,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Container _buildLogOut(
+  Widget _buildLogOut(
       UserData _userData, BuildContext context, User userEmail) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
+    return _editEmail || _editName || _updatePassword
+        ? SizedBox()
+        : Container(
             child: Column(
               children: <Widget>[
-                Text(
-                  'Logged in as',
-                  style: TextStyle(fontSize: 13),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'Logged in as',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        _userData.email,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Find the Treasure version: ' + widget.version,
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () => _confirmSignOut(context),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                        color: MaterialTheme.orange,
+                        borderRadius: BorderRadius.circular(15)),
+                    height: 40,
+                    width: double.infinity,
+                    child: Center(
+                      child: Text(
+                        'LOGOUT',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  _userData.email,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Find the Treasure version: ' + widget.version,
-                  style: TextStyle(fontSize: 13),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
+                  height: 10,
+                )
               ],
             ),
-          ),
-          InkWell(
-            onTap: () => _confirmSignOut(context),
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  color: MaterialTheme.orange,
-                  borderRadius: BorderRadius.circular(15)),
-              height: 60,
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'LOGOUT',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   //Build Update Name Text Field
@@ -470,7 +481,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: <Widget>[
-          Form(            
+          Form(
             key: _nameFormKey,
             child: TextFormField(
               autofocus: true,
