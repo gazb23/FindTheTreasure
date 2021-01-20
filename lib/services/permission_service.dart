@@ -45,7 +45,7 @@ class PermissionService extends ChangeNotifier {
     }
   }
 
-  /// Requests the users permission to read their location when the app is in use
+  /// Requests the users permission to access storage when the app is in use
   Future<bool> requestCameraPermission() async {
     var permissionStatus = await Permission.storage.isGranted;
 
@@ -92,8 +92,6 @@ class PermissionService extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       await openAppSettings();
-    } else {
-
-    }
+    } else {}
   }
 }
