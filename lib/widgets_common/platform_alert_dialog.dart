@@ -56,6 +56,7 @@ class PlatformAlertDialog extends PlatformWidget {
           padding: const EdgeInsets.only(bottom: 20.0),
           child: Column(
             children: [
+              //Title
               Text(
                 title,
                 style: TextStyle(
@@ -63,26 +64,39 @@ class PlatformAlertDialog extends PlatformWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-               SizedBox(height: 5,),
-                showPoints ? Text('+ ' + correctPoints.toString() + ' points',
-                
-                style: TextStyle(
-                  color: MaterialTheme.orange,
-                  fontFamily: 'quicksand',
-                  fontSize: 20,
-                ),
-              ) : SizedBox(),
+              SizedBox(
+                height: 5,
+              ),
+              //Show points
+              showPoints
+                  ? Text(
+                      '+ ' + correctPoints.toString() + ' points',
+                      style: TextStyle(
+                        color: MaterialTheme.orange,
+                        fontFamily: 'quicksand',
+                        fontSize: 20,
+                      ),
+                    )
+                  : SizedBox(),
             ],
           ),
         ),
         content: SingleChildScrollView(
+          // Image
           child: Column(
             children: <Widget>[
               image ?? Container(),
               SizedBox(
                 height: 20,
               ),
-               
+              // Content
+              Text(
+                content,
+                style: TextStyle(
+                    fontFamily: 'quicksand',
+                    color: contentTextColor ?? Colors.grey.shade800),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
@@ -102,6 +116,7 @@ class PlatformAlertDialog extends PlatformWidget {
           child: Center(
             child: Column(
               children: [
+                //Title
                 Text(
                   title,
                   textAlign: TextAlign.center,
@@ -110,15 +125,20 @@ class PlatformAlertDialog extends PlatformWidget {
                       fontWeight: FontWeight.w600,
                       color: titleTextColor ?? Colors.black87),
                 ),
-                SizedBox(height: 5,),
-                showPoints ? Text('+ ' + correctPoints.toString() + ' points',
-                
-                style: TextStyle(
-                  color: MaterialTheme.orange,
-                  fontFamily: 'quicksand',
-                  fontSize: 20,
+                SizedBox(
+                  height: 5,
                 ),
-              ) : SizedBox(),
+                // Points
+                showPoints
+                    ? Text(
+                        '+ ' + correctPoints.toString() + ' points',
+                        style: TextStyle(
+                          color: MaterialTheme.orange,
+                          fontFamily: 'quicksand',
+                          fontSize: 20,
+                        ),
+                      )
+                    : SizedBox(),
               ],
             ),
           ),
@@ -130,15 +150,14 @@ class PlatformAlertDialog extends PlatformWidget {
               SizedBox(
                   height:
                       20), //If no image is displayed an empty container will take it's place.
-
+//Content
               Text(
                 content,
                 style: TextStyle(
                     fontFamily: 'quicksand',
-                    color: contentTextColor ?? Colors.grey),
+                    color: contentTextColor ?? Colors.grey.shade800),
                 textAlign: TextAlign.center,
               ),
-              
             ],
           ),
         ),
