@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
+import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
@@ -40,6 +41,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -179,6 +181,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitA() async {
+    final userData = Provider.of<UserData>(context, listen: false);
     final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context, listen: false);
     bool _isCorrect = widget.questionsModel.answerA.containsValue(true);
     if (_isCorrect) {
@@ -190,6 +193,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
 
       await questionViewModel.submit(
         context,
+        userData: userData,
         isLocation: false,
         challengeCompletedMessage:
             widget.questionsModel.challengeCompletedMessage,
@@ -220,6 +224,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitB() async {
+    final userData = Provider.of<UserData>(context, listen: false);
     final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context, listen: false);
     if (widget.questionsModel.answerB.containsValue(true)) {
       setState(() {
@@ -230,6 +235,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
 
       questionViewModel.submit(
         context,
+        userData: userData,
         isLocation: false,
         challengeCompletedMessage:
             widget.questionsModel.challengeCompletedMessage,
@@ -261,6 +267,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
 
   void _submitC() async {
     final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context, listen: false);
+    final userData = Provider.of<UserData>(context, listen: false);
     if (widget.questionsModel.answerC.containsValue(true)) {
       setState(() {
         _imageC = 'images/4.0x/ic_c_correct.png';
@@ -270,6 +277,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
 
       questionViewModel.submit(
         context,
+        userData: userData,
         isLocation: false,
         challengeCompletedMessage:
             widget.questionsModel.challengeCompletedMessage,
@@ -300,6 +308,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
   }
 
   void _submitD() async {
+    final UserData userData = Provider.of<UserData>(context, listen: false);
     final QuestionViewModel questionViewModel = Provider.of<QuestionViewModel>(context, listen: false);
     if (widget.questionsModel.answerD.containsValue(true)) {
       setState(() {
@@ -310,6 +319,7 @@ class _MultipleChoiceState extends State<MultipleChoice> {
 
       questionViewModel.submit(
         context,
+        userData: userData,
         isLocation: false,
         challengeCompletedMessage:
             widget.questionsModel.challengeCompletedMessage,

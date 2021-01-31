@@ -6,6 +6,7 @@ import 'package:find_the_treasure/presentation/active_quest/question_widgets/que
 import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/theme.dart';
+import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
 import 'package:find_the_treasure/widgets_common/quests/answer_box.dart';
 
@@ -29,12 +30,14 @@ class QuestionSingleAnswerPicture extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final challengeViewModel =
+        Provider.of<ChallengeViewModel>(context, listen: true);
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     Provider.of<DatabaseService>(context);
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: locationQuestion || keyboardIsOpened
-            ? Container()
+        floatingActionButton: locationQuestion || keyboardIsOpened || challengeViewModel.isLoading || challengeViewModel.snackBarIsDisplaying
+            ? SizedBox()
             : FloatingActionButton.extended(
                 label: const Text(
                   'SKIP?',

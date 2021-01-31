@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:find_the_treasure/constants.dart';
 import 'package:find_the_treasure/theme.dart';
 
 import 'package:find_the_treasure/widgets_common/platform_widget.dart';
@@ -11,6 +12,7 @@ class PlatformAlertDialog extends PlatformWidget {
   final String cancelActionText;
   final String defaultActionText;
   final Widget image;
+  final bool showPoints;
   final Color backgroundColor;
   final Color titleTextColor;
   final Color contentTextColor;
@@ -23,6 +25,7 @@ class PlatformAlertDialog extends PlatformWidget {
     @required this.content,
     @required this.defaultActionText,
     this.image,
+    this.showPoints = false,
     this.backgroundColor,
     this.titleTextColor,
     this.contentTextColor,
@@ -51,12 +54,25 @@ class PlatformAlertDialog extends PlatformWidget {
       child: CupertinoAlertDialog(
         title: Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'quicksand',
-              fontWeight: FontWeight.w600,
-            ),
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontFamily: 'quicksand',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+               SizedBox(height: 5,),
+                showPoints ? Text('+ ' + correctPoints.toString() + ' points',
+                
+                style: TextStyle(
+                  color: MaterialTheme.orange,
+                  fontFamily: 'quicksand',
+                  fontSize: 20,
+                ),
+              ) : SizedBox(),
+            ],
           ),
         ),
         content: SingleChildScrollView(
@@ -66,13 +82,7 @@ class PlatformAlertDialog extends PlatformWidget {
               SizedBox(
                 height: 20,
               ),
-              Text(
-                content,
-                style: TextStyle(
-                  fontFamily: 'quicksand',
-                  fontSize: 18,
-                ),
-              ),
+               
             ],
           ),
         ),
@@ -90,13 +100,26 @@ class PlatformAlertDialog extends PlatformWidget {
         backgroundColor: backgroundColor ?? Colors.white,
         title: Center(
           child: Center(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
+            child: Column(
+              children: [
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: 'quicksand',
+                      fontWeight: FontWeight.w600,
+                      color: titleTextColor ?? Colors.black87),
+                ),
+                SizedBox(height: 5,),
+                showPoints ? Text('+ ' + correctPoints.toString() + ' points',
+                
+                style: TextStyle(
+                  color: MaterialTheme.orange,
                   fontFamily: 'quicksand',
-                  fontWeight: FontWeight.w600,
-                  color: titleTextColor ?? Colors.black87),
+                  fontSize: 20,
+                ),
+              ) : SizedBox(),
+              ],
             ),
           ),
         ),
@@ -115,6 +138,7 @@ class PlatformAlertDialog extends PlatformWidget {
                     color: contentTextColor ?? Colors.grey),
                 textAlign: TextAlign.center,
               ),
+              
             ],
           ),
         ),

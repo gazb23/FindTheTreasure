@@ -200,7 +200,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                   color: _locationCompletedBy ? Colors.white : Colors.black54,
                   fontSize: 22),
             ),
-            subtitle: _locationCompletedBy ? Text('Conquered') : !_locationStartedBy ? Text('Tap to start') : null,
+            subtitle: _locationCompletedBy ? Text('Conquered') : !_locationStartedBy ? Text('Tap to start') : Text('Tap to continue'),
             trailing: StreamBuilder<List<QuestionsModel>>(
                 stream: databaseService.challengesStream(
                   questId: widget.questModel.id,

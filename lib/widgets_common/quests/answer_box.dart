@@ -1,5 +1,6 @@
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
+import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/challenge_view_model.dart';
 import 'package:find_the_treasure/view_models/question_view_model.dart';
@@ -50,12 +51,14 @@ class _AnswerBoxState extends State<AnswerBox> {
         Provider.of<QuestionViewModel>(context, listen: false);
     final challengeViewModel =
         Provider.of<ChallengeViewModel>(context, listen: false);
+        final UserData userData = Provider.of<UserData>(context, listen: false);
 
     if (_validateAndSaveForm()) {
       try {
         if (checkAnswer(_answer)) {
           
            questionViewModel.submit(context,
+           userData: userData,
               documentId: widget.arrayUnionDocumentId,
               challengeCompletedMessage:
                   widget.questionsModel?.challengeCompletedMessage,

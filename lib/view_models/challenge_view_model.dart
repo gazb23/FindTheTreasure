@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
@@ -8,6 +7,7 @@ import 'package:find_the_treasure/services/api_paths.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/services/global_functions.dart';
+
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/view_models/leaderboard_view_model.dart';
 import 'package:find_the_treasure/widgets_common/platform_alert_dialog.dart';
@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
 class ChallengeViewModel extends ChangeNotifier {
   bool isLoading = false;
+  bool snackBarIsDisplaying = false;
   // Challenge incorrect logic - if a question is answered incorrectly a pre-calculated amount of points will be subtracted from the users total amount.
 
   Future<void> answerIncorrect({
@@ -25,7 +26,6 @@ class ChallengeViewModel extends ChangeNotifier {
     @required QuestModel questModel,
     Duration duration,
   }) async {
-    
     isLoading = true;
     notifyListeners();
     final UserData _userData = Provider.of<UserData>(context, listen: false);
@@ -47,21 +47,20 @@ class ChallengeViewModel extends ChangeNotifier {
       seenIntro: _userData.seenIntro,
     );
     try {
-       _databaseService.updateUserData(userData: _updateUserData);
+      _databaseService.updateUserData(userData: _updateUserData);
 
       final snackBar = SnackBar(
-        duration: duration ?? Duration(seconds: 4),
-        backgroundColor: MaterialTheme.red,
-        content: AutoSizeText(
-          'Answer incorrect. You lost: ${LeaderboardViewModel.showPointsLost(userData: _userData, questModel: questModel)} points ',
-          maxLines: 1,
-          style: TextStyle(
-              fontSize: 18, fontFamily: 'Quicksand', color: Colors.white),
-        ),
-      );
+          duration: duration ?? Duration(seconds: 2),
+          backgroundColor: MaterialTheme.orange,
+          content: LeaderboardViewModel.showPointsLost(userData: _userData));
+      snackBarIsDisplaying = true;
+      notifyListeners();
       Scaffold.of(context).showSnackBar(snackBar);
     } catch (e) {} finally {
       isLoading = false;
+      notifyListeners();
+      await Future.delayed(Duration(milliseconds: 2500));
+      snackBarIsDisplaying = false;
       notifyListeners();
     }
   }

@@ -1,3 +1,6 @@
+
+
+import 'package:find_the_treasure/constants.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/questions_model.dart';
@@ -18,6 +21,7 @@ import 'package:provider/provider.dart';
 
 class QuestionViewModel extends ChangeNotifier {
   bool isLoading = false;
+  
   // Logic for when an answer is submitted. If correct, will add UID to Firestore Database and display the correct PlatformAlertDialog.
   Future<void> submit(
     BuildContext context, {
@@ -27,6 +31,7 @@ class QuestionViewModel extends ChangeNotifier {
     @required String collectionRef,
     @required String locationTitle,
     @required String challengeCompletedMessage,
+    @required UserData userData,
   }) async {
     isLoading = true;
     notifyListeners();
@@ -43,17 +48,32 @@ class QuestionViewModel extends ChangeNotifier {
           field: 'challengeCompletedBy',
           collectionRef: collectionRef,
         );
+        final UserData _userData = UserData(
+          displayName: userData.displayName,
+          email: userData.email,
+          id: userData.id,
+          isAdmin: userData.isAdmin,
+          locationsExplored: userData.locationsExplored,
+          photoURL: userData.photoURL,
+          points: userData.points + correctPoints,
+          userDiamondCount: userData.userDiamondCount,
+          seenIntro: true,
+          uid: userData.uid
+        );
+        _databaseService.updateUserData(userData: _userData);
         isLoading = false;
         notifyListeners();
         if (!isFinalChallenge) {
           final _didRequestNext = await PlatformAlertDialog(
-            title: 'Congratulations!',
+            title: 'Challenge Complete!',
+            showPoints: true,
             content:
                 challengeCompletedMessage ?? 'You\'ve completed the challenge!',
             cancelActionText: 'Not Now',
             defaultActionText: 'Next challenge',
             image: Image.asset(
-              'images/owl_thumbs.png',
+              'images/ic_excalibur_owl.png',
+              height: 105,
             ),
             // isLoading: false,
           ).show(context);
@@ -283,6 +303,7 @@ class QuestionViewModel extends ChangeNotifier {
 
           questionViewModel.submit(
             context,
+            userData: _userData,
             isLocation: false,
             challengeCompletedMessage: questionsModel.challengeCompletedMessage,
             isFinalChallenge: isFinalChallenge,
