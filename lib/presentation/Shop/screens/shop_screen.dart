@@ -92,6 +92,7 @@ class _ShopScreenState extends State<ShopScreen> {
         },
       );
     } else if (!_isAvailable) {
+      _isAvailable = await _iap.isAvailable();
       print('not');
       setState(() {});
     }
@@ -153,7 +154,7 @@ class _ShopScreenState extends State<ShopScreen> {
     print('productID: ${_purchase?.productID}');
     print(_purchases);
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
-      _displayDiamondAndKeys(_purchase);
+      _displayDiamonds(_purchase);
 
       _isPurchasePending = true;
 
@@ -205,13 +206,21 @@ class _ShopScreenState extends State<ShopScreen> {
       setState(() {
         _purchases = [];
       });
+    } else if (_purchase != null && _purchase.status == PurchaseStatus.error) {
+      print('ERROR ');
+      _iap.completePurchase(_purchase);
+      _isPurchasePending = false;
+
+      setState(() {
+        _purchases = [];
+      });
     } else
       setState(() {
         _isPurchasePending = false;
       });
   }
 
-  void _displayDiamondAndKeys(PurchaseDetails purchase) {
+  void _displayDiamonds(PurchaseDetails purchase) {
     switch (purchase.productID) {
       case _diamond50:
         _diamonds = 50;
@@ -237,7 +246,6 @@ class _ShopScreenState extends State<ShopScreen> {
 
     final PurchaseParam purchaseParam = PurchaseParam(
       productDetails: productDetails,
-      sandboxTesting: false,
     );
 
     // await FlutterInappPurchase.instance.clearTransactionIOS();
@@ -259,23 +267,23 @@ class _ShopScreenState extends State<ShopScreen> {
     return Scaffold(
       backgroundColor: Colors.brown,
       appBar: AppBar(
-        backgroundColor: Colors.brown,
-        iconTheme: const IconThemeData(color: Colors.white),
-        actions: [DiamondAndKeyContainer(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          numberOfDiamonds: _userData?.userDiamondCount,
-          // numberOfKeys: _userData?.userKeyCount,
-          diamondHeight: 30,
-          // skullKeyHeight: 33,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-          diamondSpinning: true,
-          showShop: false,
-        ),
-        SizedBox(width: 15)
-        ]
-      ),
+          backgroundColor: Colors.brown,
+          iconTheme: const IconThemeData(color: Colors.white),
+          actions: [
+            DiamondAndKeyContainer(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              numberOfDiamonds: _userData?.userDiamondCount,
+              // numberOfKeys: _userData?.userKeyCount,
+              diamondHeight: 30,
+              // skullKeyHeight: 33,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              diamondSpinning: true,
+              showShop: false,
+            ),
+            SizedBox(width: 15)
+          ]),
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
