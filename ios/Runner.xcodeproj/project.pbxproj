@@ -41,6 +41,7 @@
 		5228EC76248F5BA400F8C3BF /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		52398C2B233CE030006DCE3A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5279606424F8DA93008B15A1 /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
+		52ED5A3525C96FB100811EBC /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = file; path = Configuration.storekit; sourceTree = SOURCE_ROOT; };
 		52F5232F24F8B5BA008FA10C /* RunnerProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerProfile.entitlements; sourceTree = "<group>"; };
 		6F4D238669F4A58768237C1E /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				52ED5A3525C96FB100811EBC /* Configuration.storekit */,
 				5279606424F8DA93008B15A1 /* RunnerDebug.entitlements */,
 				52F5232F24F8B5BA008FA10C /* RunnerProfile.entitlements */,
 				5228EC76248F5BA400F8C3BF /* Runner.entitlements */,

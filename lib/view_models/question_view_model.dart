@@ -71,9 +71,8 @@ class QuestionViewModel extends ChangeNotifier {
             defaultActionText: 'Next challenge',
             image: Image.asset(
               'images/ic_excalibur_owl.png',
-              height: 105,
+              height: 120,
             ),
-            
           ).show(context);
           if (_didRequestNext) {
             Navigator.pop(context);

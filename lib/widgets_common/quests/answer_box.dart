@@ -45,20 +45,19 @@ class _AnswerBoxState extends State<AnswerBox> {
     return false;
   }
 
-  void _submit()   {
+  void _submit() {
     FocusScope.of(context).unfocus();
     final questionViewModel =
         Provider.of<QuestionViewModel>(context, listen: false);
     final challengeViewModel =
         Provider.of<ChallengeViewModel>(context, listen: false);
-        final UserData userData = Provider.of<UserData>(context, listen: false);
+    final UserData userData = Provider.of<UserData>(context, listen: false);
 
     if (_validateAndSaveForm()) {
       try {
         if (checkAnswer(_answer)) {
-          
-           questionViewModel.submit(context,
-           userData: userData,
+          questionViewModel.submit(context,
+              userData: userData,
               documentId: widget.arrayUnionDocumentId,
               challengeCompletedMessage:
                   widget.questionsModel?.challengeCompletedMessage,
@@ -67,7 +66,7 @@ class _AnswerBoxState extends State<AnswerBox> {
               locationTitle: widget.locationTitle,
               isFinalChallenge: widget.isFinalChallenge);
         } else {
-           challengeViewModel.answerIncorrect(
+          challengeViewModel.answerIncorrect(
             context: context,
             questModel: widget.questModel,
           );
@@ -121,9 +120,13 @@ class _AnswerBoxState extends State<AnswerBox> {
                     enableFeedback: true,
                     icon: questionViewModel.isLoading ||
                             challengeViewModel.isLoading
-                        ? CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                MaterialTheme.orange),
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  MaterialTheme.orange),
+                            ),
                           )
                         : const Icon(
                             Icons.send,

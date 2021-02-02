@@ -59,23 +59,32 @@ class PlatformAlertDialog extends PlatformWidget {
               //Title
 
               Text(
-                title,                
+                title,
                 style: TextStyle(
                     fontFamily: 'quicksand',
                     fontWeight: FontWeight.w600,
-                    color: titleTextColor ?? Colors.black87),
+                    fontSize: 22,
+                    color: Colors.black87),
               ),
               SizedBox(
-                height: 5,
+                height: 10,
               ),
               //Show points
               showPoints
-                  ? Text(
-                      '+ ' + correctPoints.toString() + ' points',
-                      style: TextStyle(
-                        color: MaterialTheme.orange,
-                        fontFamily: 'quicksand',
-                        fontSize: 20,
+                  ? Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      decoration: BoxDecoration(
+                          color: MaterialTheme.orange,
+                          borderRadius: BorderRadius.circular(10)),
+                      width: double.infinity,
+                      child: Text(
+                        '+ ' + correctPoints.toString() + ' points',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'quicksand',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
                       ),
                     )
                   : SizedBox(),
@@ -95,7 +104,8 @@ class PlatformAlertDialog extends PlatformWidget {
                 content,
                 style: TextStyle(
                     fontFamily: 'quicksand',
-                    color: contentTextColor ?? Colors.grey.shade800),
+                    fontSize: 18,
+                    color: Colors.grey.shade800),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -191,7 +201,7 @@ class PlatformAlertDialog extends PlatformWidget {
         style: TextStyle(
           fontSize: 18.0,
           fontWeight: FontWeight.w700,
-          color: MaterialTheme.orange,
+          color: Platform.isIOS ? MaterialTheme.red : MaterialTheme.orange,
         ),
       ),
       onPressed: () => Navigator.of(context).pop(true),

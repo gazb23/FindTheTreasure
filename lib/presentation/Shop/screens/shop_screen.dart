@@ -120,13 +120,12 @@ class _ShopScreenState extends State<ShopScreen> {
   // Gets past purchases and consume/complete purchase
   Future<void> _getPastPurchases() async {
     QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
-//TODO: Added this reponse error code. Test if works.
-       if (response.error != null) {
+// TODO: Added this reponse error code. Test if works.
+    if (response.error != null) {
       final responseError = await PlatformAlertDialog(
-        title: 'Error!',
-        content: 'Cannot retrieve purchase, please try again later.',
+        title: response.error.code,
+        content: '${response.error.details} + ${response.error.message}',
         defaultActionText: 'OK',
-
       ).show(context);
 
       if (responseError) {
@@ -191,8 +190,7 @@ class _ShopScreenState extends State<ShopScreen> {
               titleTextColor: Platform.isIOS ? Colors.black87 : Colors.white,
               contentTextColor: Platform.isIOS ? Colors.black87 : Colors.white,
               title: 'Jackpot!',
-              content:
-                  'The loot has been added to ye treasure chest. Happy adventures.',
+              content: 'The loot has been added to ye treasure chest.',
               image: Image.asset('images/ic_thnx.png'),
               defaultActionText: 'Sweet')
           .show(context);
