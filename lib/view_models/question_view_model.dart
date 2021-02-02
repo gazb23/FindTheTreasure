@@ -1,5 +1,3 @@
-
-
 import 'package:find_the_treasure/constants.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
@@ -21,7 +19,7 @@ import 'package:provider/provider.dart';
 
 class QuestionViewModel extends ChangeNotifier {
   bool isLoading = false;
-  
+
   // Logic for when an answer is submitted. If correct, will add UID to Firestore Database and display the correct PlatformAlertDialog.
   Future<void> submit(
     BuildContext context, {
@@ -49,20 +47,20 @@ class QuestionViewModel extends ChangeNotifier {
           collectionRef: collectionRef,
         );
         final UserData _userData = UserData(
-          displayName: userData.displayName,
-          email: userData.email,
-          id: userData.id,
-          isAdmin: userData.isAdmin,
-          locationsExplored: userData.locationsExplored,
-          photoURL: userData.photoURL,
-          points: userData.points + correctPoints,
-          userDiamondCount: userData.userDiamondCount,
-          seenIntro: true,
-          uid: userData.uid
-        );
+            displayName: userData.displayName,
+            email: userData.email,
+            id: userData.id,
+            isAdmin: userData.isAdmin,
+            locationsExplored: userData.locationsExplored,
+            photoURL: userData.photoURL,
+            points: userData.points + correctPoints,
+            userDiamondCount: userData.userDiamondCount,
+            seenIntro: true,
+            uid: userData.uid);
         _databaseService.updateUserData(userData: _userData);
         isLoading = false;
         notifyListeners();
+
         if (!isFinalChallenge) {
           final _didRequestNext = await PlatformAlertDialog(
             title: 'Challenge Complete!',
@@ -75,7 +73,7 @@ class QuestionViewModel extends ChangeNotifier {
               'images/ic_excalibur_owl.png',
               height: 105,
             ),
-            // isLoading: false,
+            
           ).show(context);
           if (_didRequestNext) {
             Navigator.pop(context);
@@ -296,7 +294,7 @@ class QuestionViewModel extends ChangeNotifier {
             uid: _userData.uid,
             isAdmin: _userData.isAdmin,
             locationsExplored: _userData.locationsExplored,
-            seenIntro: _userData.seenIntro,            
+            seenIntro: _userData.seenIntro,
           );
 
           _databaseService.updateUserData(userData: _updateUserData);

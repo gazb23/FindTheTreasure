@@ -135,6 +135,7 @@ class _SignInMainScreenState extends State<SignInMainScreen>
     // Lock this screen to portrait orientation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+ 
 
     return Scaffold(
         backgroundColor: Colors.white,

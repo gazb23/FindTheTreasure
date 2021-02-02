@@ -57,12 +57,13 @@ class PlatformAlertDialog extends PlatformWidget {
           child: Column(
             children: [
               //Title
+
               Text(
-                title,
+                title,                
                 style: TextStyle(
-                  fontFamily: 'quicksand',
-                  fontWeight: FontWeight.w600,
-                ),
+                    fontFamily: 'quicksand',
+                    fontWeight: FontWeight.w600,
+                    color: titleTextColor ?? Colors.black87),
               ),
               SizedBox(
                 height: 5,

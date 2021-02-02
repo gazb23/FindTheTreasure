@@ -120,8 +120,22 @@ class _ShopScreenState extends State<ShopScreen> {
   // Gets past purchases and consume/complete purchase
   Future<void> _getPastPurchases() async {
     QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
+//TODO: Added this reponse error code. Test if works.
+       if (response.error != null) {
+      final responseError = await PlatformAlertDialog(
+        title: 'Error!',
+        content: 'Cannot retrieve purchase, please try again later.',
+        defaultActionText: 'OK',
+
+      ).show(context);
+
+      if (responseError) {
+        Navigator.pop(context);
+      }
+    }
 
     for (PurchaseDetails purchase in response.pastPurchases) {
+      // if (purchase.status == PurchaseStatus.purchased)
       if (Platform.isIOS) {
         _iap.completePurchase(
           purchase,
@@ -174,8 +188,8 @@ class _ShopScreenState extends State<ShopScreen> {
       _databaseService.updateUserData(userData: _updateUserData);
       final _didSelectOK = await PlatformAlertDialog(
               backgroundColor: Colors.brown,
-              titleTextColor: Colors.white,
-              contentTextColor: Colors.white,
+              titleTextColor: Platform.isIOS ? Colors.black87 : Colors.white,
+              contentTextColor: Platform.isIOS ? Colors.black87 : Colors.white,
               title: 'Jackpot!',
               content:
                   'The loot has been added to ye treasure chest. Happy adventures.',
@@ -309,8 +323,10 @@ class _ShopScreenState extends State<ShopScreen> {
             onPressed: () async {
               final _didSelectOK = await PlatformAlertDialog(
                       backgroundColor: Colors.brown,
-                      titleTextColor: Colors.white,
-                      contentTextColor: Colors.white,
+                      titleTextColor:
+                          Platform.isIOS ? Colors.black87 : Colors.white,
+                      contentTextColor:
+                          Platform.isIOS ? Colors.black87 : Colors.white,
                       title: 'Welcome to The Shop',
                       content:
                           'Stock ye treasure chest with diamonds and keys. Use \'em to unlock quests and ye can also trade \'em for hints',
