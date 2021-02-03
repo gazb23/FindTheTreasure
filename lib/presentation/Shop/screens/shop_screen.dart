@@ -122,17 +122,17 @@ class _ShopScreenState extends State<ShopScreen> {
     print('past purchaes ');
     QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
 // TODO: Added this reponse error code. Test if works.
-    // if (response.error != null) {
-    //   final responseError = await PlatformAlertDialog(
-    //     title: response.error.code,
-    //     content: '${response.error.details} + ${response.error.message}',
-    //     defaultActionText: 'OK',
-    //   ).show(context);
+    if (response.error != null) {
+      final responseError = await PlatformAlertDialog(
+        title: response.error.code,
+        content: '${response.error.details} + ${response.error.message}',
+        defaultActionText: 'OK',
+      ).show(context);
 
-    //   if (responseError) {
-    //     Navigator.pop(context);
-    //   }
-    // }
+      if (responseError) {
+        Navigator.pop(context);
+      }
+    }
 
     for (PurchaseDetails purchase in response.pastPurchases) {
       print('Past purchases: ${response.pastPurchases.toString()}');
@@ -167,7 +167,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
     PurchaseDetails _purchase = _hasPurchased(_currentPurchase);
     print('productID: ${_purchase?.productID}');
-    print(_purchases);
+    print(_purchases.length);
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
       _displayDiamonds(_purchase);
 
