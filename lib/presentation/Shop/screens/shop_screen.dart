@@ -119,21 +119,23 @@ class _ShopScreenState extends State<ShopScreen> {
 
   // Gets past purchases and consume/complete purchase
   Future<void> _getPastPurchases() async {
+    print('past purchaes ');
     QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
 // TODO: Added this reponse error code. Test if works.
-    if (response.error != null) {
-      final responseError = await PlatformAlertDialog(
-        title: response.error.code,
-        content: '${response.error.details} + ${response.error.message}',
-        defaultActionText: 'OK',
-      ).show(context);
+    // if (response.error != null) {
+    //   final responseError = await PlatformAlertDialog(
+    //     title: response.error.code,
+    //     content: '${response.error.details} + ${response.error.message}',
+    //     defaultActionText: 'OK',
+    //   ).show(context);
 
-      if (responseError) {
-        Navigator.pop(context);
-      }
-    }
+    //   if (responseError) {
+    //     Navigator.pop(context);
+    //   }
+    // }
 
     for (PurchaseDetails purchase in response.pastPurchases) {
+      print('Past purchases: ${response.pastPurchases.toString()}');
       // if (purchase.status == PurchaseStatus.purchased)
       if (Platform.isIOS) {
         _iap.completePurchase(
@@ -205,6 +207,7 @@ class _ShopScreenState extends State<ShopScreen> {
     } else if (_purchase != null &&
         _purchase.status == PurchaseStatus.pending) {
       _getPastPurchases();
+
       print('pending');
       setState(() {
         _isPurchasePending = true;
