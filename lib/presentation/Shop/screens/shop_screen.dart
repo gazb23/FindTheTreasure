@@ -167,8 +167,9 @@ class _ShopScreenState extends State<ShopScreen> {
 
     PurchaseDetails _purchase = _hasPurchased(_currentPurchase);
     print('productID: ${_purchase?.productID}');
-    print(_purchases.length);
+    print('purchase length: ${_purchases.length}');
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
+      print('Product purchased');
       _displayDiamonds(_purchase);
 
       _isPurchasePending = true;
@@ -208,12 +209,12 @@ class _ShopScreenState extends State<ShopScreen> {
         _purchase.status == PurchaseStatus.pending) {
       _getPastPurchases();
 
-      print('pending');
+      print('Purchase pending');
       setState(() {
         _isPurchasePending = true;
       });
     } else if (_purchase != null && _purchase.pendingCompletePurchase) {
-      print('pendingComplete');
+      print('Purchase pendingCompletePurchase');
 
       _iap.completePurchase(_purchase);
       _isPurchasePending = false;
@@ -222,7 +223,7 @@ class _ShopScreenState extends State<ShopScreen> {
         _purchases = [];
       });
     } else if (_purchase != null && _purchase.status == PurchaseStatus.error) {
-      print('ERROR ');
+      print('Purchase ERROR ');
       _iap.completePurchase(_purchase);
       _isPurchasePending = false;
 
