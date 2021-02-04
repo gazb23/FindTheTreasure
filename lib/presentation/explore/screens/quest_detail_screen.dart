@@ -303,7 +303,7 @@ class QuestDetailScreen extends StatelessWidget {
               'images/treasure.png',
               height: 35,
             ),
-            title: DiamondAndKeyContainer(
+            title: ShopButton(
               numberOfDiamonds: questModelStream.bountyDiamonds,              
               diamondHeight: 25,              
               fontSize: 18,
@@ -349,7 +349,7 @@ class QuestDetailScreen extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 3,
-              child: DiamondAndKeyContainer(
+              child: ShopButton(
                 numberOfDiamonds: questModelStream.numberOfDiamonds,               
                 mainAxisAlignment: MainAxisAlignment.start,
                 spaceBetween: 10,

@@ -137,7 +137,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 AnimatedOpacity(
                   opacity: _showTreasure ? 1 : 0,
                   duration: Duration(seconds: 1),
-                  child: DiamondAndKeyContainer(
+                  child: ShopButton(
                     diamondSpinning: true,
                     numberOfDiamonds: 50,                    
                     mainAxisAlignment: MainAxisAlignment.center,

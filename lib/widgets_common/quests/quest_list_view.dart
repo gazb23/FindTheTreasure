@@ -153,7 +153,7 @@ class _QuestListViewState extends State<QuestListView> {
                                   'images/ic_final_comleted.png',
                                   height: 30,
                                 )
-                              : DiamondAndKeyContainer(
+                              : ShopButton(
                                   numberOfDiamonds: widget.numberOfDiamonds,                                  
                                   diamondHeight: 25,
                                   showShop: false,

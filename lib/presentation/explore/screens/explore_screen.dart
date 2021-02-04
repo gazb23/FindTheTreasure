@@ -57,7 +57,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
           iconTheme: const IconThemeData(
             color: Colors.black87,
           ),
-          actions: [ DiamondAndKeyContainer(
+          actions: [ ShopButton(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             numberOfDiamonds: _userData.userDiamondCount,
             diamondHeight: 30,
@@ -77,6 +77,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
             : Container(
                 child: Center(
                 child: CustomCircularProgressIndicator(
+                  height: 30,
+                  width: 30,
                     color: MaterialTheme.orange),
               )));
   }

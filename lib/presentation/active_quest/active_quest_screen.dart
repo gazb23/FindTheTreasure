@@ -73,7 +73,7 @@ class _ActiveQuestScreenState extends State<ActiveQuestScreen> {
           ),
           actions: <Widget>[
             Consumer<UserData>(
-              builder: (_, _userData, __) => DiamondAndKeyContainer(
+              builder: (_, _userData, __) => ShopButton(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 numberOfDiamonds: _userData.userDiamondCount,                
                 color: Colors.black87,

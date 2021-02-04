@@ -99,7 +99,7 @@ class QuestionMultipleChoice extends StatelessWidget {
             color: Colors.black87,
           ),
           actions: <Widget>[
-            DiamondAndKeyContainer(
+            ShopButton(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               numberOfDiamonds: userData.userDiamondCount,              
               diamondHeight: 25,

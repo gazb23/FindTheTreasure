@@ -3,7 +3,7 @@ import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/animated_counter.dart';
 import 'package:flutter/material.dart';
 
-class DiamondAndKeyContainer extends StatelessWidget {
+class ShopButton extends StatelessWidget {
   final double diamondHeight;
   // final double skullKeyHeight;
   final double spaceBetween;
@@ -17,7 +17,7 @@ class DiamondAndKeyContainer extends StatelessWidget {
   // final bool showKey;
   final bool diamondSpinning;
   final bool showShop;
-  DiamondAndKeyContainer({
+  ShopButton({
     this.diamondHeight,
     // this.skullKeyHeight,
     this.spaceBetween = 5,

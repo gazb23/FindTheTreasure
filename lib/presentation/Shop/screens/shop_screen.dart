@@ -259,7 +259,7 @@ class _ShopScreenState extends State<ShopScreen> {
           backgroundColor: Colors.brown,
           iconTheme: const IconThemeData(color: Colors.white),
           actions: [
-            DiamondAndKeyContainer(
+            ShopButton(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               numberOfDiamonds: _userData?.userDiamondCount,
               // numberOfKeys: _userData?.userKeyCount,

@@ -38,7 +38,9 @@ class Avatar extends StatelessWidget {
           fadeOutDuration: Duration(seconds: 1),
           placeholder: (context, url) => Container(
               height: radius * 2,
-              child: Center(child: CustomCircularProgressIndicator())),
+              child: Center(child: CustomCircularProgressIndicator(
+            
+              ))),
           imageBuilder: (context, photoURL) => InkWell(
             onTap: onPressed,
             child: CircleAvatar(

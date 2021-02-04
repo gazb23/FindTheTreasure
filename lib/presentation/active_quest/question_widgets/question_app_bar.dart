@@ -39,7 +39,7 @@ class QuestionAppBar extends StatelessWidget implements PreferredSizeWidget {
           
           actions: <Widget>[
             
-            DiamondAndKeyContainer(
+            ShopButton(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               numberOfDiamonds: userData.userDiamondCount,              
               diamondHeight: 25,

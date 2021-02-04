@@ -197,7 +197,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
           ),
           FractionallySizedBox(
             widthFactor: 0.7,
-            child: DiamondAndKeyContainer(
+            child: ShopButton(
               numberOfDiamonds: userData.userDiamondCount,
               diamondHeight: 35,
               fontSize: 26,
