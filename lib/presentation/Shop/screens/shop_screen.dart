@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:find_the_treasure/models/user_model.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
@@ -12,7 +13,6 @@ import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.d
 import 'package:flutter/material.dart';
 import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -32,6 +32,7 @@ class _ShopScreenState extends State<ShopScreen> {
   AudioPlayerService audioPlayer = AudioPlayerService();
   // IAP Plugin Interface
   final InAppPurchaseConnection _iap = InAppPurchaseConnection.instance;
+
   // Updates to purchases
   StreamSubscription<List<PurchaseDetails>> _subscription;
 
@@ -73,27 +74,27 @@ class _ShopScreenState extends State<ShopScreen> {
     // Check availilbility of In App Purchases
     audioPlayer = AudioPlayerService();
     _isAvailable = await _iap.isAvailable();
-    FlutterInappPurchase.instance.clearTransactionIOS();
+    // FlutterInappPurchase.instance.clearTransactionIOS();
 
     if (_isAvailable) {
-      List<Future> futures = [_getProducts(), _getPastPurchases()];
-      await Future.wait(futures);
-      _verifyPurchase();
-
-      // Listen to new purchases
+      await FlutterInappPurchase.instance.clearTransactionIOS();
+      await _getProducts();
+      // // Listen to new purchases
       _subscription = _iap.purchaseUpdatedStream.listen(
         (purchaseDetails) {
           setState(
             () {
               _purchases.addAll(purchaseDetails);
-              _verifyPurchase();
+              Platform.isIOS
+                  ? _getPastPurchases(purchaseDetails)
+                  : _verifyPurchase();
             },
           );
         },
       );
     } else if (!_isAvailable) {
       _isAvailable = await _iap.isAvailable();
-      print('not');
+
       setState(() {});
     }
   }
@@ -118,38 +119,16 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   // Gets past purchases and consume/complete purchase
-  Future<void> _getPastPurchases() async {
-    print('past purchaes ');
-    QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
-// TODO: Added this reponse error code. Test if works.
-    if (response.error != null) {
-      final responseError = await PlatformAlertDialog(
-        title: response.error.code,
-        content: '${response.error.details} + ${response.error.message}',
-        defaultActionText: 'OK',
-      ).show(context);
+  Future<void> _getPastPurchases(List<PurchaseDetails> pastPurchases) async {
+    log('past purchaes ');
 
-      if (responseError) {
-        Navigator.pop(context);
-      }
+    for (PurchaseDetails purchase in pastPurchases) {
+      _purchases = [];
+
+      _purchases.add(purchase);
+
+      _verifyPurchase();
     }
-
-    for (PurchaseDetails purchase in response.pastPurchases) {
-      print('Past purchases: ${response.pastPurchases.toString()}');
-      // if (purchase.status == PurchaseStatus.purchased)
-      if (Platform.isIOS) {
-        _iap.completePurchase(
-          purchase,
-        );
-      } else
-        _iap.consumePurchase(
-          purchase,
-        );
-    }
-
-    setState(() {
-      _purchases = response.pastPurchases;
-    });
   }
 
   // Returns purchase of specific product ID
@@ -161,19 +140,19 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _verifyPurchase() async {
+    log('veryifyPurchase ');
     DatabaseService _databaseService =
         Provider.of<DatabaseService>(context, listen: false);
     UserData _userData = Provider.of<UserData>(context, listen: false);
 
     PurchaseDetails _purchase = _hasPurchased(_currentPurchase);
-    print('productID: ${_purchase?.productID}');
-    print('purchase length: ${_purchases.length}');
+    log('productID: ${_purchase?.productID}');
+    log('purchase length: ${_purchases.length}');
     if (_purchase != null && _purchase.status == PurchaseStatus.purchased) {
-      print('Product purchased');
+      log('Product purchased');
       _displayDiamonds(_purchase);
 
-      _isPurchasePending = true;
-
+      await _iap.completePurchase(_purchase);
       final _updateUserData = UserData(
         displayName: _userData.displayName,
         email: _userData.email,
@@ -199,27 +178,22 @@ class _ShopScreenState extends State<ShopScreen> {
           .show(context);
       if (_didSelectOK) {
         audioPlayer.playSound(path: 'location_discovered.mp3');
-        _iap.completePurchase(_purchase);
-        setState(() {
-          _isPurchasePending = false;
-          _purchases = [];
-        });
+
+        _isPurchasePending = false;
+        _purchases = [];
       }
     } else if (_purchase != null &&
         _purchase.status == PurchaseStatus.pending) {
-      _getPastPurchases();
+      log('Purchase pending');
 
-      print('Purchase pending');
-      setState(() {
-        _isPurchasePending = true;
-      });
+      _isPurchasePending = true;
     } else if (_purchase != null && _purchase.pendingCompletePurchase) {
-      print('Purchase pendingCompletePurchase');
-
-      _iap.completePurchase(_purchase);
-      _isPurchasePending = false;
+      FlutterInappPurchase.instance.clearTransactionIOS();
+      log('Purchase pendingCompletePurchase');
+      // _iap.completePurchase(_purchase);
 
       setState(() {
+        _isPurchasePending = false;
         _purchases = [];
       });
     } else if (_purchase != null && _purchase.status == PurchaseStatus.error) {
@@ -227,9 +201,7 @@ class _ShopScreenState extends State<ShopScreen> {
       _iap.completePurchase(_purchase);
       _isPurchasePending = false;
 
-      setState(() {
-        _purchases = [];
-      });
+      _purchases = [];
     } else
       setState(() {
         _isPurchasePending = false;
@@ -258,19 +230,20 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   void _buyProduct(ProductDetails productDetails) async {
-    _isPurchasePending = true;
+    FlutterInappPurchase.instance.clearTransactionIOS();
+    log('Buy Product ');
+    setState(() {
+      _isPurchasePending = true;
+    });
 
     final PurchaseParam purchaseParam = PurchaseParam(
       productDetails: productDetails,
     );
 
-    // await FlutterInappPurchase.instance.clearTransactionIOS();
-
     try {
       await _iap.buyConsumable(
         purchaseParam: purchaseParam,
       );
-      await _getPastPurchases();
     } catch (e) {
       _isPurchasePending = false;
       print(e.toString());
