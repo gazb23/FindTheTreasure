@@ -3,7 +3,7 @@ import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/custom_raised_button.dart';
 import 'package:flutter/material.dart';
 
-class BuyDiamondOrKeyButton extends StatelessWidget {
+class BuyDiamond extends StatelessWidget {
   final String numberOfDiamonds;
   final String diamondCost;
   // final String bonusKey;
@@ -13,7 +13,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isPurchasePending;
 
-  const BuyDiamondOrKeyButton({
+  const BuyDiamond({
     Key key,
     @required this.numberOfDiamonds,
     @required this.diamondCost,
@@ -21,20 +21,18 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
     this.textColor,
     // this.bonusKey,
     this.diamondTextSize = 30,
-    this.costTextSize = 15, this.isPurchasePending,
-    
+    this.costTextSize = 15,
+    this.isPurchasePending,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return     
-    Container(
+    return Container(
       width: MediaQuery.of(context).size.width * 0.94,
-      height: MediaQuery.of(context).size.height/14,
+      height: MediaQuery.of(context).size.height / 14,
       child: CustomRaisedButton(
         color: MaterialTheme.orange,
         padding: 10,
-        
         onPressed: isPurchasePending ? null : onPressed,
         child: FractionallySizedBox(
           widthFactor: 0.92,
@@ -48,7 +46,7 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
                   children: <Widget>[
                     Opacity(
                       opacity: 0.8,
-                                          child: Image.asset(
+                      child: Image.asset(
                         'images/diamond2.png',
                         height: 25,
                       ),
@@ -71,9 +69,9 @@ class BuyDiamondOrKeyButton extends StatelessWidget {
               ),
               // Expanded(
               //   flex: 3,
-                
-              //   child: 
-              //   bonusKey == '0' ? Container() : 
+
+              //   child:
+              //   bonusKey == '0' ? Container() :
               //   Row(
               //     children: <Widget>[
               //       Text(

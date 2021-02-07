@@ -36,31 +36,21 @@ class ConnectivityService {
 
   static bool checkNetwork(BuildContext context, {@required bool listen}) {
     print('checking');
- 
+
     final isConnected =
         Provider.of<DataConnectionStatus>(context, listen: listen);
     final connectionStatus =
         Provider.of<ConnectivityStatus>(context, listen: listen);
- 
-    
-      if (connectionStatus == ConnectivityStatus.Online || isConnected == DataConnectionStatus.connected) {
-         print('connected');
-        return true;
-      }
-    
-     else {
+
+    if (connectionStatus == ConnectivityStatus.Online ||
+        isConnected == DataConnectionStatus.connected) {
+      print('connected');
+      return true;
+    } else {
       if (isConnected == DataConnectionStatus.disconnected
           // connectionStatus == ConnectivityStatus.Offline
           ) {
-          print('connection Lost');
-        // Fluttertoast.showToast(
-        //     msg: "Check your internet connection",
-        //     timeInSecForIosWeb: 4,
-        //     toastLength: Toast.LENGTH_LONG,
-        //     gravity: ToastGravity.TOP,
-        //     backgroundColor: Colors.grey.withOpacity(0.7),
-        //     textColor: Colors.white,
-        //     fontSize: 16.0);
+        print('connection Lost');
       }
     }
     return false;

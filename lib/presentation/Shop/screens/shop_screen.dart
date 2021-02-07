@@ -321,7 +321,7 @@ class _ShopScreenState extends State<ShopScreen> {
             for (var prod in _products)
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
-                child: BuyDiamondOrKeyButton(
+                child: BuyDiamond(
                   numberOfDiamonds: numberOfDiamonds(prod.id),
                   diamondCost: prod.price,
                   // bonusKey: numberOfKeys(prod.id),
