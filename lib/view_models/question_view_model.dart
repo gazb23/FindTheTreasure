@@ -97,9 +97,26 @@ class QuestionViewModel extends ChangeNotifier {
           field: 'locationStartedBy',
           collectionRef: collectionRef,
         );
+        final UserData _userData = UserData(
+          displayName: userData.displayName,
+          email: userData.email,
+          id: userData.id,
+          isAdmin: userData.isAdmin,
+          locationsExplored: userData.locationsExplored,
+          photoURL: userData.photoURL,
+          points: userData.points + correctPoints,
+          userDiamondCount: userData.userDiamondCount,
+          seenIntro: true,
+          uid: userData.uid,
+        );
+        _databaseService.updateUserData(userData: _userData);
         isLoading = false;
         notifyListeners();
         final _didCompleteChallenge = await PlatformAlertDialog(
+          backgroundColor: Colors.brown,
+          contentTextColor: Colors.white,
+          titleTextColor: Colors.white,
+          showPoints: true,
           title: 'Location Unlocked!',
           content:
               'Well done, you\'ve discovered  $locationTitle. It\'s adventure time!',

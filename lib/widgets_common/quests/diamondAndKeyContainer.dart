@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ShopButton extends StatelessWidget {
   final double diamondHeight;
   // final double skullKeyHeight;
-  final double spaceBetween;
+  // final double spaceBetween;
   final double fontSize;
   final FontWeight fontWeight;
   final int numberOfDiamonds;
@@ -20,7 +20,7 @@ class ShopButton extends StatelessWidget {
   ShopButton({
     this.diamondHeight,
     // this.skullKeyHeight,
-    this.spaceBetween = 5,
+    // this.spaceBetween = 5,
     this.numberOfDiamonds,
     // this.numberOfKeys,
     this.mainAxisAlignment,
@@ -84,9 +84,7 @@ class ShopButton extends StatelessWidget {
                     ),
                   )
                 : Container(),
-            SizedBox(
-              width: spaceBetween,
-            ),
+           
            
           ],
         ),

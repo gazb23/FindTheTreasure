@@ -16,16 +16,15 @@ import 'package:geolocator/geolocator.dart';
 class TreasureLocationService extends ChangeNotifier {
   bool isLoading = false;
 
-  final QuestModel questModel;  
+  final QuestModel questModel;
   final DatabaseService databaseService;
 
   Position currentPosition;
   TreasureLocationService({
-    @required this.questModel,    
+    @required this.questModel,
     @required this.databaseService,
   })  : assert(questModel != null),
-        assert(databaseService != null)
-        ;
+        assert(databaseService != null);
 
   void getCurrentLocation(BuildContext context) async {
     isLoading = true;
@@ -36,55 +35,46 @@ class TreasureLocationService extends ChangeNotifier {
     double long = questModel.treasureCoordinates['longitude'];
 
     await _checkGps(context);
-    
-  
-    bool permissionGranted = await PermissionService(context: context).requestLocationPermission
-    ();
+
+    bool permissionGranted =
+        await PermissionService(context: context).requestLocationPermission();
     if (permissionGranted) {
+      geolocator
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+          .then((Position position) {
+        currentPosition = position;
 
+        if ((lat * 100).truncateToDouble() / 100 ==
+                (currentPosition.latitude * 100).truncateToDouble() / 100 &&
+            (long * 100).truncateToDouble() / 100 ==
+                (currentPosition.longitude * 100).truncateToDouble() / 100) {
+          QuestViewModel.submitTreasureDiscovered(
+              context: context,
+              databaseService: databaseService,
+              questModel: questModel);
+          isLoading = false;
+          notifyListeners();
+        } else {
+          isLoading = false;
+          notifyListeners();
 
-
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      currentPosition = position;
-
-      if ((lat * 1000).truncateToDouble() / 1000 ==
-              (currentPosition.latitude * 1000).truncateToDouble() / 1000 &&
-          (long * 1000).truncateToDouble() / 1000 ==
-              (currentPosition.longitude * 1000).truncateToDouble() / 1000) {
-               
-
-        QuestViewModel.submitTreasureDiscovered(
-            context: context,
-            databaseService: databaseService,           
-            questModel: questModel);
+          QuestViewModel.submitTreasureNotDiscovered(
+              context: context,
+              databaseService: databaseService,
+              questModel: questModel);
+        }
+      }).catchError((e) {
+        PlatformExceptionAlertDialog(title: 'Error', exception: e);
         isLoading = false;
         notifyListeners();
-      } else {
-        isLoading = false;
-        notifyListeners();
-      
-        QuestViewModel.submitTreasureNotDiscovered(
-            context: context,     
-            databaseService: databaseService,
-            questModel: questModel);
-      }
-    }).catchError((e) {
-      PlatformExceptionAlertDialog(title: 'Error', exception: e);
+      });
+    } else {
+      print('denied');
       isLoading = false;
       notifyListeners();
-    });
-  } else {
-    print('denied');
-     isLoading = false;
-      notifyListeners();
-    return null;
-  }
-
-
-
+      return null;
     }
+  }
 
   Future _checkGps(BuildContext context) async {
     if (!(await Geolocator().isLocationServiceEnabled())) {
@@ -96,12 +86,12 @@ class TreasureLocationService extends ChangeNotifier {
         defaultActionText: 'ENABLE',
       ).show(context);
       if (didRequest) {
-               isLoading = false;
-    notifyListeners();
+        isLoading = false;
+        notifyListeners();
         AppSettings.openLocationSettings();
       } else {
         isLoading = false;
-    notifyListeners();
+        notifyListeners();
         return null;
       }
     }

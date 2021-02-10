@@ -5,13 +5,11 @@ import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
-import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-
-class QuestCard extends StatefulWidget {
+class QuestLockedCard extends StatefulWidget {
   final QuestModel questModel;
 
   final String image;
@@ -23,7 +21,7 @@ class QuestCard extends StatefulWidget {
   // final int numberOfKeys;
   final VoidCallback onTap;
 
-  const QuestCard({
+  const QuestLockedCard({
     Key key,
     @required this.title,
     @required this.difficulty,
@@ -37,10 +35,10 @@ class QuestCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _QuestCardState createState() => _QuestCardState();
+  _QuestLockedCardState createState() => _QuestLockedCardState();
 }
 
-class _QuestCardState extends State<QuestCard> {
+class _QuestLockedCardState extends State<QuestLockedCard> {
   Color _questDifficulty(String difficultyTitle) {
     switch (difficultyTitle) {
       case 'Easy':
@@ -63,8 +61,6 @@ class _QuestCardState extends State<QuestCard> {
   @override
   Widget build(BuildContext context) {
     final DatabaseService database = Provider.of<DatabaseService>(context);
-    
-
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -90,23 +86,39 @@ class _QuestCardState extends State<QuestCard> {
                     height: MediaQuery.of(context).size.height / 4.2,
                     child: Center(child: Icon(Icons.error))),
                   imageBuilder: (context, image) => Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 4.2,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: image,
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.9),
-                                BlendMode.dstATop),
-                            alignment: Alignment.center),
-                      ),
-                      child: Container(
-                                  color: Colors.black.withOpacity(0.2),
-                                  child: 
-                                       buildQuestListTile(context, database)),
-                            )
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 4.2,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: image,
+                              fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.8),
+                                  BlendMode.dstATop),
+                              alignment: Alignment.center),
+                        ),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(
+                            sigmaX: 3,
+                            sigmaY: 3,
                           ),
+                          child: Container(
+                              color: Colors.black.withOpacity(0.5),
+                              child: Column(
+                                children: [
+                                  Opacity(
+                                    opacity: 0.3,
+                                    child: buildQuestListTile(context, database)),
+                                  Opacity(
+                                    opacity: 0.8,
+                                    child: Container(
+                                        height: 60,
+                                        child: Image.asset('images/padlock.png')),
+                                  ),
+                                ],
+                              )),
+                        ),
+                      )),
               Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -124,24 +136,18 @@ class _QuestCardState extends State<QuestCard> {
                           Colors.grey.shade800,
                           Colors.grey.shade700
                         ])),
-                child:
-                   Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              buildDifficultyIndicator(),
-                              buildNumberOfLocations(locationPluralCount),
-                              widget.questModel.questStartedBy.contains(database.uid) 
-                                  ? Image.asset(
-                                      'images/ic_final_comleted.png',
-                                      height: 30,
-                                    )
-                                  : ShopButton(
-                                      numberOfDiamonds: widget.numberOfDiamonds,
-                                      diamondHeight: 25,
-                                      showShop: false,
-                                    ),
-                            ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    buildDifficultyIndicator(),
+                    buildNumberOfLocations(locationPluralCount),
+                    ShopButton(
+                            numberOfDiamonds: widget.numberOfDiamonds,
+                            diamondHeight: 25,
+                            showShop: false,
                           ),
+                  ],
+                ),
               )
             ],
           ),
@@ -177,10 +183,6 @@ class _QuestCardState extends State<QuestCard> {
                 fontFamily: 'JosefinSans'),
           ),
         ],
-      ),
-      trailing:  Heart(
-        database: database,
-        questModel: widget.questModel,
       ),
     );
   }

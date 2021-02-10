@@ -115,6 +115,7 @@ class LeaderboardListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<UserData>>(
+      
         stream: databaseService.usersStream(),
         builder: (context, snapshot) {
           return ListItemsBuilder<UserData>(

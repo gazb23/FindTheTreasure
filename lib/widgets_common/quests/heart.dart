@@ -9,15 +9,14 @@ import 'package:flutter/services.dart';
 class Heart extends StatefulWidget {
   final DatabaseService database;
   final QuestModel questModel;
-  final bool isLikedByUser;
+  
 
   Heart({
-    @required this.isLikedByUser,
+    
     @required this.database,
     @required this.questModel,
   })  : assert(questModel != null),
-        assert(database != null),
-        assert(isLikedByUser != null);
+        assert(database != null);
 
   @override
   _HeartState createState() => _HeartState();
@@ -39,13 +38,14 @@ class _HeartState extends State<Heart> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    bool isLiked = widget.questModel.likedBy.contains(widget.database.uid);
     return ScaleTransition(
       scale: Tween(begin: 1.0, end: 1.5).animate(
           CurvedAnimation(parent: controller, curve: Curves.elasticOut)),
       child: IconButton(
           icon: Icon(
-            widget.isLikedByUser ? Icons.favorite : Icons.favorite_border,
-            color: widget.isLikedByUser ? MaterialTheme.red : Colors.white,
+            isLiked ? Icons.favorite : Icons.favorite_border,
+            color: isLiked ? MaterialTheme.red : Colors.white,
             size: 35,
           ),
           onPressed: () async {
@@ -54,7 +54,7 @@ class _HeartState extends State<Heart> with TickerProviderStateMixin {
             if (mounted) controller.reverse();
             try {             
             
-            widget.isLikedByUser
+            isLiked
                 ? await widget.database.arrayRemove(widget.questModel.id)
                 : await widget.database.arrayUnion(widget.questModel.id);
             } on PlatformException {

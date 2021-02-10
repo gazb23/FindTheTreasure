@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:confetti/confetti.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
-import 'package:find_the_treasure/presentation/explore/widgets/home_page.dart';
 import 'package:find_the_treasure/services/audio_player.dart';
 import 'package:find_the_treasure/theme.dart';
 import 'package:find_the_treasure/widgets_common/avatar.dart';
@@ -60,7 +59,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
               onPressed: () {
                 player.stopSound();
                 player.disposePlayer();
-                Navigator.pushNamed(context, HomePage.id);
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
             )),
         body: Container(
@@ -202,8 +201,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
               diamondHeight: 35,
               fontSize: 26,
               fontWeight: FontWeight.bold,
-              mainAxisAlignment: MainAxisAlignment.center,
-              spaceBetween: 0,
+              mainAxisAlignment: MainAxisAlignment.center,              
               showShop: false,              
             ),
           ),
@@ -224,6 +222,5 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
   // String Plurals for diamond/s and key/s
   diamondPluralCount(int howMany) =>
       Intl.plural(howMany, one: 'diamond', other: 'diamonds');
-  keyPluralCount(int howMany) =>
-      Intl.plural(howMany, one: 'key', other: 'keys');
+ 
 }

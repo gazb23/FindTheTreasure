@@ -150,27 +150,15 @@ class QuestDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      trailing: SizedBox(
-        width: 50,
-        child: StreamBuilder<QuestModel>(
-          stream: database.questStream(questId: questModel.id),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              final questModelStream = snapshot.data;
-              final isLikedByUser =
-                  questModelStream.likedBy.contains(database.uid);
-              return Heart(
+      trailing:Heart(
                 database: database,
-                isLikedByUser: isLikedByUser,
+                
                 questModel: questModelStream,
-              );
-            } else if (snapshot.hasError) {
-              print(snapshot.hasError.toString());
-            }
-            return Container();
-          },
-        ),
-      ),
+              )
+            
+          
+        
+      
     );
   }
 
@@ -308,8 +296,7 @@ class QuestDetailScreen extends StatelessWidget {
               diamondHeight: 25,              
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              mainAxisAlignment: MainAxisAlignment.center,
-              spaceBetween: 0,
+              mainAxisAlignment: MainAxisAlignment.center,              
             ),
             trailing: Container(
               padding: EdgeInsets.all(2),
@@ -351,8 +338,7 @@ class QuestDetailScreen extends StatelessWidget {
               flex: 3,
               child: ShopButton(
                 numberOfDiamonds: questModelStream.numberOfDiamonds,               
-                mainAxisAlignment: MainAxisAlignment.start,
-                spaceBetween: 10,
+                mainAxisAlignment: MainAxisAlignment.start,               
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 diamondHeight: 35,      

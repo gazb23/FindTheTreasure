@@ -3,15 +3,12 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/services/database.dart';
-import 'package:find_the_treasure/theme.dart';
-import 'package:find_the_treasure/widgets_common/quests/diamondAndKeyContainer.dart';
 import 'package:find_the_treasure/widgets_common/quests/heart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
-
-class QuestCard extends StatefulWidget {
+class QuestConqueredCard extends StatefulWidget {
   final QuestModel questModel;
 
   final String image;
@@ -23,7 +20,7 @@ class QuestCard extends StatefulWidget {
   // final int numberOfKeys;
   final VoidCallback onTap;
 
-  const QuestCard({
+  const QuestConqueredCard({
     Key key,
     @required this.title,
     @required this.difficulty,
@@ -37,28 +34,13 @@ class QuestCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _QuestCardState createState() => _QuestCardState();
+  _QuestConqueredCardState createState() => _QuestConqueredCardState();
 }
 
-class _QuestCardState extends State<QuestCard> {
-  Color _questDifficulty(String difficultyTitle) {
-    switch (difficultyTitle) {
-      case 'Easy':
-        return Colors.green;
-        break;
-      case 'Moderate':
-        return MaterialTheme.orange;
-        break;
-      case 'Hard':
-        return MaterialTheme.red;
-      default:
-        return Colors.green;
-    }
-  }
+class _QuestConqueredCardState extends State<QuestConqueredCard> {
+  
 
-// Function to output corrent location plural
-  locationPluralCount(int howMany) =>
-      Intl.plural(howMany, one: 'location', other: 'locations');
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,14 +79,20 @@ class _QuestCardState extends State<QuestCard> {
                             image: image,
                             fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.9),
+                                Colors.black.withOpacity(0.8),
                                 BlendMode.dstATop),
                             alignment: Alignment.center),
                       ),
-                      child: Container(
-                                  color: Colors.black.withOpacity(0.2),
+                      child: 
+                          BackdropFilter(
+                              filter: ImageFilter.blur(
+                                sigmaX: 3,
+                                sigmaY: 3,
+                              ),
+                              child: Container(
+                                  color: Colors.black.withOpacity(0.5),
                                   child: 
-                                       buildQuestListTile(context, database)),
+                                        buildQuestListTile(context, database))),
                             )
                           ),
               Container(
@@ -125,23 +113,24 @@ class _QuestCardState extends State<QuestCard> {
                           Colors.grey.shade700
                         ])),
                 child:
-                   Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              buildDifficultyIndicator(),
-                              buildNumberOfLocations(locationPluralCount),
-                              widget.questModel.questStartedBy.contains(database.uid) 
-                                  ? Image.asset(
-                                      'images/ic_final_comleted.png',
-                                      height: 30,
-                                    )
-                                  : ShopButton(
-                                      numberOfDiamonds: widget.numberOfDiamonds,
-                                      diamondHeight: 25,
-                                      showShop: false,
-                                    ),
-                            ],
-                          ),
+                   Container(
+                            width: double.infinity,
+                            child: Shimmer.fromColors(
+                              period: const Duration(milliseconds: 750),
+                              baseColor: Colors.amberAccent,
+                              loop: 3,
+                              highlightColor: Colors.grey.shade100,
+                              child: const Text(
+                                'QUEST CONQUERED',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    color: Colors.amberAccent,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ))
+                       
+                            
+                          
               )
             ],
           ),
@@ -185,26 +174,7 @@ class _QuestCardState extends State<QuestCard> {
     );
   }
 
-  Widget buildNumberOfLocations(locationPluralCount) {
-    return Container(
-      child: Text(
-        '${widget.numberOfLocations} ${locationPluralCount(widget.numberOfLocations)}',
-        style: const TextStyle(color: Colors.white, fontSize: 14),
-      ),
-    );
-  }
 
-  Widget buildDifficultyIndicator() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: _questDifficulty(widget.difficulty),
-      ),
-      child: Text(
-        widget.difficulty,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
-      ),
-    );
-  }
+
+
 }

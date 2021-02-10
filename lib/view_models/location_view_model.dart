@@ -1,3 +1,4 @@
+import 'package:find_the_treasure/constants.dart';
 import 'package:find_the_treasure/models/location_model.dart';
 import 'package:find_the_treasure/models/quest_model.dart';
 import 'package:find_the_treasure/models/user_model.dart';
@@ -76,6 +77,7 @@ class LocationViewModel extends ChangeNotifier {
     @required QuestModel questModel,
   }) async {
     if (!locationModel.locationDiscoveredBy.contains(databaseService.uid)) {
+      final UserData userData = Provider.of<UserData>(context, listen: false);
       AudioPlayerService player = AudioPlayerService();
       try {
         player.playSound(path: 'location_discovered.mp3');
@@ -83,9 +85,25 @@ class LocationViewModel extends ChangeNotifier {
             documentId: locationModel.id,
             field: 'locationDiscoveredBy',
             collectionRef: APIPath.locations(questId: questModel.id));
+            final UserData _userData = UserData(
+            displayName: userData.displayName,
+            email: userData.email,
+            id: userData.id,
+            isAdmin: userData.isAdmin,
+            locationsExplored: userData.locationsExplored,
+            photoURL: userData.photoURL,
+            points: userData.points + correctPoints,
+            userDiamondCount: userData.userDiamondCount,
+            seenIntro: true,
+            uid: userData.uid);
+        databaseService.updateUserData(userData: _userData);
 
         final didDiscoverLocation = await PlatformAlertDialog(
+          showPoints: true,
           title: 'Location Discovered!',
+          backgroundColor: Colors.brown,
+          titleTextColor: Colors.white,
+          contentTextColor: Colors.white,
           content:
               'Well done, you\'ve found ${locationModel.title} and unlocked the challenges! ',
           defaultActionText: 'Continue',

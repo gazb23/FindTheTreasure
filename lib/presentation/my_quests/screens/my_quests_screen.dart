@@ -103,7 +103,7 @@ class Current extends StatelessWidget {
             buttonEnabled: false,            
             image: Image.asset('images/event.png'),
             snapshot: snapshot,
-            itemBuilder: (context, quest, index) => QuestListView(
+            itemBuilder: (context, quest, index) => QuestCard(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
               // numberOfKeys: quest.numberOfKeys,
@@ -147,7 +147,7 @@ class Liked extends StatelessWidget {
             buttonEnabled: false,
             image: Image.asset('images/owl_thumbs.png'),
             snapshot: snapshot,
-            itemBuilder: (context, quest, index) => QuestListView(
+            itemBuilder: (context, quest, index) => QuestCard(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
               // numberOfKeys: quest.numberOfKeys,
@@ -192,7 +192,7 @@ class Conquered extends StatelessWidget {
             buttonEnabled: false,
             image: Image.asset('images/ic_owl_wrong_dialog.png'),
             snapshot: snapshot,
-            itemBuilder: (context, quest, index) => QuestListView(
+            itemBuilder: (context, quest, index) => QuestCard(
               numberOfDiamonds: quest.numberOfDiamonds,
               difficulty: quest.difficulty,
               // numberOfKeys: quest.numberOfKeys,

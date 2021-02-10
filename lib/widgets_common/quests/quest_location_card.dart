@@ -200,7 +200,7 @@ class _LocationHeaderState extends State<LocationHeader> {
                   color: _locationCompletedBy ? Colors.white : Colors.black54,
                   fontSize: 22),
             ),
-            subtitle: _locationCompletedBy ? Text('Conquered') : !_locationStartedBy ? Text('Tap to start') : Text('Tap to continue'),
+            subtitle: _locationCompletedBy ? Text('Conquered') : !_locationStartedBy ? Text('Tap to start') : SizedBox(),
             trailing: StreamBuilder<List<QuestionsModel>>(
                 stream: databaseService.challengesStream(
                   questId: widget.questModel.id,
@@ -226,7 +226,9 @@ class _LocationHeaderState extends State<LocationHeader> {
                           (_numberofChallengesCompleted > 0),
                     );
                     return Text(
-                        '$_numberofChallengesCompleted/$_numberOfChallenges');
+                        '$_numberofChallengesCompleted/$_numberOfChallenges',
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                        );
                   }
 
                   return CircularProgressIndicator(
