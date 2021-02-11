@@ -130,7 +130,7 @@ class _QuestCardState extends State<QuestCard> {
                             children: <Widget>[
                               buildDifficultyIndicator(),
                               buildNumberOfLocations(locationPluralCount),
-                              widget.questModel.questStartedBy.contains(database.uid) 
+                              widget.questModel.questStartedBy.contains(database.uid) || widget.questModel.questCompletedBy.contains(database.uid) && !widget.questModel.treasureDiscoveredBy.contains(database.uid)
                                   ? Image.asset(
                                       'images/ic_final_comleted.png',
                                       height: 30,

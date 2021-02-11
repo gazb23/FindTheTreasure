@@ -10,8 +10,7 @@ import 'package:provider/provider.dart';
 
 import 'leaderboard_view_model.dart';
 
-class QuestViewModel  {
-  
+class QuestViewModel {
   // Logic for when the treasure is discovered
 
   static void submitTreasureDiscovered({
@@ -19,7 +18,6 @@ class QuestViewModel  {
     @required DatabaseService databaseService,
     @required QuestModel questModel,
   }) async {
- 
     if (!questModel.treasureDiscoveredBy.contains(databaseService.uid)) {
       final UserData userData = Provider.of<UserData>(context, listen: false);
       final int updatedDiamondCount =
@@ -27,19 +25,20 @@ class QuestViewModel  {
       // final int updatedKeyCount = userData.userKeyCount + questModel.bountyKeys;
 
       final UserData _userData = UserData(
-          userDiamondCount: updatedDiamondCount,
-          locationsExplored: userData.locationsExplored,
-          // userKeyCount: updatedKeyCount,
-          points: LeaderboardViewModel.questComplete(
-            userData: userData,
-            questModel: questModel,
-          ),
-          displayName: userData.displayName,
-          email: userData.email,
-          photoURL: userData.photoURL,
-          uid: userData.uid,
-          isAdmin: userData.isAdmin,
-          seenIntro: true);
+        userDiamondCount: updatedDiamondCount,
+        locationsExplored: userData.locationsExplored,
+        // userKeyCount: updatedKeyCount,
+        points: LeaderboardViewModel.questComplete(
+          userData: userData,
+          questModel: questModel,
+        ),
+        displayName: userData.displayName,
+        email: userData.email,
+        photoURL: userData.photoURL,
+        uid: userData.uid,
+        isAdmin: userData.isAdmin,
+        seenIntro: true,
+      );
       try {
         // Update User Data
         final updateUserData =
@@ -92,7 +91,7 @@ class QuestViewModel  {
             field: 'treasureDiscoveredBy',
             collectionRef: APIPath.quests());
         List<Future> futures = [updateUserData, treasureDiscovereBy];
-         Future.wait(futures);
+        Future.wait(futures);
 
         Navigator.pushReplacement(
             context,

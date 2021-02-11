@@ -38,15 +38,9 @@ class QuestConqueredCard extends StatefulWidget {
 }
 
 class _QuestConqueredCardState extends State<QuestConqueredCard> {
-  
-
-
-
   @override
   Widget build(BuildContext context) {
     final DatabaseService database = Provider.of<DatabaseService>(context);
-    
-
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -69,69 +63,61 @@ class _QuestConqueredCardState extends State<QuestConqueredCard> {
                   fadeInDuration: const Duration(milliseconds: 1000),
                   fadeOutDuration: const Duration(milliseconds: 500),
                   errorWidget: (context, url, error) => Container(
-                    height: MediaQuery.of(context).size.height / 4.2,
-                    child: Center(child: Icon(Icons.error))),
-                  imageBuilder: (context, image) => Container(
-                      width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height / 4.2,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: image,
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.8),
-                                BlendMode.dstATop),
-                            alignment: Alignment.center),
-                      ),
-                      child: 
-                          BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: 3,
-                                sigmaY: 3,
-                              ),
-                              child: Container(
-                                  color: Colors.black.withOpacity(0.5),
-                                  child: 
-                                        buildQuestListTile(context, database))),
-                            )
-                          ),
+                      child: Center(child: Icon(Icons.error))),
+                  imageBuilder: (context, image) => Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 4.2,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: image,
+                              fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.8),
+                                  BlendMode.dstATop),
+                              alignment: Alignment.center),
+                        ),
+                        child: BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: 3,
+                              sigmaY: 3,
+                            ),
+                            child: Container(
+                                color: Colors.black.withOpacity(0.5),
+                                child: buildQuestListTile(context, database))),
+                      )),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: const BorderSide(color: Colors.white, width: 1)),
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [
-                          0.5,
-                          0.8,
-                        ],
-                        colors: [
-                          Colors.grey.shade800,
-                          Colors.grey.shade700
-                        ])),
-                child:
-                   Container(
-                            width: double.infinity,
-                            child: Shimmer.fromColors(
-                              period: const Duration(milliseconds: 750),
-                              baseColor: Colors.amberAccent,
-                              loop: 3,
-                              highlightColor: Colors.grey.shade100,
-                              child: const Text(
-                                'QUEST CONQUERED',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: Colors.amberAccent,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ))
-                       
-                            
-                          
-              )
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          top: const BorderSide(color: Colors.white, width: 1)),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          stops: [
+                            0.5,
+                            0.8,
+                          ],
+                          colors: [
+                            Colors.grey.shade800,
+                            Colors.grey.shade700
+                          ])),
+                  child: Container(
+                      width: double.infinity,
+                      child: Shimmer.fromColors(
+                        period: const Duration(milliseconds: 750),
+                        baseColor: Colors.amberAccent,
+                        loop: 3,
+                        highlightColor: Colors.grey.shade100,
+                        child: const Text(
+                          'QUEST CONQUERED',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: Colors.amberAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )))
             ],
           ),
         ),
@@ -167,14 +153,10 @@ class _QuestConqueredCardState extends State<QuestConqueredCard> {
           ),
         ],
       ),
-      trailing:  Heart(
+      trailing: Heart(
         database: database,
         questModel: widget.questModel,
       ),
     );
   }
-
-
-
-
 }

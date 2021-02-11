@@ -49,7 +49,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
       onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.brown,
+                      backgroundColor: Colors.brown,
             leading: IconButton(
               icon: Icon(
                 Icons.arrow_back,
@@ -192,7 +192,7 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
             height: 100,
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           FractionallySizedBox(
             widthFactor: 0.7,
@@ -202,7 +202,8 @@ class _QuestCompletedScreenState extends State<QuestCompletedScreen> {
               fontSize: 26,
               fontWeight: FontWeight.bold,
               mainAxisAlignment: MainAxisAlignment.center,              
-              showShop: false,              
+              showShop: false,  
+              diamondSpinning: true,            
             ),
           ),
           SizedBox(height: 15),

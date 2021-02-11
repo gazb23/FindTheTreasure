@@ -189,7 +189,7 @@ class LiveListView extends StatelessWidget {
                   'Oh No! There has been a problem with getting your quests! Please try again later.',
               itemBuilder: (context, questModel, index) {
                 // User has insufficient diamonds to unlock quest
-                bool insufficientDiamonds = _userData.userDiamondCount <
+                bool displayLock = _userData.userDiamondCount <
                         questModel.numberOfDiamonds &&
                     !questModel.questCompletedBy.contains(_userData.uid) &&
                     !questModel.questStartedBy.contains(_userData.uid) &&
@@ -199,7 +199,7 @@ class LiveListView extends StatelessWidget {
                 bool questCompleted =
                     questModel.questCompletedBy.contains(_userData.uid) && questModel.treasureDiscoveredBy.contains(_userData.uid);
 
-                if (insufficientDiamonds) {
+                if (displayLock) {
                   return QuestLockedCard(
                       numberOfDiamonds: questModel.numberOfDiamonds,
                       difficulty: questModel.difficulty,
@@ -209,18 +209,7 @@ class LiveListView extends StatelessWidget {
                       location: questModel.location,
                       questModel: questModel,
                       onTap: () {
-                        !insufficientDiamonds
-                            ? Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  fullscreenDialog: true,
-                                  builder: (context) => QuestDetailScreen(
-                                    userData: _userData,
-                                    questModel: questModel,
-                                    database: database,
-                                  ),
-                                ),
-                              )
-                            : PlatformAlertDialog(
+                         PlatformAlertDialog(
                                 title: 'Quest Locked!',
                                 image: Image.asset('images/event.png'),
                                 content:
