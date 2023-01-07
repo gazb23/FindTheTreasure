@@ -19,6 +19,7 @@ class SharedAxisPageRoute extends PageRouteBuilder {
         secondaryAnimation: secondaryAnimation,
         transitionType: transitionType,
         child: child,
+        
       );
     },
   );
